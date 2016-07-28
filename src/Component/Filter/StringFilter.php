@@ -61,7 +61,7 @@ class StringFilter implements FilterInterface
                 $expressions[] = $this->getExpression($expressionBuilder, $type, $field, $value);
             }
 
-            $expression = $expressionBuilder->orX($expressions);
+            $expression = $expressionBuilder->orX(...$expressions);
         }
 
         $dataSource->restrict($expression);
