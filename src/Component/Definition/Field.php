@@ -147,7 +147,7 @@ class Field
     }
 
     /**
-     * @param string|null $sortable
+     * @param string $sortable
      */
     public function setSortable(?string $sortable): void
     {
