@@ -6,3 +6,6 @@ composer.lock
 
 test/app/cache
 test/app/logs
+
+
+.idea
