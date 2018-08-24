@@ -27,9 +27,6 @@ use Sylius\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 final class TwigGridRendererSpec extends ObjectBehavior
 {
     function let(
@@ -83,7 +80,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
             ->render('SyliusGridBundle:Action:_link.html.twig', [
                 'grid' => $gridView,
                 'action' => $action,
-                'data' => null
+                'data' => null,
             ])
             ->willReturn('<a href="#">Action!</a>')
         ;
@@ -109,7 +106,6 @@ final class TwigGridRendererSpec extends ObjectBehavior
             'foo' => 'bar',
         ]);
         $fieldType->render($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
-
 
         $this->renderField($gridView, $field, 'Value')->shouldReturn('<strong>Value</strong>');
     }

@@ -16,9 +16,6 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 
-/**
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 final class SyliusGridExtensionTest extends AbstractExtensionTestCase
 {
     /**
@@ -32,11 +29,11 @@ final class SyliusGridExtensionTest extends AbstractExtensionTestCase
                     'driver' => [
                         'name' => 'doctrine/orm',
                         'options' => [
-                            'class' => 'Sylius\Component\Taxation\Model\TaxCategory'
-                        ]
-                    ]
-                ]
-            ]
+                            'class' => 'Sylius\Component\Taxation\Model\TaxCategory',
+                        ],
+                    ],
+                ],
+            ],
         ]);
 
         $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
@@ -44,15 +41,15 @@ final class SyliusGridExtensionTest extends AbstractExtensionTestCase
                 'driver' => [
                     'name' => 'doctrine/orm',
                     'options' => [
-                        'class' => 'Sylius\Component\Taxation\Model\TaxCategory'
-                    ]
+                        'class' => 'Sylius\Component\Taxation\Model\TaxCategory',
+                    ],
                 ],
                 'sorting' => [],
                 'limits' => [10, 25, 50],
                 'fields' => [],
                 'filters' => [],
                 'actions' => [],
-            ]
+            ],
         ]);
     }
 
@@ -88,8 +85,8 @@ final class SyliusGridExtensionTest extends AbstractExtensionTestCase
                 'filter' => [
                     'string' => 'AppBundle:Grid/Filter:string.html.twig',
                     'date' => 'AppBundle:Grid/Filter:date.html.twig',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertContainerBuilderHasParameter('sylius.grid.templates.filter', [
@@ -108,8 +105,8 @@ final class SyliusGridExtensionTest extends AbstractExtensionTestCase
                 'action' => [
                     'create' => 'AppBundle:Grid/Filter:create.html.twig',
                     'update' => 'AppBundle:Grid/Filter:update.html.twig',
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertContainerBuilderHasParameter('sylius.grid.templates.action', [

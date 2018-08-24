@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Form\Type\Filter;
 
+use Sylius\Bundle\GridBundle\Form\DataTransformer\DateTimeFilterTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Grzegorz Sadowski <grzegorz.sadowski@lakion.com>
- */
 final class DateFilterType extends AbstractType
 {
     /**
@@ -42,6 +40,9 @@ final class DateFilterType extends AbstractType
                 'required' => false,
             ])
         ;
+
+        $builder->get('from')->addViewTransformer(new DateTimeFilterTransformer('from'));
+        $builder->get('to')->addViewTransformer(new DateTimeFilterTransformer('to'));
     }
 
     /**

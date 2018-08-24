@@ -20,9 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-/**
- * @author Paweł Jędrzejewski <pawel@sylius.org>
- */
 final class StringFilterType extends AbstractType
 {
     /**
@@ -77,7 +74,7 @@ final class StringFilterType extends AbstractType
                 StringFilter::TYPE_STARTS_WITH,
                 StringFilter::TYPE_ENDS_WITH,
                 StringFilter::TYPE_IN,
-                StringFilter::TYPE_NOT_IN
+                StringFilter::TYPE_NOT_IN,
             ])
         ;
     }
