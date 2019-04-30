@@ -76,6 +76,9 @@
         "analyse": [
             "@php vendor/bin/ecs check src",
             "@php vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max src"
+        ],
+        "fix": [
+            "@php vendor/bin/ecs check src --fix"
         ]
     },
     "extra": {
