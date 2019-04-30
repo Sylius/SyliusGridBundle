@@ -14,27 +14,27 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests;
 
 use PHPUnit\Framework\Assert;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-final class SyliusGridBundleTest extends WebTestCase
+final class SyliusGridBundleTest extends KernelTestCase
 {
     /**
      * @test
      */
     public function its_services_are_initializable(): void
     {
-        /** @var ContainerBuilder $container */
-        $container = self::createClient()->getContainer();
+        self::bootKernel();
 
-        $services = $container->getServiceIds();
+        /** @var Container $container */
+        $container = self::$kernel->getContainer();
 
-        $services = array_filter($services, function (string $serviceId): bool {
+        $serviceIds = array_filter($container->getServiceIds(), function (string $serviceId): bool {
             return 0 === strpos($serviceId, 'sylius.');
         });
 
-        foreach ($services as $id) {
+        foreach ($serviceIds as $id) {
             Assert::assertNotNull($container->get($id, ContainerInterface::NULL_ON_INVALID_REFERENCE));
         }
     }
