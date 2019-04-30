@@ -23,6 +23,7 @@
         "php": "^7.1",
 
         "sylius/grid": "^1.1",
+        "sylius/registry": "^1.1",
         "symfony/form": "^3.4",
         "symfony/framework-bundle": "^3.4",
         "symfony/templating": "^3.4"
@@ -51,26 +52,21 @@
     "conflict": {
         "twig/twig": "^1.0"
     },
-    "config": {
-        "bin-dir": "bin"
+    "replace": {
+        "sylius/grid": "self.version"
     },
     "autoload": {
-        "psr-4": { "Sylius\\Bundle\\GridBundle\\": "" }
+        "psr-4": {
+            "Sylius\\Bundle\\GridBundle\\": "src/Bundle/",
+            "Sylius\\Component\\Grid\\": "src/Component/"
+        }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sylius\\Bundle\\GridBundle\\spec\\": "spec/",
-            "AppBundle\\": "test/src/AppBundle/"
+            "Sylius\\Bundle\\GridBundle\\spec\\": "src/Bundle/spec/",
+            "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/"
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../*/*"
-        }
-    ],
     "extra": {
         "branch-alias": {
             "dev-master": "1.1-dev"
