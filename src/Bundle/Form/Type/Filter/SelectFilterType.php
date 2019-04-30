@@ -32,7 +32,7 @@ final class SelectFilterType extends AbstractType
         return ChoiceType::class;
     }
 
-    public function getBlockPrefix():string
+    public function getBlockPrefix(): string
     {
         return 'sylius_grid_filter_select';
     }
