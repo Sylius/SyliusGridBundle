@@ -10,8 +10,8 @@
 
     <testsuites>
         <testsuite name="SyliusGridBundle Test Suite">
-            <directory>./test/</directory>
-            <directory>./Tests/</directory>
+            <directory>./src/Bundle/test/</directory>
+            <directory>./src/Bundle/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>

@@ -1,8 +1,4 @@
-vendor/
-bin/
+/vendor/
 
-composer.phar
-composer.lock
-
-test/app/cache
-test/app/logs
+/composer.phar
+/composer.lock
