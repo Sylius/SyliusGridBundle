@@ -6,8 +6,6 @@ framework:
     secret: "%secret%"
     router:
         resource: "%kernel.project_dir%/app/config/routing.yml"
-    form: ~
-    csrf_protection: true
     templating:
         engines: ['twig']
     default_locale: "%locale%"
