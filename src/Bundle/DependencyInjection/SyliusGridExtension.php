@@ -21,9 +21,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 final class SyliusGridExtension extends Extension
 {
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $config, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $config);
@@ -50,5 +47,14 @@ final class SyliusGridExtension extends Extension
 
             $loader->load(sprintf('services/integrations/%s.xml', $enabledDriver));
         }
+    }
+
+    public function getConfiguration(array $config, ContainerBuilder $container): Configuration
+    {
+        $configuration = new Configuration();
+
+        $container->addObjectResource($configuration);
+
+        return $configuration;
     }
 }
