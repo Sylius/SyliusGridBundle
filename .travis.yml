@@ -1,0 +1,25 @@
+language: php
+
+php:
+    - 7.1
+    - 7.2
+
+cache:
+    directories:
+        - ~/.composer/cache/files
+
+before_install:
+    - phpenv config-rm xdebug.ini || true
+
+install:
+    - composer update --prefer-dist
+    - (cd src/Component && composer update --prefer-dist)
+
+script:
+    - composer validate --strict
+    - (cd src/Component && composer validate --strict)
+
+    - vendor/bin/phpspec run
+    - (cd src/Component && vendor/bin/phpspec run)
+
+    - vendor/bin/phpunit
