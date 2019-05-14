@@ -56,8 +56,32 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
      */
     public function equals(string $field, $value)
     {
+        $rootAlias = $this->queryBuilder->getRootAlias();
+        if (0 === strpos($field, $rootAlias . '.')) {
+            $field = substr_replace($field, '', 0, strlen($rootAlias) + 1);
+        }
+
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
+
+        if (0 < substr_count($field, '.')) {
+            $fields = explode('.', $field);
+
+            $key = 0;
+            $newAlias = $this->getAlias($key);
+            foreach ($fields as $field) {
+                if ($key === count($fields) - 1) {
+                    break;
+                }
+
+                $joinAlias = $newAlias;
+                $newAlias = $this->getAlias(++$key);
+
+                $this->queryBuilder->innerJoin($joinAlias . '.' . $field, $newAlias);
+            }
+
+            return $this->queryBuilder->expr()->eq($newAlias . '.' . $fields[$key], ':' . $parameterName);
+        }
 
         return $this->queryBuilder->expr()->eq($this->getFieldName($field), ':' . $parameterName);
     }
@@ -205,5 +229,24 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
     private function hasParameterName(string $parameterName): bool
     {
         return null !== $this->queryBuilder->getParameter($parameterName);
+    }
+
+    private function getAlias(int $number): string
+    {
+        $rootAlias = $this->queryBuilder->getRootAlias();
+        $alias = $rootAlias . ($number === 0 ? '' : (string) $number);
+        $joins = $this->queryBuilder->getDQLParts()['join'];
+
+        if (empty($joins)) {
+            return $alias;
+        }
+
+        foreach ($joins[$rootAlias] as $existentJoin) {
+            if ($existentJoin->getAlias() === $alias) {
+                return $this->getAlias($number + 1);
+            }
+        }
+
+        return $alias;
     }
 }
