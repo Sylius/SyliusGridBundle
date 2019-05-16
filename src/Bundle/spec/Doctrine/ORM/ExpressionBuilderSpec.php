@@ -15,6 +15,7 @@ namespace spec\Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Literal;
 use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -107,5 +108,225 @@ final class ExpressionBuilderSpec extends ObjectBehavior
         $expr->eq('o3.currency', ':order_channel_currency')->shouldBeCalled();
 
         $this->equals('order.channel.currency', '1');
+    }
+
+    function it_builds_not_equals_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getParameter('order_channel_currency')->willReturn(null);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->setParameter('order_channel_currency', '1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->neq('o2.currency', ':order_channel_currency')->shouldBeCalled();
+
+        $this->notEquals('order.channel.currency', '1');
+    }
+
+    function it_builds_less_than_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getParameter('order_channel_currency')->willReturn(null);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->setParameter('order_channel_currency', '1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->lt('o2.currency', ':order_channel_currency')->shouldBeCalled();
+
+        $this->lessThan('order.channel.currency', '1');
+    }
+
+    function it_builds_less_than_or_equal_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getParameter('order_channel_currency')->willReturn(null);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->setParameter('order_channel_currency', '1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->lte('o2.currency', ':order_channel_currency')->shouldBeCalled();
+
+        $this->lessThanOrEqual('order.channel.currency', '1');
+    }
+
+    function it_builds_greater_than_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getParameter('order_channel_currency')->willReturn(null);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->setParameter('order_channel_currency', '1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->gt('o2.currency', ':order_channel_currency')->shouldBeCalled();
+
+        $this->greaterThan('order.channel.currency', '1');
+    }
+
+    function it_builds_greater_than_or_equal_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getParameter('order_channel_currency')->willReturn(null);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->setParameter('order_channel_currency', '1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->gte('o2.currency', ':order_channel_currency')->shouldBeCalled();
+
+        $this->greaterThanOrEqual('order.channel.currency', '1');
+    }
+
+    function it_builds_in_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->in('o2.currency', ['1', '2'])->shouldBeCalled();
+
+        $this->in('order.channel.currency', ['1', '2']);
+    }
+
+    function it_builds_not_in_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->notIn('o2.currency', ['1', '2'])->shouldBeCalled();
+
+        $this->notIn('order.channel.currency', ['1', '2']);
+    }
+
+    function it_builds_is_null_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->isNull('o2.currency')->shouldBeCalled();
+
+        $this->isNull('order.channel.currency');
+    }
+
+    function it_builds_is_not_null_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->isNotNull('o2.currency')->shouldBeCalled();
+
+        $this->isNotNull('order.channel.currency');
+    }
+
+    function it_builds_like_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr,
+        Literal $literal
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $expr->literal('US')->willReturn($literal);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->like('o2.currency', $literal)->shouldBeCalled();
+
+        $this->like('order.channel.currency', 'US');
+    }
+
+    function it_builds_not_like_expression_with_nested_fields(
+        QueryBuilder $queryBuilder,
+        Expr $expr,
+        Literal $literal
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->expr()->willReturn($expr);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $expr->literal('US')->willReturn($literal);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $expr->notLike('o2.currency', $literal)->shouldBeCalled();
+
+        $this->notLike('order.channel.currency', 'US');
+    }
+
+    function it_orders_by_nested_field(
+        QueryBuilder $queryBuilder
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $queryBuilder->orderBy('o2.currency', 'DESC')->shouldBeCalled();
+
+        $this->orderBy('order.channel.currency', 'DESC');
+    }
+
+    function it_adds_order_by_nested_field(
+        QueryBuilder $queryBuilder
+    ): void {
+        $queryBuilder->getRootAliases()->willReturn(['o']);
+        $queryBuilder->getDQLParts()->willReturn(['join' => []]);
+
+        $queryBuilder->innerJoin('o.order', 'o1')->shouldBeCalled();
+        $queryBuilder->innerJoin('o1.channel', 'o2')->shouldBeCalled();
+
+        $queryBuilder->addOrderBy('o2.currency', 'DESC')->shouldBeCalled();
+
+        $this->addOrderBy('order.channel.currency', 'DESC');
     }
 }
