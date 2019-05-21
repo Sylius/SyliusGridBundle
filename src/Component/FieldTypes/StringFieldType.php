@@ -34,7 +34,7 @@ final class StringFieldType implements FieldTypeInterface
     {
         $value = $this->dataExtractor->get($field, $data);
 
-        return is_string($value) ? htmlspecialchars($value) : $value;
+        return htmlspecialchars((string) $value);
     }
 
     /**
