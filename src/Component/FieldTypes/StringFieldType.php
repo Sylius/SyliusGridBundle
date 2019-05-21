@@ -24,9 +24,6 @@ final class StringFieldType implements FieldTypeInterface
      */
     private $dataExtractor;
 
-    /**
-     * @param DataExtractorInterface $dataExtractor
-     */
     public function __construct(DataExtractorInterface $dataExtractor)
     {
         $this->dataExtractor = $dataExtractor;
@@ -39,7 +36,7 @@ final class StringFieldType implements FieldTypeInterface
     {
         $value = $this->dataExtractor->get($field, $data);
 
-        return is_string($value) ? htmlspecialchars($value) : $value;
+        return htmlspecialchars((string) $value);
     }
 
     /**
