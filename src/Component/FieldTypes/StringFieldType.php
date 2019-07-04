@@ -34,6 +34,10 @@ final class StringFieldType implements FieldTypeInterface
     {
         $value = $this->dataExtractor->get($field, $data);
 
+        if (!$this->canBeString($value)) {
+            return $value;
+        }
+
         return htmlspecialchars((string) $value);
     }
 
@@ -42,5 +46,10 @@ final class StringFieldType implements FieldTypeInterface
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
+    }
+
+    private function canBeString($var): bool
+    {
+        return $var === null || is_scalar($var) || (is_object($var) && method_exists($var, '__toString'));
     }
 }
