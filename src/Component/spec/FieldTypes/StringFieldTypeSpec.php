@@ -44,8 +44,9 @@ final class StringFieldTypeSpec extends ObjectBehavior
 
     function it_casts_objects_to_string(DataExtractorInterface $dataExtractor, Field $field): void
     {
-        $data = new class {
-            public function __toString(): string {
+        $data = new class() {
+            public function __toString(): string
+            {
                 return 'Value';
             }
         };
@@ -56,8 +57,9 @@ final class StringFieldTypeSpec extends ObjectBehavior
 
     function it_escapes_objects_casted_to_string(DataExtractorInterface $dataExtractor, Field $field): void
     {
-        $data = new class {
-            public function __toString(): string {
+        $data = new class() {
+            public function __toString(): string
+            {
                 return '<i class="book icon"></i>';
             }
         };
