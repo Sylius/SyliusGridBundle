@@ -48,18 +48,9 @@ final class StringFilter implements FilterInterface
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
-        if (is_array($data) && !isset($data['type'])) {
-            $data['type'] = $options['type'] ?? self::TYPE_CONTAINS;
-        }
-
-        if (!is_array($data)) {
-            $data = ['type' => self::TYPE_CONTAINS, 'value' => $data];
-        }
-
-        $fields = array_key_exists('fields', $options) ? $options['fields'] : [$name];
-
-        $type = $data['type'];
-        $value = array_key_exists('value', $data) ? $data['value'] : null;
+        $value = is_array($data) ? $data['value'] ?? null : $data;
+        $type = $data['type'] ?? ($options['type'] ?? self::TYPE_CONTAINS);
+        $fields = $options['fields'] ?? [$name];
 
         if (!in_array($type, [self::TYPE_NOT_EMPTY, self::TYPE_EMPTY], true) && '' === trim((string) $value)) {
             return;
