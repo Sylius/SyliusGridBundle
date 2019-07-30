@@ -1,7 +1,7 @@
 SyliusGridBundle [![Build status...](https://secure.travis-ci.org/Sylius/SyliusGridBundle.png?branch=master)](http://travis-ci.org/Sylius/SyliusGridBundle)
 ================
 
-Advanced grids for your Symfony2 project.
+Advanced grids for your Symfony project.
 
 Sylius
 ------
