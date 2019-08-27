@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace AppBundle\Tests\Functional;
+namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
 use ApiTestCase\JsonApiTestCase;
 use Symfony\Component\HttpFoundation\Response;
