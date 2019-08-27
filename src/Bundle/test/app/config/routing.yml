@@ -1,0 +1,13 @@
+app_books:
+    resource: |
+        alias: app.book
+        grid: app_book
+        only: ['index']
+    type: sylius.resource_api
+
+app_author:
+    resource: |
+        alias: app.author
+        grid: app_author
+        only: ['index']
+    type: sylius.resource_api
