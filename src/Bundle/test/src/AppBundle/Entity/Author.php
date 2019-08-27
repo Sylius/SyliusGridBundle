@@ -27,7 +27,6 @@ class Author implements ResourceInterface
 
     /**
      * @var Collection&Book[]
-     * @psalm-var Collection<array-key, Book>
      */
     private $books;
 
@@ -58,7 +57,6 @@ class Author implements ResourceInterface
 
     /**
      * @return Collection&Book[]
-     * @psalm-return Collection<array-key, Book>
      */
     public function getBooks(): Collection
     {
