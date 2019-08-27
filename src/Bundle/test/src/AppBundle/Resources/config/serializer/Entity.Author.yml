@@ -1,0 +1,9 @@
+AppBundle\Entity\Author:
+    exclusion_policy: ALL
+    properties:
+        id:
+            expose: true
+            type: integer
+        name:
+            expose: true
+            type: string

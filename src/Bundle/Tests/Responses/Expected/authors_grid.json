@@ -1,0 +1,64 @@
+{
+    "page": 1,
+    "limit": 10,
+    "pages": 2,
+    "total": 20,
+    "_links": {
+        "self": {
+            "href": "\/authors\/?page=1&limit=10"
+        },
+        "first": {
+            "href": "\/authors\/?page=1&limit=10"
+        },
+        "last": {
+            "href": "\/authors\/?page=2&limit=10"
+        },
+        "next": {
+            "href": "\/authors\/?page=2&limit=10"
+        }
+    },
+    "_embedded": {
+        "items": [
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            },
+            {
+                "id": "@integer@",
+                "name": "@string@"
+            }
+        ]
+    }
+}

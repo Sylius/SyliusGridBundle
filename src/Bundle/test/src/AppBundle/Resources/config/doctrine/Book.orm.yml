@@ -1,0 +1,19 @@
+AppBundle\Entity\Book:
+    type: mappedSuperclass
+    table: app_book
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            length: 255
+    manyToOne:
+        author:
+            targetEntity: AppBundle\Entity\Author
+            joinColumn:
+                name: author_id
+                referencedColumnName: id
