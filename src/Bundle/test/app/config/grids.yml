@@ -1,0 +1,40 @@
+sylius_grid:
+    grids:
+        app_book:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: AppBundle\Entity\Book
+            filters:
+                title:
+                    type: string
+            sorting:
+                title: asc
+            fields:
+                title:
+                    type: string
+                    label: Title
+                    sortable: ~
+                author:
+                    type: twig
+                    label: Author
+                    path: author.name
+                    sortable: author.name
+            limits: [10, 5, 15]
+
+        app_author:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: AppBundle\Entity\Author
+            filters:
+                name:
+                    type: string
+            sorting:
+                name: asc
+            fields:
+                name:
+                    type: string
+                    label: Name
+                    sortable: ~
+            limits: [10, 5, 15]

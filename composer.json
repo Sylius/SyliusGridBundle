@@ -51,7 +51,8 @@
         "sylius-labs/coding-standard": "^3.0",
         "symfony/console": "^3.4|^4.1.1",
         "symfony/twig-bundle": "^3.4|^4.1.1",
-        "twig/twig": "^2.0"
+        "twig/twig": "^2.0",
+        "lchrusciel/api-test-case": "^4.1"
     },
     "conflict": {
         "twig/twig": "^1.0"
@@ -68,7 +69,8 @@
     "autoload-dev": {
         "psr-4": {
             "Sylius\\Bundle\\GridBundle\\spec\\": "src/Bundle/spec/",
-            "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/"
+            "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/",
+            "AppBundle\\": "src/Bundle/test/src/AppBundle/"
         },
         "classmap": ["src/Bundle/test/app/AppKernel.php"]
     },

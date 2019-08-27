@@ -1,0 +1,18 @@
+AppBundle\Entity\Author:
+    type: mappedSuperclass
+    table: app_author
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+    oneToMany:
+        books:
+            targetEntity: AppBundle\Entity\Book
+            mappedBy: author
+            cascade: ["all"]
