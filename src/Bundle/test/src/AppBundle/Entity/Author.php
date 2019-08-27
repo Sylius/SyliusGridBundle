@@ -25,9 +25,7 @@ class Author implements ResourceInterface
     /** @var string|null */
     private $name;
 
-    /**
-     * @var Collection&Book[]
-     */
+    /** @var Collection&Book[] */
     private $books;
 
     public function __construct()
