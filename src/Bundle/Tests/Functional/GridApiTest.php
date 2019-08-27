@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
 use ApiTestCase\JsonApiTestCase;
-use Symfony\Component\HttpFoundation\Response;
 
 final class GridApiTest extends JsonApiTestCase
 {
@@ -30,7 +29,7 @@ final class GridApiTest extends JsonApiTestCase
     {
         $this->client->request('GET', '/authors/');
 
-        $this->assertResponseCode($this->client->getResponse(), Response::HTTP_OK);
+        $this->assertResponse($this->client->getResponse(), 'authors_grid');
     }
 
     /** @test */
