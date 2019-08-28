@@ -1,8 +1,24 @@
+AppBundle\Entity\Nationality:
+    nationality_american:
+        name: "American"
+    nationality_english:
+        name: "English"
+
 AppBundle\Entity\Author:
-    author_{1..20}:
+    author_michael_crichton:
+        name: "Michael Crichton"
+        nationality: "@nationality_american"
+    author_{1..19}:
         name: "<firstName()> <lastName()>"
+        nationality: "@nationality_english"
 
 AppBundle\Entity\Book:
+    book_jurassic_park:
+        title: "Jurassic Park"
+        author: "@author_michael_crichton"
+    book_the_lost_world:
+        title: "The Lost World"
+        author: "@author_michael_crichton"
     book_{1..100}:
         title: "Book <current()>"
-        author: "@author_<numberBetween(1, 20)>"
+        author: "@author_<numberBetween(1, 19)>"
