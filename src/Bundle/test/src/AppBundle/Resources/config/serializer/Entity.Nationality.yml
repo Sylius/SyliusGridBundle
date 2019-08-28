@@ -1,4 +1,4 @@
-AppBundle\Entity\Author:
+AppBundle\Entity\Nationality:
     exclusion_policy: ALL
     properties:
         id:
@@ -7,5 +7,3 @@ AppBundle\Entity\Author:
         name:
             expose: true
             type: string
-        nationality:
-            expose: true

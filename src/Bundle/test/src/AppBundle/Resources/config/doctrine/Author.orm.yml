@@ -16,3 +16,10 @@ AppBundle\Entity\Author:
             targetEntity: AppBundle\Entity\Book
             mappedBy: author
             cascade: ["all"]
+    manyToOne:
+        nationality:
+            targetEntity: AppBundle\Entity\Nationality
+            joinColumn:
+                name: nationality_id
+                referencedColumnName: id
+            cascade: ["all"]
