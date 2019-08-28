@@ -98,6 +98,8 @@ final class ExpressionBuilderSpec extends ObjectBehavior
             ['join' => ['o' => [$firstJoin]]],
             ['join' => ['o' => [$firstJoin]]],
             ['join' => ['o' => [$firstJoin]]],
+            ['join' => ['o' => [$firstJoin]]],
+            ['join' => ['o' => [$firstJoin]]],
             ['join' => ['o' => [$firstJoin, $secondJoin]]]
         );
 

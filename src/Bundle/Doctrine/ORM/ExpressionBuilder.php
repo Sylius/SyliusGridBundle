@@ -200,11 +200,19 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         }
 
         $key = 0;
+
         $newAlias = $this->getAlias($key);
         $fields = explode('.', $field);
         foreach ($fields as $field) {
             if ($key === count($fields) - 1) {
                 break;
+            }
+
+            if ($this->hasAlias($field)) {
+                $newAlias = $field;
+                ++$key;
+
+                continue;
             }
 
             $joinAlias = $newAlias;
@@ -233,5 +241,24 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         }
 
         return $alias;
+    }
+
+    private function hasAlias(string $alias): bool
+    {
+        $rootAlias = $this->getRootAlias();
+
+        $joins = $this->queryBuilder->getDQLParts()['join'];
+
+        if (empty($joins)) {
+            return false;
+        }
+
+        foreach ($joins[$rootAlias] as $existentJoin) {
+            if ($existentJoin->getAlias() === $alias) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
