@@ -1,0 +1,45 @@
+{
+    "page": 1,
+    "limit": 10,
+    "pages": 1,
+    "total": 2,
+    "_links": {
+        "self": {
+            "href": "\/by-american-authors\/books\/?sorting%5Bauthor%5D=asc&page=1&limit=10"
+        },
+        "first": {
+            "href": "\/by-american-authors\/books\/?sorting%5Bauthor%5D=asc&page=1&limit=10"
+        },
+        "last": {
+            "href": "\/by-american-authors\/books\/?sorting%5Bauthor%5D=asc&page=1&limit=10"
+        }
+    },
+    "_embedded": {
+        "items": [
+            {
+                "id": "@integer@",
+                "title": "Jurassic Park",
+                "author": {
+                    "id": "@integer@",
+                    "name": "Michael Crichton",
+                    "nationality": {
+                        "id": "@integer@",
+                        "name": "American"
+                    }
+                }
+            },
+            {
+                "id": "@integer@",
+                "title": "The Lost World",
+                "author": {
+                    "id": "@integer@",
+                    "name": "Michael Crichton",
+                    "nationality": {
+                        "id": "@integer@",
+                        "name": "American"
+                    }
+                }
+            }
+        ]
+    }
+}

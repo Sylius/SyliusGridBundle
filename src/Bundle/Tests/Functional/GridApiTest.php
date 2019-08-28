@@ -153,6 +153,14 @@ final class GridApiTest extends JsonApiTestCase
         $this->assertSame($sortedNames, $names);
     }
 
+    /** @test */
+    public function it_sorts_authors_using_table_alias_defined_in_query_builder(): void
+    {
+        $this->client->request('GET', '/by-american-authors/books/?sorting[author]=asc');
+
+        $this->assertResponse($this->client->getResponse(), 'american_authors_sorted_ascending');
+    }
+
     private function getItemsFromCurrentResponse(): array
     {
         return json_decode($this->client->getResponse()->getContent(), true)['_embedded']['items'];

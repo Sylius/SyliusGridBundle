@@ -3,6 +3,7 @@ sylius_resource:
         app.book:
             classes:
                 model: AppBundle\Entity\Book
+                repository: AppBundle\Repository\BookRepository
 
         app.author:
             classes:
