@@ -1,0 +1,37 @@
+---------------------------------------------------------------------------
+
+by Zales0123 at 2019-05-15T06:22:37Z
+
+I see three ways:
+
+- we could make a detailed PHPSpec test for that (but it can be a pain in the neck, to be honest)
+- we could create a unit test with PHPUnit with some most well-known use-cases (one field without nesting, two fields with one-level nesting, one field with two-levels nesting, etc.)
+- indeed create some test application, but we must be aware that it would require a lot of additional code - it's not a plugin but a bundle, it does not have a test application already inside
+
+I would personally give a try for the 2nd way (even though I'm not 100% sure will it work smoothly 🚀) and maybe think about other ways it fails. cc @pamil your opinion would be significant 🖖
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2019-05-15T06:43:08Z
+
+Just for the record, there is a sample app: https://github.com/Sylius/SyliusGridBundle/tree/master/src/Bundle/test
+
+---------------------------------------------------------------------------
+
+by Zales0123 at 2019-05-15T06:44:22Z
+
+My bad 😄 🖖 Still, the PHPUnit test can be sufficient (or not, but we should check it out)
+
+---------------------------------------------------------------------------
+
+by GSadee at 2019-05-16T14:28:18Z
+
+For now, I've added a PHPSpec test and I hope it can be merged in this form.
+
+Additionally, I've added an issue with missing proper tests (https://github.com/Sylius/SyliusGridBundle/issues/4) and I'll try to take care of it in the nearest future.
+
+---------------------------------------------------------------------------
+
+by pamil at 2019-08-28T10:03:14Z
+
+Thanks, Grzegorz! :tada:
