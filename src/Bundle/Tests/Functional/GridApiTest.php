@@ -38,7 +38,7 @@ final class GridApiTest extends JsonApiTestCase
     /** @test */
     public function it_sorts_authors_by_name_ascending_by_default(): void
     {
-        $this->client->request('GET', '/authors/');
+        $this->client->request('GET', '/authors/?limit=100');
 
         $items = $this->getItemsFromCurrentResponse();
         $names = array_map(static function (array $item): string {
@@ -54,7 +54,7 @@ final class GridApiTest extends JsonApiTestCase
     /** @test */
     public function it_sorts_authors_by_name_descending(): void
     {
-        $this->client->request('GET', '/authors/?sorting[name]=desc');
+        $this->client->request('GET', '/authors/?sorting[name]=desc&limit=100');
 
         $items = $this->getItemsFromCurrentResponse();
         $names = array_map(static function (array $item): string {
@@ -119,6 +119,38 @@ final class GridApiTest extends JsonApiTestCase
 
         $this->assertCount(2, $this->getItemsFromCurrentResponse());
         $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
+    public function it_sorts_books_ascending_by_author(): void
+    {
+        $this->client->request('GET', '/books/?sorting[author]=asc&limit=100');
+
+        $items = $this->getItemsFromCurrentResponse();
+        $names = array_map(static function (array $item): string {
+            return $item['author']['name'];
+        }, $items);
+
+        $sortedNames = $names;
+        sort($names);
+
+        $this->assertSame($sortedNames, $names);
+    }
+
+    /** @test */
+    public function it_sorts_books_descending_by_authors_nationality(): void
+    {
+        $this->client->request('GET', '/books/?sorting[nationality]=desc&limit=100');
+
+        $items = $this->getItemsFromCurrentResponse();
+        $names = array_map(static function (array $item): string {
+            return $item['author']['nationality']['name'];
+        }, $items);
+
+        $sortedNames = $names;
+        rsort($names);
+
+        $this->assertSame($sortedNames, $names);
     }
 
     private function getItemsFromCurrentResponse(): array

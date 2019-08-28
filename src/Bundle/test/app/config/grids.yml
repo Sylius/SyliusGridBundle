@@ -26,10 +26,15 @@ sylius_grid:
                     label: Title
                     sortable: ~
                 author:
-                    type: twig
+                    type: string
                     label: Author
                     path: author.name
                     sortable: author.name
+                nationality:
+                    type: string
+                    label: Nationality
+                    path: author.nationality.name
+                    sortable: author.nationality.name
             limits: [10, 5, 15]
 
         app_author:
