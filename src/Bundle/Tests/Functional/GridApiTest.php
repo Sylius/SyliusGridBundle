@@ -17,11 +17,14 @@ use ApiTestCase\JsonApiTestCase;
 
 final class GridApiTest extends JsonApiTestCase
 {
+    /** @var array */
+    private $data;
+
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->loadFixturesFromFile('fixtures.yml');
+        $this->data = $this->loadFixturesFromFile('fixtures.yml');
     }
 
     /** @test */
@@ -94,6 +97,28 @@ final class GridApiTest extends JsonApiTestCase
 
         $this->assertCount(1, $this->getItemsFromCurrentResponse());
         $this->assertSame('Book 5', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
+    public function it_filters_books_by_author(): void
+    {
+        $authorId = $this->data['author_michael_crichton']->getId();
+
+        $this->client->request('GET', sprintf('/books/?criteria[author]=%d', $authorId));
+
+        $this->assertCount(2, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
+    public function it_filters_books_by_authors_nationality(): void
+    {
+        $authorNationalityId = $this->data['author_michael_crichton']->getNationality()->getId();
+
+        $this->client->request('GET', sprintf('/books/?criteria[nationality]=%d', $authorNationalityId));
+
+        $this->assertCount(2, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
     }
 
     private function getItemsFromCurrentResponse(): array

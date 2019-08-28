@@ -8,6 +8,16 @@ sylius_grid:
             filters:
                 title:
                     type: string
+                author:
+                    type: entity
+                    form_options:
+                        class: AppBundle\Entity\Author
+                nationality:
+                    type: entity
+                    options:
+                        fields: [author.nationality]
+                    form_options:
+                        class: AppBundle\Entity\Nationality
             sorting:
                 title: asc
             fields:

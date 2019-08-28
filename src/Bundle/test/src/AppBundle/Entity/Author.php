@@ -25,6 +25,9 @@ class Author implements ResourceInterface
     /** @var string|null */
     private $name;
 
+    /** @var Nationality|null */
+    private $nationality;
+
     /** @var Collection&Book[] */
     private $books;
 
@@ -46,6 +49,16 @@ class Author implements ResourceInterface
     public function setName(?string $name): void
     {
         $this->name = $name;
+    }
+
+    public function getNationality(): ?Nationality
+    {
+        return $this->nationality;
+    }
+
+    public function setNationality(?Nationality $nationality): void
+    {
+        $this->nationality = $nationality;
     }
 
     public function addBook(Book $book): void

@@ -7,3 +7,7 @@ sylius_resource:
         app.author:
             classes:
                 model: AppBundle\Entity\Author
+
+        app.nationality:
+            classes:
+                model: AppBundle\Entity\Nationality

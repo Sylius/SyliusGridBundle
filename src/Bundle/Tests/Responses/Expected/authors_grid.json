@@ -21,43 +21,53 @@
         "items": [
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             },
             {
                 "id": "@integer@",
-                "name": "@string@"
+                "name": "@string@",
+                "nationality": "@wildcard@"
             }
         ]
     }
