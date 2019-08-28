@@ -11,3 +11,12 @@ app_author:
         grid: app_author
         only: ['index']
     type: sylius.resource_api
+
+app_books_by_american_authors:
+    resource: |
+        alias: app.book
+        section: american_authors
+        grid: app_book_by_american_authors
+        only: ['index']
+    type: sylius.resource_api
+    prefix: /by-american-authors
