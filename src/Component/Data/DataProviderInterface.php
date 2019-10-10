@@ -18,5 +18,8 @@ use Sylius\Component\Grid\Parameters;
 
 interface DataProviderInterface
 {
+    /**
+     * @return mixed
+     */
     public function getData(Grid $grid, Parameters $parameters);
 }

@@ -21,9 +21,15 @@ interface DataSourceInterface
 
     public const CONDITION_OR = 'or';
 
+    /**
+     * @param mixed $expression
+     */
     public function restrict($expression, string $condition = self::CONDITION_AND): void;
 
     public function getExpressionBuilder(): ExpressionBuilderInterface;
 
+    /**
+     * @return mixed
+     */
     public function getData(Parameters $parameters);
 }

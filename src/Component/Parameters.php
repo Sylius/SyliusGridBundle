@@ -15,9 +15,12 @@ namespace Sylius\Component\Grid;
 
 final class Parameters
 {
-    /** @var array */
+    /** @var array<string, mixed> */
     private $parameters;
 
+    /**
+     * @param array<string, mixed> $parameters
+     */
     public function __construct(array $parameters = [])
     {
         $this->parameters = $parameters;
@@ -33,6 +36,11 @@ final class Parameters
         return array_keys($this->parameters);
     }
 
+    /**
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     public function get(string $key, $default = null)
     {
         return $this->has($key) ? $this->parameters[$key] : $default;

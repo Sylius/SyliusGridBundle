@@ -16,16 +16,17 @@ namespace Sylius\Bundle\GridBundle\Renderer;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
+use Twig\Environment;
 
 final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterface
 {
-    /** @var \Twig_Environment */
+    /** @var Environment */
     private $twig;
 
     /** @var array */
     private $bulkActionTemplates;
 
-    public function __construct(\Twig_Environment $twig, array $bulkActionTemplates)
+    public function __construct(Environment $twig, array $bulkActionTemplates)
     {
         $this->twig = $twig;
         $this->bulkActionTemplates = $bulkActionTemplates;

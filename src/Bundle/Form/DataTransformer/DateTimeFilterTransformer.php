@@ -18,6 +18,7 @@ use Webmozart\Assert\Assert;
 
 final class DateTimeFilterTransformer implements DataTransformerInterface
 {
+    /** @var array<string, array{hour: string, minute: string}> */
     private static $defaultTime = [
         'from' => ['hour' => '00', 'minute' => '00'],
         'to' => ['hour' => '23', 'minute' => '59'],
@@ -28,6 +29,7 @@ final class DateTimeFilterTransformer implements DataTransformerInterface
 
     public function __construct(string $type)
     {
+        /** @psalm-suppress RedundantCondition */
         Assert::oneOf($type, array_keys(static::$defaultTime));
 
         $this->type = $type;

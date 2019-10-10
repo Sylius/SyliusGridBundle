@@ -213,6 +213,8 @@ class Grid
     }
 
     /**
+     * @param string $groupName
+     *
      * @return array|Action[]
      */
     public function getEnabledActions($groupName): array

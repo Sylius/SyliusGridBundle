@@ -57,6 +57,6 @@ final class ArrayGridProvider implements GridProviderInterface
 
         unset($configuration['extends']);
 
-        return $configuration ?? [];
+        return $configuration;
     }
 }

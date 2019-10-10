@@ -28,6 +28,9 @@ class GridView implements GridViewInterface
     /** @var Parameters */
     private $parameters;
 
+    /**
+     * @param mixed $data
+     */
     public function __construct($data, Grid $definition, Parameters $parameters)
     {
         $this->data = $data;

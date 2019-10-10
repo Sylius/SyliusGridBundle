@@ -21,6 +21,10 @@ interface FieldTypeInterface
     /**
      * Return a HTML representation of the $field using the given $data and
      * $options.
+     *
+     * @param mixed $data
+     *
+     * @return string
      */
     public function render(Field $field, $data, array $options);
 
