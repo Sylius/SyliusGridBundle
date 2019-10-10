@@ -1,5 +1,9 @@
 ## CHANGELOG FOR `1.6.x`
 
+### v1.6.3 (2019-10-10)
+
+- [#16](https://github.com/Sylius/SyliusGridBundle/issues/16) Support for Symfony 3.4 / 4.3+ ([@pamil](https://github.com/pamil))
+
 ### v1.6.2 (2019-10-10)
 
 - [#8](https://github.com/Sylius/SyliusGridBundle/issues/8) Use expression type from options if set ([@vvasiloi](https://github.com/vvasiloi))
