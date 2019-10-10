@@ -54,6 +54,11 @@ final class DateFilter implements FilterInterface
         }
     }
 
+    /**
+     * @param mixed $default
+     *
+     * @return mixed
+     */
     private function getOption(array $options, string $name, $default)
     {
         return $options[$name] ?? $default;

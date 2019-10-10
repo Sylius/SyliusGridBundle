@@ -61,7 +61,7 @@ final class StringFilter implements FilterInterface
         $type = $data['type'];
         $value = array_key_exists('value', $data) ? $data['value'] : null;
 
-        if (!in_array($type, [self::TYPE_NOT_EMPTY, self::TYPE_EMPTY], true) && '' === trim($value)) {
+        if (!in_array($type, [self::TYPE_NOT_EMPTY, self::TYPE_EMPTY], true) && '' === trim((string) $value)) {
             return;
         }
 
@@ -86,6 +86,10 @@ final class StringFilter implements FilterInterface
     }
 
     /**
+     * @param mixed $value
+     *
+     * @return mixed
+     *
      * @throws \InvalidArgumentException
      */
     private function getExpression(

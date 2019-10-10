@@ -21,13 +21,13 @@ class Filter
     /** @var string */
     private $type;
 
-    /** @var string */
+    /** @var string|null */
     private $label;
 
     /** @var bool */
     private $enabled = true;
 
-    /** @var string */
+    /** @var string|null */
     private $template;
 
     /** @var array */
@@ -70,11 +70,17 @@ class Filter
         return $this->type;
     }
 
+    /**
+     * @return string|null
+     */
     public function getLabel()
     {
         return $this->label;
     }
 
+    /**
+     * @param string|null $label
+     */
     public function setLabel($label): void
     {
         $this->label = $label;
@@ -130,11 +136,19 @@ class Filter
         $this->position = $position;
     }
 
+    /**
+     * @return mixed
+     */
     public function getCriteria()
     {
         return $this->criteria;
     }
 
+    /**
+     * @param mixed $criteria
+     *
+     * @psalm-suppress MissingReturnType
+     */
     public function setCriteria($criteria)
     {
         $this->criteria = $criteria;

@@ -1,4 +1,5 @@
 /vendor/
+!/vendor/.gitignore
 /bin/
 
 /composer.phar

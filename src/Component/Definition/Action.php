@@ -21,13 +21,13 @@ class Action
     /** @var string */
     private $type;
 
-    /** @var string */
+    /** @var string|null */
     private $label;
 
     /** @var bool */
     private $enabled = true;
 
-    /** @var string */
+    /** @var string|null */
     private $icon;
 
     /** @var array */

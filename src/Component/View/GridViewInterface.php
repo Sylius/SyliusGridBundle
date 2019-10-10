@@ -18,6 +18,9 @@ use Sylius\Component\Grid\Parameters;
 
 interface GridViewInterface
 {
+    /**
+     * @return mixed
+     */
     public function getData();
 
     public function getDefinition(): Grid;

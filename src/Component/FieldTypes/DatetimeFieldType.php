@@ -37,9 +37,10 @@ final class DatetimeFieldType implements FieldTypeInterface
     {
         $value = $this->dataExtractor->get($field, $data);
         if (null === $value) {
-            return null;
+            return '';
         }
 
+        /** @var \DateTimeInterface $value */
         Assert::isInstanceOf($value, \DateTimeInterface::class);
 
         return $value->format($options['format']);

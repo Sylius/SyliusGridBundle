@@ -17,5 +17,8 @@ use Sylius\Component\Grid\Data\DataSourceInterface;
 
 interface FilterInterface
 {
+    /**
+     * @param mixed $data
+     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void;
 }

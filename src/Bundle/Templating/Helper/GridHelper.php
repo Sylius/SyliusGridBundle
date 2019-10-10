@@ -30,11 +30,19 @@ class GridHelper extends Helper
         $this->gridRenderer = $gridRenderer;
     }
 
+    /**
+     * @return string
+     */
     public function renderGrid(GridView $gridView, ?string $template = null)
     {
         return $this->gridRenderer->render($gridView, $template);
     }
 
+    /**
+     * @param mixed $data
+     *
+     * @return string
+     */
     public function renderField(GridView $gridView, Field $field, $data)
     {
         return $this->gridRenderer->renderField($gridView, $field, $data);
@@ -42,12 +50,17 @@ class GridHelper extends Helper
 
     /**
      * @param mixed|null $data
+     *
+     * @return string
      */
     public function renderAction(GridView $gridView, Action $action, $data = null)
     {
         return $this->gridRenderer->renderAction($gridView, $action, $data);
     }
 
+    /**
+     * @return string
+     */
     public function renderFilter(GridView $gridView, Filter $filter)
     {
         return $this->gridRenderer->renderFilter($gridView, $filter);

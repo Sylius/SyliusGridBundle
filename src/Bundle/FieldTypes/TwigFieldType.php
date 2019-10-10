@@ -17,16 +17,17 @@ use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 final class TwigFieldType implements FieldTypeInterface
 {
     /** @var DataExtractorInterface */
     private $dataExtractor;
 
-    /** @var \Twig_Environment */
+    /** @var Environment */
     private $twig;
 
-    public function __construct(DataExtractorInterface $dataExtractor, \Twig_Environment $twig)
+    public function __construct(DataExtractorInterface $dataExtractor, Environment $twig)
     {
         $this->dataExtractor = $dataExtractor;
         $this->twig = $twig;

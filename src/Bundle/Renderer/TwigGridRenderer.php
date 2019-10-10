@@ -24,10 +24,11 @@ use Sylius\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 final class TwigGridRenderer implements GridRendererInterface
 {
-    /** @var \Twig_Environment */
+    /** @var Environment */
     private $twig;
 
     /** @var ServiceRegistryInterface */
@@ -49,7 +50,7 @@ final class TwigGridRenderer implements GridRendererInterface
     private $filterTemplates;
 
     public function __construct(
-        \Twig_Environment $twig,
+        Environment $twig,
         ServiceRegistryInterface $fieldsRegistry,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $formTypeRegistry,

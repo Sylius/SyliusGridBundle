@@ -50,7 +50,7 @@ final class DatetimeFieldTypeSpec extends ObjectBehavior
 
         $this->render($field, ['foo' => 'bar'], [
             'format' => '',
-        ])->shouldReturn(null);
+        ])->shouldReturn('');
     }
 
     function it_throws_exception_if_returned_value_is_not_datetime(DataExtractorInterface $dataExtractor, Field $field): void

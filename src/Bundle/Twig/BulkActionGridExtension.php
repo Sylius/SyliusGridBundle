@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Twig;
 
 use Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-final class BulkActionGridExtension extends \Twig_Extension
+final class BulkActionGridExtension extends AbstractExtension
 {
     /** @var BulkActionGridHelper */
     private $bulkActionGridHelper;
@@ -31,7 +33,7 @@ final class BulkActionGridExtension extends \Twig_Extension
     public function getFunctions(): array
     {
         return [
-            new \Twig_Function(
+            new TwigFunction(
                 'sylius_grid_render_bulk_action',
                 [$this->bulkActionGridHelper, 'renderBulkAction'],
                 ['is_safe' => ['html']]
