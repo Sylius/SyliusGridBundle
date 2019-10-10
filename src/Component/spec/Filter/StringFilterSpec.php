@@ -227,4 +227,28 @@ final class StringFilterSpec extends ObjectBehavior
 
         $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => '0'], []);
     }
+
+    function it_uses_scalar_data_as_value(
+        DataSourceInterface $dataSource,
+        ExpressionBuilderInterface $expressionBuilder
+    ): void {
+        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $expressionBuilder->like('firstName', '%John%')->willReturn('EXPR');
+        $dataSource->restrict('EXPR')->shouldBeCalled();
+
+        $this->apply($dataSource, 'firstName', 'John', []);
+    }
+
+    function it_uses_type_from_options_if_set(
+        DataSourceInterface $dataSource,
+        ExpressionBuilderInterface $expressionBuilder
+    ): void {
+        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $expressionBuilder->equals('firstName', 'John')->willReturn('EXPR');
+        $dataSource->restrict('EXPR')->shouldBeCalled();
+
+        $this->apply($dataSource, 'firstName', 'John', ['type' => StringFilter::TYPE_EQUAL]);
+    }
 }
