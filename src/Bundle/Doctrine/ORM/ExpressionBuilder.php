@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\Query\Expr\Comparison;
+use Doctrine\ORM\Query\Expr\From;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 
@@ -152,15 +154,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->addOrderBy($this->resolveFieldByAddingJoins($field), $direction);
     }
 
-    private function getFieldName(string $field): string
-    {
-        if (false === strpos($field, '.')) {
-            return sprintf('%s.%s', $this->getRootAlias(), $field);
-        }
-
-        return $field;
-    }
-
     private function getParameterName(string $field): string
     {
         $parameterName = str_replace('.', '_', $field);
@@ -195,70 +188,95 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
     private function resolveFieldByAddingJoins(string $field): string
     {
-        if (0 === substr_count($field, '.')) {
-            return $this->getFieldName($field);
+        $entityManager = $this->queryBuilder->getEntityManager();
+
+        $field = $this->getAbsolutePath($field);
+        $rootField = explode('.', $field, 2)[0];
+
+        $metadata = null;
+
+        /** @var From[] $froms */
+        $froms = $this->queryBuilder->getDQLPart('from');
+        foreach ($froms as $from) {
+            if ($from->getAlias() === $rootField) {
+                $metadata = $entityManager->getClassMetadata($from->getFrom());
+            }
         }
 
-        $key = 0;
-
-        $newAlias = $this->getAlias($key);
-        $fields = explode('.', $field);
-        foreach ($fields as $field) {
-            if ($key === count($fields) - 1) {
-                break;
-            }
-
-            if ($this->hasAlias($field)) {
-                $newAlias = $field;
-                ++$key;
-
-                continue;
-            }
-
-            $joinAlias = $newAlias;
-            $newAlias = $this->getAlias(++$key);
-
-            $this->queryBuilder->innerJoin(sprintf('%s.%s', $joinAlias, $field), $newAlias);
+        if ($metadata === null) {
+            throw new \RuntimeException(sprintf('Could not get metadata for "%s".', $field));
         }
 
-        return sprintf('%s.%s', $newAlias, $fields[$key]);
+        $explodedField = explode('.', $field, 3);
+        while (count($explodedField) === 3) {
+            if (isset($metadata->embeddedClasses[$explodedField[1]])) {
+                return implode('.', $explodedField);
+            }
+
+            $metadata = $entityManager->getClassMetadata($metadata->getAssociationMapping($explodedField[1])['targetEntity']);
+            $relatedField = sprintf('%s.%s', $explodedField[0], $explodedField[1]);
+
+            /** @var Join[] $joins */
+            $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
+            foreach ($joins as $join) {
+                if ($join->getJoin() === $relatedField) {
+                    unset($explodedField[0]);
+                    $explodedField[1] = $join->getAlias();
+                    $explodedField = explode('.', implode('.', $explodedField), 3);
+
+                    continue 2;
+                }
+            }
+
+            $this->queryBuilder->innerJoin($relatedField, md5($relatedField));
+            unset($explodedField[0]);
+            $explodedField[1] = md5($relatedField);
+            $explodedField = explode('.', implode('.', $explodedField), 3);
+        }
+
+        return implode('.', $explodedField);
     }
 
-    private function getAlias(int $number): string
+    /**
+     * This method returns an absolute path of a property path.
+     *
+     * Given the following query:
+     *
+     * SELECT bo FROM Book bo INNER JOIN Author au ON bo.author_id = au.id
+     *
+     * It will behave as follows:
+     *
+     * book.title => book.title
+     * title => book.title
+     * au => book.author
+     * au.name => book.author.name
+     */
+    private function getAbsolutePath(string $field): string
     {
-        $rootAlias = $this->getRootAlias();
-        $alias = $rootAlias . ($number === 0 ? '' : (string) $number);
-        $joins = $this->queryBuilder->getDQLParts()['join'];
+        $explodedField = explode('.', $field);
 
-        if (empty($joins)) {
-            return $alias;
+        if (!in_array($explodedField[0], $this->queryBuilder->getAllAliases(), true)) {
+            $field = sprintf('%s.%s', $this->getRootAlias(), $field);
+
+            $explodedField = explode('.', $field);
         }
 
-        foreach ($joins[$rootAlias] as $existentJoin) {
-            if ($existentJoin->getAlias() === $alias) {
-                return $this->getAlias($number + 1);
+        /** @var Join[] $joins */
+        $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
+        while (!in_array($explodedField[0], $this->queryBuilder->getRootAliases(), true)) {
+            foreach ($joins as $join) {
+                if ($join->getAlias() === $explodedField[0]) {
+                    $explodedField[0] = $join->getJoin();
+                    $field = implode('.', $explodedField);
+                    $explodedField = explode('.', $field);
+
+                    continue 2;
+                }
             }
+
+            throw new \RuntimeException(sprintf('Could not get mapping for "%s".', $field));
         }
 
-        return $alias;
-    }
-
-    private function hasAlias(string $alias): bool
-    {
-        $rootAlias = $this->getRootAlias();
-
-        $joins = $this->queryBuilder->getDQLParts()['join'];
-
-        if (empty($joins)) {
-            return false;
-        }
-
-        foreach ($joins[$rootAlias] as $existentJoin) {
-            if ($existentJoin->getAlias() === $alias) {
-                return true;
-            }
-        }
-
-        return false;
+        return $field;
     }
 }

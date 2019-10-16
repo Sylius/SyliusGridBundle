@@ -122,6 +122,17 @@ final class GridApiTest extends JsonApiTestCase
     }
 
     /** @test */
+    public function it_filters_books_by_author_and_currency(): void
+    {
+        $authorId = $this->data['author_michael_crichton']->getId();
+
+        $this->client->request('GET', sprintf('/books/?criteria[author]=%d&criteria[currencyCode]=%s', $authorId, 'EUR'));
+
+        $this->assertCount(1, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
     public function it_sorts_books_ascending_by_author(): void
     {
         $this->client->request('GET', '/books/?sorting[author]=asc&limit=100');

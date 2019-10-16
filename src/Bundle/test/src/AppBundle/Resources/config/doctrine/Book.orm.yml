@@ -7,6 +7,9 @@ AppBundle\Entity\Book:
             id: true
             generator:
                 strategy: AUTO
+    embedded:
+        price:
+            class: AppBundle\Entity\Price
     fields:
         title:
             type: string

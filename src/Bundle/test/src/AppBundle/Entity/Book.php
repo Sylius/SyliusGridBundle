@@ -26,6 +26,9 @@ class Book implements ResourceInterface
     /** @var Author|null */
     private $author;
 
+    /** @var Price|null */
+    private $price;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,5 +53,15 @@ class Book implements ResourceInterface
     {
         $this->author = $author;
         $this->author->addBook($this);
+    }
+
+    public function getPrice(): ?Price
+    {
+        return $this->price;
+    }
+
+    public function setPrice(Price $price): void
+    {
+        $this->price = $price;
     }
 }

@@ -1,13 +1,9 @@
-AppBundle\Entity\Book:
+AppBundle\Entity\Price:
     exclusion_policy: ALL
     properties:
-        id:
+        amount:
             expose: true
             type: integer
-        title:
+        currencyCode:
             expose: true
             type: string
-        author:
-            expose: true
-        price:
-            expose: true

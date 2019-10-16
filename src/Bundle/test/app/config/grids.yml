@@ -18,6 +18,10 @@ sylius_grid:
                         fields: [author.nationality]
                     form_options:
                         class: AppBundle\Entity\Nationality
+                currencyCode:
+                    type: string
+                    options:
+                        fields: [price.currencyCode]
             sorting:
                 title: asc
             fields:

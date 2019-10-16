@@ -16,9 +16,20 @@ AppBundle\Entity\Book:
     book_jurassic_park:
         title: "Jurassic Park"
         author: "@author_michael_crichton"
+        price: "@price_1"
     book_the_lost_world:
         title: "The Lost World"
         author: "@author_michael_crichton"
+        price: "@price_2"
     book_{1..100}:
         title: "Book <current()>"
         author: "@author_<numberBetween(1, 19)>"
+        price: "@price_<numberBetween(1, 2)>"
+
+AppBundle\Entity\Price:
+    price_1:
+        amount: 4200
+        currencyCode: "EUR"
+    price_2:
+        amount: 1000
+        currencyCode: "GBP"
