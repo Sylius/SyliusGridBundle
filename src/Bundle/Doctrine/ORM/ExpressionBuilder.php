@@ -247,8 +247,9 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
         /** @var Join[] $joins */
         $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
-        while (count($explodedField = explode('.', $field, 2)) === 2) {
-            [$rootField, $remainder] = $explodedField;
+        while (count($explodedField = explode('.', $field, 2)) >= 1) {
+            $rootField = $explodedField[0];
+            $remainder = $explodedField[1] ?? null;
 
             if (in_array($rootField, $this->queryBuilder->getRootAliases(), true)) {
                 break;
@@ -256,7 +257,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
             foreach ($joins as $join) {
                 if ($join->getAlias() === $rootField) {
-                    $field = sprintf('%s.%s', $join->getJoin(), $remainder);
+                    $field = rtrim(sprintf('%s.%s', $join->getJoin(), $remainder), '.');
 
                     continue 2;
                 }
