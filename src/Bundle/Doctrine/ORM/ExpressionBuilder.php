@@ -209,7 +209,14 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
                 }
             }
 
-            $associationAlias = md5($rootAndAssociationField);
+            // Association alias can't start with a number
+            // Mapping numbers to letters will not increase the collision probability and not lower the entropy
+            $associationAlias = str_replace(
+                ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
+                ['g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'],
+                md5($rootAndAssociationField)
+            );
+
             $this->queryBuilder->innerJoin($rootAndAssociationField, $associationAlias);
             $field = sprintf('%s.%s', $associationAlias, $remainder);
         }
