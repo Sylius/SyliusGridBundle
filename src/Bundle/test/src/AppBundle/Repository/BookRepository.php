@@ -21,8 +21,8 @@ final class BookRepository extends EntityRepository
     public function createAmericanBooksQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('b')
-            ->innerJoin('b.author', 'au')
-            ->innerJoin('au.nationality', 'na')
+            ->innerJoin('b.author', 'author')
+            ->innerJoin('author.nationality', 'na')
             ->andWhere('na.name = :nationality')
             ->setParameter(':nationality', 'American')
         ;
