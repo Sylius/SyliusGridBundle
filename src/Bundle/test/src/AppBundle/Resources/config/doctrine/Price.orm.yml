@@ -6,4 +6,3 @@ AppBundle\Entity\Price:
         currencyCode:
             type: string
             length: 255
-

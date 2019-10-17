@@ -15,18 +15,18 @@ namespace AppBundle\Entity;
 
 final class Price
 {
-    /** @var string|null */
+    /** @var int|null */
     private $amount;
 
     /** @var string|null */
     private $currencyCode;
 
-    public function getAmount(): ?string
+    public function getAmount(): ?int
     {
         return $this->amount;
     }
 
-    public function setAmount(?string $amount): void
+    public function setAmount(?int $amount): void
     {
         $this->amount = $amount;
     }
