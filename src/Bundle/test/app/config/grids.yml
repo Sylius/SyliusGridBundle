@@ -88,8 +88,8 @@ sylius_grid:
                 author:
                     type: string
                     label: Author
-                    path: au.name
-                    sortable: au.name
+                    path: author.name
+                    sortable: author.name
                 nationality:
                     type: string
                     label: Nationality

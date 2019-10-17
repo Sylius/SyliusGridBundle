@@ -165,6 +165,17 @@ final class GridApiTest extends JsonApiTestCase
     }
 
     /** @test */
+    public function it_filters_books_by_author_when_an_author_association_is_used_in_join_in_query_builder(): void
+    {
+        $authorId = $this->data['author_michael_crichton']->getId();
+
+        $this->client->request('GET', sprintf('/by-american-authors/books/?criteria[author]=%d', $authorId));
+
+        $this->assertCount(2, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
     public function it_sorts_authors_using_table_alias_defined_in_query_builder(): void
     {
         $this->client->request('GET', '/by-american-authors/books/?sorting[author]=asc');
