@@ -2,6 +2,10 @@
 
 ## CHANGELOG FOR `1.7.x`
 
+### v1.7.2 (2019-10-17)
+
+- [#19](https://github.com/Sylius/SyliusGridBundle/issues/19) Fix getting absolute path for field being already joined ([@pamil](https://github.com/pamil))
+
 ### v1.7.1 (2019-10-17)
 
 - [#18](https://github.com/Sylius/SyliusGridBundle/issues/18) Prohibit association alias from starting with a number ([@pamil](https://github.com/pamil))
