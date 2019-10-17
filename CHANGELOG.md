@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## CHANGELOG FOR `1.7.x`
+
+### v1.7.0 (2019-10-17)
+
+- [#17](https://github.com/Sylius/SyliusGridBundle/issues/17) Add embeddable support ([@pamil](https://github.com/pamil))
+
 ## CHANGELOG FOR `1.6.x`
 
 ### v1.6.3 (2019-10-10)
