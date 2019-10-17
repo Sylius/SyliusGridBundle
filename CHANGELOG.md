@@ -2,6 +2,10 @@
 
 ## CHANGELOG FOR `1.7.x`
 
+### v1.7.1 (2019-10-17)
+
+- [#18](https://github.com/Sylius/SyliusGridBundle/issues/18) Prohibit association alias from starting with a number ([@pamil](https://github.com/pamil))
+
 ### v1.7.0 (2019-10-17)
 
 - [#17](https://github.com/Sylius/SyliusGridBundle/issues/17) Add embeddable support ([@pamil](https://github.com/pamil))
