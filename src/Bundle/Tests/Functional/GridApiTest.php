@@ -133,6 +133,30 @@ final class GridApiTest extends JsonApiTestCase
     }
 
     /** @test */
+    public function it_filters_books_by_size_alone(): void
+    {
+        $sizeValue = $this->data['attribute_size_pocket']->getValue();
+        var_dump($sizeValue);
+
+        $this->client->request('GET', sprintf('/books/?criteria[size][type]=equal&criteria[size][value]=%s', $sizeValue));
+
+        $this->assertCount(1, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
+    public function it_filters_books_by_size_and_condition(): void
+    {
+        $sizeValue = $this->data['attribute_size_pocket']->getValue();
+        $conditionValue = $this->data['attribute_condition_good']->getValue();
+
+        $this->client->request('GET', sprintf('/books/?criteria[size][type]=equal&criteria[size][value]=%s&criteria[condition][type]=equal&criteria[condition][value]=%s', $sizeValue, $conditionValue));
+
+        $this->assertCount(1, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
     public function it_sorts_books_ascending_by_author(): void
     {
         $this->client->request('GET', '/books/?sorting[author]=asc&limit=100');

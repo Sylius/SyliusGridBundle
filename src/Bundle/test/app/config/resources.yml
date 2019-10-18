@@ -5,6 +5,10 @@ sylius_resource:
                 model: AppBundle\Entity\Book
                 repository: AppBundle\Repository\BookRepository
 
+        app.attribute:
+            classes:
+                model: AppBundle\Entity\Attribute
+
         app.author:
             classes:
                 model: AppBundle\Entity\Author
