@@ -8,6 +8,9 @@ AppBundle\Entity\Author:
     author_michael_crichton:
         name: "Michael Crichton"
         nationality: "@nationality_american"
+    author_john_watson:
+        name: "John Watson"
+        nationality: "@nationality_english"
     author_{1..19}:
         name: "<firstName()> <lastName()>"
         nationality: "@nationality_english"
@@ -21,6 +24,10 @@ AppBundle\Entity\Book:
         title: "The Lost World"
         author: "@author_michael_crichton"
         price: "@price_2"
+    book_study_in_scarlet:
+        title: "A Study in Scarlet"
+        author: "@author_john_watson"
+        price: "@price_<numberBetween(1, 2)>"
     book_{1..100}:
         title: "Book <current()>"
         author: "@author_<numberBetween(1, 19)>"

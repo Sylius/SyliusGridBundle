@@ -20,3 +20,12 @@ app_books_by_american_authors:
         only: ['index']
     type: sylius.resource_api
     prefix: /by-american-authors
+
+app_books_by_english_authors:
+    resource: |
+        alias: app.book
+        section: english_authors
+        grid: app_book_by_english_authors
+        only: ['index']
+    type: sylius.resource_api
+    prefix: /by-english-authors

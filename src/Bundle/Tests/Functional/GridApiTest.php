@@ -183,6 +183,17 @@ final class GridApiTest extends JsonApiTestCase
         $this->assertResponse($this->client->getResponse(), 'american_authors_sorted_ascending');
     }
 
+    /** @test */
+    public function it_filters_books_by_author_when_an_author_is_used_in_join_in_query_builder_without_association_in_the_mapping(): void
+    {
+        $authorId = $this->data['author_john_watson']->getId();
+
+        $this->client->request('GET', sprintf('/by-english-authors/books/?criteria[author]=%d', $authorId));
+
+        $this->assertCount(1, $this->getItemsFromCurrentResponse());
+        $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
     private function getItemsFromCurrentResponse(): array
     {
         return json_decode($this->client->getResponse()->getContent(), true)['_embedded']['items'];

@@ -1,8 +1,8 @@
 {
     "page": 1,
     "limit": 10,
-    "pages": 2,
-    "total": 20,
+    "pages": 3,
+    "total": 21,
     "_links": {
         "self": {
             "href": "\/authors\/?page=1&limit=10"
@@ -11,7 +11,7 @@
             "href": "\/authors\/?page=1&limit=10"
         },
         "last": {
-            "href": "\/authors\/?page=2&limit=10"
+            "href": "\/authors\/?page=3&limit=10"
         },
         "next": {
             "href": "\/authors\/?page=2&limit=10"
