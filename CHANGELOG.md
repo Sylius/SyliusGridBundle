@@ -2,6 +2,10 @@
 
 ## CHANGELOG FOR `1.7.x`
 
+### v1.7.3 (2019-10-18)
+
+- [#21](https://github.com/Sylius/SyliusGridBundle/issues/21) Fix getting metadata for custom JOINs on not-mapped associations ([@pamil](https://github.com/pamil))
+
 ### v1.7.2 (2019-10-17)
 
 - [#19](https://github.com/Sylius/SyliusGridBundle/issues/19) Fix getting absolute path for field being already joined ([@pamil](https://github.com/pamil))
