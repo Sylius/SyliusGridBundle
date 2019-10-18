@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\Query\Expr\Join;
@@ -184,8 +183,8 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
     private function resolveFieldByAddingJoins(string $field): string
     {
-        $field = $this->getAbsolutePath($field);
-        $metadata = $this->getClassMetadataForRootField(explode('.', $field, 2)[0]);
+        [$field, $className] = $this->getFieldDetails($field);
+        $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata($className);
 
         while (count($explodedField = explode('.', $field, 3)) === 3) {
             [$rootField, $associationField, $remainder] = $explodedField;
@@ -225,20 +224,20 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
     }
 
     /**
-     * This method returns an absolute path of a property path.
+     * This method returns an absolute path of a property path and the FQCN of the root element.
      *
      * Given the following query:
      *
-     * SELECT bo FROM Book bo INNER JOIN Author au ON bo.author_id = au.id
+     * SELECT bo FROM App\Book bo INNER JOIN App\Author au ON bo.author_id = au.id
      *
      * It will behave as follows:
      *
-     * bo.title => book.title
-     * title => book.title
-     * au => book.author
-     * au.name => book.author.name
+     * bo.title => [book.title, App\Book]
+     * title => [book.title, App\Book]
+     * au => [book.author, App\Book]
+     * au.name => [book.author.name, App\Book]
      */
-    private function getAbsolutePath(string $field): string
+    private function getFieldDetails(string $field): array
     {
         $rootField = explode('.', $field)[0];
         if (!in_array($rootField, $this->queryBuilder->getAllAliases(), true)) {
@@ -257,7 +256,13 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
             foreach ($joins as $join) {
                 if ($join->getAlias() === $rootField) {
-                    $field = rtrim(sprintf('%s.%s', $join->getJoin(), $remainder), '.');
+                    $joinSubject = $join->getJoin();
+
+                    if (class_exists($joinSubject)) {
+                        return [$field, $joinSubject];
+                    }
+
+                    $field = rtrim(sprintf('%s.%s', $joinSubject, $remainder), '.');
 
                     continue 2;
                 }
@@ -266,16 +271,11 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
             throw new \RuntimeException(sprintf('Could not get mapping for "%s".', $field));
         }
 
-        return $field;
-    }
-
-    private function getClassMetadataForRootField(string $rootField): ClassMetadata
-    {
         /** @var From[] $froms */
         $froms = $this->queryBuilder->getDQLPart('from');
         foreach ($froms as $from) {
             if ($from->getAlias() === $rootField) {
-                return $this->queryBuilder->getEntityManager()->getClassMetadata($from->getFrom());
+                return [$field, $from->getFrom()];
             }
         }
 

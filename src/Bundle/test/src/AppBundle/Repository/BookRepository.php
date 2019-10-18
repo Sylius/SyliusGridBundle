@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Author;
+use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
@@ -26,5 +28,15 @@ final class BookRepository extends EntityRepository
             ->andWhere('na.name = :nationality')
             ->setParameter(':nationality', 'American')
         ;
+    }
+
+    public function createEnglishBooksQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+            ->innerJoin(Author::class, 'author', Join::WITH, 'author.id = b.author')
+            ->innerJoin('author.nationality', 'na')
+            ->andWhere('na.name = :nationality')
+            ->setParameter(':nationality', 'English')
+            ;
     }
 }
