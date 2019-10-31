@@ -18,6 +18,7 @@ use Sylius\Component\Grid\Parameters;
 interface DataSourceInterface
 {
     public const CONDITION_AND = 'and';
+
     public const CONDITION_OR = 'or';
 
     public function restrict($expression, string $condition = self::CONDITION_AND): void;
