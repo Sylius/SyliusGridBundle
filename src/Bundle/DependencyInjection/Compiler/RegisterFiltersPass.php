@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
 
+use InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -32,12 +33,14 @@ final class RegisterFiltersPass implements CompilerPassInterface
         $formTypeRegistry = $container->getDefinition('sylius.form_registry.grid_filter');
 
         foreach ($container->findTaggedServiceIds('sylius.grid_filter') as $id => $attributes) {
-            if (!isset($attributes[0]['type'], $attributes[0]['form_type'])) {
-                throw new \InvalidArgumentException('Tagged grid filters needs to have `type` and `form_type` attributes.');
-            }
+            foreach ($attributes as $attribute) {
+                if (!isset($attribute['type'], $attribute['form_type'])) {
+                    throw new InvalidArgumentException('Tagged grid filters needs to have `type` and `form_type` attributes.');
+                }
 
-            $registry->addMethodCall('register', [$attributes[0]['type'], new Reference($id)]);
-            $formTypeRegistry->addMethodCall('add', [$attributes[0]['type'], 'default', $attributes[0]['form_type']]);
+                $registry->addMethodCall('register', [$attribute['type'], new Reference($id)]);
+                $formTypeRegistry->addMethodCall('add', [$attribute['type'], 'default', $attribute['form_type']]);
+            }
         }
     }
 }
