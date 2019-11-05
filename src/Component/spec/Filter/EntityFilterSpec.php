@@ -40,6 +40,21 @@ final class EntityFilterSpec extends ObjectBehavior
         $this->apply($dataSource, 'entity', '7', []);
     }
 
+    function it_filters_with_multiple_ids(
+        DataSourceInterface $dataSource,
+        ExpressionBuilderInterface $expressionBuilder
+    ): void {
+        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $expressionBuilder->equals('entity', '4')->willReturn('EXPR1');
+        $expressionBuilder->equals('entity', '2')->willReturn('EXPR2');
+        $expressionBuilder->orX('EXPR1', 'EXPR2')->willReturn('EXPR');
+
+        $dataSource->restrict('EXPR')->shouldBeCalled();
+
+        $this->apply($dataSource, 'entity', ['4', '2'], []);
+    }
+
     function it_does_not_filters_when_data_id_is_not_defined(
         DataSourceInterface $dataSource,
         ExpressionBuilderInterface $expressionBuilder

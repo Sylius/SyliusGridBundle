@@ -27,13 +27,16 @@ final class EntityFilter implements FilterInterface
             return;
         }
 
+        $values = is_array($data) ? $data : [$data];
         $fields = $options['fields'] ?? [$name];
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
         $expressions = [];
         foreach ($fields as $field) {
-            $expressions[] = $expressionBuilder->equals($field, $data);
+            foreach ($values as $value) {
+                $expressions[] = $expressionBuilder->equals($field, $value);
+            }
         }
 
         $dataSource->restrict($expressionBuilder->orX(...$expressions));
