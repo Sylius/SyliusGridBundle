@@ -1,0 +1,16 @@
+AppBundle\Entity\Attribute:
+    type: mappedSuperclass
+    table: app_attribute
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        code:
+            type: string
+            length: 255
+        value:
+            type: string
+            length: 255
