@@ -18,24 +18,12 @@ use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Renderer\GridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
-use Symfony\Component\Templating\Helper\Helper;
-use Symfony\Component\Templating\Helper\HelperInterface;
 
 final class GridHelperSpec extends ObjectBehavior
 {
     function let(GridRendererInterface $gridRenderer): void
     {
         $this->beConstructedWith($gridRenderer);
-    }
-
-    function it_is_a_templating_helper(): void
-    {
-        $this->shouldImplement(HelperInterface::class);
-    }
-
-    function it_extends_base_templating_helper(): void
-    {
-        $this->shouldHaveType(Helper::class);
     }
 
     function it_uses_grid_renderer_to_render_grid(GridRendererInterface $gridRenderer, GridView $gridView): void
@@ -54,10 +42,5 @@ final class GridHelperSpec extends ObjectBehavior
     {
         $gridRenderer->renderAction($gridView, $action, null)->willReturn('<a href="#">Go go Gadget arms!</a>');
         $this->renderAction($gridView, $action)->shouldReturn('<a href="#">Go go Gadget arms!</a>');
-    }
-
-    function it_has_name(): void
-    {
-        $this->getName()->shouldReturn('sylius_grid');
     }
 }

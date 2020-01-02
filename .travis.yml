@@ -26,7 +26,6 @@ install:
             symfony/http-kernel:${SYMFONY_VERSION} \
             symfony/options-resolver:${SYMFONY_VERSION} \
             symfony/property-access:${SYMFONY_VERSION} \
-            symfony/templating:${SYMFONY_VERSION} \
             --no-update --no-scripts
     - |
         composer require \

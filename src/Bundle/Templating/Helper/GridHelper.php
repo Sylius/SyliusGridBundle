@@ -18,9 +18,8 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Renderer\GridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
-use Symfony\Component\Templating\Helper\Helper;
 
-class GridHelper extends Helper
+class GridHelper
 {
     /** @var GridRendererInterface */
     private $gridRenderer;
@@ -64,10 +63,5 @@ class GridHelper extends Helper
     public function renderFilter(GridView $gridView, Filter $filter)
     {
         return $this->gridRenderer->renderFilter($gridView, $filter);
-    }
-
-    public function getName(): string
-    {
-        return 'sylius_grid';
     }
 }
