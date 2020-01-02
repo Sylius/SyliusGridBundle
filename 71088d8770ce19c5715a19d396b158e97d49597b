@@ -1,0 +1,38 @@
+---------------------------------------------------------------------------
+
+by loic425 at 2019-11-05T14:53:35Z
+
+@pamil @lchrusciel One of the Travis jobs is queued since 3 hours... I don't know why.
+
+---------------------------------------------------------------------------
+
+by loic425 at 2019-11-05T22:19:18Z
+
+> Shouldn't we add some integration tests as well?
+
+Yes, you're right. Should I create a small app like in Sylius Resource bundle?
+https://github.com/Sylius/SyliusResourceBundle/tree/master/src/Bundle/test
+
+---------------------------------------------------------------------------
+
+by loic425 at 2019-11-12T08:52:22Z
+
+@pamil @lchrusciel Any idea to add some integration tests?
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2019-11-12T10:34:38Z
+
+Sample setup is already here: https://github.com/Sylius/SyliusGridBundle/blob/master/src/Bundle/Tests/Functional/GridApiTest.php
+
+---------------------------------------------------------------------------
+
+by loic425 at 2019-11-26T15:59:24Z
+
+@lchrusciel I found time to add a functional test :)
+
+---------------------------------------------------------------------------
+
+by pamil at 2020-01-02T14:46:33Z
+
+Thanks, Loïc! :1st_place_medal:
