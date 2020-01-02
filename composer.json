@@ -33,7 +33,6 @@
         "symfony/property-access": "^3.4|^4.3"
     },
     "require-dev": {
-        "akeneo/phpspec-skip-example-extension": "^4.0",
         "doctrine/doctrine-bundle": "^1.3",
         "doctrine/orm": "^2.5",
         "doctrine/persistence": "^1.3",
@@ -43,7 +42,8 @@
         "matthiasnoback/symfony-config-test": "^4.0",
         "matthiasnoback/symfony-dependency-injection-test": "^3.0",
         "pagerfanta/pagerfanta": "^1.0|^2.0",
-        "phpspec/phpspec": "^5.0",
+        "pamil/phpspec-skip-example-extension": "^4.1",
+        "phpspec/phpspec": "^6.1",
         "phpstan/phpstan-phpunit": "^0.11",
         "phpstan/phpstan": "^0.11",
         "phpstan/phpstan-webmozart-assert": "^0.11",

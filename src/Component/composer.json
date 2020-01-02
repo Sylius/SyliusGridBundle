@@ -23,10 +23,11 @@
         "php": "^7.2",
 
         "sylius/registry": "^1.2",
+        "symfony/event-dispatcher": "^3.4|^4.3",
         "webmozart/assert": "^1.1"
     },
     "require-dev": {
-        "phpspec/phpspec": "^5.0",
+        "phpspec/phpspec": "^6.1",
         "symfony/property-access": "^3.4|^4.1.1"
     },
     "autoload": {
