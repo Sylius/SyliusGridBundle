@@ -31,11 +31,13 @@ final class RegisterDriversPass implements CompilerPassInterface
         $registry = $container->findDefinition('sylius.registry.grid_driver');
 
         foreach ($container->findTaggedServiceIds('sylius.grid_driver') as $id => $attributes) {
-            if (!isset($attributes[0]['alias'])) {
-                throw new \InvalidArgumentException('Tagged grid drivers needs to have `alias` attribute.');
-            }
+            foreach ($attributes as $attribute) {
+                if (!isset($attribute['alias'])) {
+                    throw new \InvalidArgumentException('Tagged grid drivers needs to have `alias` attribute.');
+                }
 
-            $registry->addMethodCall('register', [$attributes[0]['alias'], new Reference($id)]);
+                $registry->addMethodCall('register', [$attribute['alias'], new Reference($id)]);
+            }
         }
     }
 }
