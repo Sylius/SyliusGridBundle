@@ -26,11 +26,12 @@ use Sylius\Component\Grid\View\GridViewInterface;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 final class TwigGridRendererSpec extends ObjectBehavior
 {
     function let(
-        \Twig_Environment $twig,
+        Environment $twig,
         ServiceRegistryInterface $fieldsRegistry,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $formTypeRegistry
@@ -59,19 +60,19 @@ final class TwigGridRendererSpec extends ObjectBehavior
         $this->shouldImplement(GridRendererInterface::class);
     }
 
-    function it_uses_twig_to_render_the_grid_view(\Twig_Environment $twig, GridViewInterface $gridView): void
+    function it_uses_twig_to_render_the_grid_view(Environment $twig, GridViewInterface $gridView): void
     {
         $twig->render('"@SyliusGrid/default"', ['grid' => $gridView])->willReturn('<html>Grid!</html>');
         $this->render($gridView)->shouldReturn('<html>Grid!</html>');
     }
 
-    function it_uses_custom_template_if_specified(\Twig_Environment $twig, GridView $gridView): void
+    function it_uses_custom_template_if_specified(Environment $twig, GridView $gridView): void
     {
         $twig->render('"@SyliusGrid/custom"', ['grid' => $gridView])->willReturn('<html>Grid!</html>');
         $this->render($gridView, '"@SyliusGrid/custom"')->shouldReturn('<html>Grid!</html>');
     }
 
-    function it_uses_twig_to_render_the_action(\Twig_Environment $twig, GridViewInterface $gridView, Action $action): void
+    function it_uses_twig_to_render_the_action(Environment $twig, GridViewInterface $gridView, Action $action): void
     {
         $action->getType()->willReturn('link');
         $action->getOptions()->willReturn([]);

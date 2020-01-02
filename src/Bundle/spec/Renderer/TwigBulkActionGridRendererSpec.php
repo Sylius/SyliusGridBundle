@@ -17,10 +17,11 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
+use Twig\Environment;
 
 final class TwigBulkActionGridRendererSpec extends ObjectBehavior
 {
-    function let(\Twig_Environment $twig): void
+    function let(Environment $twig): void
     {
         $this->beConstructedWith($twig, ['delete' => '@SyliusGrid/BulkAction/_delete.html.twig']);
     }
@@ -31,7 +32,7 @@ final class TwigBulkActionGridRendererSpec extends ObjectBehavior
     }
 
     function it_uses_twig_to_render_the_bulk_action(
-        \Twig_Environment $twig,
+        Environment $twig,
         GridViewInterface $gridView,
         Action $bulkAction
     ): void {
