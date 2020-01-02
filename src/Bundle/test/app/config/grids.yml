@@ -5,6 +5,8 @@ sylius_grid:
                 name: doctrine/orm
                 options:
                     class: AppBundle\Entity\Book
+                    repository:
+                        method: createListQueryBuilder
             filters:
                 title:
                     type: string
@@ -23,6 +25,14 @@ sylius_grid:
                     type: string
                     options:
                         fields: [price.currencyCode]
+                size:
+                    type: string
+                    options:
+                        fields: [size.value]
+                condition:
+                    type: string
+                    options:
+                        fields: [condition.value]
             sorting:
                 title: asc
             fields:

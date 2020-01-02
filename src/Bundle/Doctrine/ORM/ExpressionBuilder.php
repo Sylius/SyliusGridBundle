@@ -183,10 +183,10 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
     private function resolveFieldByAddingJoins(string $field): string
     {
-        [$field, $className] = $this->getFieldDetails($field);
+        [$resolvedField, $className] = $this->getFieldDetails($field);
         $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata($className);
 
-        while (count($explodedField = explode('.', $field, 3)) === 3) {
+        while (count($explodedField = explode('.', $resolvedField, 3)) === 3) {
             [$rootField, $associationField, $remainder] = $explodedField;
 
             if (isset($metadata->embeddedClasses[$associationField])) {
@@ -196,31 +196,31 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
             $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata(
                 $metadata->getAssociationMapping($associationField)['targetEntity']
             );
+
             $rootAndAssociationField = sprintf('%s.%s', $rootField, $associationField);
-
-            /** @var Join[] $joins */
-            $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
-            foreach ($joins as $join) {
-                if ($join->getJoin() === $rootAndAssociationField) {
-                    $field = sprintf('%s.%s', $join->getAlias(), $remainder);
-
-                    continue 2;
-                }
-            }
-
             // Association alias can't start with a number
             // Mapping numbers to letters will not increase the collision probability and not lower the entropy
             $associationAlias = str_replace(
                 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
                 ['g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'],
-                md5($rootAndAssociationField)
+                md5($rootAndAssociationField . $field)
             );
 
+            /** @var Join[] $joins */
+            $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
+            foreach ($joins as $join) {
+                if ($join->getJoin() === $rootAndAssociationField && $join->getAlias() === $associationAlias) {
+                    $resolvedField = sprintf('%s.%s', $join->getAlias(), $remainder);
+
+                    continue 2;
+                }
+            }
+
             $this->queryBuilder->innerJoin($rootAndAssociationField, $associationAlias);
-            $field = sprintf('%s.%s', $associationAlias, $remainder);
+            $resolvedField = sprintf('%s.%s', $associationAlias, $remainder);
         }
 
-        return $field;
+        return $resolvedField;
     }
 
     /**

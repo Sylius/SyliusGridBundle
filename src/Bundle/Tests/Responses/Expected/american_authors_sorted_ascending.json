@@ -27,7 +27,8 @@
                         "name": "American"
                     }
                 },
-                "price": "@array@"
+                "price": "@array@",
+                "attributes": "@array@"
             },
             {
                 "id": "@integer@",
@@ -40,7 +41,8 @@
                         "name": "American"
                     }
                 },
-                "price": "@array@"
+                "price": "@array@",
+                "attributes": "@array@"
             }
         ]
     }

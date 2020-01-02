@@ -16,3 +16,4 @@ parameters:
     exclude_files:
         - 'src/Bundle/test/app/cache/*'
         - 'src/Bundle/test/var/*'
+        - 'src/Component/vendor/*'

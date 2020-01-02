@@ -1,16 +1,12 @@
-AppBundle\Entity\Book:
+AppBundle\Entity\Attribute:
     exclusion_policy: ALL
     properties:
         id:
             expose: true
             type: integer
-        title:
+        code:
             expose: true
             type: string
-        author:
+        value:
             expose: true
-        price:
-            expose: true
-        attributes:
-            expose: true
-            type: array
+            type: string

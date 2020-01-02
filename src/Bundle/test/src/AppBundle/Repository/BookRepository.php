@@ -20,6 +20,15 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 final class BookRepository extends EntityRepository
 {
+    public function createListQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+            ->leftJoin('b.attributes', 'size', Join::WITH, 'size.code = :sizeCode')
+            ->leftJoin('b.attributes', 'condition', Join::WITH, 'condition.code = :conditionCode')
+            ->setParameter(':sizeCode', 'size')
+            ->setParameter(':conditionCode', 'condition');
+    }
+
     public function createAmericanBooksQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('b')
