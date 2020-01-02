@@ -30,8 +30,7 @@
         "symfony/framework-bundle": "^3.4|^4.3",
         "symfony/http-kernel": "^3.4|^4.3",
         "symfony/options-resolver": "^3.4|^4.3",
-        "symfony/property-access": "^3.4|^4.3",
-        "symfony/templating": "^3.4|^4.3"
+        "symfony/property-access": "^3.4|^4.3"
     },
     "require-dev": {
         "akeneo/phpspec-skip-example-extension": "^4.0",

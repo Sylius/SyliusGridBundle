@@ -16,12 +16,11 @@ namespace Sylius\Bundle\GridBundle\Templating\Helper;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
-use Symfony\Component\Templating\Helper\Helper;
 
 /**
  * @final
  */
-class BulkActionGridHelper extends Helper
+class BulkActionGridHelper
 {
     /** @var BulkActionGridRendererInterface */
     private $bulkActionGridRenderer;
@@ -37,10 +36,5 @@ class BulkActionGridHelper extends Helper
     public function renderBulkAction(GridView $gridView, Action $bulkAction, $data = null): string
     {
         return $this->bulkActionGridRenderer->renderBulkAction($gridView, $bulkAction, $data);
-    }
-
-    public function getName(): string
-    {
-        return 'sylius_bulk_action_grid';
     }
 }
