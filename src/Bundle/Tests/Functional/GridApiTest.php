@@ -136,7 +136,6 @@ final class GridApiTest extends JsonApiTestCase
     public function it_filters_books_by_size_alone(): void
     {
         $sizeValue = $this->data['attribute_size_pocket']->getValue();
-        var_dump($sizeValue);
 
         $this->client->request('GET', sprintf('/books/?criteria[size][type]=equal&criteria[size][value]=%s', $sizeValue));
 
@@ -150,7 +149,7 @@ final class GridApiTest extends JsonApiTestCase
         $sizeValue = $this->data['attribute_size_pocket']->getValue();
         $conditionValue = $this->data['attribute_condition_good']->getValue();
 
-        $this->client->request('GET', sprintf('/books/?criteria[size][type]=equal&criteria[size][value]=%s&criteria[condition][type]=equal&criteria[condition][value]=%s', $sizeValue, $conditionValue));
+        $this->client->request('GET', sprintf('/books/?criteria[size][type]=equal&criteria[size][value]=%s&criteria[condition][value]=%s', $sizeValue, $conditionValue));
 
         $this->assertCount(1, $this->getItemsFromCurrentResponse());
         $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
