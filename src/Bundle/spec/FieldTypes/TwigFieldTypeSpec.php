@@ -17,10 +17,11 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
+use Twig\Environment;
 
 final class TwigFieldTypeSpec extends ObjectBehavior
 {
-    function let(DataExtractorInterface $dataExtractor, \Twig_Environment $twig): void
+    function let(DataExtractorInterface $dataExtractor, Environment $twig): void
     {
         $this->beConstructedWith($dataExtractor, $twig);
     }
@@ -32,7 +33,7 @@ final class TwigFieldTypeSpec extends ObjectBehavior
 
     function it_uses_data_extractor_to_obtain_data_and_renders_it_via_twig(
         DataExtractorInterface $dataExtractor,
-        \Twig_Environment $twig,
+        Environment $twig,
         Field $field
     ): void {
         $field->getPath()->willReturn('foo');
@@ -46,7 +47,7 @@ final class TwigFieldTypeSpec extends ObjectBehavior
     }
 
     function it_uses_data_directly_if_dot_is_configured_as_path(
-        \Twig_Environment $twig,
+        Environment $twig,
         Field $field
     ): void {
         $field->getPath()->willReturn('.');
