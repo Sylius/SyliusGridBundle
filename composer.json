@@ -50,6 +50,7 @@
         "phpunit/phpunit": "^7.0",
         "sylius-labs/coding-standard": "^3.0",
         "sylius/currency-bundle": "^1.1",
+        "sylius/resource-bundle": "dev-master",
         "symfony/console": "^4.4|^5.0",
         "symfony/twig-bundle": "^4.4|^5.0",
         "twig/twig": "^2.12|^3.0",

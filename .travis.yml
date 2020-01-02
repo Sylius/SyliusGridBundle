@@ -21,6 +21,7 @@ cache:
 
 before_install:
     - phpenv config-rm xdebug.ini || true
+    - echo "memory_limit=4096M" >> ~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/travis.ini
 
 install:
     - |
@@ -38,8 +39,10 @@ install:
         composer require \
             symfony/console:${SYMFONY_VERSION} \
             symfony/twig-bundle:${SYMFONY_VERSION} \
-            --no-update --no-scripts
+            --dev --no-update --no-scripts
     - composer update --prefer-dist
+    - (cd src/Component && composer require symfony/event-dispatcher:${SYMFONY_VERSION} --no-update --no-scripts)
+    - (cd src/Component && composer require symfony/property-access:${SYMFONY_VERSION} --dev --no-update --no-scripts)
     - (cd src/Component && composer update --prefer-dist)
 
 before_script:
