@@ -197,7 +197,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
                 $metadata->getAssociationMapping($associationField)['targetEntity']
             );
 
-
             $rootAndAssociationField = sprintf('%s.%s', $rootField, $associationField);
             // Association alias can't start with a number
             // Mapping numbers to letters will not increase the collision probability and not lower the entropy
