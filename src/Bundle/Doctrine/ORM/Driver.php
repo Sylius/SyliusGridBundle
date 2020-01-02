@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Parameters;
