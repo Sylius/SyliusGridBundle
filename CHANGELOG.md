@@ -2,6 +2,13 @@
 
 ## CHANGELOG FOR `1.7.x`
 
+### v1.7.4 (2020-01-02)
+
+- [#24](https://github.com/Sylius/SyliusGridBundle/issues/24) fix cs issues ([@vvasiloi](https://github.com/vvasiloi))
+- [#25](https://github.com/Sylius/SyliusGridBundle/issues/25) Process all grid filter, field and driver service tags ([@vvasiloi](https://github.com/vvasiloi))
+- [#26](https://github.com/Sylius/SyliusGridBundle/issues/26) Fix filtering entities with multiple values ([@loic425](https://github.com/loic425))
+- [#35](https://github.com/Sylius/SyliusGridBundle/issues/35) Fix autojoining with multiple aliases ([@pamil](https://github.com/pamil))
+
 ### v1.7.3 (2019-10-18)
 
 - [#21](https://github.com/Sylius/SyliusGridBundle/issues/21) Fix getting metadata for custom JOINs on not-mapped associations ([@pamil](https://github.com/pamil))
