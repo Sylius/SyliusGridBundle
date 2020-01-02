@@ -12,6 +12,7 @@ sylius_grid:
                     type: entity
                     form_options:
                         class: AppBundle\Entity\Author
+                        multiple: true
                 nationality:
                     type: entity
                     options:

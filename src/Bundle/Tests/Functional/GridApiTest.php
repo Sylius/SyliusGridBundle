@@ -104,10 +104,22 @@ final class GridApiTest extends JsonApiTestCase
     {
         $authorId = $this->data['author_michael_crichton']->getId();
 
-        $this->client->request('GET', sprintf('/books/?criteria[author]=%d', $authorId));
+        $this->client->request('GET', sprintf('/books/?criteria[author][]=%d', $authorId));
 
         $this->assertCount(2, $this->getItemsFromCurrentResponse());
         $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
+    public function it_filters_books_by_authors(): void
+    {
+        $firstAuthorId = $this->data['author_michael_crichton']->getId();
+        $secondAuthorId = $this->data['author_john_watson']->getId();
+
+        $this->client->request('GET', sprintf('/books/?criteria[author][]=%d&criteria[author][]=%d', $firstAuthorId, $secondAuthorId));
+
+        $this->assertCount(3, $this->getItemsFromCurrentResponse());
+        $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
     }
 
     /** @test */
