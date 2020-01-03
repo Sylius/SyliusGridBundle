@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Definition;
 
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
 {
@@ -59,7 +59,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $grid->addActionGroup($this->convertActionGroup($name, $actionGroupConfiguration));
         }
 
-        $this->eventDispatcher->dispatch($this->getEventName($code), new GridDefinitionConverterEvent($grid));
+        $this->eventDispatcher->dispatch(new GridDefinitionConverterEvent($grid), $this->getEventName($code));
 
         return $grid;
     }
