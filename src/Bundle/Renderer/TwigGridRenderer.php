@@ -125,7 +125,7 @@ final class TwigGridRenderer implements GridRendererInterface
         );
 
         $criteria = $gridView->getParameters()->get('criteria', []);
-        if ($criteria) {
+        if ([] !== $criteria) {
             $form->submit($criteria);
         }
 
