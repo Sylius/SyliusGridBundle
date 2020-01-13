@@ -230,7 +230,7 @@ final class GridApiTest extends JsonApiTestCase
     }
 
     /** @test */
-    public function x(): void
+    public function it_includes_all_rows_even_when_sorting_by_a_nullable_path(): void
     {
         $this->client->request('GET', '/authors/');
         $totalItemsCountBeforeSorting = $this->getTotalItemsCountFromCurrentResponse();

@@ -216,7 +216,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
                 }
             }
 
-            $this->queryBuilder->innerJoin($rootAndAssociationField, $associationAlias);
+            $this->queryBuilder->leftJoin($rootAndAssociationField, $associationAlias);
             $resolvedField = sprintf('%s.%s', $associationAlias, $remainder);
         }
 
