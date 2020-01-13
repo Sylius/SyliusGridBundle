@@ -229,6 +229,23 @@ final class GridApiTest extends JsonApiTestCase
         $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
     }
 
+    /** @test */
+    public function x(): void
+    {
+        $this->client->request('GET', '/authors/');
+        $totalItemsCountBeforeSorting = $this->getTotalItemsCountFromCurrentResponse();
+
+        $this->client->request('GET', '/authors/?sorting[nationality]=desc');
+        $totalItemsCountAfterSorting = $this->getTotalItemsCountFromCurrentResponse();
+
+        $this->assertSame($totalItemsCountBeforeSorting, $totalItemsCountAfterSorting);
+    }
+
+    private function getTotalItemsCountFromCurrentResponse(): int
+    {
+        return json_decode($this->client->getResponse()->getContent(), true)['total'];
+    }
+
     private function getItemsFromCurrentResponse(): array
     {
         return json_decode($this->client->getResponse()->getContent(), true)['_embedded']['items'];

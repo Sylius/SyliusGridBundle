@@ -22,4 +22,5 @@ AppBundle\Entity\Author:
             joinColumn:
                 name: nationality_id
                 referencedColumnName: id
+                nullable: true
             cascade: ["all"]
