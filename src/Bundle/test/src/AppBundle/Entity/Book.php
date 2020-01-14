@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace AppBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
 class Book implements ResourceInterface
@@ -37,15 +35,11 @@ class Book implements ResourceInterface
     /** @var Price|null */
     private $price;
 
-    /** @var Collection&Attribute[] */
-    private $attributes;
-
     /** @var string */
     private $state;
 
     public function __construct()
     {
-        $this->attributes = new ArrayCollection();
         $this->state = self::STATE_INITIAL;
     }
 
@@ -83,24 +77,6 @@ class Book implements ResourceInterface
     public function setPrice(Price $price): void
     {
         $this->price = $price;
-    }
-
-    public function addAttribute(Attribute $attribute): void
-    {
-        $this->attributes->add($attribute);
-    }
-
-    public function removeAttribute(Attribute $attribute): void
-    {
-        $this->attributes->removeElement($attribute);
-    }
-
-    /**
-     * @return Collection&Book[]
-     */
-    public function getAttributes(): Collection
-    {
-        return $this->attributes;
     }
 
     public function getState(): string

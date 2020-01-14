@@ -24,10 +24,3 @@ AppBundle\Entity\Book:
             joinColumn:
                 name: author_id
                 referencedColumnName: id
-            inversedBy: books
-    manyToMany:
-        attributes:
-            targetEntity: AppBundle\Entity\Attribute
-            cascade: ["all"]
-            JoinTable:
-                name: app_book_attribute

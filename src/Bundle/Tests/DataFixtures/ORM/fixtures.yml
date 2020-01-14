@@ -15,36 +15,16 @@ AppBundle\Entity\Author:
         name: "<firstName()> <lastName()>"
         nationality: "@nationality_english"
 
-AppBundle\Entity\Attribute:
-    attribute_size_pocket:
-        code: "size"
-        value: "Pocket"
-    attribute_size_hardcover:
-        code: "size"
-        value: "Hardcover"
-    attribute_condition_good:
-        code: "condition"
-        value: "Good"
-    attribute_condition_bad:
-        code: "condition"
-        value: "Bad"
-
 AppBundle\Entity\Book:
     book_jurassic_park:
         title: "Jurassic Park"
         author: "@author_michael_crichton"
         price: "@price_1"
-        attributes:
-            - "@attribute_size_pocket"
-            - "@attribute_condition_good"
         state: 'published'
     book_the_lost_world:
         title: "The Lost World"
         author: "@author_michael_crichton"
         price: "@price_2"
-        attributes:
-            - "@attribute_size_hardcover"
-            - "@attribute_condition_bad"
         state: 'unpublished'
     book_study_in_scarlet:
         title: "A Study in Scarlet"
