@@ -2,7 +2,7 @@
     "page": 1,
     "limit": 10,
     "pages": 3,
-    "total": 21,
+    "total": 22,
     "_links": {
         "self": {
             "href": "\/authors\/?page=1&limit=10"

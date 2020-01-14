@@ -11,6 +11,8 @@ AppBundle\Entity\Author:
     author_john_watson:
         name: "John Watson"
         nationality: "@nationality_english"
+    author_random:
+        name: "Random Author Without Nationality"
     author_{1..19}:
         name: "<firstName()> <lastName()>"
         nationality: "@nationality_english"
