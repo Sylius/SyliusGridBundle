@@ -30,7 +30,8 @@
         "symfony/framework-bundle": "^4.4|^5.0",
         "symfony/http-kernel": "^4.4|^5.0",
         "symfony/options-resolver": "^4.4|^5.0",
-        "symfony/property-access": "^4.4|^5.0"
+        "symfony/property-access": "^4.4|^5.0",
+        "symfony/maker-bundle": "^1.14"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.3",
