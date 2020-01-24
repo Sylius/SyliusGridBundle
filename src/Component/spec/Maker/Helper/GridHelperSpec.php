@@ -5,7 +5,7 @@ namespace spec\Sylius\Component\Grid\Maker\Helper;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Maker\Helper\GridHelper;
 
-class GridHelperSpec extends ObjectBehavior
+final class GridHelperSpec extends ObjectBehavior
 {
     function let(): void
     {
