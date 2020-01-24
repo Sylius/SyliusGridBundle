@@ -12,8 +12,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Maker;
 
-use Sylius\Component\Grid\Maker\Filter\Helper\GridHelperInterface;
-use Sylius\Component\Grid\Maker\Filter\ResourceHelperInterface;
+use Sylius\Component\Grid\Maker\Helper\GridHelperInterface;
+use Sylius\Component\Grid\Maker\Helper\ResourceHelperInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;
@@ -136,6 +136,19 @@ final class MakeGrid extends AbstractMaker
             $fields = array_merge($fields, $newField);
         }
 
+        $sortableFields = $this->filterSortableFields($fields);
+        $sortingFieldNames = [];
+
+        if (count($sortableFields) > 0) {
+            $sortingFieldNames = $this->askForSortingFieldNames($io, $sortableFields);
+        }
+
+        $sortingFields = [];
+        foreach ($sortingFieldNames as $fieldName) {
+            $order = $this->askForSortingOrder($io, $fieldName);
+            $sortingFields[$fieldName] = $order;
+        }
+
         $actions = [
             'main' => [],
             'item' => [],
@@ -153,7 +166,7 @@ final class MakeGrid extends AbstractMaker
             }
         }
 
-        $this->generateGridConfigFile($input, $io, $generator, $fields, $actions);
+        $this->generateGridConfigFile($input, $io, $generator, $fields, $sortingFields, $actions);
     }
 
     private function askForNextField(ConsoleStyle $io, bool $isFirstField)
@@ -167,12 +180,7 @@ final class MakeGrid extends AbstractMaker
         }
 
         $fieldName = $io->ask($questionText, null, function ($name): ?string {
-            // allow it to be empty
-            if (!$name) {
-                return $name;
-            }
-
-            return $name;
+            return $name ?: null;
         });
 
         if (!$fieldName) {
@@ -201,6 +209,35 @@ final class MakeGrid extends AbstractMaker
         return [
             $fieldName => $fieldData,
         ];
+    }
+
+    private function askForSortingFieldNames(ConsoleStyle $io, array $sortableFields)
+    {
+        $io->writeln('');
+
+        $choices = array_combine($sortableFields, $sortableFields);
+
+        $choiceQuestion = new ChoiceQuestion(
+            'Enter the default sorting fields (coma-separated)',
+            $choices
+        );
+        $choiceQuestion->setMultiselect(true);
+        $choiceQuestion->setAutocompleterValues($choices);
+
+        return $io->askQuestion($choiceQuestion);
+    }
+
+    private function askForSortingOrder(ConsoleStyle $io, string $fieldName)
+    {
+        $io->writeln('');
+
+        $choiceQuestion = new ChoiceQuestion(
+            sprintf('Enter the sorting order for %s', $fieldName),
+            ['asc', 'desc'],
+            0
+        );
+
+        return $io->askQuestion($choiceQuestion);
     }
 
     private function askForNextAction(ConsoleStyle $io, string $section)
@@ -235,6 +272,7 @@ final class MakeGrid extends AbstractMaker
         ConsoleStyle $io,
         Generator $generator,
         array $fields,
+        array $sortingFields,
         array $actions
     ): void {
         $section = $input->getArgument('section');
@@ -256,6 +294,10 @@ final class MakeGrid extends AbstractMaker
 
         if (count($fields) > 0) {
             $gridData['fields'] = $fields;
+        }
+
+        if (count($sortingFields) > 0) {
+            $gridData['sorting'] = $sortingFields;
         }
 
         if (count($actions) > 0) {
@@ -281,5 +323,17 @@ final class MakeGrid extends AbstractMaker
         $filename = $resource.'.yaml';
 
         return sprintf('%s/%s/%s', $this->projectDir.'/config/packages/grids', $section, $filename);
+    }
+
+    private function filterSortableFields(array $fields): array
+    {
+        $sortableFields = [];
+        foreach ($fields as $fieldName => $field) {
+            if (array_key_exists('sortable', $field)) {
+                $sortableFields[] = $fieldName;
+            }
+        }
+
+        return $sortableFields;
     }
 }

@@ -17,6 +17,8 @@ interface ResourceHelperInterface
 {
     public function getResourcesAliases(): array;
 
+    public function isResourceAliasExist(string $resourceAlias): bool;
+
     public function getResourceModelFromAlias(string $resourceAlias): string;
 
     public function getResourceNameFromAlias(string $resourceAlias): string;

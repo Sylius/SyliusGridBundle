@@ -34,6 +34,14 @@ class ResourceHelper implements ResourceHelperInterface
     /**
      * {@inheritdoc}
      */
+    public function isResourceAliasExist(string $resourceAlias): bool
+    {
+        return in_array($resourceAlias, $this->getResourcesAliases());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getResourceModelFromAlias(string $resourceAlias): string
     {
         [$appName, $resourceName] = $this->splitResourceAlias($resourceAlias);
