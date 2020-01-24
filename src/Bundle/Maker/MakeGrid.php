@@ -166,7 +166,7 @@ final class MakeGrid extends AbstractMaker
             $questionText = 'Add another field? Enter the field name (or press <return> to stop adding fields)';
         }
 
-        $fieldName = $io->ask($questionText, null, function ($name) {
+        $fieldName = $io->ask($questionText, null, function ($name): ?string {
             // allow it to be empty
             if (!$name) {
                 return $name;
