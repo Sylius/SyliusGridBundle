@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Maker\Helper;
 
-class GridHelper implements GridHelperInterface
+final class GridHelper implements GridHelperInterface
 {
     /** @var array */
     private $syliusGridFilters;
