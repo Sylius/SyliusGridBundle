@@ -72,7 +72,7 @@ final class MakeGrid extends AbstractMaker
     {
         $command
             ->setDescription('Creates a new grid')
-            ->addArgument('section', InputArgument::REQUIRED, 'Section of the grid (backend or frontend)')
+            ->addArgument('section', InputArgument::REQUIRED, 'Section of the grid (backend, frontend, admin, api)')
             ->addArgument('resource', InputArgument::REQUIRED, 'Resource alias of the grid')
         ;
 
@@ -83,13 +83,7 @@ final class MakeGrid extends AbstractMaker
     public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
     {
         if (!$input->getArgument('section')) {
-            $question = new ChoiceQuestion(
-                'Please select a section for your grid',
-                ['backend', 'frontend'],
-                0
-            );
-
-            $section = $io->askQuestion($question);
+            $section = $io->ask('Enter a section for you grid (backend, frontend, admin, api)', 'backend');
 
             $input->setArgument('section', $section);
         }
