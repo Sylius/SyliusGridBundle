@@ -424,7 +424,7 @@ final class MakeGrid extends AbstractMaker
         $resource = $this->resourceHelper->getResourceNameFromAlias($resourceAlias);
         $filename = $resource.'.yaml';
 
-        return sprintf('%s/%s/%s', $this->projectDir.'/config/packages/grids', $section, $filename);
+        return sprintf('%s/%s/%s', $this->projectDir.'/config/grids', $section, $filename);
     }
 
     private function filterSortableFields(array $fields): array
