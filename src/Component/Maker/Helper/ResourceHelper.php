@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Maker\Helper;
 
-class ResourceHelper implements ResourceHelperInterface
+final class ResourceHelper implements ResourceHelperInterface
 {
     /** @var array */
     private $syliusResources;
