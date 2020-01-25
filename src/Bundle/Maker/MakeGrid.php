@@ -299,6 +299,7 @@ final class MakeGrid extends AbstractMaker
             $this->gridHelper->getFilterIds()
         );
         $filterData['type'] = $io->askQuestion($choiceQuestion);
+        $filterData['label'] = $io->ask('Enter the filter label', null);
 
         $choiceQuestion = new ChoiceQuestion(
             'Enter the filter options (Leave blank if you have no options',
