@@ -166,7 +166,20 @@ final class MakeGrid extends AbstractMaker
             }
         }
 
-        $this->generateGridConfigFile($input, $io, $generator, $fields, $sortingFields, $actions);
+        $filters = [];
+        $isFirstFilter = true;
+        while (true) {
+            $newFilter = $this->askForNextFilter($io, $isFirstFilter);
+            $isFirstFilter = false;
+
+            if (null === $newFilter) {
+                break;
+            }
+
+            $filters = array_merge($filters, $newFilter);
+        }
+
+        $this->generateGridConfigFile($input, $io, $generator, $fields, $sortingFields, $actions, $filters);
     }
 
     private function askForNextField(ConsoleStyle $io, bool $isFirstField)
@@ -267,13 +280,104 @@ final class MakeGrid extends AbstractMaker
         return $data;
     }
 
+    private function askForNextFilter(ConsoleStyle $io, bool $isFirstFilter)
+    {
+        $io->writeln('');
+
+        if ($isFirstFilter) {
+            $questionText = 'New filter name (press <return> to stop adding filters)';
+        } else {
+            $questionText = 'Add another filter? Enter the filter name (or press <return> to stop adding fields)';
+        }
+
+        $filterName = $io->ask($questionText, null, function ($name): ?string {
+            return $name ?: null;
+        });
+
+        if (!$filterName) {
+            return null;
+        }
+
+        $filterData = [];
+
+        $choiceQuestion = new ChoiceQuestion(
+            'Enter the filter type',
+            $this->gridHelper->getFilterIds()
+        );
+        $filterData['type'] = $io->askQuestion($choiceQuestion);
+
+        $choiceQuestion = new ChoiceQuestion(
+            'Enter the filter options (Leave blank if you have no options',
+            ['field', 'fields']
+        );
+
+        $optionType = $io->askQuestion($choiceQuestion);
+
+        $filterData['options'] = [];
+        if ('fields' === $optionType) {
+            $fieldsPath = $io->ask('Enter the fields path (coma-separated)');
+            $fieldsPath = str_replace(', ', ',', $fieldsPath);
+            $filterData['options'][$optionType] = explode(',', $fieldsPath);
+        } elseif ('field' === $optionType) {
+            $filterData['options'][$optionType] = $io->ask('Enter the field path');
+        }
+
+        $filterData['form_options'] = [];
+        $isFirstFormOption = true;
+        while (true) {
+            $newFormOption = $this->askForNextFormOption($io, $isFirstFormOption);
+            $isFirstFormOption = false;
+
+            if (null === $newFormOption) {
+                break;
+            }
+
+            $filterData['form_options'] = array_merge($filterData['form_options'], $newFormOption);
+        }
+
+        // Key is not necessary if there are no form options
+        if (0 === count($filterData['form_options'])) {
+            unset($filterData['form_options']);
+        }
+
+        return [
+            $filterName => $filterData,
+        ];
+    }
+
+    private function askForNextFormOption(ConsoleStyle $io, bool $isFirstFormOption)
+    {
+        $io->writeln('');
+
+        if ($isFirstFormOption) {
+            $questionText = 'New form option name (press <return> to stop adding form options)';
+        } else {
+            $questionText = 'Add another form option? Enter the form option name (or press <return> to stop adding form options)';
+        }
+
+        $formOptionName = $io->ask($questionText, null, function ($name): ?string {
+            return $name ?: null;
+        });
+
+        if (!$formOptionName) {
+            return null;
+        }
+
+        $formOptionValue = $io->ask('Enter the form option value');
+
+        return [
+            $formOptionName => $formOptionValue,
+        ];
+    }
+
     private function generateGridConfigFile(
         InputInterface $input,
         ConsoleStyle $io,
         Generator $generator,
         array $fields,
         array $sortingFields,
-        array $actions
+        array $actions,
+        array $filters
     ): void {
         $section = $input->getArgument('section');
         $resourceAlias = $input->getArgument('resource');
@@ -292,12 +396,16 @@ final class MakeGrid extends AbstractMaker
             ],
         ];
 
+        if (count($sortingFields) > 0) {
+            $gridData['sorting'] = $sortingFields;
+        }
+
         if (count($fields) > 0) {
             $gridData['fields'] = $fields;
         }
 
-        if (count($sortingFields) > 0) {
-            $gridData['sorting'] = $sortingFields;
+        if (count($filters) > 0) {
+            $gridData['filters'] = $filters;
         }
 
         if (count($actions) > 0) {
