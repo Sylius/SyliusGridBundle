@@ -59,7 +59,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $grid->addActionGroup($this->convertActionGroup($name, $actionGroupConfiguration));
         }
 
-        $this->eventDispatcher->dispatch($this->getEventName($code), new GridDefinitionConverterEvent($grid));
+        $this->eventDispatcher->dispatch(new GridDefinitionConverterEvent($grid), $this->getEventName($code));
 
         return $grid;
     }

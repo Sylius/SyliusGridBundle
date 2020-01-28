@@ -40,7 +40,17 @@ install:
             symfony/twig-bundle:${SYMFONY_VERSION} \
             --no-update --no-scripts
     - composer update --prefer-dist
-    - (cd src/Component && composer update --prefer-dist)
+    - |
+        (
+            cd src/Component \
+            && composer require \
+                symfony/event-dispatcher:${SYMFONY_VERSION} \
+                --no-update --no-scripts \
+            && composer require \
+                symfony/property-access:${SYMFONY_VERSION} \
+                --no-update --no-scripts \
+            && composer update --prefer-dist \
+        )
 
 before_script:
     - (cd src/Bundle/test && app/console doctrine:database:create)
