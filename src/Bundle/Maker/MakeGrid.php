@@ -91,19 +91,23 @@ final class MakeGrid extends AbstractMaker
 
         if (!$input->getArgument('resource')) {
             $aliases = $this->resourceHelper->getResourcesAliases();
+            /** @var array $choices */
+            $choices = array_combine($aliases, $aliases);
             $question = new ChoiceQuestion(
                 'Please select a resource for your grid',
-                array_combine($aliases, $aliases),
+                $choices,
                 0
             );
-            $question->setAutocompleterValues($aliases);
+            $question->setAutocompleterValues($choices);
 
             $resourceAlias = $io->askQuestion($question);
 
             $input->setArgument('resource', $resourceAlias);
         }
 
-        if ($resourceAlias = $input->getArgument('resource')) {
+        if (null !== $input->getArgument('resource')) {
+            /** @var string $resourceAlias */
+            $resourceAlias = $input->getArgument('resource');
             Assert::true($this->resourceHelper->isResourceAliasExist($resourceAlias), sprintf(
                     'Resource with alias %s not found',
                     $resourceAlias
@@ -223,6 +227,7 @@ final class MakeGrid extends AbstractMaker
     {
         $io->writeln('');
 
+        /** @var array $choices */
         $choices = array_combine($sortableFields, $sortableFields);
 
         $choiceQuestion = new ChoiceQuestion(
@@ -375,7 +380,9 @@ final class MakeGrid extends AbstractMaker
         array $actions,
         array $filters
     ): void {
+        /** @var string $section */
         $section = $input->getArgument('section');
+        /** @var string $resourceAlias */
         $resourceAlias = $input->getArgument('resource');
         [$appName, $resourceName] = $this->resourceHelper->splitResourceAlias($resourceAlias);
         $gridId = sprintf('%s_%s_%s', $appName, $section, $resourceName);
