@@ -30,7 +30,8 @@ use Webmozart\Assert\Assert;
 
 final class MakeGrid extends AbstractMaker
 {
-    public static $defaultActionTypes = [
+    /** @var array */
+    private const DEFAULT_ACTION_TYPES = [
         'main' => [
             'create' => 'create',
         ],
@@ -69,7 +70,7 @@ final class MakeGrid extends AbstractMaker
         return 'make:sylius-grid';
     }
 
-    public function configureCommand(Command $command, InputConfiguration $inputConfig)
+    public function configureCommand(Command $command, InputConfiguration $inputConfig): void
     {
         $command
             ->setDescription('Creates a new grid')
@@ -81,7 +82,7 @@ final class MakeGrid extends AbstractMaker
         $inputConfig->setArgumentAsNonInteractive('section');
     }
 
-    public function interact(InputInterface $input, ConsoleStyle $io, Command $command)
+    public function interact(InputInterface $input, ConsoleStyle $io, Command $command): void
     {
         if (!$input->getArgument('section')) {
             $section = $io->ask('Enter a section for you grid (backend, frontend, admin, api)', 'backend');
@@ -116,11 +117,11 @@ final class MakeGrid extends AbstractMaker
         }
     }
 
-    public function configureDependencies(DependencyBuilder $dependencies)
+    public function configureDependencies(DependencyBuilder $dependencies): void
     {
     }
 
-    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator)
+    public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
         $fields = [];
         $isFirstField = true;
@@ -181,7 +182,12 @@ final class MakeGrid extends AbstractMaker
         $this->generateGridConfigFile($input, $io, $generator, $fields, $sortingFields, $actions, $filters);
     }
 
-    private function askForNextField(ConsoleStyle $io, bool $isFirstField)
+    /**
+     * @return (array|mixed)[][]|null
+     *
+     * @psalm-return array<mixed, array{type: mixed|string, label: mixed, sortable?: mixed, options?: array{template?: mixed, format?: mixed}}>|null
+     */
+    private function askForNextField(ConsoleStyle $io, bool $isFirstField): ?array
     {
         $io->writeln('');
 
@@ -191,7 +197,7 @@ final class MakeGrid extends AbstractMaker
             $questionText = 'Add another field? Enter the field name (or press <return> to stop adding fields)';
         }
 
-        $fieldName = $io->ask($questionText, null, function ($name): ?string {
+        $fieldName = $io->ask($questionText, null, function (string $name): ?string {
             return $name ?: null;
         });
 
@@ -223,7 +229,7 @@ final class MakeGrid extends AbstractMaker
         ];
     }
 
-    private function askForSortingFieldNames(ConsoleStyle $io, array $sortableFields)
+    private function askForSortingFieldNames(ConsoleStyle $io, array $sortableFields): array
     {
         $io->writeln('');
 
@@ -240,7 +246,7 @@ final class MakeGrid extends AbstractMaker
         return $io->askQuestion($choiceQuestion);
     }
 
-    private function askForSortingOrder(ConsoleStyle $io, string $fieldName)
+    private function askForSortingOrder(ConsoleStyle $io, string $fieldName): string
     {
         $io->writeln('');
 
@@ -253,17 +259,17 @@ final class MakeGrid extends AbstractMaker
         return $io->askQuestion($choiceQuestion);
     }
 
-    private function askForNextAction(ConsoleStyle $io, string $section)
+    private function askForNextAction(ConsoleStyle $io, string $section): array
     {
         $io->writeln('');
 
-        $actionTypes = static::$defaultActionTypes[$section];
+        $actionTypes = static::DEFAULT_ACTION_TYPES[$section];
 
         if (count($actionTypes) > 1) {
             $choiceQuestion = new ChoiceQuestion(
                 'Enter the action types (coma-separated)',
-                static::$defaultActionTypes[$section],
-                implode(', ', static::$defaultActionTypes[$section])
+                static::DEFAULT_ACTION_TYPES[$section],
+                implode(', ', static::DEFAULT_ACTION_TYPES[$section])
             );
             $choiceQuestion->setMultiselect(true);
             $choiceQuestion->setAutocompleterValues($actionTypes);
@@ -280,7 +286,12 @@ final class MakeGrid extends AbstractMaker
         return $data;
     }
 
-    private function askForNextFilter(ConsoleStyle $io, bool $isFirstFilter)
+    /**
+     * @return (array|mixed)[][]|null
+     *
+     * @psalm-return array<mixed, array{type: mixed, label: mixed, options: array<string, mixed>, form_options?: array}>|null
+     */
+    private function askForNextFilter(ConsoleStyle $io, bool $isFirstFilter): ?array
     {
         $io->writeln('');
 
@@ -290,7 +301,7 @@ final class MakeGrid extends AbstractMaker
             $questionText = 'Add another filter? Enter the filter name (or press <return> to stop adding fields)';
         }
 
-        $filterName = $io->ask($questionText, null, function ($name): ?string {
+        $filterName = $io->ask($questionText, null, function (string $name): ?string {
             return $name ?: null;
         });
 
@@ -346,7 +357,7 @@ final class MakeGrid extends AbstractMaker
         ];
     }
 
-    private function askForNextFormOption(ConsoleStyle $io, bool $isFirstFormOption)
+    private function askForNextFormOption(ConsoleStyle $io, bool $isFirstFormOption): ?array
     {
         $io->writeln('');
 
@@ -356,7 +367,7 @@ final class MakeGrid extends AbstractMaker
             $questionText = 'Add another form option? Enter the form option name (or press <return> to stop adding form options)';
         }
 
-        $formOptionName = $io->ask($questionText, null, function ($name): ?string {
+        $formOptionName = $io->ask($questionText, null, function (string $name): ?string {
             return $name ?: null;
         });
 
@@ -428,7 +439,7 @@ final class MakeGrid extends AbstractMaker
         $this->fileSystem->dumpFile($gridConfigDir, $yaml);
     }
 
-    private function getGridConfigDir(string $resourceAlias, string $section)
+    private function getGridConfigDir(string $resourceAlias, string $section): string
     {
         $resource = $this->resourceHelper->getResourceNameFromAlias($resourceAlias);
         $filename = $resource . '.yaml';
