@@ -8,6 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Maker;
@@ -386,7 +387,7 @@ final class MakeGrid extends AbstractMaker
             'driver' => [
                 'name' => 'doctrine/orm',
                 'options' => [
-                    'class' => '"%'.$modelClass.'%"',
+                    'class' => '"%' . $modelClass . '%"',
                 ],
             ],
         ];
@@ -423,9 +424,9 @@ final class MakeGrid extends AbstractMaker
     private function getGridConfigDir(string $resourceAlias, string $section)
     {
         $resource = $this->resourceHelper->getResourceNameFromAlias($resourceAlias);
-        $filename = $resource.'.yaml';
+        $filename = $resource . '.yaml';
 
-        return sprintf('%s/%s/%s', $this->projectDir.'/config/grids', $section, $filename);
+        return sprintf('%s/%s/%s', $this->projectDir . '/config/grids', $section, $filename);
     }
 
     private function filterSortableFields(array $fields): array
