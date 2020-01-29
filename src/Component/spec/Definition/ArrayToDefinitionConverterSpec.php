@@ -94,7 +94,7 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
         $grid->addFilter($filter);
 
         $eventDispatcher
-            ->dispatch('sylius.grid.admin_tax_category', Argument::type(GridDefinitionConverterEvent::class))
+            ->dispatch(Argument::type(GridDefinitionConverterEvent::class), 'sylius.grid.admin_tax_category')
             ->shouldBeCalled()
         ;
 

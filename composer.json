@@ -52,11 +52,14 @@
         "sylius/currency-bundle": "^1.1",
         "symfony/console": "^4.4|^5.0",
         "symfony/twig-bundle": "^4.4|^5.0",
+        "twig/extensions": "^1.5",
         "twig/twig": "^2.12|^3.0",
         "vimeo/psalm": "^3.5"
     },
     "conflict": {
-        "twig/twig": "^1.0"
+        "twig/twig": "^1.0",
+        "symplify/package-builder": "^7.2",
+        "symplify/smart-file-system": "^7.2"
     },
     "replace": {
         "sylius/grid": "self.version"
