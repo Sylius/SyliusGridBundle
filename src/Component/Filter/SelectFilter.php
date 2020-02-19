@@ -28,6 +28,7 @@ final class SelectFilter implements FilterInterface
 
         if (is_array($data)) {
             $dataSource->restrict($dataSource->getExpressionBuilder()->in($field, $data));
+
             return;
         }
 
