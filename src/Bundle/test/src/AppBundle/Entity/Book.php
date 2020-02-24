@@ -22,6 +22,7 @@ class Book implements ResourceInterface
     public const STATE_INITIAL = 'initial';
 
     public const STATE_PUBLISHED = 'published';
+
     public const STATE_UNPUBLISHED = 'unpublished';
 
     /** @var int|null */
