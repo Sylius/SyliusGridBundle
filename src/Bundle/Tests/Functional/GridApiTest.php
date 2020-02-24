@@ -234,9 +234,9 @@ final class GridApiTest extends JsonApiTestCase
     {
         $this->client->request('GET', '/books/?criteria[state][]=unpublished&criteria[state][]=initial');
 
-        $this->assertCount(2, $this->getItemsFromCurrentResponse());
+        $this->assertCount(2, $result = $this->getItemsFromCurrentResponse());
         $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
-        $this->assertSame('The Lost World', end($this->getItemsFromCurrentResponse())['title']);
+        $this->assertSame('The Lost World', end($result)['title']);
     }
 
     private function getItemsFromCurrentResponse(): array
