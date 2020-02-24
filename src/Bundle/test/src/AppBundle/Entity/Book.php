@@ -19,6 +19,11 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 class Book implements ResourceInterface
 {
+    public const STATE_INITIAL = 'initial';
+
+    public const STATE_PUBLISHED = 'published';
+    public const STATE_UNPUBLISHED = 'unpublished';
+
     /** @var int|null */
     private $id;
 
@@ -34,9 +39,13 @@ class Book implements ResourceInterface
     /** @var Collection&Attribute[] */
     private $attributes;
 
+    /** @var string */
+    private $state;
+
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
+        $this->state = self::STATE_INITIAL;
     }
 
     public function getId(): ?int
@@ -91,5 +100,15 @@ class Book implements ResourceInterface
     public function getAttributes(): Collection
     {
         return $this->attributes;
+    }
+
+    public function getState(): string
+    {
+        return $this->state;
+    }
+
+    public function setState(string $state): void
+    {
+        $this->state = $state;
     }
 }

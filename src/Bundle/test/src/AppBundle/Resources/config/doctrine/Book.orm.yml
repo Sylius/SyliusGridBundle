@@ -14,6 +14,10 @@ AppBundle\Entity\Book:
         title:
             type: string
             length: 255
+        state:
+            type: string
+            lenght: 20
+            nullable: false
     manyToOne:
         author:
             targetEntity: AppBundle\Entity\Author
