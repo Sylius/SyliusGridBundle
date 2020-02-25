@@ -252,6 +252,7 @@ final class GridApiTest extends JsonApiTestCase
     private function getLastItemFromCurrentResponse(): array
     {
         $result = $this->getItemsFromCurrentResponse();
+
         return end($result);
     }
 }
