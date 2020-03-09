@@ -37,6 +37,7 @@ AppBundle\Entity\Book:
         attributes:
             - "@attribute_size_pocket"
             - "@attribute_condition_good"
+        state: 'published'
     book_the_lost_world:
         title: "The Lost World"
         author: "@author_michael_crichton"
@@ -44,14 +45,17 @@ AppBundle\Entity\Book:
         attributes:
             - "@attribute_size_hardcover"
             - "@attribute_condition_bad"
+        state: 'unpublished'
     book_study_in_scarlet:
         title: "A Study in Scarlet"
         author: "@author_john_watson"
         price: "@price_<numberBetween(1, 2)>"
+        state: 'initial'
     book_{1..100}:
         title: "Book <current()>"
         author: "@author_<numberBetween(1, 19)>"
         price: "@price_<numberBetween(1, 2)>"
+        state: 'published'
 
 AppBundle\Entity\Price:
     price_1:

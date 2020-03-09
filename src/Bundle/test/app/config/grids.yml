@@ -33,6 +33,14 @@ sylius_grid:
                     type: string
                     options:
                         fields: [condition.value]
+                state:
+                    type: select
+                    form_options:
+                        multiple: true
+                        choices:
+                            initial: initial
+                            published: published
+                            unpublished: unpublished
             sorting:
                 title: asc
             fields:
