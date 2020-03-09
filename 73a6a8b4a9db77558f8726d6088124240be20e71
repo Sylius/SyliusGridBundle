@@ -1,0 +1,25 @@
+---------------------------------------------------------------------------
+
+by macintoshplus at 2020-02-24T13:13:47Z
+
+Thanks for your return.
+
+I have added a new field 'state' with a filter on the Book entity.
+
+---------------------------------------------------------------------------
+
+by macintoshplus at 2020-02-25T21:33:55Z
+
+Ok, this bug fix will be apply only for the version 1.7 or older too ?
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2020-02-25T21:40:12Z
+
+Grid bundle has a separate release cycle, so should be available despite sylius release
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2020-03-09T14:47:10Z
+
+Thanks, Jean-Baptiste! :tada:
