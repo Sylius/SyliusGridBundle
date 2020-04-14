@@ -122,7 +122,7 @@ sylius_grid:
                 options:
                     class: AppBundle\Entity\Book
                     repository:
-                        method: createEnglishBooksQueryBuilder
+                        method: [expr:service('app.english_books_query_builder'), create]
             filters:
                 title:
                     type: string

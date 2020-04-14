@@ -2,6 +2,7 @@ imports:
     - { resource: "@SyliusGridBundle/test/app/config/parameters.yml" }
     - { resource: "@SyliusGridBundle/test/app/config/resources.yml" }
     - { resource: "@SyliusGridBundle/test/app/config/grids.yml" }
+    - { resource: "@SyliusGridBundle/test/app/config/services.yaml" }
 
 framework:
     assets: false
