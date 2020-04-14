@@ -4,12 +4,12 @@
 
 ### v1.7.5 (2020-04-14)
 
-- [#33](https://github.com/Sylius/SyliusGridBundle/issues/33) Replace deprecated doctrine object manager ()
-- [#31](https://github.com/Sylius/SyliusGridBundle/issues/31) Allow twig 3.x ()
-- [#32](https://github.com/Sylius/SyliusGridBundle/issues/32) Remove deprecated templating.helper configuration ()
-- [#36](https://github.com/Sylius/SyliusGridBundle/issues/36) Add doctrine/persistence to require dev ()
-- [#30](https://github.com/Sylius/SyliusGridBundle/issues/30) Add support for php 7.4 and symfony 4.4 ()
-- [#34](https://github.com/Sylius/SyliusGridBundle/issues/34) Add support for symfony 5 and remove support for < 4.4 ()
+- [#33](https://github.com/Sylius/SyliusGridBundle/issues/33) Replace deprecated doctrine object manager ([@dannyvw](https://github.com/dannyvw))
+- [#31](https://github.com/Sylius/SyliusGridBundle/issues/31) Allow twig 3.x ([@dannyvw](https://github.com/dannyvw))
+- [#32](https://github.com/Sylius/SyliusGridBundle/issues/32) Remove deprecated templating.helper configuration ([@dannyvw](https://github.com/dannyvw))
+- [#36](https://github.com/Sylius/SyliusGridBundle/issues/36) Add doctrine/persistence to require dev ([@dannyvw](https://github.com/dannyvw))
+- [#30](https://github.com/Sylius/SyliusGridBundle/issues/30) Add support for php 7.4 and symfony 4.4 ([@dannyvw](https://github.com/dannyvw))
+- [#34](https://github.com/Sylius/SyliusGridBundle/issues/34) Add support for symfony 5 and remove support for < 4.4 ([@dannyvw](https://github.com/dannyvw))
 - [#47](https://github.com/Sylius/SyliusGridBundle/issues/47) Fix build ([@loic425](https://github.com/loic425))
 - [#49](https://github.com/Sylius/SyliusGridBundle/issues/49) Add multiple values support in SelectFilter ([@macintoshplus](https://github.com/macintoshplus))
 - [#53](https://github.com/Sylius/SyliusGridBundle/issues/53) Fix the build by removing docblock and adding contracts event dispatcher to psalm config ([@GSadee](https://github.com/GSadee))
