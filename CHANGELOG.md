@@ -2,6 +2,20 @@
 
 ## CHANGELOG FOR `1.7.x`
 
+### v1.7.5 (2020-04-14)
+
+- [#33](https://github.com/Sylius/SyliusGridBundle/issues/33) Replace deprecated doctrine object manager ()
+- [#31](https://github.com/Sylius/SyliusGridBundle/issues/31) Allow twig 3.x ()
+- [#32](https://github.com/Sylius/SyliusGridBundle/issues/32) Remove deprecated templating.helper configuration ()
+- [#36](https://github.com/Sylius/SyliusGridBundle/issues/36) Add doctrine/persistence to require dev ()
+- [#30](https://github.com/Sylius/SyliusGridBundle/issues/30) Add support for php 7.4 and symfony 4.4 ()
+- [#34](https://github.com/Sylius/SyliusGridBundle/issues/34) Add support for symfony 5 and remove support for < 4.4 ()
+- [#47](https://github.com/Sylius/SyliusGridBundle/issues/47) Fix build ([@loic425](https://github.com/loic425))
+- [#49](https://github.com/Sylius/SyliusGridBundle/issues/49) Add multiple values support in SelectFilter ([@macintoshplus](https://github.com/macintoshplus))
+- [#53](https://github.com/Sylius/SyliusGridBundle/issues/53) Fix the build by removing docblock and adding contracts event dispatcher to psalm config ([@GSadee](https://github.com/GSadee))
+- [#54](https://github.com/Sylius/SyliusGridBundle/issues/54) Add possibility to configure custom service for query builder in doctrine orm driver ([@GSadee](https://github.com/GSadee))
+- [#55](https://github.com/Sylius/SyliusGridBundle/issues/55) Revert "Fix autojoining with multiple aliases" ([@pamil](https://github.com/pamil))
+
 ### v1.7.4 (2020-01-02)
 
 - [#24](https://github.com/Sylius/SyliusGridBundle/issues/24) fix cs issues ([@vvasiloi](https://github.com/vvasiloi))
