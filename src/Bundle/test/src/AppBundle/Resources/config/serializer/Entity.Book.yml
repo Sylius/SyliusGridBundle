@@ -11,6 +11,3 @@ AppBundle\Entity\Book:
             expose: true
         price:
             expose: true
-        attributes:
-            expose: true
-            type: array
