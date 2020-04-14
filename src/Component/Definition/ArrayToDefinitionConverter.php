@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Definition;
 
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
 {
