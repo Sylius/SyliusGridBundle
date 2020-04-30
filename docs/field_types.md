@@ -12,7 +12,7 @@ a string.
 By default it uses the name of the field, but you can specify the path
 alternatively. For example:
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_user:
@@ -32,7 +32,7 @@ DateTime
 This column type works exactly the same way as *string*, but expects
 *DateTime* instance and outputs a formatted date and time string.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_user:
@@ -52,7 +52,7 @@ delegates the logic of rendering the value to Twig templating engine.
 You just have to specify the template and it will be rendered with the
 `data` variable available to you.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_user:
@@ -67,7 +67,7 @@ sylius_grid:
 In the `:Grid/Column:_prettyName.html.twig` template, you just need to
 render the value for example as you see below:
 
-``` .twig
+```twig
 <strong>{{ data }}</strong>
 ```
 
@@ -75,7 +75,7 @@ If you wish to render more complex grid fields just redefine the path of
 the field to root – `path: .` in the yaml and you can access all
 attributes of the object instance:
 
-``` .twig
+```twig
 <strong>{{ data.name }}</strong>
 <p>{{ data.description|markdown }}</p>
 ```

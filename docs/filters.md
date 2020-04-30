@@ -11,7 +11,7 @@ String
 
 Simplest filter type. It can filter by one or multiple fields.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_user:
@@ -43,7 +43,7 @@ If you don't want display all theses matching possibilities, you can
 choose just one of them. Then only the input field will be displayed.
 You can achieve it like that:
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_user:
@@ -62,7 +62,7 @@ Boolean
 
 This filter checks if a value is true or false.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_channel:
@@ -76,7 +76,7 @@ Date
 
 This filter checks if a chosen datetime field is between given dates.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_order:
@@ -92,7 +92,7 @@ Entity
 
 This type filters by a chosen entity.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_order:
@@ -112,7 +112,7 @@ Money
 
 This filter checks if an amount is in range and in a specified currency
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_order:
@@ -136,7 +136,7 @@ Exists
 
 This filter checks if the specified field contains any value
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_order:
@@ -152,7 +152,7 @@ Select
 
 This type filters by a value chosen from the defined list
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_order:

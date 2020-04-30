@@ -10,7 +10,7 @@ In order to make it a Sylius resource, you need to configure it under
 `sylius_resource` node. If you don’t have it yet, create a file
 `config/packages/sylius_resource.yaml`.
 
-``` .yaml
+```yaml
 # config/packages/sylius_resource.yaml
 sylius_resource:
     resources:
@@ -38,7 +38,7 @@ for identification of objects are available - only `string` and `twig`
 type. Then even though a Supplier has also a description field, it is
 not needed on index and can't be displayed here.
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -65,7 +65,7 @@ That's it. SyliusResourceBundle allows to generate a default CRUD
 interface including the grid we have just defined. Just put this in your
 routing configuration!
 
-``` .yaml
+```yaml
 # config/routes.yaml
 app_admin_supplier:
     resource: |
@@ -108,7 +108,7 @@ Adding translations to the grid (read more
 [here](https://docs.sylius.com/en/latest/customization/translation.html)):
 
 
-``` .yaml
+```yaml
 # translations/messages.en.yaml
 app:
     ui:
@@ -138,7 +138,7 @@ Defining Filters
 In order to make searching for certain things in your grid you can use
 filters.
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_admin_supplier:
@@ -162,7 +162,7 @@ This first requires a
 custom [repository method](https://docs.sylius.com/en/latest/customization/repository.html) for your grid
 query:
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -186,7 +186,7 @@ have to be joined explicitly in the query.
 
 Then you can set up your filter to accordingly:
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_admin_supplier:
@@ -207,7 +207,7 @@ Default Sorting
 
 You can define by which field you want the grid to be sorted and how.
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -220,7 +220,7 @@ sylius_grid:
 
 Then at the fields level, define that the field can be used for sorting:
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -237,7 +237,7 @@ sylius_grid:
 If your field is not of a "simple" type, f.i. a twig template with a
 specific path, you get sorting working with the following definition:
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -262,7 +262,7 @@ You can limit how many items are visible on each page by providing an
 array of integers into the `limits` parameter. The first element of the
 array will be treated as the default, so by configuring:
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -292,7 +292,7 @@ which "influence" the whole grid (like adding new objects) and `item`
 which influence one row of the grid (one object) like editing or
 deleting.
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:

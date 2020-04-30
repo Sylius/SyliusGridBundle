@@ -11,7 +11,7 @@ it for the `sylius_grid`.
 In the template we will specify the button's icon to be `export` and its
 colour to be `orange`.
 
-``` .twig
+```twig
 {% import '@SyliusUi/Macro/buttons.html.twig' as buttons %}
 
 {% set path = options.link.url|default(path(options.link.route)) %}
@@ -22,7 +22,7 @@ colour to be `orange`.
 Now configure the new action's template like below in the
 `config/packages/sylius_grid.yaml`:
 
-``` .yaml
+```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     templates:
@@ -36,7 +36,7 @@ configuration!
 Let's assume that you already have a route for exporting by injecting
 ids, then you can configure the grid action:
 
-``` .yaml
+```yaml
 sylius_grid:
     grids:
         app_admin_product:
