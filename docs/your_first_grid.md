@@ -142,7 +142,7 @@ filters.
 sylius_grid:
     grids:
         app_admin_supplier:
-                ...
+            # ...
             filters:
                 name:
                     type: string
@@ -190,9 +190,9 @@ Then you can set up your filter to accordingly:
 sylius_grid:
     grids:
         app_admin_supplier:
-                ...
+            # ...
             filters:
-                ...
+                # ...
                 country:
                     type: string
                     label: origin
@@ -212,10 +212,10 @@ You can define by which field you want the grid to be sorted and how.
 sylius_grid:
     grids:
         app_admin_supplier:
-                ...
+            # ...
             sorting:
                 name: asc
-                ...
+                # ...
 ```
 
 Then at the fields level, define that the field can be used for sorting:
@@ -225,13 +225,13 @@ Then at the fields level, define that the field can be used for sorting:
 sylius_grid:
     grids:
         app_admin_supplier:
-            ...
+            # ...
             fields:
                 name:
                     type: string
                     label: sylius.ui.name
                     sortable: ~
-                ...
+                # ...
 ```
 
 If your field is not of a "simple" type, f.i. a twig template with a
@@ -242,9 +242,9 @@ specific path, you get sorting working with the following definition:
 sylius_grid:
     grids:
         app_admin_supplier:
-            ...
+            # ...
             fields:
-                ....
+                # ...
                 origin:
                     type: twig
                     options:
@@ -252,7 +252,7 @@ sylius_grid:
                     path: address.country
                     label: app.ui.country
                     sortable: address.country
-                ...
+                # ...
 ```
 
 Pagination
@@ -267,9 +267,9 @@ array will be treated as the default, so by configuring:
 sylius_grid:
     grids:
         app_admin_supplier:
-                ...
+            # ...
             limits: [30, 12, 48]
-            ...
+                # ...
 ```
 
 you will see thirty suppliers per page, also you will have the
@@ -297,7 +297,7 @@ deleting.
 sylius_grid:
     grids:
         app_admin_supplier:
-                ...
+            # ...
             actions:
                 main:
                     create:
