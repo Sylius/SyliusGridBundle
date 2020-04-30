@@ -7,7 +7,7 @@ Grids allows to define new types with ease!
 All you need to do is create your own class implementing
 FieldTypeInterface and register it as a service.
 
-``` {.sourceCode .php}
+``` .php
 <?php
 
 namespace App\Grid\FieldType;
@@ -44,7 +44,7 @@ class CustomType implements FieldTypeInterface
 
 That is all. Now register your new field type as a service.
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/services.yaml
 app.grid_field.custom:
     class: App\Grid\FieldType\CustomType
@@ -54,7 +54,7 @@ app.grid_field.custom:
 
 Now you can use your new column type in the grid configuration!
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_admin_supplier:

@@ -5,7 +5,7 @@ Sylius Grids come with built-in filters, but there are use-cases where you need 
 
 To add a new filter, we need to create an appropriate class and form type.
 
-``` {.sourceCode .php}
+``` .php
     <?php
 
     namespace App\Grid\Filter;
@@ -27,7 +27,7 @@ To add a new filter, we need to create an appropriate class and form type.
 
 And the form type:
 
-``` {.sourceCode .php}
+``` .php
     <?php
 
     namespace App\Form\Type\Filter;
@@ -62,7 +62,7 @@ And the form type:
 
 Create a template for the filter, similar to the existing ones:
 
-``` {.sourceCode .html}
+``` .html
     # templates/Grid/Filter/suppliers_statistics.html.twig
     {% form_theme form 'SyliusUiBundle:Form:theme.html.twig' %}
 
@@ -71,7 +71,7 @@ Create a template for the filter, similar to the existing ones:
 
 That is all. Now let's register your new filter type as service.
 
-``` {.sourceCode .yaml}
+``` .yaml
     # config/services.yaml
 
     services:
@@ -86,7 +86,7 @@ That is all. Now let's register your new filter type as service.
 
 Now you can use your new filter type in the grid configuration!
 
-``` {.sourceCode .php}
+``` .yaml
     sylius_grid:
         grids:
             app_tournament:

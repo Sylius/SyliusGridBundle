@@ -11,7 +11,7 @@ String
 
 Simplest filter type. It can filter by one or multiple fields.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_user:
@@ -43,7 +43,7 @@ If you don't want display all theses matching possibilities, you can
 choose just one of them. Then only the input field will be displayed.
 You can achieve it like that:
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_user:
@@ -62,7 +62,7 @@ Boolean
 
 This filter checks if a value is true or false.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_channel:
@@ -76,7 +76,7 @@ Date
 
 This filter checks if a chosen datetime field is between given dates.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_order:
@@ -92,7 +92,7 @@ Entity
 
 This type filters by a chosen entity.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_order:
@@ -112,7 +112,7 @@ Money
 
 This filter checks if an amount is in range and in a specified currency
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_order:
@@ -126,17 +126,17 @@ sylius_grid:
                         scale: 3
 ```
 
-> *warning*
->
-> Providing different `scale` between *form_options* and *options*
-> may cause unwanted, and plausibly volatile results.
+### *Warning*
+
+Providing different `scale` between *form_options* and *options*
+may cause unwanted, and plausibly volatile results.
 
 Exists
 ------
 
 This filter checks if the specified field contains any value
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_order:
@@ -152,7 +152,7 @@ Select
 
 This type filters by a value chosen from the defined list
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_order:
@@ -168,7 +168,7 @@ sylius_grid:
 Custom Filters
 --------------
 
-> *tip*
->
-> If you need to create a custom filter,
-> read the docs [here](custom_filter.md).
+### *Tip*
+
+If you need to create a custom filter,
+read the docs [here](custom_filter.md).

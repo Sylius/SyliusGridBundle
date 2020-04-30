@@ -3,7 +3,7 @@ Configuration Reference
 
 Here you will find all configuration options of `sylius_grid`.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_user: # Your grid name

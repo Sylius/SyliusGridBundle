@@ -7,13 +7,13 @@ to your composer.json and download the package.
 
 If you have [Composer installed globally](http://getcomposer.org/doc/00-intro.md#globally).
 
-``` {.sourceCode .bash}
+``` .bash
 composer require sylius/grid-bundle
 ```
 
 Otherwise you have to download .phar file.
 
-``` {.sourceCode .bash}
+``` .bash
 curl -sS https://getcomposer.org/installer | php
 php composer.phar require sylius/grid-bundle
 ```
@@ -27,7 +27,7 @@ If you're not using any other Sylius bundles, you will also need to add
 `SyliusResourceBundle` and its dependencies to kernel. Don't worry,
 everything was automatically installed via Composer.
 
-``` {.sourceCode .php}
+``` .php
 <?php
 
 // config/bundles.php

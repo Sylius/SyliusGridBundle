@@ -10,7 +10,7 @@ In order to make it a Sylius resource, you need to configure it under
 `sylius_resource` node. If you don’t have it yet, create a file
 `config/packages/sylius_resource.yaml`.
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_resource.yaml
 sylius_resource:
     resources:
@@ -30,15 +30,15 @@ Grid Definition
 
 Now we can configure our first grid:
 
-> *note*
->
-> Remember that a grid is *the way objects of a desired entity are
-> displayed on its index view*. Therefore only fields that are useful
-> for identification of objects are available - only `string` and `twig`
-> type. Then even though a Supplier has also a description field, it is
-> not needed on index and can't be displayed here.
+ ### **Note**
+ 
+Remember that a grid is *the way objects of a desired entity are
+displayed on its index view*. Therefore only fields that are useful
+for identification of objects are available - only `string` and `twig`
+type. Then even though a Supplier has also a description field, it is
+not needed on index and can't be displayed here.
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -65,7 +65,7 @@ That's it. SyliusResourceBundle allows to generate a default CRUD
 interface including the grid we have just defined. Just put this in your
 routing configuration!
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/routes.yaml
 app_admin_supplier:
     resource: |
@@ -86,30 +86,29 @@ app_admin_supplier:
 
 This will generate the following paths:
 
-> -   */admin/suppliers/* - [`GET`] - Your grid.
-> -   */admin/suppliers/new* - [`GET/POST`] - Creating new supplier.
-> -   */admin/suppliers/{id}/edit* - [`GET/PUT`] - Editing an existing
->     supplier.
-> -   */admin/suppliers/{id}* - [`DELETE`] - Deleting specific supplier.
-> -   */admin/suppliers/{id}* - [`GET`] - Displaying specific supplier.
+> -   `/admin/suppliers/` - [`GET`] - Your grid.
+> -   `/admin/suppliers/new` - [`GET/POST`] - Creating new supplier.
+> -   `/admin/suppliers/{id}/edit` - [`GET/PUT`] - Editing an existing supplier.
+> -   `/admin/suppliers/{id}` - [`DELETE`] - Deleting specific supplier.
+> -   `/admin/suppliers/{id}` - [`GET`] - Displaying specific supplier.
 
-> *tip*
->
-> [In the Semantic UI documentation](http://semantic-ui.com/elements/icon.html) you can find
-> all possible icons you can choose for your grid.
+### *Tip*
 
-> *tip*
->
-> See
-> how to add links to your new entity administration in the [administration menu](https://docs.sylius.com/en/latest/customization/menu.html).
+[In the Semantic UI documentation](http://semantic-ui.com/elements/icon.html) 
+you can find all possible icons you can choose for your grid.
 
-> *tip*
->
-> Adding translations to the grid (read more
-> [here](https://docs.sylius.com/en/latest/customization/translation.html)):
->
+### *Tip*
 
-``` {.sourceCode .yaml}
+See how to add links to your new entity administration in the
+ [administration menu](https://docs.sylius.com/en/latest/customization/menu.html).
+
+### *Tip*
+
+Adding translations to the grid (read more
+[here](https://docs.sylius.com/en/latest/customization/translation.html)):
+
+
+``` .yaml
 # translations/messages.en.yaml
 app:
     ui:
@@ -124,7 +123,7 @@ app:
 ```
 
 After that your new grid should look like that when accessing the
-*/admin/suppliers/new* path in order to create new object:
+`/admin/suppliers/new` path in order to create new object:
 
 ![image](./_images/grid_new.png)
 
@@ -139,7 +138,7 @@ Defining Filters
 In order to make searching for certain things in your grid you can use
 filters.
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_admin_supplier:
@@ -160,10 +159,10 @@ would like to filter your suppliers by their country of origin, which is
 a property of the associated address entity.
 
 This first requires a
-custom repository method \</customization/repository\> for your grid
+custom [repository method](https://docs.sylius.com/en/latest/customization/repository.html) for your grid
 query:
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -176,18 +175,18 @@ sylius_grid:
                         method: mySupplierGridQuery
 ```
 
-> *note*
->
-> The repository method has to return a queryBuilder object, since the
-> query has to adjustable depending on the filters and sorting the user
-> later applies.
+### *Note*
 
->   Furthermore, all sub entities you wish to use later for filtering
-> have to be joined explicitly in the query.
+The repository method has to return a queryBuilder object, since the
+query has to adjustable depending on the filters and sorting the user
+later applies.
+
+  Furthermore, all sub entities you wish to use later for filtering
+have to be joined explicitly in the query.
 
 Then you can set up your filter to accordingly:
 
-``` {.sourceCode .yaml}
+``` .yaml
 sylius_grid:
     grids:
         app_admin_supplier:
@@ -208,7 +207,7 @@ Default Sorting
 
 You can define by which field you want the grid to be sorted and how.
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -221,7 +220,7 @@ sylius_grid:
 
 Then at the fields level, define that the field can be used for sorting:
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -238,7 +237,7 @@ sylius_grid:
 If your field is not of a "simple" type, f.i. a twig template with a
 specific path, you get sorting working with the following definition:
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -263,7 +262,7 @@ You can limit how many items are visible on each page by providing an
 array of integers into the `limits` parameter. The first element of the
 array will be treated as the default, so by configuring:
 
-``` {.sourceCode .yaml}
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -276,24 +275,24 @@ sylius_grid:
 you will see thirty suppliers per page, also you will have the
 possibility to change the number of elements to either 12 or 48.
 
-> *note*
->
-> Pagination limits are set by default to 10, 25 and 50 items per page.
-> In order to turn it off, configure limits: \~.
+### *Note*
+
+Pagination limits are set by default to 10, 25 and 50 items per page.
+In order to turn it off, configure limits: \~.
 
 Actions Configuration
 ---------------------
 
 Next step is adding some actions to the grid: create, update and delete.
 
-> *note*
->
-> There are two types of actions that can be added to a grid: `main`
-> which "influence" the whole grid (like adding new objects) and `item`
-> which influence one row of the grid (one object) like editing or
-> deleting.
+### *Note*
 
-``` {.sourceCode .yaml}
+There are two types of actions that can be added to a grid: `main`
+which "influence" the whole grid (like adding new objects) and `item`
+which influence one row of the grid (one object) like editing or
+deleting.
+
+``` .yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
     grids:
@@ -310,7 +309,7 @@ sylius_grid:
                         type: delete
 ```
 
-This activates such a view on the */admin/suppliers/* path:
+This activates such a view on the `/admin/suppliers/` path:
 
 ![image](./_images/grid_full.png)
 

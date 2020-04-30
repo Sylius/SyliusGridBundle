@@ -17,6 +17,4 @@ more suitable to your grid requirements.
   | Name     | Type   | Description                                                                                                 | Default     |
   |----------|--------|-------------------------------------------------------------------------------------------------------------|-------------|
   | template | string | Available (and required) only for *twig* column type. Path to template that is used to render column value. |             |
-  | format   | string | Available only for *datetime* field type.                                                                   | Y:m:d H:i:s |
-
-
+  | format   | string | Available only for *datetime* field type.                                                                   | `Y:m:d` `H:i:s` |
