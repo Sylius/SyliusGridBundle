@@ -53,6 +53,7 @@ final class ArrayGridProvider implements GridProviderInterface
     {
         unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
 
+        /** @var array $configuration */
         $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration);
 
         unset($configuration['extends']);
