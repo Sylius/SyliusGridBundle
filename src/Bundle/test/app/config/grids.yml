@@ -65,6 +65,11 @@ sylius_grid:
                     type: string
                     label: Name
                     sortable: ~
+                nationality:
+                    type: string
+                    label: Name
+                    sortable: nationality.name
+                    path: nationality.name
             limits: [10, 5, 15]
 
         app_book_by_american_authors:

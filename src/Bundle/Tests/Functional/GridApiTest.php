@@ -206,14 +206,20 @@ final class GridApiTest extends JsonApiTestCase
         $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
     }
 
-    /** @test */
-    public function it_filters_books_by_multiple_state(): void
+    public function it_includes_all_rows_even_when_sorting_by_a_nullable_path(): void
     {
-        $this->client->request('GET', '/books/?criteria[state][]=unpublished&criteria[state][]=initial');
+        $this->client->request('GET', '/authors/');
+        $totalItemsCountBeforeSorting = $this->getTotalItemsCountFromCurrentResponse();
 
-        $this->assertCount(2, $this->getItemsFromCurrentResponse());
-        $this->assertSame('A Study in Scarlet', $this->getFirstItemFromCurrentResponse()['title']);
-        $this->assertSame('The Lost World', $this->getLastItemFromCurrentResponse()['title']);
+        $this->client->request('GET', '/authors/?sorting[nationality]=desc');
+        $totalItemsCountAfterSorting = $this->getTotalItemsCountFromCurrentResponse();
+
+        $this->assertSame($totalItemsCountBeforeSorting, $totalItemsCountAfterSorting);
+    }
+
+    private function getTotalItemsCountFromCurrentResponse(): int
+    {
+        return json_decode($this->client->getResponse()->getContent(), true)['total'];
     }
 
     private function getItemsFromCurrentResponse(): array
