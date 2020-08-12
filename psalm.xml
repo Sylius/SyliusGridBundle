@@ -21,6 +21,8 @@
     <issueHandlers>
         <DeprecatedClass>
             <errorLevel type="suppress">
+                <referencedClass name="Pagerfanta\Adapter\DoctrineDbalAdapter" />
+                <referencedClass name="Pagerfanta\Adapter\DoctrineORMAdapter" />
                 <referencedClass name="Symfony\Bundle\FrameworkBundle\Controller\Controller" />
                 <referencedClass name="Symfony\Component\EventDispatcher\Event" />
                 <referencedClass name="Symfony\Component\HttpKernel\Event\FilterResponseEvent" />
