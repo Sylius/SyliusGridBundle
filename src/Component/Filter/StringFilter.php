@@ -22,14 +22,23 @@ final class StringFilter implements FilterInterface
     public const NAME = 'string';
 
     public const TYPE_EQUAL = 'equal';
+
     public const TYPE_NOT_EQUAL = 'not_equal';
+
     public const TYPE_EMPTY = 'empty';
+
     public const TYPE_NOT_EMPTY = 'not_empty';
+
     public const TYPE_CONTAINS = 'contains';
+
     public const TYPE_NOT_CONTAINS = 'not_contains';
+
     public const TYPE_STARTS_WITH = 'starts_with';
+
     public const TYPE_ENDS_WITH = 'ends_with';
+
     public const TYPE_IN = 'in';
+
     public const TYPE_NOT_IN = 'not_in';
 
     /**

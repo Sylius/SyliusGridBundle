@@ -19,6 +19,7 @@ use Sylius\Component\Grid\Filtering\FilterInterface;
 final class BooleanFilter implements FilterInterface
 {
     public const TRUE = 'true';
+
     public const FALSE = 'false';
 
     /**
