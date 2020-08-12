@@ -1,0 +1,13 @@
+sylius_resource:
+    resources:
+        app.book:
+            classes:
+                model: AppBundle\Entity\Book
+
+        app.author:
+            classes:
+                model: AppBundle\Entity\Author
+
+        app.nationality:
+            classes:
+                model: AppBundle\Entity\Nationality

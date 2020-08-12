@@ -19,7 +19,9 @@ use Sylius\Component\Grid\Filtering\FilterInterface;
 final class DateFilter implements FilterInterface
 {
     public const NAME = 'date';
+
     public const DEFAULT_INCLUSIVE_FROM = true;
+
     public const DEFAULT_INCLUSIVE_TO = false;
 
     /**

@@ -22,7 +22,9 @@ namespace Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
 final class ExtraComparison
 {
     public const NOT_CONTAINS = 'NOT_CONTAINS';
+
     public const IS_NULL = 'IS_NULL';
+
     public const IS_NOT_NULL = 'IS_NOT_NULL';
 
     private function __construct()
