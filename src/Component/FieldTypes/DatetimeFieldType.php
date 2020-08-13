@@ -40,7 +40,6 @@ final class DatetimeFieldType implements FieldTypeInterface
             return '';
         }
 
-        /** @var \DateTimeInterface $value */
         Assert::isInstanceOf($value, \DateTimeInterface::class);
 
         return $value->format($options['format']);

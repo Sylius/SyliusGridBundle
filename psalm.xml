@@ -21,6 +21,8 @@
     <issueHandlers>
         <DeprecatedClass>
             <errorLevel type="suppress">
+                <referencedClass name="Pagerfanta\Adapter\DoctrineDbalAdapter" />
+                <referencedClass name="Pagerfanta\Adapter\DoctrineORMAdapter" />
                 <referencedClass name="Symfony\Bundle\FrameworkBundle\Controller\Controller" />
                 <referencedClass name="Symfony\Component\EventDispatcher\Event" />
                 <referencedClass name="Symfony\Component\HttpKernel\Event\FilterResponseEvent" />
@@ -69,7 +71,7 @@
         <TooManyArguments>
             <errorLevel type="suppress">
                 <referencedFunction name="Symfony\Component\Config\Definition\Builder\TreeBuilder::__construct" />
-                <referencedFunction name="Symfony\Component\EventDispatcher\EventDispatcherInterface::dispatch" />
+                <referencedFunction name="Symfony\Component\EventDispatcher\EventDispatcherInterface::dispatch"/>
                 <referencedFunction name="Symfony\Contracts\EventDispatcher\EventDispatcherInterface::dispatch" />
             </errorLevel>
         </TooManyArguments>
