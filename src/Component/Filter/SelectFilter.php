@@ -20,13 +20,16 @@ final class SelectFilter implements FilterInterface
 {
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
-        if (empty($data)) {
+        if (
+            (isset($options['falsy_values']) && !\in_array($data, $options['falsy_values'], true)) ||
+            (!isset($options['falsy_values']) && empty($data))
+        ) {
             return;
         }
 
         $field = $options['field'] ?? $name;
 
-        if (is_array($data)) {
+        if (\is_array($data)) {
             $dataSource->restrict($dataSource->getExpressionBuilder()->in($field, $data));
 
             return;

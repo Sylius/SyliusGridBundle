@@ -23,6 +23,8 @@ final class SelectFilterType extends AbstractType
     {
         $resolver
             ->setDefault('placeholder', 'sylius.ui.all')
+            ->setDefault('falsy_values', [])
+            ->setAllowedTypes('falsy_values', ['array'])
             ->setAllowedTypes('choices', ['array'])
         ;
     }
