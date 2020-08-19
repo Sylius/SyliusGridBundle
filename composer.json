@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3",
 
         "sylius/registry": "^1.1",
         "symfony/config": "^4.4|^5.0",
@@ -49,7 +49,7 @@
         "phpstan/phpstan-webmozart-assert": "^0.12",
         "phpunit/phpunit": "^8.0",
         "sylius-labs/coding-standard": "^3.0",
-        "sylius/currency-bundle": "^1.1",
+        "sylius/currency-bundle": "^1.7",
         "symfony/console": "^4.4|^5.0",
         "symfony/twig-bundle": "^4.4|^5.0",
         "twig/extensions": "^1.5",
