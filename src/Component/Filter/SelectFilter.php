@@ -20,11 +20,10 @@ final class SelectFilter implements FilterInterface
 {
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
-        if (
-            (isset($options['falsy_values']) && !\in_array($data, $options['falsy_values'], true)) ||
-            (!isset($options['falsy_values']) && empty($data))
-        ) {
-            return;
+        if (empty($data)) {
+            if (!isset($options['falsy_values']) || !\in_array($data, $options['falsy_values'], true)) {
+                return;
+            }
         }
 
         $field = $options['field'] ?? $name;
