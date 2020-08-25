@@ -1,7 +1,6 @@
 includes:
     - vendor/phpstan/phpstan-webmozart-assert/extension.neon
     - vendor/phpstan/phpstan-phpunit/extension.neon
-
     - vendor/phpstan/phpstan-phpunit/rules.neon
 
 parameters:
@@ -17,6 +16,7 @@ parameters:
         - %currentWorkingDirectory%/src/Component/vendor/*
 
     ignoreErrors:
+        - '/Method Sylius\\Component\\Grid\\Definition\\Filter::setCriteria\(\) has no return typehint specified\./'
         # Symfony 3.4 compatibility
         - '/Call to function method_exists\(\) with .Symfony\\\\Component…. and .getRootNode. will always evaluate to false/'
         - '/Call to an undefined method Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder::getRootNode\(\)/'
