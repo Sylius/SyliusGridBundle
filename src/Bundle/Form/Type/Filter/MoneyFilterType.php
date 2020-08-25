@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Form\Type\Filter;
 
+if (!class_exists('Sylius\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType')) {
+    throw new \RuntimeException('You need to install Sylius CurrencyBundle to use this filter! Run: composer require sylius/current-bundle');
+}
+
 use Sylius\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType;
 use Sylius\Component\Grid\Filter\MoneyFilter;
 use Symfony\Component\Form\AbstractType;

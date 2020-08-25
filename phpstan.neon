@@ -9,6 +9,8 @@ parameters:
     excludes_analyse:
         - %currentWorkingDirectory%/src/Bundle/Doctrine/PHPCRODM/*
         - %currentWorkingDirectory%/src/Bundle/DependencyInjection/Configuration.php
+        # Ignore MoneyFilterType as it requires optional dependency
+        - %currentWorkingDirectory%/src/Bundle/Form/Type/Filter/MoneyFilterType.php
         - %currentWorkingDirectory%/src/Bundle/spec/*
         - %currentWorkingDirectory%/src/Bundle/test/*
         - %currentWorkingDirectory%/src/Bundle/Tests/*

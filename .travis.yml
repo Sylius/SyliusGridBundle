@@ -39,6 +39,13 @@ install:
             symfony/console:${SYMFONY_VERSION} \
             symfony/twig-bundle:${SYMFONY_VERSION} \
             --no-update --no-scripts
+    - |
+        if [ "${SYMFONY_VERSION}" = "4.4.*" ]; then
+            composer require \
+                sylius/currency-bundle:^1.6 \
+                sylius/resource-bundle:"dev-master as ^1.6" \
+                --no-update --no-scripts
+        fi
     - composer update --prefer-dist
     - |
         (
