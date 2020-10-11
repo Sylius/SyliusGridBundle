@@ -16,6 +16,8 @@
         <defaults public="true" />
 
         <service id="sylius.grid_driver.doctrine.orm" class="Sylius\Bundle\GridBundle\Doctrine\ORM\Driver">
+            <argument type="service" id="sylius.resource_registry" />
+            <argument type="service" id="service_container" />
             <argument type="service" id="doctrine" />
             <tag name="sylius.grid_driver" alias="doctrine/orm" />
         </service>
