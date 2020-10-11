@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
+use Psr\Container\ContainerInterface;
+use Sylius\Bundle\GridBundle\Doctrine\ORM\DataSource;
+use Sylius\Component\Resource\Metadata\RegistryInterface;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Parameters;
@@ -24,11 +27,22 @@ final class Driver implements DriverInterface
 {
     public const NAME = 'doctrine/orm';
 
+    /** @var RegistryInterface */
+    protected $resourceRegistry;
+
+    /** @var ContainerInterface */
+    private $container;
+
     /** @var ManagerRegistry */
     private $managerRegistry;
 
-    public function __construct(ManagerRegistry $managerRegistry)
-    {
+    public function __construct(
+        RegistryInterface $resourceRegistry,
+        ContainerInterface $container,
+        ManagerRegistry $managerRegistry
+    ) {
+        $this->resourceRegistry = $resourceRegistry;
+        $this->container = $container;
         $this->managerRegistry = $managerRegistry;
     }
 
@@ -38,17 +52,25 @@ final class Driver implements DriverInterface
             throw new \InvalidArgumentException('"class" must be configured.');
         }
 
-        /** @var ObjectManager $manager */
-        $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
+        try {
+            $resourceMetadata = $this->resourceRegistry->getByClass($configuration['class']);
+            $repositoryServiceId = $resourceMetadata->getServiceId('repository');
+            $repository = $this->container->get($repositoryServiceId);
+        } catch (\InvalidArgumentException $exception) {
+            /** @var ObjectManager $manager */
+            $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
 
-        /** @var EntityRepository $repository */
-        $repository = $manager->getRepository($configuration['class']);
+            /** @var EntityRepository $repository */
+            $repository = $manager->getRepository($configuration['class']);
+        }
 
         if (!isset($configuration['repository']['method'])) {
             return new DataSource($repository->createQueryBuilder('o'));
         }
 
-        $arguments = isset($configuration['repository']['arguments']) ? array_values($configuration['repository']['arguments']) : [];
+        $arguments = isset($configuration['repository']['arguments']) ? array_values(
+            $configuration['repository']['arguments']
+        ) : [];
         $method = $configuration['repository']['method'];
         if (is_array($method) && 2 === count($method)) {
             $queryBuilder = $method[0];
