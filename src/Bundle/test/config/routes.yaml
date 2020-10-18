@@ -29,3 +29,19 @@ app_books_by_english_authors:
         only: ['index']
     type: sylius.resource_api
     prefix: /by-english-authors
+
+app_books_by_author_with_fetch_join_collection_disabled:
+    path: /books/by-author/with-fetch-join-collection-disabled
+    methods: [GET]
+    defaults:
+        _controller: app.controller.author:indexAction
+        _sylius:
+            grid: app_books_by_author_with_fetch_join_collection_disabled
+
+app_books_by_author_with_fetch_join_collection_enabled:
+    path: /books/by-author/with-fetch-join-collection-enabled
+    methods: [GET]
+    defaults:
+        _controller: app.controller.author:indexAction
+        _sylius:
+            grid: app_books_by_author_with_fetch_join_collection_enabled
