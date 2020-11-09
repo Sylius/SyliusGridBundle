@@ -6,6 +6,8 @@ includes:
 
 parameters:
     reportUnmatchedIgnoredErrors: false
+    checkMissingIterableValueType: false
+
     excludes_analyse:
         - %currentWorkingDirectory%/src/Bundle/Doctrine/PHPCRODM/*
         - %currentWorkingDirectory%/src/Bundle/DependencyInjection/Configuration.php
@@ -22,3 +24,5 @@ parameters:
         - '/Class Symfony\\Component\\Config\\Definition\\Builder\\TreeBuilder does not have a constructor and must be instantiated without any parameters/'
         - '/Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\./'
         - '/Parameter \#1 \$event of method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) expects object, string given\./'
+
+        - '/Method Sylius\\Component\\Grid\\Definition\\Filter::setCriteria\(\) has no return typehint specified\./'
