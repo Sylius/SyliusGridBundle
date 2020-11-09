@@ -33,6 +33,8 @@
 
         <DeprecatedMethod>
             <errorLevel type="suppress">
+                <referencedMethod name="Doctrine\DBAL\Query\Expression\ExpressionBuilder::andX" />
+                <referencedMethod name="Doctrine\DBAL\Query\Expression\ExpressionBuilder::orX" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\TreeBuilder::root" />
                 <referencedMethod name="Symfony\Component\EventDispatcher\Event::isPropagationStopped" />
                 <referencedMethod name="Symfony\Component\EventDispatcher\Event::stopPropagation" />

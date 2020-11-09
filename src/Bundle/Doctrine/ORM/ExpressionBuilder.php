@@ -246,7 +246,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
         /** @var Join[] $joins */
         $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
-        while (count($explodedField = explode('.', $field, 2)) >= 1) {
+        while ($explodedField = explode('.', $field, 2)) {
             $rootField = $explodedField[0];
             $remainder = $explodedField[1] ?? '';
 
