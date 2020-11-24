@@ -1,5 +1,37 @@
 # CHANGELOG
 
+## CHANGELOG FOR `1.8.x`
+
+### v1.8.0-BETA.1 (2020-11-24)
+
+#### TL;DR
+
+- Made compatible with Symfony 5
+
+#### Details
+
+- [#44](https://github.com/Sylius/SyliusGridBundle/issues/44) Fix sorting grids by nullable path ([@pamil](https://github.com/pamil))
+- [#51](https://github.com/Sylius/SyliusGridBundle/issues/51) [Maintenance] Bump ApiTestCase to v5.0 ([@lchrusciel](https://github.com/lchrusciel))
+- [#57](https://github.com/Sylius/SyliusGridBundle/issues/57) Fix reverted replacement of deprecated doctrine object manager ([@GSadee](https://github.com/GSadee))
+- [#58](https://github.com/Sylius/SyliusGridBundle/issues/58) Add documentation with images for bundle ([@arti0090](https://github.com/arti0090))
+- [#59](https://github.com/Sylius/SyliusGridBundle/issues/59) Updated link in readme, fixed text style issues ([@arti0090](https://github.com/arti0090))
+- [#70](https://github.com/Sylius/SyliusGridBundle/issues/70) Switch from Travis to GitHub Actions ([@pamil](https://github.com/pamil))
+- [#71](https://github.com/Sylius/SyliusGridBundle/issues/71) Bump dependencies to PHP ^7.3 ([@pamil](https://github.com/pamil))
+- [#76](https://github.com/Sylius/SyliusGridBundle/issues/76) Switch to Psalm 4 ([@pamil](https://github.com/pamil))
+- [#77](https://github.com/Sylius/SyliusGridBundle/issues/77) Lock PHPStan version ([@pamil](https://github.com/pamil))
+- [#78](https://github.com/Sylius/SyliusGridBundle/issues/78) Upgrade phpspec ([@pamil](https://github.com/pamil))
+- [#79](https://github.com/Sylius/SyliusGridBundle/issues/79) Upgrade PHPUnit ([@pamil](https://github.com/pamil))
+- [#80](https://github.com/Sylius/SyliusGridBundle/issues/80) Change requirements for Symfony from ^5.0 to ^5.1 ([@pamil](https://github.com/pamil))
+- [#81](https://github.com/Sylius/SyliusGridBundle/issues/81) Upgrade requirements for Sylius packages ([@pamil](https://github.com/pamil))
+- [#82](https://github.com/Sylius/SyliusGridBundle/issues/82) Normalise composer.json ([@pamil](https://github.com/pamil))
+- [#83](https://github.com/Sylius/SyliusGridBundle/issues/83) Remove conflict with Symplify libraries ([@pamil](https://github.com/pamil))
+- [#84](https://github.com/Sylius/SyliusGridBundle/issues/84) Use Event from SyliusLabs/PolyfillSymfonyEventDispatcher ([@pamil](https://github.com/pamil))
+- [#86](https://github.com/Sylius/SyliusGridBundle/issues/86) Symfony 5 support ([@pamil](https://github.com/pamil))
+- [#87](https://github.com/Sylius/SyliusGridBundle/issues/87) Remove sylius/currency-bundle dev dependency ([@pamil](https://github.com/pamil))
+- [#88](https://github.com/Sylius/SyliusGridBundle/issues/88) Psalm: Allow missing files (src/Component/vendor not found) ([@pamil](https://github.com/pamil))
+- [#89](https://github.com/Sylius/SyliusGridBundle/issues/89) PHPStan: Trim ignored errors list ([@pamil](https://github.com/pamil))
+- [#90](https://github.com/Sylius/SyliusGridBundle/issues/90) Remove unnecessary BC layer for symfony/config <=4.1 ([@pamil](https://github.com/pamil))
+
 ## CHANGELOG FOR `1.7.x`
 
 ### v1.7.5 (2020-04-14)
