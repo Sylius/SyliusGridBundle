@@ -16,6 +16,8 @@ namespace Sylius\Component\Grid\Filter;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
+\trigger_deprecation('sylius/grid', '1.8', '%s is deprecated, replace it with your own implementation.', MoneyFilter::class);
+
 final class MoneyFilter implements FilterInterface
 {
     public const DEFAULT_SCALE = 2;

@@ -12,12 +12,20 @@ on:
 jobs:
     tests:
         runs-on: ubuntu-latest
-        name: "PHP ${{ matrix.php }}, Symfony ${{ matrix.symfony }}"
+        name: "PHP ${{ matrix.php }}${{ matrix.symfony != '' && format(', Symfony {0}', matrix.symfony) || '' }}${{ matrix.currency-bundle != '' && format(', CurrencyBundle {0}', matrix.currency-bundle) || '' }}"
         strategy:
             fail-fast: false
             matrix:
-                php: [7.3, 7.4]
-                symfony: [4.4.*]
+                include:
+                    -
+                        php: 7.3
+                        symfony: 4.4.*
+                    -
+                        php: 7.4
+                        symfony: 4.4.*
+                    -
+                        php: 7.4
+                        currency-bundle: "^1.7"
 
         steps:
             -
@@ -37,6 +45,12 @@ jobs:
                     composer global require --no-progress --no-scripts --no-plugins "symfony/flex:^1.10"
                     composer config extra.symfony.require "${{ matrix.symfony }}"
                     (cd src/Component && composer config extra.symfony.require "${{ matrix.symfony }}")
+
+            -
+                name: Require sylius/currency-bundle
+                if: matrix.currency-bundle != ''
+                run: |
+                    composer require "sylius/currency-bundle:${{ matrix.currency-bundle }}"
 
             -
                 name: Install dependencies
