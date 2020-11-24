@@ -64,7 +64,6 @@
         "phpstan/phpstan-webmozart-assert": "0.12.7",
         "phpunit/phpunit": "^9.4",
         "sylius-labs/coding-standard": "^3.0",
-        "sylius/currency-bundle": "^1.7",
         "symfony/console": "^4.4 || ^5.1",
         "symfony/twig-bundle": "^4.4 || ^5.1",
         "twig/extensions": "^1.5",
