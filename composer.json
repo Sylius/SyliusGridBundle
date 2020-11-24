@@ -71,6 +71,9 @@
         "twig/twig": "^2.12 || ^3.0",
         "vimeo/psalm": "4.2.1"
     },
+    "suggest": {
+        "sylius/currency-bundle": "^1.7"
+    },
     "extra": {
         "branch-alias": {
             "dev-master": "1.8-dev"
