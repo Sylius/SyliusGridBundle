@@ -50,7 +50,7 @@ final class SyliusGridExtension extends Extension
         }
 
         if (\class_exists(SyliusCurrencyBundle::class)) {
-            $loader->load('services/integrations/currency_bundle.xml');
+            $loader->load('services/integrations/sylius_currency_bundle.xml');
         }
     }
 
