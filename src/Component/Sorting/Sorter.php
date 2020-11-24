@@ -19,9 +19,6 @@ use Sylius\Component\Grid\Parameters;
 
 final class Sorter implements SorterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function sort(DataSourceInterface $dataSource, Grid $grid, Parameters $parameters): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();

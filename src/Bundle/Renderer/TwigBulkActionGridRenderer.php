@@ -32,9 +32,6 @@ final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterfac
         $this->bulkActionTemplates = $bulkActionTemplates;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function renderBulkAction(GridViewInterface $gridView, Action $bulkAction, $data = null): string
     {
         $type = $bulkAction->getType();

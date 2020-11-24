@@ -40,9 +40,6 @@ final class Driver implements DriverInterface
         $this->documentManager = $documentManager;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('class', $configuration)) {

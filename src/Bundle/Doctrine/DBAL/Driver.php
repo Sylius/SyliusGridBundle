@@ -30,9 +30,6 @@ final class Driver implements DriverInterface
         $this->connection = $connection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('table', $configuration)) {

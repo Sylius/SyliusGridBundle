@@ -115,9 +115,6 @@ final class SyliusGridExtensionTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function getContainerExtensions(): array
     {
         return [

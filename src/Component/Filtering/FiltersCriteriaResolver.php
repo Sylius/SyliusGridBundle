@@ -19,17 +19,11 @@ use Sylius\Component\Grid\Parameters;
 
 final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function hasCriteria(Grid $grid, Parameters $parameters): bool
     {
         return $parameters->has('criteria') || !empty($this->getFiltersDefaultCriteria($grid->getFilters()));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getCriteria(Grid $grid, Parameters $parameters): array
     {
         $defaultCriteria = array_map(

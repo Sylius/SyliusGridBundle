@@ -24,9 +24,6 @@ final class DateFilter implements FilterInterface
 
     public const DEFAULT_INCLUSIVE_TO = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();

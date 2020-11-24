@@ -34,9 +34,6 @@ final class DataSource implements DataSourceInterface
         $this->expressionBuilder = new ExpressionBuilder($queryBuilder);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
     {
         switch ($condition) {
@@ -51,17 +48,11 @@ final class DataSource implements DataSourceInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExpressionBuilder(): ExpressionBuilderInterface
     {
         return $this->expressionBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData(Parameters $parameters)
     {
         // Use output walkers option in DoctrineORMAdapter should be false as it affects performance greatly. (see #3775)

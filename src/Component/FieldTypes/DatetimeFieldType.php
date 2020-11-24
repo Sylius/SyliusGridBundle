@@ -29,8 +29,6 @@ final class DatetimeFieldType implements FieldTypeInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws \InvalidArgumentException
      */
     public function render(Field $field, $data, array $options)
@@ -45,9 +43,6 @@ final class DatetimeFieldType implements FieldTypeInterface
         return $value->format($options['format']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefault('format', 'Y-m-d H:i:s');

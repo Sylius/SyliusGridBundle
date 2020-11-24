@@ -19,9 +19,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class EntityFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -33,17 +30,11 @@ final class EntityFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return EntityType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'sylius_grid_filter_entity';

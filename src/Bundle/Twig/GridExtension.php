@@ -27,9 +27,6 @@ final class GridExtension extends AbstractExtension
         $this->gridHelper = $gridHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [

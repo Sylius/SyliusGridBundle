@@ -27,9 +27,6 @@ final class StringFieldType implements FieldTypeInterface
         $this->dataExtractor = $dataExtractor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(Field $field, $data, array $options)
     {
         $value = $this->dataExtractor->get($field, $data);
@@ -37,9 +34,6 @@ final class StringFieldType implements FieldTypeInterface
         return htmlspecialchars((string) $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
     }

@@ -39,9 +39,6 @@ final class DataProvider implements DataProviderInterface
         $this->sorter = $sorter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData(Grid $grid, Parameters $parameters)
     {
         $dataSource = $this->dataSourceProvider->getDataSource($grid, $parameters);

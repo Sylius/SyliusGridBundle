@@ -38,33 +38,21 @@ class GridView implements GridViewInterface
         $this->parameters = $parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData()
     {
         return $this->data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): Grid
     {
         return $this->definition;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): Parameters
     {
         return $this->parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSortingOrder(string $fieldName): ?string
     {
         $this->assertFieldIsSortable($fieldName);
@@ -80,9 +68,6 @@ class GridView implements GridViewInterface
         return reset($definedSorting) ?: null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isSortedBy(string $fieldName): bool
     {
         $this->assertFieldIsSortable($fieldName);

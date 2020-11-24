@@ -41,9 +41,6 @@ final class StringFilter implements FilterInterface
 
     public const TYPE_NOT_IN = 'not_in';
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();

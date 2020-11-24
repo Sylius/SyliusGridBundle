@@ -36,9 +36,6 @@ final class DataSource implements DataSourceInterface
         $this->expressionBuilder = $expressionBuilder ?: new ExpressionBuilder();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
     {
         switch ($condition) {
@@ -61,17 +58,11 @@ final class DataSource implements DataSourceInterface
         $visitor->dispatch($expression, $parentNode);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExpressionBuilder(): ExpressionBuilderInterface
     {
         return $this->expressionBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getData(Parameters $parameters)
     {
         $orderBy = $this->queryBuilder->orderBy();

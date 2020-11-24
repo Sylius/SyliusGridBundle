@@ -22,9 +22,6 @@ final class ExistsFilter implements FilterInterface
 
     public const FALSE = false;
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         if (null === $data) {

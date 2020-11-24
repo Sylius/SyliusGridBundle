@@ -21,9 +21,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class DateFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -45,9 +42,6 @@ final class DateFilterType extends AbstractType
         $builder->get('to')->addViewTransformer(new DateTimeFilterTransformer('to'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -57,9 +51,6 @@ final class DateFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'sylius_grid_filter_date';

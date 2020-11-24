@@ -27,9 +27,6 @@ final class DataSourceProvider implements DataSourceProviderInterface
         $this->driversRegistry = $driversRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDataSource(Grid $grid, Parameters $parameters): DataSourceInterface
     {
         $driverName = $grid->getDriver();

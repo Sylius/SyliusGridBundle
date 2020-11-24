@@ -27,9 +27,6 @@ final class GridViewFactory implements GridViewFactoryInterface
         $this->dataProvider = $dataProvider;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(Grid $grid, Parameters $parameters): GridViewInterface
     {
         return new GridView($this->dataProvider->getData($grid, $parameters), $grid, $parameters);

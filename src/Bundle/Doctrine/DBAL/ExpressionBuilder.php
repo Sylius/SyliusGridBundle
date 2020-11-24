@@ -26,33 +26,21 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         $this->queryBuilder = $queryBuilder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function andX(...$expressions)
     {
         return $this->queryBuilder->expr()->andX(...$expressions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function orX(...$expressions)
     {
         return $this->queryBuilder->expr()->orX(...$expressions);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function comparison(string $field, string $operator, $value)
     {
         return $this->queryBuilder->expr()->comparison($field, $operator, $value);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function equals(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -60,9 +48,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->eq($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notEquals(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -70,9 +55,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->neq($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function lessThan(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -80,9 +62,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->lt($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function lessThanOrEqual(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -90,9 +69,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->lte($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function greaterThan(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -100,9 +76,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->gt($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function greaterThanOrEqual(string $field, $value)
     {
         $this->queryBuilder->setParameter($field, $value);
@@ -110,65 +83,41 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->gte($field, ':' . $field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function in(string $field, array $values)
     {
         return $this->queryBuilder->expr()->in($field, $values);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notIn(string $field, array $values)
     {
         return $this->queryBuilder->expr()->notIn($field, $values);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isNull(string $field)
     {
         return $this->queryBuilder->expr()->isNull($field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isNotNull(string $field)
     {
         return $this->queryBuilder->expr()->isNotNull($field);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function like(string $field, string $pattern)
     {
         return $this->queryBuilder->expr()->like($field, $this->queryBuilder->expr()->literal($pattern));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function notLike(string $field, string $pattern)
     {
         return $this->queryBuilder->expr()->notLike($field, $this->queryBuilder->expr()->literal($pattern));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function orderBy(string $field, string $direction)
     {
         return $this->queryBuilder->orderBy($field, $direction);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addOrderBy(string $field, string $direction)
     {
         return $this->queryBuilder->addOrderBy($field, $direction);

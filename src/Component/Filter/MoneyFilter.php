@@ -20,9 +20,6 @@ final class MoneyFilter implements FilterInterface
 {
     public const DEFAULT_SCALE = 2;
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         if (empty($data)) {

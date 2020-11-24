@@ -22,9 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class StringFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         if (!isset($options['type'])) {
@@ -54,9 +51,6 @@ final class StringFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -79,9 +73,6 @@ final class StringFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'sylius_grid_filter_string';

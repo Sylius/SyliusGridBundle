@@ -33,9 +33,6 @@ final class TwigFieldType implements FieldTypeInterface
         $this->twig = $twig;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function render(Field $field, $data, array $options)
     {
         if ('.' !== $field->getPath()) {
@@ -45,9 +42,6 @@ final class TwigFieldType implements FieldTypeInterface
         return $this->twig->render($options['template'], ['data' => $data, 'options' => $options]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setRequired('template');

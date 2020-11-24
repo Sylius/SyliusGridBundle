@@ -31,9 +31,6 @@ final class ArrayGridProvider implements GridProviderInterface
         $this->gridConfigurations = $gridConfigurations;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(string $code): Grid
     {
         if (!array_key_exists($code, $this->gridConfigurations)) {

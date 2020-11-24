@@ -35,17 +35,11 @@ final class DateTimeFilterTransformer implements DataTransformerInterface
         $this->type = $type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function transform($value): array
     {
         return $value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function reverseTransform($value): array
     {
         if (!$value['date']['year']) {

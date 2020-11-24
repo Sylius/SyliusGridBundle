@@ -28,9 +28,6 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function convert(string $code, array $configuration): Grid
     {
         $grid = Grid::fromCodeAndDriverConfiguration(

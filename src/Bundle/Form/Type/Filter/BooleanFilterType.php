@@ -20,9 +20,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class BooleanFilterType extends AbstractType
 {
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -38,17 +35,11 @@ final class BooleanFilterType extends AbstractType
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParent(): string
     {
         return ChoiceType::class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getBlockPrefix(): string
     {
         return 'sylius_grid_filter_boolean';

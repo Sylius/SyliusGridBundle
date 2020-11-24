@@ -34,9 +34,6 @@ final class FiltersApplicator implements FiltersApplicatorInterface
         $this->criteriaResolver = $criteriaResolver;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function apply(DataSourceInterface $dataSource, Grid $grid, Parameters $parameters): void
     {
         if (!$this->criteriaResolver->hasCriteria($grid, $parameters)) {

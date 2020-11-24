@@ -26,9 +26,6 @@ final class PropertyAccessDataExtractor implements DataExtractorInterface
         $this->propertyAccessor = $propertyAccessor;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(Field $field, $data)
     {
         return $this->propertyAccessor->getValue($data, $field->getPath());

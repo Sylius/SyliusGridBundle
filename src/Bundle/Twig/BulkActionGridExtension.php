@@ -27,9 +27,6 @@ final class BulkActionGridExtension extends AbstractExtension
         $this->bulkActionGridHelper = $bulkActionGridHelper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFunctions(): array
     {
         return [
