@@ -7,7 +7,7 @@
 >
     <projectFiles>
         <directory name="src" />
-        <ignoreFiles>
+        <ignoreFiles allowMissingFiles="true">
             <directory name="vendor" />
             <directory name="src/Bundle/Doctrine/PHPCRODM" />
             <directory name="src/Bundle/spec" />
