@@ -16,12 +16,21 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.3, 7.4]
-                symfony: [4.4.*, 5.1.*]
-                currency-bundle: ["", "^1.7"]
-                exclude:
+                include:
                     -
                         php: 7.3
+                        symfony: 4.4.*
+                    -
+                        php: 7.3
+                        symfony: 5.1.*
+                    -
+                        php: 7.4
+                        symfony: 4.4.*
+                    -
+                        php: 7.4
+                        symfony: 5.1.*
+                    -
+                        php: 7.4
                         currency-bundle: "^1.7"
         steps:
             -
