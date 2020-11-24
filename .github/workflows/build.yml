@@ -16,20 +16,9 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                include:
-                    -
-                        php: 7.3
-                        symfony: 4.4.*
-                    -
-                        php: 7.3
-                        symfony: 5.1.*
-                    -
-                        php: 7.4
-                        symfony: 4.4.*
-                    -
-                        php: 7.4
-                        symfony: 5.1.*
-
+                php: [7.3, 7.4]
+                symfony: [4.4.*]
+                
         steps:
             -
                 uses: actions/checkout@v2
