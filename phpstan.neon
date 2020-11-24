@@ -20,3 +20,4 @@ parameters:
     ignoreErrors:
         - '/Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\./'
         - '/Method Sylius\\Component\\Grid\\Definition\\Filter::setCriteria\(\) has no return typehint specified\./'
+        - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
