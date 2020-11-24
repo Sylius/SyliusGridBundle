@@ -44,8 +44,6 @@
         "sylius/grid": "self.version"
     },
     "conflict": {
-        "symplify/package-builder": "^7.2",
-        "symplify/smart-file-system": "^7.2",
         "twig/twig": "^1.0"
     },
     "require-dev": {
