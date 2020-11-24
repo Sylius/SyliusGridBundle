@@ -18,7 +18,7 @@ jobs:
             matrix:
                 php: [7.3, 7.4]
                 symfony: [4.4.*]
-                
+
         steps:
             -
                 uses: actions/checkout@v2
