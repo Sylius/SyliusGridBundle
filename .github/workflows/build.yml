@@ -1,0 +1,65 @@
+name: Build
+
+on:
+    push: ~
+    pull_request: ~
+    release:
+        types: [created]
+    schedule:
+        -
+            cron: "0 1 * * 6" # Run at 1am every Saturday
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+        name: "PHP ${{ matrix.php }}${{ matrix.symfony != '' && format(', Symfony {0}', matrix.symfony) || '' }}"
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.4, 7.3, 7.2]
+                symfony: [^3.4, ^4.4]
+
+        steps:
+            -
+                uses: actions/checkout@v2
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: "${{ matrix.php }}"
+                    coverage: none
+
+            -
+                name: Restrict Symfony version
+                if: matrix.symfony != ''
+                run: |
+                    composer global require --no-progress --no-scripts --no-plugins "symfony/flex:^1.10"
+                    composer config extra.symfony.require "${{ matrix.symfony }}"
+                    (cd src/Component && composer config extra.symfony.require "${{ matrix.symfony }}")
+
+            -
+                name: Install dependencies
+                run: |
+                    composer update ${{ matrix.composer-flags }} --no-scripts
+                    (cd src/Component && composer update ${{ matrix.composer-flags }} --no-scripts)
+
+            -
+                name: Prepare test application
+                run: |
+                    (cd src/Bundle/test && app/console doctrine:database:create)
+                    (cd src/Bundle/test && app/console doctrine:schema:create)
+
+            -
+                name: Run analysis
+                run: |
+                    composer analyse
+                    (cd src/Component && composer validate --strict)
+
+            -
+                name: Run component tests
+                run: (cd src/Component && vendor/bin/phpspec run)
+
+            -
+                name: Run bundle tests
+                run: composer test
