@@ -60,7 +60,7 @@
         "pagerfanta/pagerfanta": "^1.0 || ^2.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.0",
-        "phpstan/phpstan": "0.12.54",
+        "phpstan/phpstan": "0.12.59",
         "phpstan/phpstan-phpunit": "0.12.16",
         "phpstan/phpstan-webmozart-assert": "0.12.7",
         "phpunit/phpunit": "^9.4",
