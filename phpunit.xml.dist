@@ -5,7 +5,7 @@
          colors="true"
 >
     <php>
-        <server name="KERNEL_CLASS" value="AppKernel" />
+        <server name="KERNEL_CLASS" value="App\Kernel" />
 
         <ini name="error_reporting" value="-1" />
 

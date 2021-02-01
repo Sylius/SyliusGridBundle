@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
-use AppBundle\Filter\Foo;
+use App\Filter\Foo;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFiltersPass;
 use Sylius\Component\Registry\ServiceRegistry;

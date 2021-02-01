@@ -1,0 +1,14 @@
+sylius_resource:
+    resources:
+        app.book:
+            classes:
+                model: App\Entity\Book
+                repository: App\Repository\BookRepository
+
+        app.author:
+            classes:
+                model: App\Entity\Author
+
+        app.nationality:
+            classes:
+                model: App\Entity\Nationality
