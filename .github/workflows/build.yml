@@ -69,11 +69,11 @@ jobs:
                     (cd src/Bundle/test && bin/console doctrine:database:create)
                     (cd src/Bundle/test && bin/console doctrine:schema:create)
 
-#            -
-#                name: Run analysis
-#                run: |
-#                    composer analyse
-#                    (cd src/Component && composer validate --strict)
+            -
+                name: Run analysis
+                run: |
+                    composer analyse
+                    (cd src/Component && composer validate --strict)
 
             -
                 name: Run component tests

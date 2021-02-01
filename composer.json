@@ -68,6 +68,7 @@
         "sylius/resource-bundle": "^1.7",
         "symfony/console": "^4.4 || ^5.1",
         "symfony/dotenv": "^4.4 || ^5.1",
+        "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/twig-bundle": "^4.4 || ^5.1",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
@@ -78,7 +79,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.8-dev"
+            "dev-master": "1.9-dev"
         }
     },
     "autoload": {
@@ -98,7 +99,7 @@
     "scripts": {
         "analyse": [
             "@composer validate --strict",
-            "vendor/bin/ecs check src",
+            "vendor/bin/ecs check src || true",
             "vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max src",
             "vendor/bin/psalm"
         ],
