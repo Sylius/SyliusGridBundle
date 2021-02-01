@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
-use AppBundle\Driver\Foo;
+use App\Driver\Foo;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterDriversPass;
 use Sylius\Component\Registry\ServiceRegistry;

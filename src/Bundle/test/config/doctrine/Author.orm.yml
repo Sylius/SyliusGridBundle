@@ -1,0 +1,26 @@
+App\Entity\Author:
+    type: mappedSuperclass
+    table: app_author
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+    oneToMany:
+        books:
+            targetEntity: App\Entity\Book
+            mappedBy: author
+            cascade: ["all"]
+    manyToOne:
+        nationality:
+            targetEntity: App\Entity\Nationality
+            joinColumn:
+                name: nationality_id
+                referencedColumnName: id
+                nullable: true
+            cascade: ["all"]

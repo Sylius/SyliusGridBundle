@@ -67,6 +67,7 @@
         "sylius-labs/coding-standard": "^3.0",
         "sylius/resource-bundle": "^1.7",
         "symfony/console": "^4.4 || ^5.1",
+        "symfony/dotenv": "^4.4 || ^5.1",
         "symfony/twig-bundle": "^4.4 || ^5.1",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
@@ -90,11 +91,9 @@
         "psr-4": {
             "Sylius\\Bundle\\GridBundle\\spec\\": "src/Bundle/spec/",
             "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/",
+            "App\\": "src/Bundle/test/src/",
             "AppBundle\\": "src/Bundle/test/src/AppBundle/"
-        },
-        "classmap": [
-            "src/Bundle/test/app/AppKernel.php"
-        ]
+        }
     },
     "scripts": {
         "analyse": [

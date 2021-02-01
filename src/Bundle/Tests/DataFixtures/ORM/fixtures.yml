@@ -1,10 +1,10 @@
-AppBundle\Entity\Nationality:
+App\Entity\Nationality:
     nationality_american:
         name: "American"
     nationality_english:
         name: "English"
 
-AppBundle\Entity\Author:
+App\Entity\Author:
     author_michael_crichton:
         name: "Michael Crichton"
         nationality: "@nationality_american"
@@ -17,7 +17,7 @@ AppBundle\Entity\Author:
         name: "<firstName()> <lastName()>"
         nationality: "@nationality_english"
 
-AppBundle\Entity\Book:
+App\Entity\Book:
     book_jurassic_park:
         title: "Jurassic Park"
         author: "@author_michael_crichton"
@@ -39,7 +39,7 @@ AppBundle\Entity\Book:
         price: "@price_<numberBetween(1, 2)>"
         state: 'published'
 
-AppBundle\Entity\Price:
+App\Entity\Price:
     price_1:
         amount: 4200
         currencyCode: "EUR"

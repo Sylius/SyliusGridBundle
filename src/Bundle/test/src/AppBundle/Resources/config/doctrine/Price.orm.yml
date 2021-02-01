@@ -1,8 +1,0 @@
-AppBundle\Entity\Price:
-    type: embeddable
-    fields:
-        amount:
-            type: integer
-        currencyCode:
-            type: string
-            length: 255

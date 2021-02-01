@@ -1,0 +1,26 @@
+App\Entity\Book:
+    type: mappedSuperclass
+    table: app_book
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    embedded:
+        price:
+            class: App\Entity\Price
+    fields:
+        title:
+            type: string
+            length: 255
+        state:
+            type: string
+            lenght: 20
+            nullable: false
+    manyToOne:
+        author:
+            targetEntity: App\Entity\Author
+            joinColumn:
+                name: author_id
+                referencedColumnName: id

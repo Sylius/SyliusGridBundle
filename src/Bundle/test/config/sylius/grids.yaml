@@ -1,0 +1,151 @@
+sylius_grid:
+    grids:
+        app_book:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Book
+            filters:
+                title:
+                    type: string
+                author:
+                    type: entity
+                    form_options:
+                        class: App\Entity\Author
+                        multiple: true
+                nationality:
+                    type: entity
+                    options:
+                        fields: [author.nationality]
+                    form_options:
+                        class: App\Entity\Nationality
+                currencyCode:
+                    type: string
+                    options:
+                        fields: [price.currencyCode]
+                state:
+                    type: select
+                    form_options:
+                        multiple: true
+                        choices:
+                            initial: initial
+                            published: published
+                            unpublished: unpublished
+            sorting:
+                title: asc
+            fields:
+                title:
+                    type: string
+                    label: Title
+                    sortable: ~
+                author:
+                    type: string
+                    label: Author
+                    path: author.name
+                    sortable: author.name
+                nationality:
+                    type: string
+                    label: Nationality
+                    path: author.nationality.name
+                    sortable: author.nationality.name
+            limits: [10, 5, 15]
+
+        app_author:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Author
+            filters:
+                name:
+                    type: string
+            sorting:
+                name: asc
+            fields:
+                name:
+                    type: string
+                    label: Name
+                    sortable: ~
+                nationality:
+                    type: string
+                    label: Name
+                    sortable: nationality.name
+                    path: nationality.name
+            limits: [10, 5, 15]
+
+        app_book_by_american_authors:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Book
+                    repository:
+                        method: createAmericanBooksQueryBuilder
+            filters:
+                title:
+                    type: string
+                author:
+                    type: entity
+                    form_options:
+                        class: App\Entity\Author
+                nationality:
+                    type: entity
+                    options:
+                        fields: [author.nationality]
+                    form_options:
+                        class: App\Entity\Nationality
+            sorting:
+                title: asc
+            fields:
+                title:
+                    type: string
+                    label: Title
+                    sortable: ~
+                author:
+                    type: string
+                    label: Author
+                    path: author.name
+                    sortable: author.name
+                nationality:
+                    type: string
+                    label: Nationality
+                    path: na.name
+                    sortable: na.name
+            limits: [10, 5, 15]
+
+        app_book_by_english_authors:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Book
+                    repository:
+                        method: [expr:service('app.english_books_query_builder'), create]
+            filters:
+                title:
+                    type: string
+                author:
+                    type: entity
+                    form_options:
+                        class: App\Entity\Author
+                nationality:
+                    type: entity
+                    options:
+                        fields: [author.nationality]
+                    form_options:
+                        class: App\Entity\Nationality
+            sorting:
+                title: asc
+            fields:
+                title:
+                    type: string
+                    label: Title
+                    sortable: ~
+                author:
+                    type: string
+                    label: Author
+                    path: author.name
+                    sortable: author.name
+                nationality:
+                    type: string
+                    label: Nationality
+                    path: na.name
+                    sortable: na.name
+            limits: [10, 5, 15]
