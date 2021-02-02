@@ -62,7 +62,7 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function orderBy(string $name, $direction = 'asc'): GridBuilderInterface
+    public function orderBy(string $name, string $direction = 'asc'): GridBuilderInterface
     {
         $this->gridDefinition->setSorting([$name => $direction]);
 

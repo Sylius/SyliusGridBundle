@@ -17,7 +17,7 @@ interface GridBuilderInterface
 
     public function removeField(string $name): self;
 
-    public function orderBy(string $name, $direction = 'asc'): self;
+    public function orderBy(string $name, string $direction): self;
 
     public function addFilter(FilterInterface $filter): self;
 

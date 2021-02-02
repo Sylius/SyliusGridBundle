@@ -22,7 +22,7 @@ final class ChainProvider implements GridProviderInterface
     /** @var array<int, GridProviderInterface> */
     private array $providers;
 
-    public function __construct(iterable $providers)
+    public function __construct(\Traversable $providers)
     {
         $this->providers = iterator_to_array($providers);
     }

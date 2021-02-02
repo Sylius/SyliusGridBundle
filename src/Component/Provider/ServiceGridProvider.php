@@ -13,21 +13,18 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Provider;
 
-use App\Bridge\Grid\GridRegistry;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
-use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Sylius\Component\Grid\GridRegistry;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
-    private $gridRegistry;
-
     public const EVENT_NAME = 'sylius.grid.%s';
 
-    /** @var EventDispatcherInterface */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
+    private GridRegistry $gridRegistry;
 
     public function __construct(EventDispatcherInterface $eventDispatcher, GridRegistry $gridRegistry)
     {

@@ -6,7 +6,6 @@ use App\Entity\Book;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Builder\Action;
 use Sylius\Component\Grid\Builder\Field;
-use Sylius\Component\Grid\Builder\FieldInterface;
 use Sylius\Component\Grid\Builder\Filter;
 use Sylius\Component\Grid\Builder\GridBuilder;
 use Sylius\Component\Grid\Definition\Grid;
