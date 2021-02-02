@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Builder;
 
-use Sylius\Component\Grid\Definition\ActionGroup;
 use Sylius\Component\Grid\Definition\Grid;
 
 interface GridBuilderInterface

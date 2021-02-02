@@ -9,6 +9,14 @@ parameters:
     secret: "Three can keep a secret, if two of them are dead."
 
 services:
+    _defaults:
+        autoconfigure: true
+        autowire: true
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Tests,Kernel.php}'
+
     app.english_books_query_builder:
         class: App\QueryBuilder\EnglishBooksQueryBuilder
         arguments:
