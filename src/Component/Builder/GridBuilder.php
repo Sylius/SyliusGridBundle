@@ -36,7 +36,7 @@ final class GridBuilder implements GridBuilderInterface
     }
 
     /**
-     * @param string|array $method
+     * {@inheritdoc}
      */
     public function setRepositoryMethod($method, array $arguments = []): GridBuilderInterface
     {

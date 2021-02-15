@@ -10,6 +10,9 @@ interface GridBuilderInterface
 {
     public static function create(string $code, string $resourceClass): self;
 
+    /**
+     * @param string|array $method
+     */
     public function setRepositoryMethod($method, array $arguments = []): self;
 
     public function addField(FieldInterface $field): self;
