@@ -3,7 +3,10 @@
 namespace spec\Sylius\Component\Grid\Builder;
 
 use App\Entity\Book;
+use App\QueryBuilder\EnglishBooksQueryBuilder;
+use Doctrine\ORM\QueryBuilder;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Sylius\Component\Grid\Builder\Action;
 use Sylius\Component\Grid\Builder\Field;
 use Sylius\Component\Grid\Builder\Filter;
@@ -40,6 +43,20 @@ class GridBuilderSpec extends ObjectBehavior
         ]);
     }
 
+    function it_sets_a_repository_method_with_service(): void
+    {
+        $queryBuilder = new \stdClass();
+        $gridBuilder = $this->setRepositoryMethod([$queryBuilder, 'method'], []);
+
+        $gridBuilder->getDefinition()->getDriverConfiguration()->shouldReturn([
+            'class' => 'App\Entity\Book',
+            'repository' => [
+                'method' => [$queryBuilder, 'method'],
+                'arguments' => [],
+            ]
+        ]);
+    }
+
     function it_add_fields(): void
     {
         $field = Field::create('title', 'string');
@@ -59,9 +76,17 @@ class GridBuilderSpec extends ObjectBehavior
 
     function it_sets_orders(): void
     {
-        $gridBuilder = $this->orderBy('title', 'desc');
+        $this->orderBy('title');
+        $gridBuilder = $this->addOrderBy('createdAt', 'desc');
 
-        $gridBuilder->getDefinition()->getSorting()->shouldReturn(['title' => 'desc']);
+        $gridBuilder->getDefinition()->getSorting()->shouldReturn(['title' => 'asc', 'createdAt' => 'desc']);
+    }
+
+    function it_sets_limits(): void
+    {
+        $gridBuilder = $this->setLimits([10, 5, 25]);
+
+        $gridBuilder->getDefinition()->getLimits()->shouldReturn([10, 5, 25]);
     }
 
     function it_add_filters(): void

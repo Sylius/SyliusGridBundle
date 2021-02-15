@@ -10,13 +10,17 @@ interface GridBuilderInterface
 {
     public static function create(string $code, string $resourceClass): self;
 
-    public function setRepositoryMethod(string $method, array $arguments = []): self;
+    public function setRepositoryMethod($method, array $arguments = []): self;
 
     public function addField(FieldInterface $field): self;
 
     public function removeField(string $name): self;
 
     public function orderBy(string $name, string $direction): self;
+
+    public function addOrderBy(string $name, string $direction): self;
+
+    public function setLimits(array $limits): self;
 
     public function addFilter(FilterInterface $filter): self;
 

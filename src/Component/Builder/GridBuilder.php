@@ -35,7 +35,10 @@ final class GridBuilder implements GridBuilderInterface
         return $this->gridDefinition;
     }
 
-    public function setRepositoryMethod(string $method, array $arguments = []): GridBuilderInterface
+    /**
+     * @param string|array $method
+     */
+    public function setRepositoryMethod($method, array $arguments = []): GridBuilderInterface
     {
         $driverConfiguration = $this->gridDefinition->getDriverConfiguration();
         $driverConfiguration['repository'] = [
@@ -65,6 +68,22 @@ final class GridBuilder implements GridBuilderInterface
     public function orderBy(string $name, string $direction = 'asc'): GridBuilderInterface
     {
         $this->gridDefinition->setSorting([$name => $direction]);
+
+        return $this;
+    }
+
+    public function addOrderBy(string $name, string $direction = 'asc'): GridBuilderInterface
+    {
+        $sorting = $this->gridDefinition->getSorting();
+        $sorting[$name] = $direction;
+        $this->gridDefinition->setSorting($sorting);
+
+        return $this;
+    }
+
+    public function setLimits(array $limits): GridBuilderInterface
+    {
+        $this->gridDefinition->setLimits($limits);
 
         return $this;
     }

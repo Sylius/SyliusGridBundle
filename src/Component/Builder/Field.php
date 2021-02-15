@@ -25,6 +25,13 @@ final class Field implements FieldInterface
         return $this->fieldDefinition;
     }
 
+    public function setPath(string $path): FieldInterface
+    {
+        $this->fieldDefinition->setPath($path);
+
+        return $this;
+    }
+
     public function setLabel(string $label): FieldInterface
     {
         $this->fieldDefinition->setLabel($label);

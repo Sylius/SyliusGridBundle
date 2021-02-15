@@ -12,6 +12,8 @@ interface FieldInterface
 
     public function getDefinition(): FieldDefinition;
 
+    public function setPath(string $path): self;
+
     public function setLabel(string $label): self;
 
     public function setEnabled(bool $enabled): self;
