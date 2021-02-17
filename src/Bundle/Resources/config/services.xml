@@ -35,12 +35,12 @@
         <service id="sylius.grid.array_grid_provider" class="Sylius\Component\Grid\Provider\ArrayGridProvider">
             <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument>%sylius.grids_definitions%</argument>
-            <tag name="sylius.grid_provider" key="array"/>
+            <tag name="sylius.grid_provider" key="array" priority="-200"/>
         </service>
         <service id="sylius.grid.service_grid_provider" class="Sylius\Component\Grid\Provider\ServiceGridProvider">
             <argument type="service" id="event_dispatcher" />
             <argument type="service" id="sylius.grid.grid_registry" />
-            <tag name="sylius.grid_provider" key="service"/>
+            <tag name="sylius.grid_provider" key="service" priority="-100"/>
         </service>
         <service id="sylius.grid.chain_provider" class="Sylius\Component\Grid\Provider\ChainProvider">
             <argument type="tagged_iterator" tag="sylius.grid_provider" index-by="key" />
