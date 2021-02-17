@@ -30,6 +30,13 @@ class GridBuilderSpec extends ObjectBehavior
         $this->getDefinition()->shouldHaveType(Grid::class);
     }
 
+    function it_sets_driver(): void
+    {
+        $gridBuilder = $this->setDriver('doctrine/dbal');
+
+        $gridBuilder->getDefinition()->getDriver()->shouldReturn('doctrine/dbal');
+    }
+
     function it_sets_a_repository_method(): void
     {
         $gridBuilder = $this->setRepositoryMethod('createListQueryBuilder', []);

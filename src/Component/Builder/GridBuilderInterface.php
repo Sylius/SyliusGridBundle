@@ -10,6 +10,8 @@ interface GridBuilderInterface
 {
     public static function create(string $code, string $resourceClass): self;
 
+    public function setDriver(string $driver): self;
+
     /**
      * @param string|array $method
      */

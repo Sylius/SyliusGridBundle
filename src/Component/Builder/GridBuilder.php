@@ -35,6 +35,13 @@ final class GridBuilder implements GridBuilderInterface
         return $this->gridDefinition;
     }
 
+    public function setDriver(string $driver): GridBuilderInterface
+    {
+        $this->gridDefinition->setDriver($driver);
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */

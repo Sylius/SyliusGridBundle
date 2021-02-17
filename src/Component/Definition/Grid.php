@@ -61,6 +61,11 @@ class Grid
         return $this->driver;
     }
 
+    public function setDriver(string $driver): void
+    {
+        $this->driver = $driver;
+    }
+
     public function getDriverConfiguration(): array
     {
         return $this->driverConfiguration;
