@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Grid;
@@ -27,16 +36,14 @@ class AuthorGrid extends AbstractGrid
         $gridBuilder
             ->addFilter(Filter::create('name', 'string'))
             ->orderBy('name', 'asc')
-            ->addField(
-                Field::create('name', 'string')
-                    ->setLabel('Name')
-                    ->setSortable(true)
+            ->addField(Field::create('name', 'string')
+                ->setLabel('Name')
+                ->setSortable(true)
             )
-            ->addField(
-                Field::create('nationality', 'string')
-                    ->setLabel('Name')
-                    ->setPath('nationality.name')
-                    ->setSortable(true, 'nationality.name')
+            ->addField(Field::create('nationality', 'string')
+                ->setLabel('Name')
+                ->setPath('nationality.name')
+                ->setSortable(true, 'nationality.name')
             )
             ->setLimits([10, 5, 15])
         ;

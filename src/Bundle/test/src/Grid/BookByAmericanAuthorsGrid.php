@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace App\Grid;
@@ -42,22 +51,19 @@ class BookByAmericanAuthorsGrid extends AbstractGrid
                 ])
             )
             ->orderBy('title', 'asc')
-            ->addField(
-                Field::create('title', 'string')
-                    ->setLabel('Title')
-                    ->setSortable(true)
+            ->addField(Field::create('title', 'string')
+                ->setLabel('Title')
+                ->setSortable(true)
             )
-            ->addField(
-                Field::create('author', 'string')
-                    ->setLabel('Author')
-                    ->setPath('author.name')
-                    ->setSortable(true, 'author.name')
+            ->addField(Field::create('author', 'string')
+                ->setLabel('Author')
+                ->setPath('author.name')
+                ->setSortable(true, 'author.name')
             )
-            ->addField(
-                Field::create('nationality', 'string')
-                    ->setLabel('Nationality')
-                    ->setPath('na.name')
-                    ->setSortable(true, 'na.name')
+            ->addField(Field::create('nationality', 'string')
+                ->setLabel('Nationality')
+                ->setPath('na.name')
+                ->setSortable(true, 'na.name')
             )
             ->setLimits([10, 5, 15])
         ;
