@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid;
 
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Definition\Grid;
 
 interface GridInterface
@@ -22,4 +23,6 @@ interface GridInterface
     public static function getResourceClass(): string;
 
     public function getDefinition(): Grid;
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void;
 }

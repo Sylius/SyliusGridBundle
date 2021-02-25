@@ -33,7 +33,7 @@ class BookGrid extends AbstractGrid
         return Book::class;
     }
 
-    protected function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
             ->addFilter(Filter::create('title', 'string'))

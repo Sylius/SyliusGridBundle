@@ -31,7 +31,7 @@ class AuthorGrid extends AbstractGrid
         return Author::class;
     }
 
-    protected function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
             ->addFilter(Filter::create('name', 'string'))

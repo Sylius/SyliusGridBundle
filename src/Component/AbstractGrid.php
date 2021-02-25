@@ -27,8 +27,4 @@ abstract class AbstractGrid implements GridInterface
 
         return $gridBuilder->getDefinition();
     }
-
-    protected function buildGrid(GridBuilderInterface $gridBuilder): void
-    {
-    }
 }
