@@ -61,7 +61,7 @@
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.0",
         "phpstan/phpstan": "0.12.81",
-        "phpstan/phpstan-phpunit": "0.12.17",
+        "phpstan/phpstan-phpunit": "0.12.18",
         "phpstan/phpstan-webmozart-assert": "0.12.12",
         "phpunit/phpunit": "^9.5",
         "sylius-labs/coding-standard": "^3.0",
