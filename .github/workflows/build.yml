@@ -16,7 +16,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.4]
+                php: [7.4, 8.0]
                 symfony: [^4.4, ^5.2]
 
                 include:
@@ -47,13 +47,13 @@ jobs:
                 name: Require sylius/currency-bundle
                 if: matrix.currency-bundle != ''
                 run: |
-                    composer require "sylius/currency-bundle:${{ matrix.currency-bundle }}"
+                    composer require "sylius/currency-bundle:${{ matrix.currency-bundle }}" --no-update --no-scripts
 
             -
                 name: Install dependencies
                 run: |
-                    composer update ${{ matrix.composer-flags }} --no-scripts
-                    (cd src/Component && composer update ${{ matrix.composer-flags }} --no-scripts)
+                    composer update ${{ matrix.php == '8.0' && '--ignore-platform-req=php' || '' }} --no-scripts
+                    (cd src/Component && composer update ${{ matrix.php == '8.0' && '--ignore-platform-req=php' || '' }} --no-scripts)
 
             -
                 name: Prepare test application

@@ -33,23 +33,26 @@ use Sylius\Component\Grid\Parameters;
  */
 final class DataSourceSpec extends ObjectBehavior
 {
-    function let(QueryBuilder $queryBuilder, ExpressionBuilderInterface $expressionBuilder): void
+    function it_implements_data_source(
+        QueryBuilder $queryBuilder,
+        ExpressionBuilderInterface $expressionBuilder
+    ): void
     {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
-    }
 
-    function it_implements_data_source(): void
-    {
         $this->shouldImplement(DataSourceInterface::class);
     }
 
     function it_should_restrict_with_or_condition(
+        QueryBuilder $queryBuilder,
+        ExpressionBuilderInterface $expressionBuilder,
         Comparison $comparison,
         Value $value,
-        QueryBuilder $queryBuilder,
         ConstraintOrx $constraint,
         ConstraintComparison $comparisonConstraint
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $queryBuilder->orWhere()->willReturn($constraint);
         $value->getValue()->willReturn('value');
         $comparison->getValue()->willReturn($value);
@@ -65,16 +68,23 @@ final class DataSourceSpec extends ObjectBehavior
     }
 
     function it_should_throw_an_exception_if_an_unknown_condition_is_passed(
+        QueryBuilder $queryBuilder,
+        ExpressionBuilderInterface $expressionBuilder,
         Comparison $comparison
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $this->shouldThrow(
             new \RuntimeException('Unknown restrict condition "foo"')
         )->during('restrict', [$comparison, 'foo']);
     }
 
     function it_should_return_the_expression_builder(
+        QueryBuilder $queryBuilder,
         ExpressionBuilderInterface $expressionBuilder
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $this->getExpressionBuilder()->shouldReturn($expressionBuilder);
     }
 
@@ -83,6 +93,8 @@ final class DataSourceSpec extends ObjectBehavior
         ExpressionBuilderInterface $expressionBuilder,
         Query $query
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $expressionBuilder->getOrderBys()->willReturn([]);
 
         $queryBuilder->orderBy()->willReturn(null);
@@ -101,6 +113,8 @@ final class DataSourceSpec extends ObjectBehavior
         OrderBy $orderBy,
         Ordering $ordering
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $expressionBuilder->getOrderBys()->willReturn([
             'foo' => 'asc',
             'bar' => 'desc',
@@ -126,6 +140,8 @@ final class DataSourceSpec extends ObjectBehavior
         OrderBy $orderBy,
         Ordering $ordering
     ): void {
+        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+
         $expressionBuilder->getOrderBys()->willReturn([
             'foo',
             'bar',
