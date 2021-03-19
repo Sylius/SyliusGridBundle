@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
 
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineODMPhpcrAdapter;
+use Pagerfanta\Doctrine\PHPCRODM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -77,7 +77,7 @@ final class DataSource implements DataSourceInterface
             $orderBy->{$direction}()->field(sprintf('%s.%s', Driver::QB_SOURCE_ALIAS, $field));
         }
 
-        $paginator = new Pagerfanta(new DoctrineODMPhpcrAdapter($this->queryBuilder));
+        $paginator = new Pagerfanta(new QueryAdapter($this->queryBuilder));
         $paginator->setCurrentPage($parameters->get('page', 1));
 
         return $paginator;
