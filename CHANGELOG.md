@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## CHANGELOG FOR `1.9.x`
+
+### v1.9.0 (2021-03-19)
+
+#### TL;DR
+
+- Added support for PHP 8.0
+- Bumped PHP requirements to ^7.4
+- Bumped Symfony requirements to ^4.4 || ^5.2
+
+#### Details
+
+- [#114](https://github.com/Sylius/SyliusGridBundle/issues/114) Refactor test app ([@loic425](https://github.com/loic425))
+- [#116](https://github.com/Sylius/SyliusGridBundle/issues/116) Fix the build ([@pamil](https://github.com/pamil))
+- [#117](https://github.com/Sylius/SyliusGridBundle/issues/117) Bump up requirements to PHP ^7.4 and Symfony ^5.2 ([@pamil](https://github.com/pamil))
+- [#142](https://github.com/Sylius/SyliusGridBundle/issues/142) Add support for PHP 8 ([@pamil](https://github.com/pamil))
+
 ## CHANGELOG FOR `1.8.x`
 
 ### v1.8.0 (2020-12-08)
