@@ -12,3 +12,5 @@ suites:
 
 extensions:
     Akeneo\SkipExampleExtension: ~
+
+bootstrap: phpspec/bootstrap.php
