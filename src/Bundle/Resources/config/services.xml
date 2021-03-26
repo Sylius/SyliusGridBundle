@@ -29,7 +29,7 @@
             <argument type="service" id="event_dispatcher" />
         </service>
         <service id="sylius.grid.grid_registry" class="Sylius\Component\Grid\GridRegistry">
-            <argument type="tagged_iterator" tag="sylius.grid" default-index-method="getName" />
+            <argument type="tagged_iterator" tag="sylius.grid" />
         </service>
 
         <service id="sylius.grid.array_grid_provider" class="Sylius\Component\Grid\Provider\ArrayGridProvider">

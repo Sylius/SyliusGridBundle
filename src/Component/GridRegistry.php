@@ -15,11 +15,18 @@ namespace Sylius\Component\Grid;
 
 final class GridRegistry
 {
-    private array $grids;
+    private array $grids = [];
 
     public function __construct(\Traversable $grids)
     {
-        $this->grids = iterator_to_array($grids);
+        foreach ($grids as $grid) {
+            $this->addGrid($grid);
+        }
+    }
+
+    public function addGrid(GridInterface $grid): void
+    {
+        $this->grids[$grid::getName()] = $grid;
     }
 
     public function getGrid(string $code): ?GridInterface
