@@ -2,22 +2,20 @@
 
 namespace spec\Sylius\Component\Grid;
 
-use App\Entity\Book;
-use App\Grid\AuthorGrid;
-use App\Grid\BookByEnglishAuthorsGrid;
-use App\Grid\BookGrid;
-use App\QueryBuilder\EnglishBooksQueryBuilder;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\GridInterface;
 use Sylius\Component\Grid\GridRegistry;
+use Sylius\Component\Grid\Tests\Dummy\Bar;
+use Sylius\Component\Grid\Tests\Dummy\BarGrid;
+use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 
 class GridRegistrySpec extends ObjectBehavior
 {
     function let(): void
     {
         $this->beConstructedWith(new \ArrayIterator([
-            new AuthorGrid(),
-            new BookGrid(),
+            new FooGrid(),
+            new BarGrid(),
         ]));
     }
 
@@ -30,17 +28,17 @@ class GridRegistrySpec extends ObjectBehavior
     {
         $this->beConstructedWith(new \ArrayIterator([]));
 
-        $grid = new BookGrid();
+        $grid = new FooGrid();
 
         $this->addGrid($grid);
 
-        $this->getGrid('app_book')->shouldReturn($grid);
+        $this->getGrid('app_foo')->shouldReturn($grid);
     }
 
     function it_returns_grids_from_its_code(): void
     {
-        $this->getGrid('app_author')->shouldHaveType(AuthorGrid::class);
-        $this->getGrid('app_book')->shouldHaveType(BookGrid::class);
+        $this->getGrid('app_foo')->shouldHaveType(FooGrid::class);
+        $this->getGrid('app_bar')->shouldHaveType(BarGrid::class);
     }
 
     function it_returns_null_when_grid_was_not_found(GridInterface $firstGrid, GridInterface $secondGrid): void
