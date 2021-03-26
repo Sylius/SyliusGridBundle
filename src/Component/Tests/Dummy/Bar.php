@@ -17,7 +17,8 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 
 final class Bar implements ResourceInterface
 {
-    public function getId()
+    public function getId(): ?int
     {
+        return 666;
     }
 }
