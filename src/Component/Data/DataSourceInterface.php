@@ -21,6 +21,10 @@ interface DataSourceInterface
 
     public const CONDITION_OR = 'or';
 
+    public const CONDITION_HAVING_AND = 'having and';
+
+    public const CONDITION_HAVING_OR = 'having or';
+
     /**
      * @param mixed $expression
      */

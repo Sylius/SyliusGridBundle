@@ -41,80 +41,80 @@ interface ExpressionBuilderInterface
      *
      * @return mixed
      */
-    public function equals(string $field, $value);
+    public function equals(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function notEquals(string $field, $value);
+    public function notEquals(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function lessThan(string $field, $value);
+    public function lessThan(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function lessThanOrEqual(string $field, $value);
+    public function lessThanOrEqual(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function greaterThan(string $field, $value);
+    public function greaterThan(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @param mixed $value
      *
      * @return mixed
      */
-    public function greaterThanOrEqual(string $field, $value);
+    public function greaterThanOrEqual(string $field, $value, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function in(string $field, array $values);
+    public function in(string $field, array $values, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function notIn(string $field, array $values);
+    public function notIn(string $field, array $values, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function isNull(string $field);
+    public function isNull(string $field, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function isNotNull(string $field);
+    public function isNotNull(string $field, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function like(string $field, string $pattern);
+    public function like(string $field, string $pattern, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function notLike(string $field, string $pattern);
+    public function notLike(string $field, string $pattern, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function orderBy(string $field, string $direction);
+    public function orderBy(string $field, string $direction, ?bool$addJoinAlias = true);
 
     /**
      * @return mixed
      */
-    public function addOrderBy(string $field, string $direction);
+    public function addOrderBy(string $field, string $direction, ?bool$addJoinAlias = true);
 }

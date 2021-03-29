@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -45,6 +45,14 @@ final class DataSource implements DataSourceInterface
                 $this->queryBuilder->orWhere($expression);
 
                 break;
+            case DataSourceInterface::CONDITION_HAVING_AND:
+                $this->queryBuilder->andHaving($expression);
+
+                break;
+            case DataSourceInterface::CONDITION_HAVING_OR:
+                $this->queryBuilder->orHaving($expression);
+
+                break;
         }
     }
 
@@ -55,11 +63,26 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
-        // Use output walkers option in DoctrineORMAdapter should be false as it affects performance greatly. (see #3775)
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($this->queryBuilder, false, false));
+        // Use output walkers option in QueryAdapter should be false as it affects performance greatly. (see #3775)
+        // Exception: Use output walkers option should be `true` if DQL parts has `having` clause
+        $useOutputWalkers = $this->queryHasHavingClause();
+
+        $paginator = new Pagerfanta(
+            new QueryAdapter(
+                $this->queryBuilder,
+                false,
+                $useOutputWalkers
+            )
+        );
+
         $paginator->setNormalizeOutOfRangePages(true);
         $paginator->setCurrentPage($parameters->get('page', 1));
 
         return $paginator;
+    }
+
+    private function queryHasHavingClause(): bool
+    {
+        return null !== $this->queryBuilder->getDQLPart('having');
     }
 }

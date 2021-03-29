@@ -44,114 +44,134 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return new Comparison($field, $operator, $value);
     }
 
-    public function equals(string $field, $value)
+    public function equals(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->eq($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->eq($field, ':' . $parameterName);
     }
 
-    public function notEquals(string $field, $value)
+    public function notEquals(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->neq($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->neq($field, ':' . $parameterName);
     }
 
-    public function lessThan(string $field, $value)
+    public function lessThan(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->lt($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->lt($field, ':' . $parameterName);
     }
 
-    public function lessThanOrEqual(string $field, $value)
+    public function lessThanOrEqual(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->lte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->lte($field, ':' . $parameterName);
     }
 
-    public function greaterThan(string $field, $value)
+    public function greaterThan(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->gt($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->gt($field, ':' . $parameterName);
     }
 
-    public function greaterThanOrEqual(string $field, $value)
+    public function greaterThanOrEqual(string $field, $value, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
         $this->queryBuilder->setParameter($parameterName, $value);
 
-        return $this->queryBuilder->expr()->gte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
+
+        return $this->queryBuilder->expr()->gte($field, ':' . $parameterName);
     }
 
-    public function in(string $field, array $values)
+    public function in(string $field, array $values, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->in($this->resolveFieldByAddingJoins($field), $values);
+        return $this->queryBuilder->expr()->in($field, $values);
     }
 
-    public function notIn(string $field, array $values)
+    public function notIn(string $field, array $values, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->notIn($this->resolveFieldByAddingJoins($field), $values);
+        return $this->queryBuilder->expr()->notIn($field, $values);
     }
 
-    public function isNull(string $field)
+    public function isNull(string $field, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->isNull($this->resolveFieldByAddingJoins($field));
+        return $this->queryBuilder->expr()->isNull($field);
     }
 
-    public function isNotNull(string $field)
+    public function isNotNull(string $field, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->isNotNull($this->resolveFieldByAddingJoins($field));
+        return $this->queryBuilder->expr()->isNotNull($field);
     }
 
-    public function like(string $field, string $pattern)
+    public function like(string $field, string $pattern, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->like($this->resolveFieldByAddingJoins($field), $this->queryBuilder->expr()->literal($pattern));
+        return $this->queryBuilder->expr()->like($field, $this->queryBuilder->expr()->literal($pattern));
     }
 
-    public function notLike(string $field, string $pattern)
+    public function notLike(string $field, string $pattern, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->expr()->notLike($this->resolveFieldByAddingJoins($field), $this->queryBuilder->expr()->literal($pattern));
+        return $this->queryBuilder->expr()->notLike($field, $this->queryBuilder->expr()->literal($pattern));
     }
 
-    public function orderBy(string $field, string $direction)
+    public function orderBy(string $field, string $direction, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->orderBy($this->resolveFieldByAddingJoins($field), $direction);
+        return $this->queryBuilder->orderBy($field, $direction);
     }
 
-    public function addOrderBy(string $field, string $direction)
+    public function addOrderBy(string $field, string $direction, ?bool $addJoinAlias = true)
     {
         $field = $this->adjustField($field);
+        $field = true === $addJoinAlias ? $this->resolveFieldByAddingJoins($field) : $field;
 
-        return $this->queryBuilder->addOrderBy($this->resolveFieldByAddingJoins($field), $direction);
+        return $this->queryBuilder->addOrderBy($field, $direction);
     }
 
     private function getParameterName(string $field): string
