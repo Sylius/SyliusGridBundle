@@ -15,6 +15,9 @@ namespace Sylius\Component\Grid\Config\Builder;
 
 use Symfony\Component\Config\Builder\ConfigBuilderInterface as SymfonyConfigBuilderInterface;
 
+/**
+ * @psalm-suppress UnrecognizedStatement
+ */
 if (\class_exists(SymfonyConfigBuilderInterface::class)) {
     interface ConfigBuilderInterface extends SymfonyConfigBuilderInterface
     {
