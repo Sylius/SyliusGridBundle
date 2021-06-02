@@ -15,6 +15,7 @@ parameters:
         - %currentWorkingDirectory%/src/Bundle/spec/*
         - %currentWorkingDirectory%/src/Bundle/test/*
         - %currentWorkingDirectory%/src/Bundle/Tests/*
+        - %currentWorkingDirectory%/src/Component/Config/Builder/GridConfigInterface.php
         - %currentWorkingDirectory%/src/Component/spec/*
         - %currentWorkingDirectory%/src/Component/vendor/*
 
