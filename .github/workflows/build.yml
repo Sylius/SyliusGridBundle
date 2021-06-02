@@ -74,3 +74,9 @@ jobs:
             -
                 name: Run bundle tests
                 run: composer test
+
+            -
+                name: Run tests for grids with php config
+                run: |
+                    (cd src/Bundle/test && bin/console cache:clear --env=test_grids_with_php_config)
+                    APP_ENV=test_grids_with_php_config composer test

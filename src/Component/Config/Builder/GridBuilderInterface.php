@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
-interface GridBuilderInterface extends ConfigBuilderInterface
+interface GridBuilderInterface
 {
     public static function create(string $name, string $resourceClass): self;
 
@@ -51,4 +51,6 @@ interface GridBuilderInterface extends ConfigBuilderInterface
     public function addUpdateAction(array $options = []): self;
 
     public function addDeleteAction(array $options = []): self;
+
+    public function toArray(): array;
 }

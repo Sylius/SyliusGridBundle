@@ -13,7 +13,29 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
-interface GridConfigInterface
-{
-    public function addGrid(GridBuilderInterface $gridBuilder): self;
+use Symfony\Component\Config\Builder\ConfigBuilderInterface;
+
+/**
+ * @psalm-suppress UnrecognizedStatement
+ */
+if (interface_exists(ConfigBuilderInterface::class)) {
+    interface GridConfigInterface extends ConfigBuilderInterface
+    {
+        public function addGrid(GridBuilderInterface $gridBuilder): self;
+    }
+} else {
+    interface GridConfigInterface
+    {
+        public function addGrid(GridBuilderInterface $gridBuilder): self;
+
+        /**
+         * Gets all configuration represented as an array.
+         */
+        public function toArray(): array;
+
+        /**
+         * Gets the alias for the extension which config we are building.
+         */
+        public function getExtensionAlias(): string;
+    }
 }
