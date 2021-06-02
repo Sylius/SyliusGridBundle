@@ -2,7 +2,6 @@
 
 use App\Entity\Book;
 use App\Entity\Nationality;
-use App\QueryBuilder\EnglishBooksQueryBuilder;
 use Sylius\Component\Grid\Config\Builder\Field;
 use Sylius\Component\Grid\Config\Builder\Filter;
 use Sylius\Component\Grid\Config\Builder\GridBuilder;
@@ -10,7 +9,7 @@ use Sylius\Component\Grid\Config\Builder\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_book_by_english_authors', Book::class)
-        ->setRepositoryMethod([EnglishBooksQueryBuilder::class, 'create'])
+        ->setRepositoryMethod(["expr:service('app.english_books_query_builder')", 'create'])
         ->addFilter(Filter::create('title', 'string'))
         ->addFilter(Filter::create('author', 'entity')
             ->setFormOptions([
