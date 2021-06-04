@@ -196,12 +196,4 @@ final class GridBuilder implements GridBuilderInterface
 
         return $output;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExtensionAlias(): string
-    {
-        return 'sylius_resource';
-    }
 }
