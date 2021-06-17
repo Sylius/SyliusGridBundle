@@ -10,3 +10,4 @@ framework:
         storage_id: session.storage.mock_file
     http_method_override: true
     test: ~
+    annotations: true
