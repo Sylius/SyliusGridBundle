@@ -72,7 +72,7 @@
         "symfony/twig-bundle": "^4.4 || ^5.2",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
-        "vimeo/psalm": "4.6.4"
+        "vimeo/psalm": "4.8.1"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
