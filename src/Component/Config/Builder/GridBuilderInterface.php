@@ -42,15 +42,19 @@ interface GridBuilderInterface
 
     public function addActionGroup(string $name): self;
 
+    public function addAction(ActionInterface $action, string $group): self;
+
     public function addMainAction(ActionInterface $action): self;
 
     public function addItemAction(ActionInterface $action): self;
 
-    public function addCreateAction(array $options = []): self;
+    public function addBulkAction(ActionInterface $action): self;
 
-    public function addUpdateAction(array $options = []): self;
+    public function addCreateAction(array $options = [], string $group = 'main'): self;
 
-    public function addDeleteAction(array $options = []): self;
+    public function addUpdateAction(array $options = [], string $group = 'item'): self;
+
+    public function addDeleteAction(array $options = [], string $group = 'item'): self;
 
     public function toArray(): array;
 }

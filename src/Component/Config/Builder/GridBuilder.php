@@ -97,48 +97,61 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function addMainAction(ActionInterface $action): self
+    public function addAction(ActionInterface $action, string $group): self
     {
-        $this->addActionGroup('main');
-        $this->actionGroups['main']->addAction($action);
+        if (!isset($this->actionGroups[$group])) {
+            $this->actionGroups[$group] = ActionGroup::create($group);
+        }
+
+        $this->actionGroups[$group]->addAction($action);
 
         return $this;
     }
 
-    public function addCreateAction(array $options = []): self
+    public function addMainAction(ActionInterface $action): self
     {
-        $action = Action::create('create', 'create');
-        $action->setOptions($options);
-        $this->addMainAction($action);
+        $this->addAction($action, 'main');
 
         return $this;
     }
 
     public function addItemAction(ActionInterface $action): self
     {
-        if (!isset($this->actionGroups['item'])) {
-            $this->actionGroups['item'] = ActionGroup::create('item');
-        }
-
-        $this->actionGroups['item']->addAction($action);
+        $this->addAction($action, 'item');
 
         return $this;
     }
 
-    public function addUpdateAction(array $options = []): self
+    public function addBulkAction(ActionInterface $action): self
+    {
+        $this->addAction($action, 'bulk');
+
+        return $this;
+    }
+
+    public function addCreateAction(array $options = [], string $group = 'main'): self
+    {
+        $action = Action::create('create', 'create');
+        $action->setOptions($options);
+        $this->addAction($action, $group);
+
+        return $this;
+    }
+
+    public function addUpdateAction(array $options = [], string $group = 'item'): self
     {
         $action = Action::create('update', 'update');
         $action->setOptions($options);
-        $this->addItemAction($action);
+        $this->addAction($action, $group);
 
         return $this;
     }
 
-    public function addDeleteAction(array $options = []): self
+    public function addDeleteAction(array $options = [], string $group = 'item'): self
     {
         $action = Action::create('delete', 'delete');
         $action->setOptions($options);
-        $this->addItemAction($action);
+        $this->addAction($action, $group);
 
         return $this;
     }
