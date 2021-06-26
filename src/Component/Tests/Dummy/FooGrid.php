@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Tests\Dummy;
 
 use Sylius\Component\Grid\AbstractGrid;
-use Sylius\Component\Grid\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Config\Builder\GridBuilderInterface;
 
 final class FooGrid extends AbstractGrid
 {

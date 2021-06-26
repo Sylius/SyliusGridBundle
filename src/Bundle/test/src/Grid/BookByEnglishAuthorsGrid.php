@@ -17,9 +17,9 @@ use App\Entity\Book;
 use App\Entity\Nationality;
 use App\QueryBuilder\EnglishBooksQueryBuilder;
 use Sylius\Component\Grid\AbstractGrid;
-use Sylius\Component\Grid\Builder\Field;
-use Sylius\Component\Grid\Builder\Filter;
-use Sylius\Component\Grid\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Config\Builder\Field;
+use Sylius\Component\Grid\Config\Builder\Filter;
+use Sylius\Component\Grid\Config\Builder\GridBuilderInterface;
 
 class BookByEnglishAuthorsGrid extends AbstractGrid
 {
