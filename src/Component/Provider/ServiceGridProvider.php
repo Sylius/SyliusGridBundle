@@ -20,8 +20,6 @@ use Sylius\Component\Grid\GridRegistry;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
-    public const EVENT_NAME = 'sylius.grid.%s';
-
     private ArrayToDefinitionConverterInterface $converter;
     private GridRegistry $gridRegistry;
 
