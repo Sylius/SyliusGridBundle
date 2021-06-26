@@ -38,7 +38,7 @@
             <tag name="sylius.grid_provider" key="array" priority="-200"/>
         </service>
         <service id="sylius.grid.service_grid_provider" class="Sylius\Component\Grid\Provider\ServiceGridProvider">
-            <argument type="service" id="event_dispatcher" />
+            <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument type="service" id="sylius.grid.grid_registry" />
             <tag name="sylius.grid_provider" key="service" priority="-100"/>
         </service>
