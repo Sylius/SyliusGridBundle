@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
 use ApiTestCase\JsonApiTestCase;
 
-class PaginationTest extends JsonApiTestCase
+final class PaginationTest extends JsonApiTestCase
 {
     protected function setUp(): void
     {
@@ -33,7 +33,7 @@ class PaginationTest extends JsonApiTestCase
     }
 
     /** @test */
-    public function it_returns_correct_amount_of_items_per_page_with_fetch_join_collection_enabled(): void
+    public function it_returns_correct_amount_of_items_per_page_with_fetch_join_collection_enabled_by_default(): void
     {
         $this->client->request('GET', '/books/by-author/with-fetch-join-collection-enabled');
 

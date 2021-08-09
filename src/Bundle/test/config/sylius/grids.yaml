@@ -164,6 +164,4 @@ sylius_grid:
             driver:
                 options:
                     repository:
-                        method: [ expr:service('app.books_by_author_query_builder'), create ]
-                    pagination:
-                        fetch_join_collection: true
+                        method: [ expr:service('app.books_by_author_query_builder'), create]
