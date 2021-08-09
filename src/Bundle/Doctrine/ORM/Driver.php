@@ -27,24 +27,9 @@ final class Driver implements DriverInterface
     /** @var ManagerRegistry */
     private $managerRegistry;
 
-    /** @var bool */
-    private $fetchJoinCollection;
-
-    /** @var bool|null */
-    private $useOutputWalkers;
-
-    /**
-     * @param bool $fetchJoinCollection {@see \Sylius\Bundle\GridBundle\Doctrine\ORM\DataSource::__construct}
-     * @param bool|null $useOutputWalkers {@see \Sylius\Bundle\GridBundle\Doctrine\ORM\DataSource::__construct}
-     */
-    public function __construct(
-        ManagerRegistry $managerRegistry,
-        bool $fetchJoinCollection = false,
-        ?bool $useOutputWalkers = false
-    ) {
+    public function __construct(ManagerRegistry $managerRegistry)
+    {
         $this->managerRegistry = $managerRegistry;
-        $this->fetchJoinCollection = $fetchJoinCollection;
-        $this->useOutputWalkers = $useOutputWalkers;
     }
 
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
@@ -59,8 +44,8 @@ final class Driver implements DriverInterface
         /** @var EntityRepository $repository */
         $repository = $manager->getRepository($configuration['class']);
 
-        $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? $this->fetchJoinCollection;
-        $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? $this->useOutputWalkers;
+        $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? true;
+        $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? true;
 
         if (!isset($configuration['repository']['method'])) {
             return new DataSource($repository->createQueryBuilder('o'), $fetchJoinCollection, $useOutputWalkers);
