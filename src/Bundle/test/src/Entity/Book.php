@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use JMS\Serializer\Annotation as Serializer;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TranslationInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
@@ -33,6 +36,11 @@ class Book implements ResourceInterface
      * @Serializer\Type("integer")
      */
     private ?int $id = null;
+
+    /** @var ArrayCollection|PersistentCollection|TranslationInterface[]
+     * @Serializer\Expose
+     */
+    private $translations;
 
     /**
      *
@@ -102,5 +110,15 @@ class Book implements ResourceInterface
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function setTranslations($translations): void
+    {
+        $this->translations = $translations;
+    }
+
+    public function getTranslations(): array
+    {
+        return $this->translations;
     }
 }

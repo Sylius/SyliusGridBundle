@@ -17,27 +17,37 @@ App\Entity\Author:
         name: "<firstName()> <lastName()>"
         nationality: "@nationality_english"
 
+App\Entity\BookTranslation:
+    book_translation_1:
+        title: "First Translation"
+    book_translation_2:
+        title: "Second Translation"
+
 App\Entity\Book:
     book_jurassic_park:
         title: "Jurassic Park"
         author: "@author_michael_crichton"
         price: "@price_1"
         state: 'published'
+        translations: ["@book_translation_1", "@book_translation_2"]
     book_the_lost_world:
         title: "The Lost World"
         author: "@author_michael_crichton"
         price: "@price_2"
         state: 'unpublished'
+        translations: [ "@book_translation_1", "@book_translation_2"]
     book_study_in_scarlet:
         title: "A Study in Scarlet"
         author: "@author_john_watson"
         price: "@price_<numberBetween(1, 2)>"
         state: 'initial'
+        translations: [ "@book_translation_1", "@book_translation_2"]
     book_{1..100}:
         title: "Book <current()>"
         author: "@author_<numberBetween(1, 19)>"
         price: "@price_<numberBetween(1, 2)>"
         state: 'published'
+        translations: [ "@book_translation_1", "@book_translation_2"]
 
 App\Entity\Price:
     price_1:

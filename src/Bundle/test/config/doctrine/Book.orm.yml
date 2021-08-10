@@ -24,3 +24,15 @@ App\Entity\Book:
             joinColumn:
                 name: author_id
                 referencedColumnName: id
+    manyToMany:
+        translations:
+            targetEntity: App\Entity\BookTranslation
+            joinTable:
+                name: books_translations
+                joinColumns:
+                    book_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    book_translation_id:
+                        referencedColumnName: id
+                        unique: true

@@ -27,7 +27,17 @@
                         "name": "American"
                     }
                 },
-                "price": "@array@"
+                "price": "@array@",
+                "translations": [
+                    {
+                        "id": "@integer@",
+                        "title": "First Translation"
+                    },
+                    {
+                        "id": "@integer@",
+                        "title": "First Translation"
+                    }
+                ]
             },
             {
                 "id": "@integer@",
@@ -40,7 +50,17 @@
                         "name": "American"
                     }
                 },
-                "price": "@array@"
+                "price": "@array@",
+                "translations": [
+                    {
+                        "id": "@integer@",
+                        "title": "First Translation"
+                    },
+                    {
+                        "id": "@integer@",
+                        "title": "First Translation"
+                    }
+                ]
             }
         ]
     }
