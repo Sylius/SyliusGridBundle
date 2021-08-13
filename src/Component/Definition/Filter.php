@@ -15,20 +15,15 @@ namespace Sylius\Component\Grid\Definition;
 
 class Filter
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var string|null */
-    private $label;
+    private ?string $label;
 
-    /** @var bool */
-    private $enabled = true;
+    private bool $enabled = true;
 
-    /** @var string|null */
-    private $template;
+    private ?string $template = null;
 
     /** @var array */
     private $options = [];
@@ -40,12 +35,10 @@ class Filter
     private $criteria;
 
     /**
-     * @var int
-     *
      * Position equals to 100 to ensure that wile sorting filters by position ASC
      * the filters positioned by default will be last
      */
-    private $position = 100;
+    private int $position = 100;
 
     private function __construct(string $name, string $type)
     {

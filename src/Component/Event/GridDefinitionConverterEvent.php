@@ -18,8 +18,7 @@ use SyliusLabs\Polyfill\Symfony\EventDispatcher\Event;
 
 final class GridDefinitionConverterEvent extends Event
 {
-    /** @var Grid */
-    private $grid;
+    private Grid $grid;
 
     public function __construct(Grid $grid)
     {

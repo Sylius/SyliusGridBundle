@@ -21,20 +21,18 @@ use JMS\Serializer\Annotation as Serializer;
 final class Price
 {
     /**
-     * @var int|null
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $amount;
+    private ?int $amount = null;
 
     /**
-     * @var string|null
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    private $currencyCode;
+    private ?string $currencyCode = null;
 
     public function getAmount(): ?int
     {

@@ -21,8 +21,7 @@ use Sylius\Component\Grid\View\GridView;
 
 class GridHelper
 {
-    /** @var GridRendererInterface */
-    private $gridRenderer;
+    private GridRendererInterface $gridRenderer;
 
     public function __construct(GridRendererInterface $gridRenderer)
     {

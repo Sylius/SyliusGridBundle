@@ -21,11 +21,9 @@ use Twig\Environment;
 
 final class TwigFieldType implements FieldTypeInterface
 {
-    /** @var DataExtractorInterface */
-    private $dataExtractor;
+    private DataExtractorInterface $dataExtractor;
 
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
     public function __construct(DataExtractorInterface $dataExtractor, Environment $twig)
     {

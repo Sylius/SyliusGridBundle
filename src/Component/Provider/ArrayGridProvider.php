@@ -19,11 +19,10 @@ use Sylius\Component\Grid\Exception\UndefinedGridException;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
-    /** @var ArrayToDefinitionConverterInterface */
-    private $converter;
+    private ArrayToDefinitionConverterInterface $converter;
 
     /** @var array[] */
-    private $gridConfigurations;
+    private array $gridConfigurations;
 
     public function __construct(ArrayToDefinitionConverterInterface $converter, array $gridConfigurations)
     {

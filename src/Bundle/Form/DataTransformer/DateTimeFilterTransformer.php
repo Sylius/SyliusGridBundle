@@ -19,13 +19,12 @@ use Webmozart\Assert\Assert;
 final class DateTimeFilterTransformer implements DataTransformerInterface
 {
     /** @var array<string, array{hour: string, minute: string}> */
-    private static $defaultTime = [
+    private static array $defaultTime = [
         'from' => ['hour' => '00', 'minute' => '00'],
         'to' => ['hour' => '23', 'minute' => '59'],
     ];
 
-    /** @var string */
-    private $type;
+    private string $type;
 
     public function __construct(string $type)
     {

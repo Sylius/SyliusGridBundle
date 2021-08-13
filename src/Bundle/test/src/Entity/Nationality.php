@@ -22,20 +22,18 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 class Nationality implements ResourceInterface
 {
     /**
-     * @var int|null
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    private $name;
+    private ?string $name = null;
 
     public function getId(): ?int
     {

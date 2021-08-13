@@ -32,8 +32,7 @@ final class Driver implements DriverInterface
      */
     public const QB_SOURCE_ALIAS = 'o';
 
-    /** @var DocumentManagerInterface */
-    private $documentManager;
+    private DocumentManagerInterface $documentManager;
 
     public function __construct(DocumentManagerInterface $documentManager)
     {
