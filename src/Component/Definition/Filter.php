@@ -19,8 +19,7 @@ class Filter
 
     private string $type;
 
-    /** @var string|bool|null */
-    private $label;
+    private ?string $label;
 
     private bool $enabled = true;
 
