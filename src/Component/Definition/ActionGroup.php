@@ -15,8 +15,7 @@ namespace Sylius\Component\Grid\Definition;
 
 class ActionGroup
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
     /** @var Action[] */
     private $actions = [];

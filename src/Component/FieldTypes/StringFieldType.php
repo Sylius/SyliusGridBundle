@@ -19,8 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class StringFieldType implements FieldTypeInterface
 {
-    /** @var DataExtractorInterface */
-    private $dataExtractor;
+    private DataExtractorInterface $dataExtractor;
 
     public function __construct(DataExtractorInterface $dataExtractor)
     {

@@ -24,30 +24,26 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 class Author implements ResourceInterface
 {
     /**
-     * @var int|null
      *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
      *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    private $name;
+    private ?string $name = null;
 
     /**
-     * @var Nationality|null
-     *
      * @Serializer\Expose
      */
-    private $nationality;
+    private ?Nationality $nationality = null;
 
     /** @var Collection&Book[] */
-    private $books;
+    private Collection $books;
 
     public function __construct()
     {

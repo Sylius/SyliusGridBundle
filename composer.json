@@ -60,11 +60,11 @@
         "pagerfanta/pagerfanta": "^1.1 || ^2.5",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.0",
-        "phpstan/phpstan": "0.12.82",
+        "phpstan/phpstan": "0.12.94",
         "phpstan/phpstan-phpunit": "0.12.18",
         "phpstan/phpstan-webmozart-assert": "0.12.12",
         "phpunit/phpunit": "^9.5",
-        "sylius-labs/coding-standard": "^3.0",
+        "sylius-labs/coding-standard": "^4.0",
         "sylius/resource-bundle": "^1.8",
         "symfony/console": "^4.4 || ^5.2",
         "symfony/dotenv": "^4.4 || ^5.2",
@@ -72,7 +72,8 @@
         "symfony/twig-bundle": "^4.4 || ^5.2",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
-        "vimeo/psalm": "4.6.4"
+        "vimeo/psalm": "4.6.4",
+        "rector/rector": "^0.11.47"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"

@@ -28,26 +28,19 @@ use Twig\Environment;
 
 final class TwigGridRenderer implements GridRendererInterface
 {
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
-    /** @var ServiceRegistryInterface */
-    private $fieldsRegistry;
+    private ServiceRegistryInterface $fieldsRegistry;
 
-    /** @var FormFactoryInterface */
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
-    /** @var FormTypeRegistryInterface */
-    private $formTypeRegistry;
+    private FormTypeRegistryInterface $formTypeRegistry;
 
-    /** @var string */
-    private $defaultTemplate;
+    private string $defaultTemplate;
 
-    /** @var array */
-    private $actionTemplates;
+    private array $actionTemplates;
 
-    /** @var array */
-    private $filterTemplates;
+    private array $filterTemplates;
 
     public function __construct(
         Environment $twig,

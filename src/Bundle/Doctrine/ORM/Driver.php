@@ -24,8 +24,7 @@ final class Driver implements DriverInterface
 {
     public const NAME = 'doctrine/orm';
 
-    /** @var ManagerRegistry */
-    private $managerRegistry;
+    private ManagerRegistry $managerRegistry;
 
     public function __construct(ManagerRegistry $managerRegistry)
     {
