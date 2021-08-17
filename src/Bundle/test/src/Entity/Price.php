@@ -21,14 +21,12 @@ use JMS\Serializer\Annotation as Serializer;
 final class Price
 {
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
     private ?int $amount = null;
 
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */

@@ -31,19 +31,18 @@ class Book implements ResourceInterface
     public const STATE_UNPUBLISHED = 'unpublished';
 
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
     private ?int $id = null;
 
-    /** @var ArrayCollection|PersistentCollection|TranslationInterface[]
+    /**
+     * @var ArrayCollection|PersistentCollection|TranslationInterface[]
      * @Serializer\Expose
      */
     private $translations;
 
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */

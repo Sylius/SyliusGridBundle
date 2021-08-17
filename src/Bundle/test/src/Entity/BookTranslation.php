@@ -18,15 +18,16 @@ use Sylius\Component\Resource\Model\AbstractTranslation;
 
 class BookTranslation extends AbstractTranslation
 {
-    /** @var mixed
+    /**
      * @Serializer\Expose
+     * @Serializer\Type("integer")
      */
     protected $id;
 
-    /** @var string
+    /**
      * @Serializer\Expose
      */
-    protected $title;
+    protected string $title;
 
     public function getId()
     {

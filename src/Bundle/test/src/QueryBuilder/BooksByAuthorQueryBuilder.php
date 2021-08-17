@@ -18,8 +18,7 @@ use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
 final class BooksByAuthorQueryBuilder
 {
-    /** @var EntityRepository */
-    private $authorRepository;
+    private EntityRepository $authorRepository;
 
     public function __construct(EntityRepository $authorRepository)
     {
