@@ -19,17 +19,16 @@ class Filter
 
     private string $type;
 
-    private ?string $label;
+    /** @var string|bool|null */
+    private $label;
 
     private bool $enabled = true;
 
     private ?string $template = null;
 
-    /** @var array */
-    private $options = [];
+    private array $options = [];
 
-    /** @var array */
-    private $formOptions = [];
+    private array $formOptions = [];
 
     /** @var mixed */
     private $criteria;
@@ -64,7 +63,7 @@ class Filter
     }
 
     /**
-     * @return string|null
+     * @return string|bool|null
      */
     public function getLabel()
     {
@@ -72,7 +71,7 @@ class Filter
     }
 
     /**
-     * @param string|null $label
+     * @param string|bool|null $label
      */
     public function setLabel($label): void
     {

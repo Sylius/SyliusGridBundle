@@ -22,14 +22,12 @@ use Sylius\Component\Resource\Model\ResourceInterface;
 class Nationality implements ResourceInterface
 {
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
     private ?int $id = null;
 
     /**
-     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */

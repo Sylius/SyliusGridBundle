@@ -43,8 +43,11 @@ final class Driver implements DriverInterface
         /** @var EntityRepository $repository */
         $repository = $manager->getRepository($configuration['class']);
 
+        $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? true;
+        $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? true;
+
         if (!isset($configuration['repository']['method'])) {
-            return new DataSource($repository->createQueryBuilder('o'));
+            return new DataSource($repository->createQueryBuilder('o'), $fetchJoinCollection, $useOutputWalkers);
         }
 
         $arguments = isset($configuration['repository']['arguments']) ? array_values($configuration['repository']['arguments']) : [];
@@ -53,9 +56,9 @@ final class Driver implements DriverInterface
             $queryBuilder = $method[0];
             $method = $method[1];
 
-            return new DataSource($queryBuilder->$method(...$arguments));
+            return new DataSource($queryBuilder->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
         }
 
-        return new DataSource($repository->$method(...$arguments));
+        return new DataSource($repository->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
     }
 }

@@ -26,10 +26,24 @@ final class DataSource implements DataSourceInterface
 
     private ExpressionBuilderInterface $expressionBuilder;
 
-    public function __construct(QueryBuilder $queryBuilder)
+    private bool $fetchJoinCollection;
+
+    private bool $useOutputWalkers;
+
+    /**
+     * @param bool $fetchJoinCollection must be 'true' when the query fetch-joins a to-many collection,
+     *                                  otherwise the pagination will yield incorrect results
+     *                                  https://www.doctrine-project.org/projects/doctrine-orm/en/2.7/tutorials/pagination.html
+     * @param bool $useOutputWalkers must be 'true' if the query has an order by statement for a field from
+     *                                the to-many association, otherwise it will throw an exception
+     *                                might greatly affect the performance (https://github.com/Sylius/Sylius/issues/3775)
+     */
+    public function __construct(QueryBuilder $queryBuilder, bool $fetchJoinCollection, bool $useOutputWalkers)
     {
         $this->queryBuilder = $queryBuilder;
         $this->expressionBuilder = new ExpressionBuilder($queryBuilder);
+        $this->fetchJoinCollection = $fetchJoinCollection;
+        $this->useOutputWalkers = $useOutputWalkers;
     }
 
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
@@ -53,8 +67,9 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
-        // Use output walkers option in DoctrineORMAdapter should be false as it affects performance greatly. (see #3775)
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($this->queryBuilder, false, false));
+        $paginator = new Pagerfanta(
+            new DoctrineORMAdapter($this->queryBuilder, $this->fetchJoinCollection, $this->useOutputWalkers)
+        );
         $paginator->setNormalizeOutOfRangePages(true);
         $paginator->setCurrentPage($parameters->get('page', 1));
 
