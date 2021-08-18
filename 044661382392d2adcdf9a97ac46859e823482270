@@ -1,0 +1,33 @@
+---------------------------------------------------------------------------
+
+by vvasiloi at 2020-10-18T12:17:58Z
+
+@lchrusciel can I have a review, please? I need to know if and how I should move forward with this.
+
+---------------------------------------------------------------------------
+
+by pamil at 2020-12-02T18:50:37Z
+
+I think in the current form it's pretty good to go. I'd say the next steps, for now, would be "test with order by to-many association field and allow output walkers enabled/disabled per grid" and "update documentation".
+
+Then it should be good to merge, we can skip configurable default settings for all grids for now and address that later. If so, I think the best place to set it would be `sylius_grid.drivers.orm` configuration.
+
+Also, really cool work on https://github.com/vvasiloi/doctrine-pagination! I wonder if there's some solution that is both performant and accurate? Can it be solved somehow with a custom query (for cases like Sylius/Sylius#3775, when using output walkers takes too much time)?
+
+---------------------------------------------------------------------------
+
+by vvasiloi at 2021-08-09T10:46:25Z
+
+@AdamKasp Thanks for picking it up, I forgot about it... 😞 Do you need anything from me?
+
+---------------------------------------------------------------------------
+
+by vvasiloi at 2021-08-12T08:21:12Z
+
+The "use output walker" parameters should allow `null`, because Doctrine allows it to be null, in which case it will use query hints to determine if an output walker should be used.
+
+---------------------------------------------------------------------------
+
+by lchrusciel at 2021-08-18T09:52:47Z
+
+Thank you, Victor! :tada:
