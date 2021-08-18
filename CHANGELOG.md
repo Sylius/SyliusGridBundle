@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## CHANGELOG FO `1.10.x`
+
+### v1.10.0 (2021-08-18)
+
+#### Details
+
+- [#159](https://github.com/Sylius/SyliusGridBundle/issues/159) Fixing the build ([@loic425](https://github.com/loic425))
+- [#171](https://github.com/Sylius/SyliusGridBundle/issues/171) Use PHP 7.4 syntax ([@Zales0123](https://github.com/Zales0123))
+- [#68](https://github.com/Sylius/SyliusGridBundle/issues/68) Add possibility to set pagination options on grids ([@vvasiloi](https://github.com/vvasiloi), [@AdamKasp](https://github.com/AdamKasp), [@GSadee](https://github.com/GSadee))
+
 ## CHANGELOG FOR `1.9.x`
 
 ### v1.9.0 (2021-03-19)
