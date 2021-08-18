@@ -22,11 +22,9 @@ class GridView implements GridViewInterface
     /** @var mixed */
     private $data;
 
-    /** @var Grid */
-    private $definition;
+    private Grid $definition;
 
-    /** @var Parameters */
-    private $parameters;
+    private Parameters $parameters;
 
     /**
      * @param mixed $data

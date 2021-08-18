@@ -15,31 +15,24 @@ namespace Sylius\Component\Grid\Definition;
 
 class Action
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var string|null */
-    private $label;
+    private ?string $label = null;
 
-    /** @var bool */
-    private $enabled = true;
+    private bool $enabled = true;
 
-    /** @var string|null */
-    private $icon;
+    private ?string $icon = null;
 
     /** @var array */
     private $options = [];
 
     /**
-     * @var int
-     *
      * Position equals to 100 to ensure that wile sorting actions by position ASC
      * the action buttons positioned by default will be last
      */
-    private $position = 100;
+    private int $position = 100;
 
     private function __construct(string $name, string $type)
     {

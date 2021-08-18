@@ -18,8 +18,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 final class PropertyAccessDataExtractor implements DataExtractorInterface
 {
-    /** @var PropertyAccessorInterface */
-    private $propertyAccessor;
+    private PropertyAccessorInterface $propertyAccessor;
 
     public function __construct(PropertyAccessorInterface $propertyAccessor)
     {

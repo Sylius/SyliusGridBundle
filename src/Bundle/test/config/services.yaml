@@ -15,3 +15,9 @@ services:
         arguments:
             - '@app.repository.book'
         public: true
+
+    app.authors_with_books_query_builder:
+        class: App\QueryBuilder\AuthorsWithBooksQueryBuilder
+        arguments:
+            - '@app.repository.author'
+        public: true

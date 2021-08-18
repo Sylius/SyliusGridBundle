@@ -24,11 +24,9 @@ use Sylius\Component\Grid\Parameters;
 
 final class DataSource implements DataSourceInterface
 {
-    /** @var QueryBuilder */
-    private $queryBuilder;
+    private QueryBuilder $queryBuilder;
 
-    /** @var ExpressionBuilderInterface */
-    private $expressionBuilder;
+    private ExpressionBuilderInterface $expressionBuilder;
 
     public function __construct(QueryBuilder $queryBuilder, ?ExpressionBuilderInterface $expressionBuilder = null)
     {

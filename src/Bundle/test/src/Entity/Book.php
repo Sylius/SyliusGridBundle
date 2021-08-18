@@ -28,37 +28,28 @@ class Book implements ResourceInterface
     public const STATE_UNPUBLISHED = 'unpublished';
 
     /**
-     * @var int|null
-     *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
-     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    private $title;
+    private ?string $title = null;
 
     /**
-     * @var Author|null
-     *
      * @Serializer\Expose
      */
-    private $author;
+    private ?Author $author = null;
 
     /**
-     * @var Price|null
-     *
      * @Serializer\Expose
      */
-    private $price;
+    private ?Price $price = null;
 
-    /** @var string */
-    private $state;
+    private string $state;
 
     public function __construct()
     {
