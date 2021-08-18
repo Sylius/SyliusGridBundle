@@ -16,8 +16,8 @@ services:
             - '@app.repository.book'
         public: true
 
-    app.books_by_author_query_builder:
-        class: App\QueryBuilder\BooksByAuthorQueryBuilder
+    app.authors_with_books_query_builder:
+        class: App\QueryBuilder\AuthorsWithBooksQueryBuilder
         arguments:
             - '@app.repository.author'
         public: true

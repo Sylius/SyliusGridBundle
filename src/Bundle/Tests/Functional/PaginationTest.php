@@ -27,7 +27,7 @@ final class PaginationTest extends JsonApiTestCase
     /** @test */
     public function it_returns_incorrect_amount_of_items_per_page_with_fetch_join_collection_disabled(): void
     {
-        $this->client->request('GET', '/books/by-author/with-fetch-join-collection-disabled');
+        $this->client->request('GET', '/authors/with-books/with-fetch-join-collection-disabled');
 
         self::assertNotCount(10, $this->getItemsFromCurrentResponse());
     }
@@ -35,7 +35,7 @@ final class PaginationTest extends JsonApiTestCase
     /** @test */
     public function it_returns_correct_amount_of_items_per_page_with_fetch_join_collection_enabled_by_default(): void
     {
-        $this->client->request('GET', '/books/by-author/with-fetch-join-collection-enabled');
+        $this->client->request('GET', '/authors/with-books/with-fetch-join-collection-enabled');
 
         self::assertCount(10, $this->getItemsFromCurrentResponse());
     }

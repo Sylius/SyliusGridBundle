@@ -150,18 +150,43 @@ sylius_grid:
                     sortable: na.name
             limits: [10, 5, 15]
 
-        app_books_by_author_with_fetch_join_collection_disabled:
+        app_author_with_books_with_fetch_join_collection_disabled:
             extends: app_author
             driver:
                 options:
                     repository:
-                        method: [expr:service('app.books_by_author_query_builder'), create]
+                        method: [expr:service('app.authors_with_books_query_builder'), create]
                     pagination:
                         fetch_join_collection: false
 
-        app_books_by_author_with_fetch_join_collection_enabled:
+        app_author_with_books_with_fetch_join_collection_enabled:
             extends: app_author
             driver:
                 options:
                     repository:
-                        method: [ expr:service('app.books_by_author_query_builder'), create]
+                        method: [ expr:service('app.authors_with_books_query_builder'), create]
+
+
+        app_author_with_books_with_use_output_walkers_disabled:
+            extends: app_author
+            driver:
+                options:
+                    repository:
+                        method: [expr:service('app.authors_with_books_query_builder'), create]
+                    pagination:
+                        use_output_walkers: false
+            fields:
+                book:
+                    type: string
+                    sortable: book.title
+
+        app_author_with_books_with_use_output_walkers_enabled:
+            extends: app_author
+            driver:
+                options:
+                    repository:
+                        method: [ expr:service('app.authors_with_books_query_builder'), create]
+            fields:
+                book:
+                    type: string
+                    sortable: book.title

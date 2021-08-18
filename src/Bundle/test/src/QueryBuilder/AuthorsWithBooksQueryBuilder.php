@@ -16,7 +16,7 @@ namespace App\QueryBuilder;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
 
-final class BooksByAuthorQueryBuilder
+final class AuthorsWithBooksQueryBuilder
 {
     private EntityRepository $authorRepository;
 
