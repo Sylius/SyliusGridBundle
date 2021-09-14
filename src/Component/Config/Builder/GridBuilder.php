@@ -132,6 +132,17 @@ final class GridBuilder implements GridBuilderInterface
     public function addCreateAction(array $options = [], string $group = 'main'): self
     {
         $action = Action::create('create', 'create');
+        $action->setLabel('sylius.ui.create');
+        $action->setOptions($options);
+        $this->addAction($action, $group);
+
+        return $this;
+    }
+
+    public function addShowAction(array $options = [], string $group = 'item'): self
+    {
+        $action = Action::create('show', 'show');
+        $action->setLabel('sylius.ui.show');
         $action->setOptions($options);
         $this->addAction($action, $group);
 
@@ -141,6 +152,7 @@ final class GridBuilder implements GridBuilderInterface
     public function addUpdateAction(array $options = [], string $group = 'item'): self
     {
         $action = Action::create('update', 'update');
+        $action->setLabel('sylius.ui.update');
         $action->setOptions($options);
         $this->addAction($action, $group);
 
@@ -150,6 +162,7 @@ final class GridBuilder implements GridBuilderInterface
     public function addDeleteAction(array $options = [], string $group = 'item'): self
     {
         $action = Action::create('delete', 'delete');
+        $action->setLabel('sylius.ui.delete');
         $action->setOptions($options);
         $this->addAction($action, $group);
 

@@ -7,7 +7,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Config\Builder\Action;
 use Sylius\Component\Grid\Config\Builder\Field;
 use Sylius\Component\Grid\Config\Builder\Filter;
-use Sylius\Component\Grid\Config\Builder\GridBuilder;
+use Sylius\Component\Grid\Config\Builder\GridBuilderInterface;
 
 class GridBuilderSpec extends ObjectBehavior
 {
@@ -18,7 +18,7 @@ class GridBuilderSpec extends ObjectBehavior
 
     function it_is_initializable(): void
     {
-        $this->shouldHaveType(GridBuilder::class);
+        $this->shouldHaveType(GridBuilderInterface::class);
     }
 
     function it_sets_driver(): void
@@ -123,13 +123,14 @@ class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('update');
     }
 
-    function it_add_bulk_actions(): void
+    function it_add_create_actions(): void
     {
-        $action = Action::create('delete', 'delete');
-        $gridBuilder = $this->addBulkAction($action);
+        $gridBuilder = $this->addCreateAction();
 
-        $gridBuilder->toArray()['actions']->shouldHaveKey('bulk');
-        $gridBuilder->toArray()['actions']['bulk']->shouldHaveKey('delete');
+        $gridBuilder->toArray()['actions']->shouldHaveKey('main');
+        $gridBuilder->toArray()['actions']['main']->shouldHaveKey('create');
+        $gridBuilder->toArray()['actions']['main']['create']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['main']['create']['label']->shouldReturn('sylius.ui.create');
     }
 
     function it_add_create_actions_on_a_specific_group(): void
@@ -138,6 +139,28 @@ class GridBuilderSpec extends ObjectBehavior
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('custom');
         $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('create');
+        $gridBuilder->toArray()['actions']['custom']['create']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['custom']['create']['label']->shouldReturn('sylius.ui.create');
+    }
+
+    function it_add_show_actions(): void
+    {
+        $gridBuilder = $this->addShowAction();
+
+        $gridBuilder->toArray()['actions']->shouldHaveKey('item');
+        $gridBuilder->toArray()['actions']['item']->shouldHaveKey('show');
+        $gridBuilder->toArray()['actions']['item']['show']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['item']['show']['label']->shouldReturn('sylius.ui.show');
+    }
+
+    function it_add_show_actions_on_a_specific_group(): void
+    {
+        $gridBuilder = $this->addShowAction([], 'custom');
+
+        $gridBuilder->toArray()['actions']->shouldHaveKey('custom');
+        $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('show');
+        $gridBuilder->toArray()['actions']['custom']['show']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['custom']['show']['label']->shouldReturn('sylius.ui.show');
     }
 
     function it_add_update_actions(): void
@@ -146,6 +169,8 @@ class GridBuilderSpec extends ObjectBehavior
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('item');
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('update');
+        $gridBuilder->toArray()['actions']['item']['update']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['item']['update']['label']->shouldReturn('sylius.ui.update');
     }
 
     function it_add_update_actions_on_a_specific_group(): void
@@ -154,6 +179,8 @@ class GridBuilderSpec extends ObjectBehavior
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('custom');
         $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('update');
+        $gridBuilder->toArray()['actions']['custom']['update']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['custom']['update']['label']->shouldReturn('sylius.ui.update');
     }
 
     function it_add_delete_actions(): void
@@ -162,6 +189,8 @@ class GridBuilderSpec extends ObjectBehavior
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('item');
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('delete');
+        $gridBuilder->toArray()['actions']['item']['delete']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['item']['delete']['label']->shouldReturn('sylius.ui.delete');
     }
 
     function it_add_delete_actions_on_a_specific_group(): void
@@ -170,5 +199,18 @@ class GridBuilderSpec extends ObjectBehavior
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('custom');
         $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('delete');
+        $gridBuilder->toArray()['actions']['custom']['delete']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['custom']['delete']['label']->shouldReturn('sylius.ui.delete');
+    }
+
+    function it_add_bulk_actions(): void
+    {
+        $action = Action::create('delete', 'delete')->setLabel('sylius.ui.delete');
+        $gridBuilder = $this->addBulkAction($action);
+
+        $gridBuilder->toArray()['actions']->shouldHaveKey('bulk');
+        $gridBuilder->toArray()['actions']['bulk']->shouldHaveKey('delete');
+        $gridBuilder->toArray()['actions']['bulk']['delete']->shouldHaveKey('label');
+        $gridBuilder->toArray()['actions']['bulk']['delete']['label']->shouldReturn('sylius.ui.delete');
     }
 }

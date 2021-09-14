@@ -52,6 +52,8 @@ interface GridBuilderInterface
 
     public function addCreateAction(array $options = [], string $group = 'main'): self;
 
+    public function addShowAction(array $options = [], string $group = 'item'): self;
+
     public function addUpdateAction(array $options = [], string $group = 'item'): self;
 
     public function addDeleteAction(array $options = [], string $group = 'item'): self;
