@@ -18,7 +18,7 @@ final class ActionGroup implements ActionGroupInterface
     private string $name;
     private array $actions = [];
 
-    public function __construct(string $name)
+    private function __construct(string $name)
     {
         $this->name = $name;
     }

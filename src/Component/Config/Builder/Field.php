@@ -25,7 +25,7 @@ final class Field implements FieldInterface
     private ?int $position = null;
     private array $options = [];
 
-    public function __construct(string $name, string $type)
+    private function __construct(string $name, string $type)
     {
         $this->name = $name;
         $this->type = $type;

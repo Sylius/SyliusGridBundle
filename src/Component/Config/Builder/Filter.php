@@ -24,7 +24,7 @@ class Filter implements FilterInterface
     private array $formOptions = [];
     private array $criteria = [];
 
-    public function __construct(string $name, string $type)
+    private function __construct(string $name, string $type)
     {
         $this->name = $name;
         $this->type = $type;

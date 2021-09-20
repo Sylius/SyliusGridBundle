@@ -26,7 +26,7 @@ final class GridBuilder implements GridBuilderInterface
     private array $actionGroups = [];
     private array $limits = [];
 
-    public function __construct(string $name, string $resourceClass)
+    private function __construct(string $name, string $resourceClass)
     {
         $this->name = $name;
         $this->driver = self::DEFAULT_DRIVER_NAME;
