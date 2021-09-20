@@ -23,7 +23,7 @@ final class Action implements ActionInterface
     private array $options = [];
     private ?int $position = null;
 
-    public function __construct(string $name, string $type)
+    private function __construct(string $name, string $type)
     {
         $this->name = $name;
         $this->type = $type;

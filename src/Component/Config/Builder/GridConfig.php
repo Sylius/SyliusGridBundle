@@ -29,7 +29,7 @@ final class GridConfig implements GridConfigInterface
         $output = [];
 
         if (count($this->grids) > 0) {
-            $output['grids'] = array_map(function ($v): array { return $v->toArray(); }, $this->grids);
+            $output['grids'] = array_map(function (GridBuilderInterface $gridBuilder): array { return $gridBuilder->toArray(); }, $this->grids);
         }
 
         return $output;
