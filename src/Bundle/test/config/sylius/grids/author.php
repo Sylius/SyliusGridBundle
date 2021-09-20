@@ -7,7 +7,7 @@ use Sylius\Component\Grid\Config\Builder\GridBuilder;
 use Sylius\Component\Grid\Config\Builder\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_author', Author::class)
+    $grid->addGrid(GridBuilder::create('app_author', '%app.model.author.class%')
         ->addFilter(Filter::create('name', 'string'))
         ->orderBy('name', 'asc')
         ->addField(Field::create('name', 'string')

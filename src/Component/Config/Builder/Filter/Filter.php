@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder\Filter;
 
-class Filter implements FilterInterface
+final class Filter implements FilterInterface
 {
     private string $name;
     private string $type;

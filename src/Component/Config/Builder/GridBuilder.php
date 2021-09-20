@@ -103,9 +103,7 @@ final class GridBuilder implements GridBuilderInterface
 
     public function addAction(ActionInterface $action, string $group): self
     {
-        if (!isset($this->actionGroups[$group])) {
-            $this->actionGroups[$group] = ActionGroup::create($group);
-        }
+        $this-> addActionGroup($group)
 
         $this->actionGroups[$group]->addAction($action);
 
