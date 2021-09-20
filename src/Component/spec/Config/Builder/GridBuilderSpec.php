@@ -135,6 +135,15 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('update');
     }
 
+    function it_adds_sub_item_actions(): void
+    {
+        $action = Action::create('addresses', 'links');
+        $gridBuilder = $this->addSubItemAction($action);
+
+        $gridBuilder->toArray()['actions']->shouldHaveKey('subitem');
+        $gridBuilder->toArray()['actions']['subitem']->shouldHaveKey('addresses');
+    }
+
     function it_adds_create_actions(): void
     {
         $gridBuilder = $this->addMainAction(CreateAction::create());

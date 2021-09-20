@@ -126,6 +126,13 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function addSubItemAction(ActionInterface $action): self
+    {
+        $this->addAction($action, 'subitem');
+
+        return $this;
+    }
+
     public function addBulkAction(ActionInterface $action): self
     {
         $this->addAction($action, 'bulk');

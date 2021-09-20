@@ -52,6 +52,8 @@ interface GridBuilderInterface
 
     public function addItemAction(ActionInterface $action): self;
 
+    public function addSubItemAction(ActionInterface $action): self;
+
     public function addBulkAction(ActionInterface $action): self;
 
     public function toArray(): array;
