@@ -25,9 +25,15 @@ final class ActionGroup implements ActionGroupInterface
         $this->name = $name;
     }
 
-    public static function create(string $name): ActionGroupInterface
+    public static function create(string $name, ...$actions): ActionGroupInterface
     {
-        return new self($name);
+        $actionGroup = new self($name);
+
+        array_map(function (ActionInterface $action) use ($actionGroup) {
+            $actionGroup->addAction($action);
+        }, $actions);
+
+        return $actionGroup;
     }
 
     public function getName(): string
