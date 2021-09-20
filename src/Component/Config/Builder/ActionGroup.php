@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
+use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+
 final class ActionGroup implements ActionGroupInterface
 {
     private string $name;

@@ -1,20 +1,28 @@
 <?php
 
-namespace spec\Sylius\Component\Grid\Config\Builder;
+declare(strict_types=1);
+
+namespace spec\Sylius\Component\Grid\Config\Builder\Filter;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Grid\Config\Builder\Filter;
+use Sylius\Component\Grid\Config\Builder\Filter\Filter;
+use Sylius\Component\Grid\Config\Builder\Filter\FilterInterface;
 
-class FilterSpec extends ObjectBehavior
+final class FilterSpec extends ObjectBehavior
 {
     function let(): void
     {
-        $this->beConstructedWith('search', 'string');
+        $this->beConstructedThrough('create', ['search', 'string']);
     }
 
     function it_is_initializable(): void
     {
         $this->shouldHaveType(Filter::class);
+    }
+
+    function it_implements_an_interface(): void
+    {
+        $this->shouldImplement(FilterInterface::class);
     }
 
     function it_sets_label(): void

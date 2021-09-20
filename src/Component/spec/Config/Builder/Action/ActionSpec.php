@@ -1,20 +1,28 @@
 <?php
 
-namespace spec\Sylius\Component\Grid\Config\Builder;
+declare(strict_types=1);
+
+namespace spec\Sylius\Component\Grid\Config\Builder\Action;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Grid\Config\Builder\Action;
+use Sylius\Component\Grid\Config\Builder\Action\Action;
+use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
 
-class ActionSpec extends ObjectBehavior
+final class ActionSpec extends ObjectBehavior
 {
     function let(): void
     {
-        $this->beConstructedWith('create', 'create');
+        $this->beConstructedThrough('create', ['create', 'create']);
     }
 
     function it_is_initializable(): void
     {
         $this->shouldHaveType(Action::class);
+    }
+
+    function it_implements_an_interface(): void
+    {
+        $this->shouldImplement(ActionInterface::class);
     }
 
     function it_sets_label(): void

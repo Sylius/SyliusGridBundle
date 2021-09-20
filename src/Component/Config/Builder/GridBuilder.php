@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
+use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
+use Sylius\Component\Grid\Config\Builder\Filter\FilterInterface;
+
 final class GridBuilder implements GridBuilderInterface
 {
     private const DEFAULT_DRIVER_NAME = 'doctrine/orm';
@@ -125,46 +129,6 @@ final class GridBuilder implements GridBuilderInterface
     public function addBulkAction(ActionInterface $action): self
     {
         $this->addAction($action, 'bulk');
-
-        return $this;
-    }
-
-    public function addCreateAction(array $options = [], string $group = 'main'): self
-    {
-        $action = Action::create('create', 'create');
-        $action->setLabel('sylius.ui.create');
-        $action->setOptions($options);
-        $this->addAction($action, $group);
-
-        return $this;
-    }
-
-    public function addShowAction(array $options = [], string $group = 'item'): self
-    {
-        $action = Action::create('show', 'show');
-        $action->setLabel('sylius.ui.show');
-        $action->setOptions($options);
-        $this->addAction($action, $group);
-
-        return $this;
-    }
-
-    public function addUpdateAction(array $options = [], string $group = 'item'): self
-    {
-        $action = Action::create('update', 'update');
-        $action->setLabel('sylius.ui.update');
-        $action->setOptions($options);
-        $this->addAction($action, $group);
-
-        return $this;
-    }
-
-    public function addDeleteAction(array $options = [], string $group = 'item'): self
-    {
-        $action = Action::create('delete', 'delete');
-        $action->setLabel('sylius.ui.delete');
-        $action->setOptions($options);
-        $this->addAction($action, $group);
 
         return $this;
     }

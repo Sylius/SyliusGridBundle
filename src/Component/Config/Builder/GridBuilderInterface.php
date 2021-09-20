@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
+use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
+use Sylius\Component\Grid\Config\Builder\Filter\FilterInterface;
+
 interface GridBuilderInterface
 {
     public static function create(string $name, string $resourceClass): self;
@@ -49,14 +53,6 @@ interface GridBuilderInterface
     public function addItemAction(ActionInterface $action): self;
 
     public function addBulkAction(ActionInterface $action): self;
-
-    public function addCreateAction(array $options = [], string $group = 'main'): self;
-
-    public function addShowAction(array $options = [], string $group = 'item'): self;
-
-    public function addUpdateAction(array $options = [], string $group = 'item'): self;
-
-    public function addDeleteAction(array $options = [], string $group = 'item'): self;
 
     public function toArray(): array;
 }

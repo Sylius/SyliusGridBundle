@@ -11,18 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Config\Builder;
+namespace Sylius\Component\Grid\Config\Builder\Action;
 
-class Filter implements FilterInterface
+final class Action implements ActionInterface
 {
     private string $name;
     private string $type;
     private ?string $label = null;
     private ?bool $enabled = null;
-    private ?string $template = null;
+    private ?string $icon = null;
     private array $options = [];
-    private array $formOptions = [];
-    private array $criteria = [];
+    private ?int $position = null;
 
     private function __construct(string $name, string $type)
     {
@@ -30,7 +29,7 @@ class Filter implements FilterInterface
         $this->type = $type;
     }
 
-    public static function create(string $name, string $type): FilterInterface
+    public static function create(string $name, string $type): ActionInterface
     {
         return new self($name, $type);
     }
@@ -40,44 +39,37 @@ class Filter implements FilterInterface
         return $this->name;
     }
 
-    public function setLabel(?string $label): FilterInterface
+    public function setLabel(string $label): ActionInterface
     {
         $this->label = $label;
 
         return $this;
     }
 
-    public function setEnabled(bool $enabled): FilterInterface
+    public function setEnabled(bool $enabled): ActionInterface
     {
         $this->enabled = $enabled;
 
         return $this;
     }
 
-    public function setTemplate(string $template): FilterInterface
+    public function setIcon(string $icon): ActionInterface
     {
-        $this->template = $template;
+        $this->icon = $icon;
 
         return $this;
     }
 
-    public function setOptions(array $options): FilterInterface
+    public function setOptions(array $options): ActionInterface
     {
         $this->options = $options;
 
         return $this;
     }
 
-    public function setFormOptions(array $formOptions): FilterInterface
+    public function setPosition(int $position): ActionInterface
     {
-        $this->formOptions = $formOptions;
-
-        return $this;
-    }
-
-    public function setCriteria(array $criteria): FilterInterface
-    {
-        $this->criteria = $criteria;
+        $this->position  = $position;
 
         return $this;
     }
@@ -94,20 +86,16 @@ class Filter implements FilterInterface
             $output['enabled'] = $this->enabled;
         }
 
-        if (null !== $this->template) {
-            $output['template'] = $this->template;
+        if (null !== $this->icon) {
+            $output['icon'] = $this->icon;
         }
 
         if (count($this->options) > 0) {
             $output['options'] = $this->options;
         }
 
-        if (count($this->formOptions) > 0) {
-            $output['form_options'] = $this->formOptions;
-        }
-
-        if (count($this->criteria) > 0) {
-            $output['criteria'] = $this->criteria;
+        if (null !== $this->position) {
+            $output['position'] = $this->position;
         }
 
         return $output;

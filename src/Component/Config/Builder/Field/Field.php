@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Config\Builder;
+namespace Sylius\Component\Grid\Config\Builder\Field;
 
 final class Field implements FieldInterface
 {

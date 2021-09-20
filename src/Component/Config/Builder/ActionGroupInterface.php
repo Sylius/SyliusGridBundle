@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Config\Builder;
 
+use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+
 interface ActionGroupInterface
 {
     public static function create(string $name): self;

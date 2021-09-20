@@ -11,23 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Config\Builder;
+namespace Sylius\Component\Grid\Config\Builder\Field;
 
-interface ActionInterface
+interface FieldInterface
 {
     public static function create(string $name, string $type): self;
 
     public function getName(): string;
 
+    public function setPath(string $path): self;
+
     public function setLabel(string $label): self;
 
     public function setEnabled(bool $enabled): self;
 
-    public function setIcon(string $icon): self;
-
-    public function setOptions(array $options): self;
+    public function setSortable(bool $sortable, string $path = null): self;
 
     public function setPosition(int $position): self;
+
+    public function setOptions(array $options): self;
 
     public function toArray(): array;
 }

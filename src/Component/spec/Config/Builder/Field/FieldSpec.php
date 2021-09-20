@@ -2,19 +2,25 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Config\Builder;
+namespace spec\Sylius\Component\Grid\Config\Builder\Field;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Grid\Config\Builder\Field;
+use Sylius\Component\Grid\Config\Builder\Field\Field;
+use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
 
 final class FieldSpec extends ObjectBehavior
 {
     function let(): void
     {
-        $this->beConstructedWith('name', 'string');
+        $this->beConstructedThrough('create', ['name', 'string']);
     }
 
     function it_is_initializable(): void
+    {
+        $this->shouldHaveType(Field::class);
+    }
+
+    function it_implements_an_interface(): void
     {
         $this->shouldImplement(FieldInterface::class);
     }
