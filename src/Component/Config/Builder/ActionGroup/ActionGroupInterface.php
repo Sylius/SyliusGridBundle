@@ -11,12 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Config\Builder;
+namespace Sylius\Component\Grid\Config\Builder\ActionGroup;
 
 use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
 
 interface ActionGroupInterface
 {
+    public const MAIN_GROUP = 'main';
+    public const ITEM_GROUP = 'item';
+    public const SUB_ITEM_GROUP = 'subitem';
+    public const BULK_GROUP = 'bulk';
+
     public static function create(string $name): self;
 
     public function getName(): string;

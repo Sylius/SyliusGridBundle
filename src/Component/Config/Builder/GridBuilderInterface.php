@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Config\Builder;
 
 use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Config\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
 use Sylius\Component\Grid\Config\Builder\Filter\FilterInterface;
 
@@ -44,7 +45,7 @@ interface GridBuilderInterface
 
     public function removeFilter(string $name): self;
 
-    public function addActionGroup(string $name): self;
+    public function addActionGroup(ActionGroupInterface $actionGroup): self;
 
     public function addAction(ActionInterface $action, string $group): self;
 

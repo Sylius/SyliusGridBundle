@@ -11,6 +11,7 @@ use Sylius\Component\Grid\Config\Builder\Action\CreateAction;
 use Sylius\Component\Grid\Config\Builder\Action\DeleteAction;
 use Sylius\Component\Grid\Config\Builder\Action\ShowAction;
 use Sylius\Component\Grid\Config\Builder\Action\UpdateAction;
+use Sylius\Component\Grid\Config\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Component\Grid\Config\Builder\Field\Field;
 use Sylius\Component\Grid\Config\Builder\Filter\Filter;
 use Sylius\Component\Grid\Config\Builder\GridBuilder;
@@ -110,9 +111,12 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()->shouldNotHaveKey('filters');
     }
 
-    function it_adds_actions_groups(): void
+    function it_adds_actions_groups(ActionGroupInterface $actionGroup): void
     {
-        $gridBuilder = $this->addActionGroup('main');
+        $actionGroup->getName()->willReturn('main');
+        $actionGroup->toArray()->willReturn([]);
+
+        $gridBuilder = $this->addActionGroup($actionGroup);
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('main');
     }

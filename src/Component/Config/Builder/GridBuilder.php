@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Config\Builder;
 
 use Sylius\Component\Grid\Config\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Config\Builder\ActionGroup\ActionGroup;
+use Sylius\Component\Grid\Config\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
 use Sylius\Component\Grid\Config\Builder\Filter\FilterInterface;
 
@@ -92,10 +94,12 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function addActionGroup(string $name): self
+    public function addActionGroup(ActionGroupInterface $actionGroup): self
     {
+        $name = $actionGroup->getName();
+
         if (!isset($this->actionGroups[$name])) {
-            $this->actionGroups[$name] = ActionGroup::create($name);
+            $this->actionGroups[$name] = $actionGroup;
         }
 
         return $this;
@@ -103,37 +107,37 @@ final class GridBuilder implements GridBuilderInterface
 
     public function addAction(ActionInterface $action, string $group): self
     {
-        $this-> addActionGroup($group)
-
-        $this->actionGroups[$group]->addAction($action);
+        $actionGroup = ActionGroup::create($group);
+        $actionGroup->addAction($action);
+        $this->addActionGroup($actionGroup);
 
         return $this;
     }
 
     public function addMainAction(ActionInterface $action): self
     {
-        $this->addAction($action, 'main');
+        $this->addAction($action, ActionGroupInterface::MAIN_GROUP);
 
         return $this;
     }
 
     public function addItemAction(ActionInterface $action): self
     {
-        $this->addAction($action, 'item');
+        $this->addAction($action, ActionGroupInterface::ITEM_GROUP);
 
         return $this;
     }
 
     public function addSubItemAction(ActionInterface $action): self
     {
-        $this->addAction($action, 'subitem');
+        $this->addAction($action, ActionGroupInterface::SUB_ITEM_GROUP);
 
         return $this;
     }
 
     public function addBulkAction(ActionInterface $action): self
     {
-        $this->addAction($action, 'bulk');
+        $this->addAction($action, ActionGroupInterface::BULK_GROUP);
 
         return $this;
     }
