@@ -1,8 +1,8 @@
 <?php
 
 use App\Entity\Author;
-use Sylius\Component\Grid\Config\Builder\Field;
-use Sylius\Component\Grid\Config\Builder\Filter;
+use Sylius\Component\Grid\Config\Builder\Field\Field;
+use Sylius\Component\Grid\Config\Builder\Filter\Filter;
 use Sylius\Component\Grid\Config\Builder\GridBuilder;
 use Sylius\Component\Grid\Config\Builder\GridConfig;
 
