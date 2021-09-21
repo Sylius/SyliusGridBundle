@@ -80,4 +80,4 @@ jobs:
                 if: matrix.symfony == '^5.3'
                 run: |
                     (cd src/Bundle/test && bin/console cache:clear --env=test_grids_with_php_config)
-                    APP_ENV=test_grids_with_php_config composer test
+                    composer test-php-config
