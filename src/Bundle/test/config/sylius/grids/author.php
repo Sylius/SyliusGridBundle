@@ -1,10 +1,10 @@
 <?php
 
 use App\Entity\Author;
-use Sylius\Component\Grid\Config\Builder\Field\Field;
-use Sylius\Component\Grid\Config\Builder\Filter\Filter;
-use Sylius\Component\Grid\Config\Builder\GridBuilder;
-use Sylius\Component\Grid\Config\Builder\GridConfig;
+use Sylius\Bundle\GridBundle\Config\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Config\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Config\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\Builder\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_author', '%app.model.author.class%')
