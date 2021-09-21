@@ -13,7 +13,7 @@ final class ActionGroupSpec extends ObjectBehavior
 {
     function let(): void
     {
-        $this->beConstructedThrough('create', ['main']);
+        $this->beConstructedThrough('create', [ActionGroupInterface::MAIN_GROUP]);
     }
 
     function it_is_initializable(): void
@@ -44,7 +44,7 @@ final class ActionGroupSpec extends ObjectBehavior
         $updateAction->getName()->willReturn('update');
         $updateAction->toArray()->willReturn([]);
 
-        $this->beConstructedThrough('create', ['main', $createAction, $updateAction]);
+        $this->beConstructedThrough('create', [ActionGroupInterface::MAIN_GROUP, $createAction, $updateAction]);
 
         $this->toArray()->shouldReturn([
             'create' => [],
