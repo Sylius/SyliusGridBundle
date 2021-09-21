@@ -20,6 +20,23 @@ final class DeleteActionSpec extends ObjectBehavior
         $action = $this::create();
 
         $action->shouldHaveType(ActionInterface::class);
-        $action->getName()->shouldReturn('delete');
+        $action->toArray()->shouldReturn([
+            'type' => 'delete',
+            'label' => 'sylius.ui.delete',
+        ]);
+    }
+
+    function it_builds_create_actions_with_options(): void
+    {
+        $action = $this::create(['custom' => true]);
+
+        $action->shouldHaveType(ActionInterface::class);
+        $action->toArray()->shouldReturn([
+            'type' => 'delete',
+            'label' => 'sylius.ui.delete',
+            'options' => [
+                'custom' => true,
+            ],
+        ]);
     }
 }

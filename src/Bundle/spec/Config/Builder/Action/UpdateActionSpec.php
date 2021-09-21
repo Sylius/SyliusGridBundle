@@ -20,6 +20,25 @@ final class UpdateActionSpec extends ObjectBehavior
         $action = $this::create();
 
         $action->shouldHaveType(ActionInterface::class);
-        $action->getName()->shouldReturn('update');
+
+        $action->toArray()->shouldReturn([
+            'type' => 'update',
+            'label' => 'sylius.ui.update',
+        ]);
+    }
+
+    function it_builds_update_actions_with_options(): void
+    {
+        $action = $this::create(['custom' => true]);
+
+        $action->shouldHaveType(ActionInterface::class);
+
+        $action->toArray()->shouldReturn([
+            'type' => 'update',
+            'label' => 'sylius.ui.update',
+            'options' => [
+                'custom' => true,
+            ],
+        ]);
     }
 }

@@ -20,6 +20,23 @@ final class CreateActionSpec extends ObjectBehavior
         $action = $this::create();
 
         $action->shouldHaveType(ActionInterface::class);
-        $action->getName()->shouldReturn('create');
+        $action->toArray()->shouldReturn([
+            'type' => 'create',
+            'label' => 'sylius.ui.create',
+        ]);
+    }
+
+    function it_builds_create_action_with_options(): void
+    {
+        $action = $this::create(['custom' => true]);
+
+        $action->shouldHaveType(ActionInterface::class);
+        $action->toArray()->shouldReturn([
+            'type' => 'create',
+            'label' => 'sylius.ui.create',
+            'options' => [
+                'custom' => true,
+            ],
+        ]);
     }
 }

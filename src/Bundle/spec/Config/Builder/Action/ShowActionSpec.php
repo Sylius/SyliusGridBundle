@@ -20,6 +20,25 @@ final class ShowActionSpec extends ObjectBehavior
         $action = $this::create();
 
         $action->shouldHaveType(ActionInterface::class);
-        $action->getName()->shouldReturn('show');
+
+        $action->toArray()->shouldReturn([
+            'type' => 'show',
+            'label' => 'sylius.ui.show',
+        ]);
+    }
+
+    function it_builds_show_actions_with_options(): void
+    {
+        $action = $this::create(['custom' => true]);
+
+        $action->shouldHaveType(ActionInterface::class);
+
+        $action->toArray()->shouldReturn([
+            'type' => 'show',
+            'label' => 'sylius.ui.show',
+            'options' => [
+                'custom' => true,
+            ],
+        ]);
     }
 }
