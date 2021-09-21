@@ -22,10 +22,7 @@ interface ActionGroupInterface
     public const SUB_ITEM_GROUP = 'subitem';
     public const BULK_GROUP = 'bulk';
 
-    /**
-     * @param ActionInterface[] $actions
-     */
-    public static function create(string $name, ...$actions): self;
+    public static function create(string $name, ActionInterface ...$actions): self;
 
     public function getName(): string;
 

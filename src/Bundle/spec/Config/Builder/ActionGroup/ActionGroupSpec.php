@@ -35,4 +35,20 @@ final class ActionGroupSpec extends ObjectBehavior
 
         $this->toArray()['create']->shouldReturn([]);
     }
+
+    function it_allows_to_add_several_action_during_instantioning(ActionInterface $createAction, ActionInterface $updateAction)
+    {
+        $createAction->getName()->willReturn('create');
+        $createAction->toArray()->willReturn([]);
+
+        $updateAction->getName()->willReturn('update');
+        $updateAction->toArray()->willReturn([]);
+
+        $this->beConstructedThrough('create', ['main', $createAction, $updateAction]);
+
+        $this->toArray()->shouldReturn([
+            'create' => [],
+            'update' => [],
+        ]);
+    }
 }
