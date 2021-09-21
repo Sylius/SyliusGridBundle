@@ -121,36 +121,9 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']->shouldHaveKey('main');
     }
 
-    function it_adds_main_actions(): void
-    {
-        $action = Action::create('create', 'create');
-        $gridBuilder = $this->addMainAction($action);
-
-        $gridBuilder->toArray()['actions']->shouldHaveKey('main');
-        $gridBuilder->toArray()['actions']['main']->shouldHaveKey('create');
-    }
-
-    function it_adds_item_actions(): void
-    {
-        $action = Action::create('update', 'update');
-        $gridBuilder = $this->addItemAction($action);
-
-        $gridBuilder->toArray()['actions']->shouldHaveKey('item');
-        $gridBuilder->toArray()['actions']['item']->shouldHaveKey('update');
-    }
-
-    function it_adds_sub_item_actions(): void
-    {
-        $action = Action::create('addresses', 'links');
-        $gridBuilder = $this->addSubItemAction($action);
-
-        $gridBuilder->toArray()['actions']->shouldHaveKey('subitem');
-        $gridBuilder->toArray()['actions']['subitem']->shouldHaveKey('addresses');
-    }
-
     function it_adds_create_actions(): void
     {
-        $gridBuilder = $this->addMainAction(CreateAction::create());
+        $gridBuilder = $this->addAction(CreateAction::create(), 'main');
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('main');
         $gridBuilder->toArray()['actions']['main']->shouldHaveKey('create');
@@ -170,7 +143,7 @@ final class GridBuilderSpec extends ObjectBehavior
 
     function it_adds_show_actions(): void
     {
-        $gridBuilder = $this->addItemAction(ShowAction::create());
+        $gridBuilder = $this->addAction(ShowAction::create(), 'item');
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('item');
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('show');
@@ -190,7 +163,7 @@ final class GridBuilderSpec extends ObjectBehavior
 
     function it_adds_update_actions(): void
     {
-        $gridBuilder = $this->addItemAction(UpdateAction::create());
+        $gridBuilder = $this->addAction(UpdateAction::create(), 'item');
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('item');
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('update');
@@ -210,7 +183,7 @@ final class GridBuilderSpec extends ObjectBehavior
 
     function it_adds_delete_actions(): void
     {
-        $gridBuilder = $this->addItemAction(DeleteAction::create());
+        $gridBuilder = $this->addAction(DeleteAction::create(), 'item');
 
         $gridBuilder->toArray()['actions']->shouldHaveKey('item');
         $gridBuilder->toArray()['actions']['item']->shouldHaveKey('delete');
@@ -226,15 +199,5 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('delete');
         $gridBuilder->toArray()['actions']['custom']['delete']->shouldHaveKey('label');
         $gridBuilder->toArray()['actions']['custom']['delete']['label']->shouldReturn('sylius.ui.delete');
-    }
-
-    function it_adds_bulk_actions(): void
-    {
-        $gridBuilder = $this->addBulkAction(DeleteAction::create());
-
-        $gridBuilder->toArray()['actions']->shouldHaveKey('bulk');
-        $gridBuilder->toArray()['actions']['bulk']->shouldHaveKey('delete');
-        $gridBuilder->toArray()['actions']['bulk']['delete']->shouldHaveKey('label');
-        $gridBuilder->toArray()['actions']['bulk']['delete']['label']->shouldReturn('sylius.ui.delete');
     }
 }

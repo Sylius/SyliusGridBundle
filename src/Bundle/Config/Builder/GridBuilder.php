@@ -114,34 +114,6 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function addMainAction(ActionInterface $action): self
-    {
-        $this->addAction($action, ActionGroupInterface::MAIN_GROUP);
-
-        return $this;
-    }
-
-    public function addItemAction(ActionInterface $action): self
-    {
-        $this->addAction($action, ActionGroupInterface::ITEM_GROUP);
-
-        return $this;
-    }
-
-    public function addSubItemAction(ActionInterface $action): self
-    {
-        $this->addAction($action, ActionGroupInterface::SUB_ITEM_GROUP);
-
-        return $this;
-    }
-
-    public function addBulkAction(ActionInterface $action): self
-    {
-        $this->addAction($action, ActionGroupInterface::BULK_GROUP);
-
-        return $this;
-    }
-
     public function removeField(string $name): GridBuilderInterface
     {
         unset($this->fields[$name]);
