@@ -17,10 +17,7 @@ use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 
 final class SubItemActionGroup
 {
-    /**
-     * @param ActionInterface[] $actions
-     */
-    public static function create(...$actions): ActionGroupInterface
+    public static function create(ActionInterface ...$actions): ActionGroupInterface
     {
         return ActionGroup::create(ActionGroupInterface::SUB_ITEM_GROUP, ...$actions);
     }
