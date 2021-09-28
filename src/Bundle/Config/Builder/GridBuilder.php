@@ -32,14 +32,17 @@ final class GridBuilder implements GridBuilderInterface
     private array $actionGroups = [];
     private array $limits = [];
 
-    private function __construct(string $name, string $resourceClass)
+    private function __construct(string $name, ?string $resourceClass = null)
     {
         $this->name = $name;
         $this->driver = self::DEFAULT_DRIVER_NAME;
-        $this->driverConfiguration['class'] = $resourceClass;
+
+        if (null !== $resourceClass) {
+            $this->driverConfiguration['class'] = $resourceClass;
+        }
     }
 
-    public static function create(string $name, string $resourceClass): GridBuilderInterface
+    public static function create(string $name, ?string $resourceClass = null): GridBuilderInterface
     {
         return new self($name, $resourceClass);
     }
@@ -107,9 +110,9 @@ final class GridBuilder implements GridBuilderInterface
 
     public function addAction(ActionInterface $action, string $group): self
     {
-        $actionGroup = ActionGroup::create($group);
-        $actionGroup->addAction($action);
-        $this->addActionGroup($actionGroup);
+        $this->addActionGroup(ActionGroup::create($group));
+
+        $this->actionGroups[$group]->addAction($action);
 
         return $this;
     }

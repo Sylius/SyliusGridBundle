@@ -20,7 +20,7 @@ use Sylius\Bundle\GridBundle\Config\Builder\Filter\FilterInterface;
 
 interface GridBuilderInterface
 {
-    public static function create(string $name, string $resourceClass): self;
+    public static function create(string $name, ?string $resourceClass = null): self;
 
     public function getName(): string;
 
