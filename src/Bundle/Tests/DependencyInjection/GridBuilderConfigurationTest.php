@@ -17,6 +17,10 @@ use App\Entity\Book;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Config\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Config\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Config\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Config\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Config\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Config\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Config\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Config\Builder\GridBuilder;
@@ -250,6 +254,88 @@ final class GridBuilderConfigurationTest extends TestCase
                                     'enabled' => true,
                                     'position' => 100,
                                     'options' => [],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'grids'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_actions(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addAction(CreateAction::create(), 'main')
+            ->addAction(ShowAction::create(), 'item')
+            ->addAction(UpdateAction::create(), 'item')
+            ->addAction(DeleteAction::create(), 'item')
+            ->addAction(DeleteAction::create(), 'bulk')
+        ;
+
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'app_admin_book' => $gridBuilder->toArray(),
+                ],
+            ]],
+            [
+                'grids' => [
+                    'app_admin_book' => [
+                        'driver' => [
+                            'name' => Driver::NAME,
+                            'options' => [
+                                'class' => Book::class,
+                            ],
+                        ],
+                        'sorting' => [],
+                        'limits' => [10, 25, 50],
+                        'fields' => [],
+                        'filters' => [],
+                        'actions' => [
+                            'main' => [
+                                'create' => [
+                                    'type' => 'create',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.create',
+                                ],
+                            ],
+                            'item' => [
+                                'show' => [
+                                    'type' => 'show',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.show'
+                                ],
+                                'update' => [
+                                    'type' => 'update',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.update'
+                                ],
+                                'delete' => [
+                                    'type' => 'delete',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.delete'
+                                ],
+                            ],
+                            'bulk' => [
+                                'delete' => [
+                                    'type' => 'delete',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.delete'
                                 ],
                             ],
                         ],
