@@ -11,6 +11,7 @@ use Sylius\Bundle\GridBundle\Config\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Config\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Config\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Config\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Config\Builder\ActionGroup\ActionGroup;
 use Sylius\Bundle\GridBundle\Config\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Bundle\GridBundle\Config\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Config\Builder\Filter\Filter;
@@ -121,6 +122,18 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']->shouldHaveKey(ActionGroupInterface::MAIN_GROUP);
     }
 
+    function it_remove_actions_groups(): void
+    {
+        $actionGroup = ActionGroup::create('main');
+        $this->addActionGroup($actionGroup);
+        $actionGroup = ActionGroup::create('item');
+        $this->addActionGroup($actionGroup);
+
+        $gridBuilder = $this->removeActionGroup('main');
+
+        $gridBuilder->toArray()['actions']->shouldNotHaveKey('main');
+    }
+
     function it_adds_create_actions(): void
     {
         $gridBuilder = $this->addAction(CreateAction::create(), ActionGroupInterface::MAIN_GROUP);
@@ -199,5 +212,17 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['actions']['custom']->shouldHaveKey('delete');
         $gridBuilder->toArray()['actions']['custom']['delete']->shouldHaveKey('label');
         $gridBuilder->toArray()['actions']['custom']['delete']['label']->shouldReturn('sylius.ui.delete');
+    }
+
+    function it_remove_actions(): void
+    {
+        $action = Action::create('update', 'update');
+        $this->addAction($action, 'item');
+        $action = Action::create('delete', 'delete');
+        $this->addAction($action, 'item');
+
+        $gridBuilder = $this->removeAction('delete', 'item');
+
+        $gridBuilder->toArray()['actions']['item']->shouldNotHaveKey('delete');
     }
 }

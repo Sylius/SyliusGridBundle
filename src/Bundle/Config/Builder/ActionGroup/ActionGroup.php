@@ -48,6 +48,13 @@ final class ActionGroup implements ActionGroupInterface
         return $this;
     }
 
+    public function removeAction(string $name): ActionGroupInterface
+    {
+        unset($this->actions[$name]);
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $output = [];

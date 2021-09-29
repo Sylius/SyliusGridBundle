@@ -24,12 +24,21 @@ final class GridBuilder implements GridBuilderInterface
     private const DEFAULT_DRIVER_NAME = 'doctrine/orm';
 
     private string $name;
+
     private string $driver;
+
     private array $driverConfiguration = [];
+
+    /** @var FieldInterface[] */
     private array $fields = [];
+
     private array $sorting = [];
+
     private array $filters = [];
+
+    /** @var ActionGroupInterface[] */
     private array $actionGroups = [];
+
     private array $limits = [];
 
     private function __construct(string $name, ?string $resourceClass = null)
@@ -108,11 +117,25 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function removeActionGroup(string $name): self
+    {
+        unset($this->actionGroups[$name]);
+
+        return $this;
+    }
+
     public function addAction(ActionInterface $action, string $group): self
     {
         $this->addActionGroup(ActionGroup::create($group));
 
         $this->actionGroups[$group]->addAction($action);
+
+        return $this;
+    }
+
+    public function removeAction(string $name, string $group): self
+    {
+        $this->actionGroups[$group]->removeAction($name);
 
         return $this;
     }

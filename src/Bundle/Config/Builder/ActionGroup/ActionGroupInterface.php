@@ -28,5 +28,7 @@ interface ActionGroupInterface
 
     public function addAction(ActionInterface $action): self;
 
+    public function removeAction(string $name): self;
+
     public function toArray(): array;
 }
