@@ -93,7 +93,7 @@ final class GridBuilderConfigurationTest extends TestCase
     public function it_builds_grid_with_filters(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
-            ->AddFilter(Filter::create('search', 'string'))
+            ->addFilter(Filter::create('search', 'string'))
         ;
 
         $this->assertProcessedConfigurationEquals(

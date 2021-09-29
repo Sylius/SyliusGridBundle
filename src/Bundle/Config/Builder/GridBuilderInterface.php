@@ -47,7 +47,11 @@ interface GridBuilderInterface
 
     public function addActionGroup(ActionGroupInterface $actionGroup): self;
 
+    public function removeActionGroup(string $name): self;
+    
     public function addAction(ActionInterface $action, string $group): self;
+    
+    public function removeAction(string $name, string $group): self;
 
     public function toArray(): array;
 }
