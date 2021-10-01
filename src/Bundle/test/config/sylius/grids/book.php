@@ -3,10 +3,10 @@
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Nationality;
-use Sylius\Bundle\GridBundle\Config\Builder\Field\Field;
-use Sylius\Bundle\GridBundle\Config\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Config\Builder\GridBuilder;
-use Sylius\Bundle\GridBundle\Config\Builder\GridConfig;
+use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_book', Book::class)
