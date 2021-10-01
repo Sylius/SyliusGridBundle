@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle\Config\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 use Sylius\Component\Grid\Filter\MoneyFilter as GridMoneyFilter;
 

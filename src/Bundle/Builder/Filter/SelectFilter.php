@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle\Config\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class SelectFilter
 {
-    public static function create(string $name, array $choices, ?string $field): FilterInterface
+    public static function create(string $name, array $choices, ?string $field = null): FilterInterface
     {
         $filter = Filter::create($name, 'select');
 
