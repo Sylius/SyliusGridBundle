@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Config\Builder\Filter;
 
-final class BooleanFilter
+final class DateFilter
 {
     public static function create(string $name): FilterInterface
     {
-        return Filter::create($name, 'string');
+        return Filter::create($name, 'date');
     }
 }
