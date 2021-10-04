@@ -17,6 +17,6 @@ final class BooleanFilter
 {
     public static function create(string $name): FilterInterface
     {
-        return Filter::create($name, 'string');
+        return Filter::create($name, 'boolean');
     }
 }
