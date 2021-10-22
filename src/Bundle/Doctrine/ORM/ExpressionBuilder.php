@@ -202,7 +202,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
             $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
             foreach ($joins as $join) {
                 if ($join->getJoin() === $rootAndAssociationField) {
-                    $field = sprintf('%s.%s', $join->getAlias(), $remainder);
+                    $field = sprintf('%s.%s', (string) $join->getAlias(), $remainder);
 
                     continue 2;
                 }
