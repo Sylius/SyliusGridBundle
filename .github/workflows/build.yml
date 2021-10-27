@@ -17,7 +17,7 @@ jobs:
             fail-fast: false
             matrix:
                 php: [7.4, 8.0]
-                symfony: [^4.4, ^5.2]
+                symfony: [^4.4, ^5.3]
 
                 include:
                     -
@@ -75,3 +75,10 @@ jobs:
             -
                 name: Run bundle tests
                 run: composer test
+
+            -
+                name: Run tests for grids with php config
+                if: matrix.symfony == '^5.3'
+                run: |
+                    (cd src/Bundle/test && bin/console cache:clear --env=test_grids_with_php_config)
+                    composer test-php-config
