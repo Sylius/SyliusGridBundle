@@ -18,6 +18,11 @@ App\Entity\Book:
             type: string
             lenght: 20
             nullable: false
+        createdAt:
+            type: datetime
+        updatedAt:
+            type: datetime
+            nullable: true
     manyToOne:
         author:
             targetEntity: App\Entity\Author

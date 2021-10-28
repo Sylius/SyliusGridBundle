@@ -3,7 +3,7 @@
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Nationality;
-use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
@@ -42,18 +42,18 @@ return static function (GridConfig $grid) {
         )
         ->orderBy('title', 'asc')
         ->addField(
-            Field::create('title', 'string')
+            StringField::create('title')
                 ->setLabel('Title')
                 ->setSortable(true)
         )
         ->addField(
-            Field::create('author', 'string')
+            StringField::create('author')
                 ->setLabel('Author')
                 ->setPath('author.name')
                 ->setSortable(true, 'author.name')
         )
         ->addField(
-            Field::create('nationality', 'string')
+            StringField::create('nationality')
                 ->setLabel('Nationality')
                 ->setPath('author.nationality.name')
                 ->setSortable(true, 'author.nationality.name')
