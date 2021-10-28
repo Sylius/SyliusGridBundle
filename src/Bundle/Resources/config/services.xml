@@ -28,7 +28,7 @@
         <service id="sylius.grid.array_to_definition_converter" class="Sylius\Component\Grid\Definition\ArrayToDefinitionConverter">
             <argument type="service" id="event_dispatcher" />
         </service>
-        <service id="sylius.grid.grid_registry" class="Sylius\Component\Grid\GridRegistry">
+        <service id="sylius.grid.grid_registry" class="Sylius\Bundle\GridBundle\GridRegistry">
             <argument type="tagged_iterator" tag="sylius.grid" />
         </service>
 
@@ -37,7 +37,7 @@
             <argument>%sylius.grids_definitions%</argument>
             <tag name="sylius.grid_provider" key="array" priority="-200"/>
         </service>
-        <service id="sylius.grid.service_grid_provider" class="Sylius\Component\Grid\Provider\ServiceGridProvider">
+        <service id="sylius.grid.service_grid_provider" class="Sylius\Bundle\GridBundle\Provider\ServiceGridProvider">
             <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument type="service" id="sylius.grid.grid_registry" />
             <tag name="sylius.grid_provider" key="service" priority="-100"/>

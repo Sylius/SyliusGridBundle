@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Provider;
+namespace Sylius\Bundle\GridBundle\Provider;
 
+use Sylius\Bundle\GridBundle\GridRegistry;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
-use Sylius\Component\Grid\GridRegistry;
+use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
