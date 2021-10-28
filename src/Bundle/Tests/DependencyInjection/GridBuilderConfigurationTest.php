@@ -22,6 +22,8 @@ use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
@@ -141,6 +143,58 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addField(Field::create('author', 'twig')
                 ->setOptions(['template' => 'admin/book/grid/field/author.html.twig'])
             )
+        ;
+
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'app_admin_book' => $gridBuilder->toArray(),
+                ],
+            ]],
+            [
+                'grids' => [
+                    'app_admin_book' => [
+                        'driver' => [
+                            'name' => Driver::NAME,
+                            'options' => [
+                                'class' => Book::class,
+                            ],
+                        ],
+                        'sorting' => [],
+                        'limits' => [10, 25, 50],
+                        'fields' => [
+                            'name' => [
+                                'type' => 'string',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                            ],
+                            'author' => [
+                                'type' => 'twig',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [
+                                    'template' => 'admin/book/grid/field/author.html.twig',
+                                ],
+                            ]
+                        ],
+                        'filters' => [],
+                        'actions' => [],
+                    ],
+                ],
+            ],
+            'grids'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_fields(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addField(StringField::create('name'))
+            ->addField(TwigField::create('author', 'admin/book/grid/field/author.html.twig'))
         ;
 
         $this->assertProcessedConfigurationEquals(
