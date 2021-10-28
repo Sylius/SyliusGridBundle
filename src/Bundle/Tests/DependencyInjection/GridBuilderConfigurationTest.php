@@ -21,6 +21,7 @@ use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
@@ -176,7 +177,7 @@ final class GridBuilderConfigurationTest extends TestCase
                                 'options' => [
                                     'template' => 'admin/book/grid/field/author.html.twig',
                                 ],
-                            ]
+                            ],
                         ],
                         'filters' => [],
                         'actions' => [],
@@ -195,6 +196,7 @@ final class GridBuilderConfigurationTest extends TestCase
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
             ->addField(StringField::create('name'))
             ->addField(TwigField::create('author', 'admin/book/grid/field/author.html.twig'))
+            ->addField(DateTimeField::create('createdAt'))
         ;
 
         $this->assertProcessedConfigurationEquals(
@@ -228,7 +230,15 @@ final class GridBuilderConfigurationTest extends TestCase
                                 'options' => [
                                     'template' => 'admin/book/grid/field/author.html.twig',
                                 ],
-                            ]
+                            ],
+                            'createdAt' => [
+                                'type' => 'datetime',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [
+                                    'format' => 'Y-m-d H:i:s',
+                                ],
+                            ],
                         ],
                         'filters' => [],
                         'actions' => [],
