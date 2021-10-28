@@ -15,10 +15,10 @@ namespace App\Grid;
 
 use App\Entity\Book;
 use App\Entity\Nationality;
-use Sylius\Component\Grid\AbstractGrid;
-use Sylius\Component\Grid\Config\Builder\Field;
-use Sylius\Component\Grid\Config\Builder\Filter;
-use Sylius\Component\Grid\Config\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\AbstractGrid;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
 class BookByAmericanAuthorsGrid extends AbstractGrid
 {
@@ -51,16 +51,16 @@ class BookByAmericanAuthorsGrid extends AbstractGrid
                 ])
             )
             ->orderBy('title', 'asc')
-            ->addField(Field::create('title', 'string')
+            ->addField(StringField::create('title')
                 ->setLabel('Title')
                 ->setSortable(true)
             )
-            ->addField(Field::create('author', 'string')
+            ->addField(StringField::create('author')
                 ->setLabel('Author')
                 ->setPath('author.name')
                 ->setSortable(true, 'author.name')
             )
-            ->addField(Field::create('nationality', 'string')
+            ->addField(StringField::create('nationality')
                 ->setLabel('Nationality')
                 ->setPath('na.name')
                 ->setSortable(true, 'na.name')

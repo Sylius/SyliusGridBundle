@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace App\Grid;
 
 use App\Entity\Author;
-use Sylius\Component\Grid\AbstractGrid;
-use Sylius\Component\Grid\Config\Builder\Field;
-use Sylius\Component\Grid\Config\Builder\Filter;
-use Sylius\Component\Grid\Config\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\AbstractGrid;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
 class AuthorGrid extends AbstractGrid
 {
@@ -36,11 +36,11 @@ class AuthorGrid extends AbstractGrid
         $gridBuilder
             ->addFilter(Filter::create('name', 'string'))
             ->orderBy('name', 'asc')
-            ->addField(Field::create('name', 'string')
+            ->addField(StringField::create('name')
                 ->setLabel('Name')
                 ->setSortable(true)
             )
-            ->addField(Field::create('nationality', 'string')
+            ->addField(StringField::create('nationality')
                 ->setLabel('Name')
                 ->setPath('nationality.name')
                 ->setSortable(true, 'nationality.name')
