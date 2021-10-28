@@ -21,6 +21,9 @@ use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
@@ -339,6 +342,90 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addAction(UpdateAction::create(), 'item')
             ->addAction(DeleteAction::create(), 'item')
             ->addAction(DeleteAction::create(), 'bulk')
+        ;
+
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'app_admin_book' => $gridBuilder->toArray(),
+                ],
+            ]],
+            [
+                'grids' => [
+                    'app_admin_book' => [
+                        'driver' => [
+                            'name' => Driver::NAME,
+                            'options' => [
+                                'class' => Book::class,
+                            ],
+                        ],
+                        'sorting' => [],
+                        'limits' => [10, 25, 50],
+                        'fields' => [],
+                        'filters' => [],
+                        'actions' => [
+                            'main' => [
+                                'create' => [
+                                    'type' => 'create',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.create',
+                                ],
+                            ],
+                            'item' => [
+                                'show' => [
+                                    'type' => 'show',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.show'
+                                ],
+                                'update' => [
+                                    'type' => 'update',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.update'
+                                ],
+                                'delete' => [
+                                    'type' => 'delete',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.delete'
+                                ],
+                            ],
+                            'bulk' => [
+                                'delete' => [
+                                    'type' => 'delete',
+                                    'enabled' => true,
+                                    'position' => 100,
+                                    'options' => [],
+                                    'label' => 'sylius.ui.delete'
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'grids'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_action_groups(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addActionGroup(MainActionGroup::create(CreateAction::create()))
+            ->addActionGroup(ItemActionGroup::create(
+                ShowAction::create(),
+                UpdateAction::create(),
+                DeleteAction::create(),
+            ))
+            ->addActionGroup(BulkActionGroup::create(DeleteAction::create()))
         ;
 
         $this->assertProcessedConfigurationEquals(
