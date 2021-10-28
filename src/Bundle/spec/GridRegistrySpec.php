@@ -1,11 +1,9 @@
 <?php
 
-namespace spec\Sylius\Component\Grid;
+namespace spec\Sylius\Bundle\GridBundle;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Grid\GridInterface;
-use Sylius\Component\Grid\GridRegistry;
-use Sylius\Component\Grid\Tests\Dummy\Bar;
+use Sylius\Bundle\GridBundle\GridRegistry;
 use Sylius\Component\Grid\Tests\Dummy\BarGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 
@@ -41,7 +39,7 @@ class GridRegistrySpec extends ObjectBehavior
         $this->getGrid('app_bar')->shouldHaveType(BarGrid::class);
     }
 
-    function it_returns_null_when_grid_was_not_found(GridInterface $firstGrid, GridInterface $secondGrid): void
+    function it_returns_null_when_grid_was_not_found(): void
     {
         $this->getGrid('not_found')->shouldReturn(null);
     }
