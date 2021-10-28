@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
 
+use App\Entity\Author;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
@@ -65,6 +66,30 @@ final class FilterSpec extends ObjectBehavior
         $field = $this->setFormOptions(['multiple' => true]);
 
         $field->toArray()['form_options']->shouldReturn(['multiple' => true]);
+    }
+
+    function it_adds_form_options(): void
+    {
+        $field = $this
+            ->addFormOption('class', Author::class)
+            ->addFormOption('multiple', true);
+
+        $field->toArray()['form_options']->shouldReturn([
+            'class' => Author::class,
+            'multiple' => true
+        ]);
+    }
+
+    function it_removes_form_options(): void
+    {
+        $field = $this
+            ->addFormOption('class', Author::class)
+            ->addFormOption('multiple', true)
+            ->removeFormOption('multiple');
+
+        $field->toArray()['form_options']->shouldReturn([
+            'class' => Author::class,
+        ]);
     }
 
     function it_sets_criteria(): void

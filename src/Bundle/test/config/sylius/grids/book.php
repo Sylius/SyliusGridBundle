@@ -4,41 +4,37 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Nationality;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_book', Book::class)
-        ->addFilter(Filter::create('title', 'string'))
-        ->addFilter(Filter::create('author', 'entity')
-            ->setFormOptions([
-                'class' => Author::class,
-                'multiple' => true,
-            ])
+        ->addFilter(StringFilter::create('title'))
+        ->addFilter(EntityFilter::create('author', Author::class)
+            ->addFormOption('multiple', true)
         )
-        ->addFilter(Filter::create('nationality', 'entity')
-            ->setOptions([
-                'fields' => ['author.nationality'],
-            ])
-            ->setFormOptions([
-                'class' => Nationality::class,
-            ])
-        )
-        ->addFilter(Filter::create('currencyCode', 'string')
-            ->setOptions([
-                'fields' => ['price.currencyCode'],
-            ])
-        )
-        ->addFilter(Filter::create('state', 'select')
-            ->setFormOptions([
-                'multiple' => true,
-                'choices' => [
+        ->addFilter(EntityFilter::create(
+            'nationality',
+            Nationality::class,
+            ['author.nationality'],
+        ))
+        ->addFilter(StringFilter::create(
+            'currencyCode',
+            ['price.currencyCode'],
+        ))
+        ->addFilter(
+            SelectFilter::create(
+                'state',
+                [
                     'initial' => 'initial',
                     'published' => 'published',
                     'unpublished' => 'unpublished',
-                ],
-            ])
+                ]
+            )
+            ->addFormOption('multiple', true)
         )
         ->orderBy('title', 'asc')
         ->addField(

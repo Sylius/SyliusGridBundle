@@ -29,6 +29,13 @@ interface FilterInterface
 
     public function setFormOptions(array $formOptions): self;
 
+    /**
+     * @param mixed $value
+     */
+    public function addFormOption(string $option, $value): self;
+
+    public function removeFormOption(string $option): self;
+
     public function setCriteria(array $criteria): self;
 
     public function toArray(): array;

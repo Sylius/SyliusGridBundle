@@ -75,6 +75,23 @@ final class Filter implements FilterInterface
         return $this;
     }
 
+    /**
+     * @param mixed $value
+     */
+    public function addFormOption(string $option, $value): FilterInterface
+    {
+        $this->formOptions[$option] = $value;
+
+        return $this;
+    }
+
+    public function removeFormOption(string $option): FilterInterface
+    {
+        unset($this->formOptions[$option]);
+
+        return $this;
+    }
+
     public function setCriteria(array $criteria): FilterInterface
     {
         $this->criteria = $criteria;
