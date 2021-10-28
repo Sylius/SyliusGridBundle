@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection;
 
+use App\Entity\Author;
 use App\Entity\Book;
 use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +29,14 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\DateFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\ExistsFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
@@ -127,6 +135,113 @@ final class GridBuilderConfigurationTest extends TestCase
                                 'position' => 100,
                                 'options' => [],
                                 'form_options' => [],
+                            ],
+                        ],
+                        'actions' => [],
+                    ],
+                ],
+            ],
+            'grids'
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_filters(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addFilter(StringFilter::create('search'))
+            ->addFilter(DateFilter::create('createdAt'))
+            ->addFilter(BooleanFilter::create('enabled'))
+            ->addFilter(EntityFilter::create('author', Author::class))
+            ->addFilter(MoneyFilter::create('price', 'EUR'))
+            ->addFilter(ExistsFilter::create('publishedAt'))
+            ->addFilter(SelectFilter::create('state', [
+                'sylius.ui.published' => 'published',
+                'sylius.ui.unpublished' => 'unpublished',
+            ]))
+        ;
+
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'app_admin_book' => $gridBuilder->toArray(),
+                ],
+            ]],
+            [
+                'grids' => [
+                    'app_admin_book' => [
+                        'driver' => [
+                            'name' => Driver::NAME,
+                            'options' => [
+                                'class' => Book::class,
+                            ],
+                        ],
+                        'sorting' => [],
+                        'limits' => [10, 25, 50],
+                        'fields' => [],
+                        'filters' => [
+                            'search' => [
+                                'type' => 'string',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [],
+                            ],
+                            'createdAt' => [
+                                'type' => 'date',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [],
+                            ],
+                            'enabled' => [
+                                'type' => 'boolean',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [],
+                            ],
+                            'author' => [
+                                'type' => 'entity',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [
+                                    'class' => Author::class,
+                                ],
+                            ],
+                            'price' => [
+                                'type' => 'money',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [
+                                    'currency_field' => 'EUR',
+                                    'scale' => 2,
+                                ],
+                                'form_options' => [
+                                    'scale' => 2,
+                                ],
+                            ],
+                            'publishedAt' => [
+                                'type' => 'exists',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [],
+                            ],
+                            'state' => [
+                                'type' => 'select',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                                'form_options' => [
+                                    'choices' => [
+                                        'sylius.ui.published' => 'published',
+                                        'sylius.ui.unpublished' => 'unpublished',
+                                    ],
+                                ],
                             ],
                         ],
                         'actions' => [],
