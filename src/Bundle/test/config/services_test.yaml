@@ -1,0 +1,2 @@
+imports:
+    - { resource: "services_test_grids_with_yaml_config.yaml" }

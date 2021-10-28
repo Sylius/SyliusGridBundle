@@ -1,6 +1,5 @@
 imports:
     - { resource: "sylius/resources.yaml" }
-    - { resource: "sylius/grids.yaml" }
 
 parameters:
     database_driver: pdo_sqlite
