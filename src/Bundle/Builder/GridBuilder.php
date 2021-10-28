@@ -41,6 +41,8 @@ final class GridBuilder implements GridBuilderInterface
 
     private array $limits = [];
 
+    private ?string $extends = null;
+
     private function __construct(string $name, ?string $resourceClass = null)
     {
         $this->name = $name;
@@ -68,14 +70,22 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function setRepositoryMethod($method, array $arguments = []): GridBuilderInterface
+    /**
+     * @param mixed $value
+     */
+    public function setDriverOption(string $option, $value): GridBuilderInterface
     {
-        $this->driverConfiguration['repository'] = [
-            'method' => $method,
-            'arguments' => $arguments,
-        ];
+        $this->driverConfiguration[$option] = $value;
 
         return $this;
+    }
+
+    public function setRepositoryMethod($method, array $arguments = []): GridBuilderInterface
+    {
+        return $this->setDriverOption('repository', [
+            'method' => $method,
+            'arguments' => $arguments,
+        ]);
     }
 
     public function addField(FieldInterface $field): self
@@ -161,6 +171,13 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function extends(string $gridName): GridBuilderInterface
+    {
+        $this->extends = $gridName;
+
+        return $this;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -189,6 +206,10 @@ final class GridBuilder implements GridBuilderInterface
 
         if (count($this->limits) > 0) {
             $output['limits'] = $this->limits;
+        }
+
+        if (null !== $this->extends) {
+            $output['extends'] = $this->extends;
         }
 
         return $output;

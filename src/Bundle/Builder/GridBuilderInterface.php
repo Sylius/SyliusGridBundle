@@ -27,6 +27,11 @@ interface GridBuilderInterface
     public function setDriver(string $driver): self;
 
     /**
+     * @param mixed $value
+     */
+    public function setDriverOption(string $option, $value): GridBuilderInterface;
+
+    /**
      * @param string|array $method
      */
     public function setRepositoryMethod($method, array $arguments = []): self;
@@ -52,6 +57,8 @@ interface GridBuilderInterface
     public function addAction(ActionInterface $action, string $group): self;
     
     public function removeAction(string $name, string $group): self;
+
+    public function extends(string $gridName): self;
 
     public function toArray(): array;
 }

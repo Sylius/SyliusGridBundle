@@ -42,6 +42,17 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder->toArray()['driver']['name']->shouldReturn('doctrine/dbal');
     }
 
+    function it_sets_driver_options(): void
+    {
+        $gridBuilder = $this->setDriverOption('pagination', [
+            'fetch_join_collection' => false,
+        ]);
+
+        $gridBuilder->toArray()['driver']['options']['pagination']->shouldReturn([
+            'fetch_join_collection' => false,
+        ]);
+    }
+
     function it_sets_a_repository_method(): void
     {
         $gridBuilder = $this->setRepositoryMethod('createListQueryBuilder', []);
@@ -224,5 +235,12 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder = $this->removeAction('delete', 'item');
 
         $gridBuilder->toArray()['actions']['item']->shouldNotHaveKey('delete');
+    }
+
+    function it_can_build_extended_grids(): void
+    {
+        $gridBuilder = $this->extends('app_author');
+
+        $gridBuilder->toArray()['extends']->shouldReturn('app_author');
     }
 }
