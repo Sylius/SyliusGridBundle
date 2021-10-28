@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace spec\Sylius\Bundle\GridBundle\Builder\Field;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Component\Grid\Config\Builder\Field\FieldInterface;
-use Sylius\Component\Grid\Config\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 
 final class TwigFieldSpec extends ObjectBehavior
 {
