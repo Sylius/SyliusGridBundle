@@ -26,71 +26,91 @@ final class FilterSpec extends ObjectBehavior
         $this->shouldImplement(FilterInterface::class);
     }
 
+    function it_has_no_label_by_default(): void
+    {
+        $this->getLabel()->shouldReturn(null);
+    }
+
     function it_sets_label(): void
     {
-        $field = $this->setLabel('Search');
+        $this->setLabel('Search');
 
-        $field->toArray()['label']->shouldReturn('Search');
+        $this->getLabel()->shouldReturn('Search');
+    }
+
+    function it_is_enabled_by_default(): void
+    {
+        $this->isEnabled()->shouldReturn(true);
     }
 
     function it_enables_filters(): void
     {
-        $field = $this->setEnabled(true);
+        $this->setEnabled(true);
 
-        $field->toArray()['enabled']->shouldReturn(true);
+        $this->isEnabled()->shouldReturn(true);
     }
 
     function it_disables_filters(): void
     {
-        $field = $this->setEnabled(false);
+        $this->setEnabled(false);
 
-        $field->toArray()['enabled']->shouldReturn(false);
+        $this->isEnabled()->shouldReturn(false);
+    }
+
+    function it_has_no_template_by_default(): void
+    {
+        $this->getTemplate()->shouldReturn(null);
     }
 
     function it_sets_template(): void
     {
-        $field = $this->setTemplate('/path/to/template');
+        $this->setTemplate('/path/to/template');
 
-        $field->toArray()['template']->shouldReturn('/path/to/template');
+        $this->getTemplate()->shouldReturn('/path/to/template');
+    }
+
+    function it_has_no_options_by_default(): void
+    {
+        $this->getOptions()->shouldReturn(null);
     }
 
     function it_sets_options(): void
     {
-        $field = $this->setOptions(['fields' => ['name', 'code']]);
+        $this->setOptions(['fields' => ['name', 'code']]);
 
-        $field->toArray()['options']->shouldReturn(['fields' => ['name', 'code']]);
+        $this->getOptions()->shouldReturn(['fields' => ['name', 'code']]);
     }
 
     function it_adds_options(): void
     {
-        $field = $this->addOption('fields', ['name', 'code']);
+        $this->addOption('fields', ['name', 'code']);
 
-        $field->toArray()['options']->shouldReturn(['fields' => ['name', 'code']]);
+        $this->getOptions()->shouldReturn(['fields' => ['name', 'code']]);
     }
 
     function it_remove_option(): void
     {
         $this->addOption('fields', ['name', 'code']);
 
-        $field = $this->removeOption('fields');
+        $this->removeOption('fields');
 
-        $field->toArray()['options']->shouldReturn(null);
+        $this->getOptions()->shouldReturn(null);
     }
 
     function it_sets_form_options(): void
     {
-        $field = $this->setFormOptions(['multiple' => true]);
+        $this->setFormOptions(['multiple' => true]);
 
-        $field->toArray()['form_options']->shouldReturn(['multiple' => true]);
+        $this->getFormOptions()->shouldReturn(['multiple' => true]);
     }
 
     function it_adds_form_options(): void
     {
-        $field = $this
+        $this
             ->addFormOption('class', Author::class)
             ->addFormOption('multiple', true);
 
-        $field->toArray()['form_options']->shouldReturn([
+        $this->getFormOptions()->shouldReturn([
             'class' => Author::class,
             'multiple' => true
         ]);
@@ -98,20 +118,25 @@ final class FilterSpec extends ObjectBehavior
 
     function it_removes_form_options(): void
     {
-        $field = $this
+        $this
             ->addFormOption('class', Author::class)
             ->addFormOption('multiple', true)
             ->removeFormOption('multiple');
 
-        $field->toArray()['form_options']->shouldReturn([
+        $this->getFormOptions()->shouldReturn([
             'class' => Author::class,
         ]);
     }
 
+    function is_has_no_criteria_by_default(): void
+    {
+        $this->getCriteria()->shouldReturn([]);
+    }
+
     function it_sets_criteria(): void
     {
-        $field = $this->setCriteria(['name' => 'test']);
+        $this->setCriteria(['name' => 'test']);
 
-        $field->toArray()['criteria']->shouldReturn(['name' => 'test']);
+        $this->getCriteria()->shouldReturn(['name' => 'test']);
     }
 }

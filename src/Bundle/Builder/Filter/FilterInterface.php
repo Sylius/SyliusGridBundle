@@ -19,11 +19,19 @@ interface FilterInterface
 
     public function getName(): string;
 
+    public function getLabel(): ?string;
+
     public function setLabel(?string $label): self;
+
+    public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
 
-    public function setTemplate(string $template): self;
+    public function getTemplate(): ?string;
+
+    public function setTemplate(?string $template): self;
+
+    public function getOptions(): ?array;
 
     public function setOptions(array $options): self;
 
@@ -33,6 +41,8 @@ interface FilterInterface
     public function addOption(string $option, $value): self;
 
     public function removeOption(string $option): self;
+
+    public function getFormOptions(): ?array;
 
     public function setFormOptions(array $formOptions): self;
 
