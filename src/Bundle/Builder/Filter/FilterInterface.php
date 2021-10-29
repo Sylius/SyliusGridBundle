@@ -31,7 +31,7 @@ interface FilterInterface
 
     public function setTemplate(?string $template): self;
 
-    public function getOptions(): ?array;
+    public function getOptions(): array;
 
     public function setOptions(array $options): self;
 
@@ -42,7 +42,7 @@ interface FilterInterface
 
     public function removeOption(string $option): self;
 
-    public function getFormOptions(): ?array;
+    public function getFormOptions(): array;
 
     public function setFormOptions(array $formOptions): self;
 
