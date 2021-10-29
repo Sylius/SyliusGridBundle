@@ -71,7 +71,7 @@ final class FilterSpec extends ObjectBehavior
 
     function it_has_no_options_by_default(): void
     {
-        $this->getOptions()->shouldReturn(null);
+        $this->getOptions()->shouldReturn([]);
     }
 
     function it_sets_options(): void
@@ -94,7 +94,7 @@ final class FilterSpec extends ObjectBehavior
 
         $this->removeOption('fields');
 
-        $this->getOptions()->shouldReturn(null);
+        $this->getOptions()->shouldReturn([]);
     }
 
     function it_sets_form_options(): void
