@@ -61,6 +61,22 @@ final class FilterSpec extends ObjectBehavior
         $field->toArray()['options']->shouldReturn(['fields' => ['name', 'code']]);
     }
 
+    function it_adds_options(): void
+    {
+        $field = $this->addOption('fields', ['name', 'code']);
+
+        $field->toArray()['options']->shouldReturn(['fields' => ['name', 'code']]);
+    }
+
+    function it_remove_option(): void
+    {
+        $this->addOption('fields', ['name', 'code']);
+
+        $field = $this->removeOption('fields');
+
+        $field->toArray()['options']->shouldReturn(null);
+    }
+
     function it_sets_form_options(): void
     {
         $field = $this->setFormOptions(['multiple' => true]);

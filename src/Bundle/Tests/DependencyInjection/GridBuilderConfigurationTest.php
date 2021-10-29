@@ -160,7 +160,7 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addFilter(SelectFilter::create('state', [
                 'sylius.ui.published' => 'published',
                 'sylius.ui.unpublished' => 'unpublished',
-            ]))
+            ], true))
         ;
 
         $this->assertProcessedConfigurationEquals(
@@ -241,6 +241,7 @@ final class GridBuilderConfigurationTest extends TestCase
                                         'sylius.ui.published' => 'published',
                                         'sylius.ui.unpublished' => 'unpublished',
                                     ],
+                                    'multiple' => true,
                                 ],
                             ],
                         ],

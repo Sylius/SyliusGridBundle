@@ -13,12 +13,11 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_book', Book::class)
         ->addFilter(StringFilter::create('title'))
-        ->addFilter(EntityFilter::create('author', Author::class)
-            ->addFormOption('multiple', true)
-        )
+        ->addFilter(EntityFilter::create('author', Author::class, true))
         ->addFilter(EntityFilter::create(
             'nationality',
             Nationality::class,
+            null,
             ['author.nationality'],
         ))
         ->addFilter(StringFilter::create(

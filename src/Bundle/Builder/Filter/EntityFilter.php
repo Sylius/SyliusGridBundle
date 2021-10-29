@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class EntityFilter
 {
-    public static function create(string $name, string $resourceClass, ?array $fields = null): FilterInterface
+    public static function create(string $name, string $resourceClass, ?bool $multiple = null, ?array $fields = null): FilterInterface
     {
         $filter = Filter::create($name, 'entity');
 
@@ -23,6 +23,10 @@ final class EntityFilter
 
         if (null !== $fields) {
             $filter->setOptions(['fields' => $fields]);
+        }
+
+        if (null !== $multiple) {
+            $filter->setFormOptions(['multiple' => $multiple]);
         }
 
         return $filter;

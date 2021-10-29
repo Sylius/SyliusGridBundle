@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class SelectFilter
 {
-    public static function create(string $name, array $choices, ?string $field = null): FilterInterface
+    public static function create(string $name, array $choices, ?bool $multiple = null, ?string $field = null): FilterInterface
     {
         $filter = Filter::create($name, 'select');
 
@@ -23,6 +23,10 @@ final class SelectFilter
 
         if (null !== $field) {
             $filter->setOptions(['field' => $field]);
+        }
+
+        if (null !== $multiple) {
+            $filter->addFormOption('multiple', $multiple);
         }
 
         return $filter;

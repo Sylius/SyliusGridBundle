@@ -17,6 +17,7 @@ return static function (GridConfig $grid) {
         ->addFilter(EntityFilter::create(
             'nationality',
             Nationality::class,
+            null,
             ['author.nationality'],
         ))
         ->orderBy('title', 'asc')
