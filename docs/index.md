@@ -28,3 +28,4 @@ Menu
 * [Field types](field_types.md)
 * [Filter types](filters.md)
 * [Creating your First Grid](your_first_grid.md)
+* [Advanced configuration](advanced_configuration.md)

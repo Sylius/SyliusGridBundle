@@ -15,12 +15,15 @@ namespace App\Entity;
 
 use JMS\Serializer\Annotation as Serializer;
 use Sylius\Component\Resource\Model\ResourceInterface;
+use Sylius\Component\Resource\Model\TimestampableTrait;
 
 /**
  * @Serializer\ExclusionPolicy("all")
  */
 class Book implements ResourceInterface
 {
+    use TimestampableTrait;
+
     public const STATE_INITIAL = 'initial';
 
     public const STATE_PUBLISHED = 'published';
@@ -28,40 +31,32 @@ class Book implements ResourceInterface
     public const STATE_UNPUBLISHED = 'unpublished';
 
     /**
-     * @var int|null
-     *
      * @Serializer\Expose
      * @Serializer\Type("integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /**
-     * @var string|null
-     *
      * @Serializer\Expose
      * @Serializer\Type("string")
      */
-    private $title;
+    private ?string $title = null;
 
     /**
-     * @var Author|null
-     *
      * @Serializer\Expose
      */
-    private $author;
+    private ?Author $author = null;
 
     /**
-     * @var Price|null
-     *
      * @Serializer\Expose
      */
-    private $price;
+    private ?Price $price = null;
 
-    /** @var string */
-    private $state;
+    private string $state;
 
     public function __construct()
     {
+        $this->createdAt = new \DateTimeImmutable();
         $this->state = self::STATE_INITIAL;
     }
 

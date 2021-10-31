@@ -19,8 +19,7 @@ use Twig\TwigFunction;
 
 final class BulkActionGridExtension extends AbstractExtension
 {
-    /** @var BulkActionGridHelper */
-    private $bulkActionGridHelper;
+    private BulkActionGridHelper $bulkActionGridHelper;
 
     public function __construct(BulkActionGridHelper $bulkActionGridHelper)
     {

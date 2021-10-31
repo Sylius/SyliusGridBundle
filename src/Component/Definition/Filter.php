@@ -15,37 +15,29 @@ namespace Sylius\Component\Grid\Definition;
 
 class Filter
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var string|null */
+    /** @var string|bool|null */
     private $label;
 
-    /** @var bool */
-    private $enabled = true;
+    private bool $enabled = true;
 
-    /** @var string|null */
-    private $template;
+    private ?string $template = null;
 
-    /** @var array */
-    private $options = [];
+    private array $options = [];
 
-    /** @var array */
-    private $formOptions = [];
+    private array $formOptions = [];
 
     /** @var mixed */
     private $criteria;
 
     /**
-     * @var int
-     *
      * Position equals to 100 to ensure that wile sorting filters by position ASC
      * the filters positioned by default will be last
      */
-    private $position = 100;
+    private int $position = 100;
 
     private function __construct(string $name, string $type)
     {
@@ -71,7 +63,7 @@ class Filter
     }
 
     /**
-     * @return string|null
+     * @return string|bool|null
      */
     public function getLabel()
     {
@@ -79,7 +71,7 @@ class Filter
     }
 
     /**
-     * @param string|null $label
+     * @param string|bool|null $label
      */
     public function setLabel($label): void
     {

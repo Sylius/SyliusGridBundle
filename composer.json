@@ -31,15 +31,15 @@
         "php": "^7.4 || ^8.0",
         "sylius-labs/polyfill-symfony-event-dispatcher": "^1.0",
         "sylius/registry": "^1.5",
-        "symfony/config": "^4.4 || ^5.2",
-        "symfony/dependency-injection": "^4.4 || ^5.2",
+        "symfony/config": "^4.4 || ^5.3",
+        "symfony/dependency-injection": "^4.4 || ^5.3",
         "symfony/deprecation-contracts": "^2.2",
-        "symfony/event-dispatcher": "^4.4 || ^5.2",
-        "symfony/form": "^4.4 || ^5.2",
-        "symfony/framework-bundle": "^4.4 || ^5.2",
-        "symfony/http-kernel": "^4.4 || ^5.2",
-        "symfony/options-resolver": "^4.4 || ^5.2",
-        "symfony/property-access": "^4.4 || ^5.2",
+        "symfony/event-dispatcher": "^4.4 || ^5.3",
+        "symfony/form": "^4.4 || ^5.3",
+        "symfony/framework-bundle": "^4.4 || ^5.3",
+        "symfony/http-kernel": "^4.4 || ^5.3",
+        "symfony/options-resolver": "^4.4 || ^5.3",
+        "symfony/property-access": "^4.4 || ^5.3",
         "webmozart/assert": "^1.9"
     },
     "replace": {
@@ -60,19 +60,20 @@
         "pagerfanta/pagerfanta": "^2.4 || ^3.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.0",
-        "phpstan/phpstan": "0.12.82",
+        "phpstan/phpstan": "0.12.94",
         "phpstan/phpstan-phpunit": "0.12.18",
         "phpstan/phpstan-webmozart-assert": "0.12.12",
         "phpunit/phpunit": "^9.5",
-        "sylius-labs/coding-standard": "^3.0",
+        "sylius-labs/coding-standard": "^4.0",
         "sylius/resource-bundle": "^1.8",
-        "symfony/console": "^4.4 || ^5.2",
-        "symfony/dotenv": "^4.4 || ^5.2",
+        "symfony/console": "^4.4 || ^5.3",
+        "symfony/dotenv": "^4.4 || ^5.3",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
-        "symfony/twig-bundle": "^4.4 || ^5.2",
+        "symfony/twig-bundle": "^4.4 || ^5.3",
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
-        "vimeo/psalm": "4.6.4"
+        "vimeo/psalm": "4.6.4",
+        "rector/rector": "^0.11.47"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -108,7 +109,10 @@
         ],
         "test": [
             "vendor/bin/phpspec run --ansi --no-interaction",
-            "vendor/bin/phpunit --colors=always"
+            "APP_ENV=test_grids_with_yaml_config vendor/bin/phpunit --colors=always"
+        ],
+        "test-php-config": [
+            "APP_ENV=test_grids_with_php_config vendor/bin/phpunit --colors=always"
         ]
     }
 }

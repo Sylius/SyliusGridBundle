@@ -17,11 +17,9 @@ use Webmozart\Assert\Assert;
 
 class Grid
 {
-    /** @var string */
-    private $code;
+    private string $code;
 
-    /** @var string */
-    private $driver;
+    private string $driver;
 
     /** @var array */
     private $driverConfiguration;

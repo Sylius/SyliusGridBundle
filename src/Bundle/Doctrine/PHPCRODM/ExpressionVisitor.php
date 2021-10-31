@@ -27,7 +27,7 @@ use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
  */
 final class ExpressionVisitor
 {
-    private $queryBuilder;
+    private QueryBuilder $queryBuilder;
 
     public function __construct(QueryBuilder $queryBuilder)
     {

@@ -20,11 +20,9 @@ use Twig\Environment;
 
 final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterface
 {
-    /** @var Environment */
-    private $twig;
+    private Environment $twig;
 
-    /** @var array */
-    private $bulkActionTemplates;
+    private array $bulkActionTemplates;
 
     public function __construct(Environment $twig, array $bulkActionTemplates)
     {

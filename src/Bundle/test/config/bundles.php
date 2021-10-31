@@ -11,17 +11,30 @@
 
 declare(strict_types=1);
 
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use FOS\RestBundle\FOSRestBundle;
+use JMS\SerializerBundle\JMSSerializerBundle;
+use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Sylius\Bundle\GridBundle\SyliusGridBundle;
+use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
+use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
+use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
+use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
+use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
+
 return [
-    Symfony\Bundle\FrameworkBundle\FrameworkBundle::class => ['all' => true],
-    Doctrine\Bundle\DoctrineBundle\DoctrineBundle::class => ['all' => true],
-    Symfony\Bundle\TwigBundle\TwigBundle::class => ['all' => true],
-    FOS\RestBundle\FOSRestBundle::class => ['all' => true],
-    JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
-    Sylius\Bundle\ResourceBundle\SyliusResourceBundle::class => ['all' => true],
-    Sylius\Bundle\GridBundle\SyliusGridBundle::class => ['all' => true],
-    BabDev\PagerfantaBundle\BabDevPagerfantaBundle::class => ['all' => true],
-    Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle::class => ['all' => true],
-    winzou\Bundle\StateMachineBundle\winzouStateMachineBundle::class => ['all' => true],
-    Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle::class => ['all' => true],
-    Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle::class => ['all' => true],
+    FrameworkBundle::class => ['all' => true],
+    DoctrineBundle::class => ['all' => true],
+    TwigBundle::class => ['all' => true],
+    FOSRestBundle::class => ['all' => true],
+    JMSSerializerBundle::class => ['all' => true],
+    SyliusResourceBundle::class => ['all' => true],
+    SyliusGridBundle::class => ['all' => true],
+    BabDevPagerfantaBundle::class => ['all' => true],
+    BazingaHateoasBundle::class => ['all' => true],
+    winzouStateMachineBundle::class => ['all' => true],
+    FidryAliceDataFixturesBundle::class => ['all' => true],
+    NelmioAliceBundle::class => ['all' => true],
 ];

@@ -20,8 +20,7 @@ use Doctrine\ORM\QueryBuilder;
 
 final class EnglishBooksQueryBuilder
 {
-    /** @var BookRepository */
-    private $bookRepository;
+    private BookRepository $bookRepository;
 
     public function __construct(BookRepository $bookRepository)
     {

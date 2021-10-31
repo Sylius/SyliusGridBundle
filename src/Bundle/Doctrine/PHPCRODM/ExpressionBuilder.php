@@ -24,8 +24,7 @@ use Doctrine\Common\Collections\ExpressionBuilder as CollectionsExpressionBuilde
  */
 final class ExpressionBuilder implements ExpressionBuilderInterface
 {
-    /** @var CollectionsExpressionBuilder */
-    private $expressionBuilder;
+    private CollectionsExpressionBuilder $expressionBuilder;
 
     /** @var array */
     private $orderBys = [];
