@@ -15,7 +15,6 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection;
 
 use App\Entity\Author;
 use App\Entity\Book;
-use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
@@ -44,8 +43,6 @@ use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
 
 final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
-    use ConfigurationTestCaseTrait;
-
     /**
      * @test
      */
@@ -632,10 +629,5 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         return [
             new SyliusGridExtension(),
         ];
-    }
-
-    protected function getConfiguration(): Configuration
-    {
-        return new Configuration();
     }
 }
