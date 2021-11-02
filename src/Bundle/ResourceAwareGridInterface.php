@@ -13,13 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-
-interface GridInterface
+interface ResourceAwareGridInterface
 {
-    public static function getName(): string;
-
-    public function toArray(): array;
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void;
+    public static function getResourceClass(): string;
 }

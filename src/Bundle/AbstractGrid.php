@@ -14,15 +14,25 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
 abstract class AbstractGrid implements GridInterface
 {
     public function toArray(): array
     {
-        $gridBuilder = GridBuilder::create(static::getName(), static::getResourceClass());
+        $gridBuilder = $this->createGridBuilder();
 
         $this->buildGrid($gridBuilder);
 
         return $gridBuilder->toArray();
+    }
+
+    private function createGridBuilder(): GridBuilderInterface
+    {
+        if ($this instanceof ResourceAwareGridInterface) {
+            return GridBuilder::create(static::getName(), static::getResourceClass());
+        }
+
+        return GridBuilder::create(static::getName());
     }
 }

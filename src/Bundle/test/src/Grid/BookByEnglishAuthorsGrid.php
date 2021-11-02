@@ -20,8 +20,9 @@ use Sylius\Bundle\GridBundle\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\ResourceAwareGridInterface;
 
-class BookByEnglishAuthorsGrid extends AbstractGrid
+class BookByEnglishAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     private EnglishBooksQueryBuilder $englishBooksQueryBuilder;
 
