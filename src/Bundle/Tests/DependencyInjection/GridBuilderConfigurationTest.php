@@ -40,6 +40,9 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
+use Sylius\Component\Grid\Tests\Dummy\Foo;
+use Sylius\Component\Grid\Tests\Dummy\FooGrid;
+use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
 
 final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
@@ -620,6 +623,64 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                         ],
                     ],
                 ],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_a_grid_as_service(): void
+    {
+        $grid = new NoResourceGrid();
+
+        $this->load([
+            'grids' => [
+                'app_no_resource' => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_no_resource' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_a_resource_aware_grid_as_service(): void
+    {
+        $grid = new FooGrid();
+
+        $this->load([
+            'grids' => [
+                'app_foo' => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_foo' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Foo::class,
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
             ],
         ]);
     }
