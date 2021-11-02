@@ -31,4 +31,21 @@ final class MoneyFilterSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_creates_money_filters_with_custom_scale(): void
+    {
+        $filter = $this::create('search', 'EUR', 0);
+
+        $filter->shouldHaveType(FilterInterface::class);
+        $filter->toArray()->shouldReturn([
+            'type' => 'money',
+            'options' => [
+                'currency_field' => 'EUR',
+                'scale' => 0,
+            ],
+            'form_options' => [
+                'scale' => 0,
+            ],
+        ]);
+    }
 }
