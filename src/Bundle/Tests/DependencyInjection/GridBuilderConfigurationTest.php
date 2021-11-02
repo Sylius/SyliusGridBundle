@@ -104,6 +104,35 @@ final class GridBuilderConfigurationTest extends TestCase
     /**
      * @test
      */
+    public function it_builds_grid_with_resource_class_as_parameter(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', '%app.model.book.class%');
+
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'app_admin_book' => $gridBuilder->toArray(),
+                ],
+            ]],
+            [
+                'grids' => [
+                    'app_admin_book' => [
+                        'driver' => [
+                            'name' => Driver::NAME,
+                            'options' => [
+                                'class' => '%app.model.book.class%',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'grids.*.driver'
+        );
+    }
+
+    /**
+     * @test
+     */
     public function it_builds_grid_with_filters(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
