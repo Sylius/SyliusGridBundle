@@ -30,9 +30,9 @@ abstract class AbstractGrid implements GridInterface
     private function createGridBuilder(): GridBuilderInterface
     {
         if ($this instanceof ResourceAwareGridInterface) {
-            return GridBuilder::create(static::getName(), static::getResourceClass());
+            return GridBuilder::create($this::getName(), $this::getResourceClass());
         }
 
-        return GridBuilder::create(static::getName());
+        return GridBuilder::create($this::getName());
     }
 }
