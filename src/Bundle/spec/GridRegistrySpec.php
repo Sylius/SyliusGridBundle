@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\GridRegistry;
 use Sylius\Component\Grid\Tests\Dummy\BarGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
+use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
 
 class GridRegistrySpec extends ObjectBehavior
 {
@@ -14,6 +15,7 @@ class GridRegistrySpec extends ObjectBehavior
         $this->beConstructedWith(new \ArrayIterator([
             new FooGrid(),
             new BarGrid(),
+            new NoResourceGrid(),
         ]));
     }
 
@@ -37,6 +39,7 @@ class GridRegistrySpec extends ObjectBehavior
     {
         $this->getGrid('app_foo')->shouldHaveType(FooGrid::class);
         $this->getGrid('app_bar')->shouldHaveType(BarGrid::class);
+        $this->getGrid('app_no_resource')->shouldHaveType(NoResourceGrid::class);
     }
 
     function it_returns_null_when_grid_was_not_found(): void

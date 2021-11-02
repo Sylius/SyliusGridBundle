@@ -16,8 +16,9 @@ namespace Sylius\Component\Grid\Tests\Dummy;
 
 use Sylius\Bundle\GridBundle\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\ResourceAwareGridInterface;
 
-final class BarGrid extends AbstractGrid
+final class BarGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     public static function getName(): string
     {

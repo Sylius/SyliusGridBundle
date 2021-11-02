@@ -15,8 +15,9 @@ namespace Sylius\Component\Grid\Tests\Dummy;
 
 use Sylius\Bundle\GridBundle\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\ResourceAwareGridInterface;
 
-final class FooGrid extends AbstractGrid
+final class FooGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     public static function getName(): string
     {
