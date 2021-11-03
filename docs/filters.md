@@ -26,6 +26,23 @@ sylius_grid:
                     type: string
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(Filter::create('username', 'string'))
+        ->addFilter(Filter::create('email', 'string'))
+        ->addFilter(Filter::create('firstName', 'string'))
+        ->addFilter(Filter::create('lastName', 'string'))
+    )
+};
+```
+
 The filter allows the user to select following search options:
 
 -   contains
@@ -54,6 +71,25 @@ sylius_grid:
                         type: contains
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('username', 'string')
+                ->setFormOptions([
+                    'type' => 'contains',
+                ])
+        )
+    )
+};
+```
+
 By configuring a filter like above you will have only an input field for
 filtering users objects that `contain` a given string in their username.
 
@@ -69,6 +105,22 @@ sylius_grid:
             filters:
                 enabled:
                     type: boolean
+```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('enabled', 'boolean')
+        )
+    )
+};
 ```
 
 Date
@@ -87,6 +139,21 @@ sylius_grid:
                     type: date
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(Filter::create('createdAt', 'date'))
+        ->addFilter(Filter::create('completedAt', 'date'))
+    )
+};
+```
+
 Entity
 ------
 
@@ -100,11 +167,32 @@ sylius_grid:
                 channel:
                     type: entity
                     form_options:
-                        class: "%app.model.channel%"
+                        class: "%app.model.channel.class%"
                 customer:
                     type: entity
                     form_options:
-                        class: "%app.model.customer%"
+                        class: "%app.model.customer.class%"
+```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('channel', 'entity')
+                ->setFormOptions(['class' => '%app.model.channel.class%'])
+        )
+        ->addFilter(
+            Filter::create('customer', 'entity')
+                ->setFormOptions(['class' => '%app.model.customer.class%'])
+        )
+    )
+};
 ```
 
 Money
@@ -124,6 +212,27 @@ sylius_grid:
                     options:
                         currency_field: currencyCode
                         scale: 3
+```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('total', 'money')
+                ->setFormOptions(['scale' => 3])
+                ->setOptions([
+                    'currency_field' => 'currencyCode',
+                    'scale' => 3,
+                ])
+        )
+    )
+};
 ```
 
 ### *Warning*
@@ -147,6 +256,23 @@ sylius_grid:
                         field: completedAt
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('date', 'exists')
+                ->setOptions(['field' => 'completedAt'])
+        )
+    )
+};
+```
+
 Select
 ------
 
@@ -163,6 +289,28 @@ sylius_grid:
                         choices:
                             sylius.ui.ready: Ready
                             sylius.ui.shipped: Shipped
+```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('state', 'select')
+                ->setFormOptions([
+                    'choices' => [
+                        'sylius.ui.ready' => 'Ready',
+                        'sylius.ui.shipped' => 'Shipped',
+                    ],
+                ])
+        )
+    )
+};
 ```
 
 Custom Filters
