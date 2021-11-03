@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle;
+namespace Sylius\Bundle\GridBundle\Grid;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;

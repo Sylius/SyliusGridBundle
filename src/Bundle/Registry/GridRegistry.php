@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle;
+namespace Sylius\Bundle\GridBundle\Registry;
+
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 
 final class GridRegistry
 {

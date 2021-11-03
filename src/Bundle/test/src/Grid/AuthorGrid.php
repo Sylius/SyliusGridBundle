@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace App\Grid;
 
 use App\Entity\Author;
-use Sylius\Bundle\GridBundle\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\ResourceAwareGridInterface;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterface
 {

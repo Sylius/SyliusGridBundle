@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Sylius\Bundle\GridBundle;
+namespace spec\Sylius\Bundle\GridBundle\Registry;
 
 use PhpSpec\ObjectBehavior;
-use Sylius\Bundle\GridBundle\GridRegistry;
+use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Component\Grid\Tests\Dummy\BarGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;

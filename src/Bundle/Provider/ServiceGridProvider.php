@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
-use Sylius\Bundle\GridBundle\GridRegistry;
+use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;

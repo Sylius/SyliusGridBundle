@@ -15,11 +15,11 @@ namespace App\Grid;
 
 use App\Entity\Book;
 use App\Entity\Nationality;
-use Sylius\Bundle\GridBundle\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\ResourceAwareGridInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
 {

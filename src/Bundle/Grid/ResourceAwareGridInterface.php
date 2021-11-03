@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle;
+namespace Sylius\Bundle\GridBundle\Grid;
 
 interface ResourceAwareGridInterface
 {
