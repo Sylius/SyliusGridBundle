@@ -23,6 +23,24 @@ sylius_grid:
                     path: contactDetails.email
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addField(
+            StringField::create('email')
+                ->setLabel('app.ui.email') // # each filed type can have a label, we suggest using translation keys instead of messages
+                ->setPath('contactDetails.email')
+        )
+    )
+};
+```
+
 This configuration will display the value from
 `$user->getContactDetails()->getEmail()`.
 
@@ -44,6 +62,23 @@ sylius_grid:
                         format: 'Y:m:d H:i:s' # this is the default value, but you can modify it
 ```
 
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addField(
+            DateTimeField::create('birthday', 'Y:m:d H:i:s') // this format is the default value, but you can modify it
+                ->setLabel('app.ui.birthday')
+        )
+    )
+};
+```
+
 Twig (*twig*)
 -------------
 
@@ -62,6 +97,23 @@ sylius_grid:
                     label: app.ui.name
                     options:
                         template: :Grid/Column:_prettyName.html.twig
+```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addField(
+            TwigField::create('name', ':Grid/Column:_prettyName.html.twig')
+                ->setLabel('app.ui.name')
+        )
+    )
+};
 ```
 
 In the `:Grid/Column:_prettyName.html.twig` template, you just need to

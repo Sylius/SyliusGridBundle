@@ -148,19 +148,122 @@ sylius_grid:
 ```php
 <?php
 
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\SubItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->setDriver('doctrine/orm')
         ->setRepositoryMethod('myCustomMethod', ['id' => 'resource.id'])
+        ->orderBy('name', 'asc')
+        ->setLimits([10, 25, 50, 100])
         ->addField(
-            Field::create('name', 'twig') # Name & Type of field
-                ->setPath('.') # dot means a whole object
+            Field::create('name', 'twig') // Name & Type of field
+                ->setLabel('Name') // # Label
+                ->setPath('.') // dot means a whole object
+                ->setSortable(true)
+                ->setPosition(100)
                 ->setOptions([
-                    'template' => ':Grid/Column:_name.html.twig', # Only twig column
+                    'template' => ':Grid/Column:_name.html.twig', // Only twig column
                 ])
+                ->setEnabled(true)
+        )
+        ->addFilter(
+            Filter::create('name', 'string') // Name & Type of filter
+                ->setLabel('app.ui.name')
+                ->setEnabled(true)
+                ->setOptions(['fields' => []])
+                ->setFormOptions(['type' => 'contains']) // type of string filtering option, if you one to have just one
+        )
+        ->addActionGroup(MainActionGroup::create(
+            Action::create('create', 'create')
+                ->setLabel('sylius.ui.create')
+                ->setEnabled(true)
+                ->setIcon('plus')
+                ->setPosition(100)
+                ->setOptions([]),
+        ))
+        ->addActionGroup(
+            ItemActionGroup::create(
+                Action::create('update', 'update')
+                    ->setLabel('sylius.ui.edit')
+                    ->setEnabled(true)
+                    ->setIcon('pencil')
+                    ->setPosition(100)
+                    ->setOptions([]),
+                Action::create('delete', 'delete')
+                    ->setLabel('sylius.ui.delete')
+                    ->setEnabled(true)
+                    ->setIcon('trash')
+                    ->setPosition(100)
+                    ->setOptions([]),
+                Action::create('show', 'show')
+                    ->setLabel('sylius.ui.show')
+                    ->setEnabled(true)
+                    ->setIcon('search')
+                    ->setPosition(100)
+                    ->setOptions([
+                        'link' => [
+                            'route' => 'app_user_show',
+                            'parameters' => [
+                                'id' => 'resource.id',
+                            ],          
+                        ],          
+                    ]),
+                Action::create('archive', 'archive')
+                    ->setLabel('sylius.ui.archive')
+                    ->setEnabled(true)
+                    ->setIcon('search')
+                    ->setPosition(100)
+                    ->setOptions([
+                        'restore_label' => 'sylius.ui.restore',          
+                    ]),
+            )
+        )
+        ->addActionGroup(
+            BulkActionGroup::create(
+                Action::create('delete', 'delete')
+                    ->setLabel('sylius.ui.delete')
+                    ->setEnabled(true)
+                    ->setIcon('trash')
+                    ->setPosition(100)
+                    ->setOptions([]),
+            )
+        )
+        ->addActionGroup(
+            SubItemActionGroup::create(
+                Action::create('addresses', 'links')
+                    ->setLabel('sylius.ui.manage_addresses')
+                    ->setOptions([
+                        'icon' => 'cubes',
+                        'links' => [
+                            'index' => [
+                                'label' => 'sylius.ui.list_addresses',
+                                'icon' => 'list',
+                                'route' => 'app_admin_user_address_index',
+                                'visible' => 'resource.hasAddress',
+                                'parameters' => [
+                                    'userId' => 'resource.id',
+                                ],
+                            ],
+                            'create' => [
+                                'label' => 'sylius.ui.generate',
+                                'icon' => 'random',
+                                'route' => 'app_admin_user_address_create',
+                                'parameters' => [
+                                    'userId' => 'resource.id',
+                                ],
+                            ],
+                        ],
+                    ]),
+            )
         )
     );
 };
