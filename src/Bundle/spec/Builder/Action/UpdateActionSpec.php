@@ -23,7 +23,7 @@ final class UpdateActionSpec extends ObjectBehavior
 
         $action->toArray()->shouldReturn([
             'type' => 'update',
-            'label' => 'sylius.ui.update',
+            'label' => 'sylius.ui.edit',
         ]);
     }
 
@@ -35,7 +35,7 @@ final class UpdateActionSpec extends ObjectBehavior
 
         $action->toArray()->shouldReturn([
             'type' => 'update',
-            'label' => 'sylius.ui.update',
+            'label' => 'sylius.ui.edit',
             'options' => [
                 'custom' => true,
             ],
