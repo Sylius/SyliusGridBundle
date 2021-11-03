@@ -18,7 +18,7 @@ final class UpdateAction
     public static function create(array $options = []): ActionInterface
     {
         $action = Action::create('update', 'update');
-        $action->setLabel('sylius.ui.update');
+        $action->setLabel('sylius.ui.edit');
         $action->setOptions($options);
 
         return $action;
