@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\DependencyInjection;
 
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
-use Sylius\Bundle\GridBundle\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
