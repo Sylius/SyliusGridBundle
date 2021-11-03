@@ -43,15 +43,15 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $grid->setLimits($configuration['limits']);
         }
 
-        foreach ($configuration['fields'] as $name => $fieldConfiguration) {
+        foreach ($configuration['fields'] ?? [] as $name => $fieldConfiguration) {
             $grid->addField($this->convertField($name, $fieldConfiguration));
         }
 
-        foreach ($configuration['filters'] as $name => $filterConfiguration) {
+        foreach ($configuration['filters'] ?? [] as $name => $filterConfiguration) {
             $grid->addFilter($this->convertFilter($name, $filterConfiguration));
         }
 
-        foreach ($configuration['actions'] as $name => $actionGroupConfiguration) {
+        foreach ($configuration['actions'] ?? [] as $name => $actionGroupConfiguration) {
             $grid->addActionGroup($this->convertActionGroup($name, $actionGroupConfiguration));
         }
 
