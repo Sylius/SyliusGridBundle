@@ -11,6 +11,8 @@ String
 
 Simplest filter type. It can filter by one or multiple fields.
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -25,6 +27,10 @@ sylius_grid:
                 lastName:
                     type: string
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -43,6 +49,8 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 The filter allows the user to select following search options:
 
 -   contains
@@ -60,6 +68,8 @@ If you don't want display all theses matching possibilities, you can
 choose just one of them. Then only the input field will be displayed.
 You can achieve it like that:
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -70,6 +80,10 @@ sylius_grid:
                     form_options:
                         type: contains
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -90,11 +104,15 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 By configuring a filter like above you will have only an input field for
 filtering users objects that `contain` a given string in their username.
 
 Boolean
 -------
+
+<details open><summary>Yaml</summary>
 
 This filter checks if a value is true or false.
 
@@ -106,6 +124,10 @@ sylius_grid:
                 enabled:
                     type: boolean
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -123,10 +145,14 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 Date
 ----
 
 This filter checks if a chosen datetime field is between given dates.
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -138,6 +164,10 @@ sylius_grid:
                 completedAt:
                     type: date
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -154,10 +184,14 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 Entity
 ------
 
 This type filters by a chosen entity.
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -173,6 +207,10 @@ sylius_grid:
                     form_options:
                         class: "%app.model.customer.class%"
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -195,10 +233,14 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 Money
 -----
 
 This filter checks if an amount is in range and in a specified currency
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -213,6 +255,10 @@ sylius_grid:
                         currency_field: currencyCode
                         scale: 3
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -235,6 +281,8 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 ### *Warning*
 
 Providing different `scale` between *form_options* and *options*
@@ -244,6 +292,8 @@ Exists
 ------
 
 This filter checks if the specified field contains any value
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -255,6 +305,10 @@ sylius_grid:
                     options:
                         field: completedAt
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -273,10 +327,14 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 Select
 ------
 
 This type filters by a value chosen from the defined list
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -290,6 +348,10 @@ sylius_grid:
                             sylius.ui.ready: Ready
                             sylius.ui.shipped: Shipped
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -312,6 +374,8 @@ return static function (GridConfig $grid) {
     )
 };
 ```
+
+</details>
 
 Custom Filters
 --------------

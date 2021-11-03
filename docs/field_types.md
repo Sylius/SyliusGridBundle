@@ -12,6 +12,8 @@ a string.
 By default it uses the name of the field, but you can specify the path
 alternatively. For example:
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -22,6 +24,10 @@ sylius_grid:
                     label: app.ui.email # each filed type can have a label, we suggest using translation keys instead of messages
                     path: contactDetails.email
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -41,6 +47,8 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 This configuration will display the value from
 `$user->getContactDetails()->getEmail()`.
 
@@ -49,6 +57,8 @@ DateTime
 
 This column type works exactly the same way as *string*, but expects
 *DateTime* instance and outputs a formatted date and time string.
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -61,6 +71,10 @@ sylius_grid:
                     options:
                         format: 'Y:m:d H:i:s' # this is the default value, but you can modify it
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -79,6 +93,8 @@ return static function (GridConfig $grid) {
 };
 ```
 
+</details>
+
 Twig (*twig*)
 -------------
 
@@ -86,6 +102,8 @@ Twig column type is the most flexible from all of them, because it
 delegates the logic of rendering the value to Twig templating engine.
 You just have to specify the template and it will be rendered with the
 `data` variable available to you.
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -98,6 +116,10 @@ sylius_grid:
                     options:
                         template: :Grid/Column:_prettyName.html.twig
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -115,6 +137,8 @@ return static function (GridConfig $grid) {
     )
 };
 ```
+
+</details>
 
 In the `:Grid/Column:_prettyName.html.twig` template, you just need to
 render the value for example as you see below:

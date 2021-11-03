@@ -3,6 +3,8 @@ Advanced Configuration
 
 By default, Doctrine option `fetchJoinCollection` and `useOutputWalkers` are enabled in all grids, but you can simply disable it with this config:
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -13,6 +15,10 @@ sylius_grid:
                         fetch_join_collection: false
                         use_output_walkers: false
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
 
 ```php
 <?php
@@ -30,5 +36,7 @@ return static function (GridConfig $grid) {
     )
 };
 ```
+
+</details>
 
 These changes may be necessary when you work with huge databases.

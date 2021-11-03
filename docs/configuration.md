@@ -3,6 +3,8 @@ Configuration Reference
 
 Here you will find all configuration options of `sylius_grid`.
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -145,6 +147,10 @@ sylius_grid:
                                         userId: resource.id
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
 ```php
 <?php
 
@@ -268,3 +274,5 @@ return static function (GridConfig $grid) {
     );
 };
 ```
+
+</details>
