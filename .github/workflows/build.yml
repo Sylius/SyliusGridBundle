@@ -87,4 +87,4 @@ jobs:
                 name: Run tests with grids as services
                 run: |
                     (cd src/Bundle/test && bin/console cache:clear --env=test_grids_as_service)
-                    APP_ENV=test_grids_as_service composer test
+                    composer test-with-grids-as-service
