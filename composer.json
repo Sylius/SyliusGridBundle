@@ -57,7 +57,7 @@
         "lchrusciel/api-test-case": "^5.0",
         "matthiasnoback/symfony-config-test": "^4.2.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2.1",
-        "pagerfanta/pagerfanta": "^2.4 || ^3.0",
+        "pagerfanta/pagerfanta": "^3.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.0",
         "phpstan/phpstan": "0.12.94",
