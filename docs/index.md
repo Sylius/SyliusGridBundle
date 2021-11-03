@@ -8,7 +8,7 @@ really easily.
 
 Some of the features worth mentioning:
 
--   Uses YAML to define the grid structure
+-   Uses YAML or PHP to define the grid structure
 -   Supports different data sources: Doctrine ORM/ODM, native SQL query.
 -   Rich filter functionality, easy to define your own filter type with
     flexible form

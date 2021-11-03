@@ -144,3 +144,24 @@ sylius_grid:
                                     parameters:
                                         userId: resource.id
 ```
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->setRepositoryMethod('myCustomMethod', ['id' => 'resource.id'])
+        ->addField(
+            Field::create('name', 'twig') # Name & Type of field
+                ->setPath('.') # dot means a whole object
+                ->setOptions([
+                    'template' => ':Grid/Column:_name.html.twig', # Only twig column
+                ])
+        )
+    );
+};
+```
