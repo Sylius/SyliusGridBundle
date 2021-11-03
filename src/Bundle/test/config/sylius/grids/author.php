@@ -2,12 +2,13 @@
 
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_author', '%app.model.author.class%')
-        ->addFilter(Filter::create('name', 'string'))
+        ->addFilter(StringFilter::create('name'))
         ->orderBy('name', 'asc')
         ->addField(StringField::create('name')
             ->setLabel('Name')

@@ -54,6 +54,10 @@ class Book implements ResourceInterface
 
     private string $state;
 
+    private bool $enabled = true;
+
+    private ?\DateTimeInterface $publishedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -104,5 +108,15 @@ class Book implements ResourceInterface
     public function setState(string $state): void
     {
         $this->state = $state;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): void
+    {
+        $this->enabled = $enabled;
     }
 }

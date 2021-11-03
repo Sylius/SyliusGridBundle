@@ -40,6 +40,11 @@ final class Filter implements FilterInterface
         return $this->name;
     }
 
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
     public function setLabel(?string $label): FilterInterface
     {
         $this->label = $label;
@@ -54,11 +59,26 @@ final class Filter implements FilterInterface
         return $this;
     }
 
-    public function setTemplate(string $template): FilterInterface
+    public function isEnabled(): bool
+    {
+        return $this->enabled ?? true;
+    }
+
+    public function getTemplate(): ?string
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(?string $template): FilterInterface
     {
         $this->template = $template;
 
         return $this;
+    }
+
+    public function getOptions(): array
+    {
+        return $this->options;
     }
 
     public function setOptions(array $options): FilterInterface
@@ -68,11 +88,55 @@ final class Filter implements FilterInterface
         return $this;
     }
 
+    /**
+     * @param mixed $value
+     */
+    public function addOption(string $option, $value): FilterInterface
+    {
+        $this->options[$option] = $value;
+
+        return $this;
+    }
+
+    public function removeOption(string $option): FilterInterface
+    {
+        unset($this->options[$option]);
+
+        return $this;
+    }
+
+    public function getFormOptions(): array
+    {
+        return $this->formOptions;
+    }
+
     public function setFormOptions(array $formOptions): FilterInterface
     {
         $this->formOptions = $formOptions;
 
         return $this;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function addFormOption(string $option, $value): FilterInterface
+    {
+        $this->formOptions[$option] = $value;
+
+        return $this;
+    }
+
+    public function removeFormOption(string $option): FilterInterface
+    {
+        unset($this->formOptions[$option]);
+
+        return $this;
+    }
+
+    public function getCriteria(): array
+    {
+        return $this->criteria;
     }
 
     public function setCriteria(array $criteria): FilterInterface

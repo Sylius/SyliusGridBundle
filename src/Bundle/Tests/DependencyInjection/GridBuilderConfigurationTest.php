@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection;
 
+use App\Entity\Author;
 use App\Entity\Book;
-use Matthias\SymfonyConfigTest\PhpUnit\ConfigurationTestCaseTrait;
-use PHPUnit\Framework\TestCase;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
@@ -28,15 +28,21 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\DateFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\ExistsFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
+use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
 
-final class GridBuilderConfigurationTest extends TestCase
+final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
-    use ConfigurationTestCaseTrait;
-
     /**
      * @test
      */
@@ -44,24 +50,25 @@ final class GridBuilderConfigurationTest extends TestCase
     {
         $gridBuilder = GridBuilder::create('app_admin_book');
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
-                ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [],
-                        ],
-                    ],
-                ],
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
             ],
-            'grids.*.driver'
-        );
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
     }
 
     /**
@@ -71,26 +78,61 @@ final class GridBuilderConfigurationTest extends TestCase
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class);
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
-                ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
-                        ],
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class
                     ],
                 ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
             ],
-            'grids.*.driver'
-        );
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_resource_class_as_parameter(): void
+    {
+        $this->setParameter('app.model.book.class', Book::class);
+
+        $gridBuilder = GridBuilder::create('app_admin_book', '%app.model.book.class%');
+
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('app.model.book.class', Book::class);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => '%app.model.book.class%',
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
     }
 
     /**
@@ -102,39 +144,139 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addFilter(Filter::create('search', 'string'))
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
-                ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
-                        ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [],
-                        'filters' => [
-                            'search' => [
-                                'type' => 'string',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [],
-                                'form_options' => [],
-                            ],
-                        ],
-                        'actions' => [],
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
                     ],
                 ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [
+                    'search' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                ],
+                'actions' => [],
             ],
-            'grids'
-        );
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_filters(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addFilter(StringFilter::create('search'))
+            ->addFilter(DateFilter::create('createdAt'))
+            ->addFilter(BooleanFilter::create('enabled'))
+            ->addFilter(EntityFilter::create('author', Author::class))
+            ->addFilter(MoneyFilter::create('price', 'EUR'))
+            ->addFilter(ExistsFilter::create('publishedAt'))
+            ->addFilter(SelectFilter::create('state', [
+                'sylius.ui.published' => 'published',
+                'sylius.ui.unpublished' => 'unpublished',
+            ], true))
+        ;
+
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [
+                    'search' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'createdAt' => [
+                        'type' => 'date',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'enabled' => [
+                        'type' => 'boolean',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'author' => [
+                        'type' => 'entity',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [
+                            'class' => Author::class,
+                        ],
+                    ],
+                    'price' => [
+                        'type' => 'money',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [
+                            'currency_field' => 'EUR',
+                            'scale' => 2,
+                        ],
+                        'form_options' => [
+                            'scale' => 2,
+                        ],
+                    ],
+                    'publishedAt' => [
+                        'type' => 'exists',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'state' => [
+                        'type' => 'select',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [
+                            'choices' => [
+                                'sylius.ui.published' => 'published',
+                                'sylius.ui.unpublished' => 'unpublished',
+                            ],
+                            'multiple' => true,
+                        ],
+                    ],
+                ],
+                'actions' => [],
+            ],
+        ]);
     }
 
     /**
@@ -149,46 +291,42 @@ final class GridBuilderConfigurationTest extends TestCase
             )
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
-                ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
-                        ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [
-                            'name' => [
-                                'type' => 'string',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [],
-                            ],
-                            'author' => [
-                                'type' => 'twig',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [
-                                    'template' => 'admin/book/grid/field/author.html.twig',
-                                ],
-                            ],
-                        ],
-                        'filters' => [],
-                        'actions' => [],
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
                     ],
                 ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [
+                    'name' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                    ],
+                    'author' => [
+                        'type' => 'twig',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [
+                            'template' => 'admin/book/grid/field/author.html.twig',
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'actions' => [],
             ],
-            'grids'
-        );
+        ]);
     }
 
     /**
@@ -202,54 +340,50 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addField(DateTimeField::create('createdAt'))
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
-                ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
-                        ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [
-                            'name' => [
-                                'type' => 'string',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [],
-                            ],
-                            'author' => [
-                                'type' => 'twig',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [
-                                    'template' => 'admin/book/grid/field/author.html.twig',
-                                ],
-                            ],
-                            'createdAt' => [
-                                'type' => 'datetime',
-                                'enabled' => true,
-                                'position' => 100,
-                                'options' => [
-                                    'format' => 'Y-m-d H:i:s',
-                                ],
-                            ],
-                        ],
-                        'filters' => [],
-                        'actions' => [],
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
                     ],
                 ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [
+                    'name' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                    ],
+                    'author' => [
+                        'type' => 'twig',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [
+                            'template' => 'admin/book/grid/field/author.html.twig',
+                        ],
+                    ],
+                    'createdAt' => [
+                        'type' => 'datetime',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [
+                            'format' => 'Y-m-d H:i:s',
+                        ],
+                    ],
+                ],
+                'filters' => [],
+                'actions' => [],
             ],
-            'grids'
-        );
+        ]);
     }
 
     /**
@@ -265,70 +399,71 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addAction(Action::create('delete', 'delete'), 'bulk')
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
                 ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+
+
+
+
+
+                'filters' => [],
+                'actions' => [
+                    'main' => [
+                        'create' => [
+                            'type' => 'create',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
                         ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [],
-                        'filters' => [],
-                        'actions' => [
-                            'main' => [
-                                'create' => [
-                                    'type' => 'create',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                ],
-                            ],
-                            'item' => [
-                                'update' => [
-                                    'type' => 'update',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                ],
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                ],
-                            ],
-                            'bulk' => [
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                ],
-                            ],
-                            'subitem' => [
-                                'authors' => [
-                                    'type' => 'links',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                ],
-                            ],
+                    ],
+                    'item' => [
+                        'update' => [
+                            'type' => 'update',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                        ],
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                        ],
+                    ],
+                    'bulk' => [
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                        ],
+                    ],
+                    'subitem' => [
+                        'authors' => [
+                            'type' => 'links',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
                         ],
                     ],
                 ],
             ],
-            'grids'
-        );
+        ]);
     }
 
     /**
@@ -344,73 +479,69 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addAction(DeleteAction::create(), 'bulk')
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
                 ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [
+                    'main' => [
+                        'create' => [
+                            'type' => 'create',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.create',
                         ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [],
-                        'filters' => [],
-                        'actions' => [
-                            'main' => [
-                                'create' => [
-                                    'type' => 'create',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.create',
-                                ],
-                            ],
-                            'item' => [
-                                'show' => [
-                                    'type' => 'show',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.show'
-                                ],
-                                'update' => [
-                                    'type' => 'update',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.update'
-                                ],
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.delete'
-                                ],
-                            ],
-                            'bulk' => [
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.delete'
-                                ],
-                            ],
+                    ],
+                    'item' => [
+                        'show' => [
+                            'type' => 'show',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.show'
+                        ],
+                        'update' => [
+                            'type' => 'update',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.update'
+                        ],
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.delete'
+                        ],
+                    ],
+                    'bulk' => [
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.delete'
                         ],
                     ],
                 ],
             ],
-            'grids'
-        );
+        ]);
     }
 
     /**
@@ -428,77 +559,75 @@ final class GridBuilderConfigurationTest extends TestCase
             ->addActionGroup(BulkActionGroup::create(DeleteAction::create()))
         ;
 
-        $this->assertProcessedConfigurationEquals(
-            [[
-                'grids' => [
-                    'app_admin_book' => $gridBuilder->toArray(),
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
                 ],
-            ]],
-            [
-                'grids' => [
-                    'app_admin_book' => [
-                        'driver' => [
-                            'name' => Driver::NAME,
-                            'options' => [
-                                'class' => Book::class,
-                            ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [
+                    'main' => [
+                        'create' => [
+                            'type' => 'create',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.create',
                         ],
-                        'sorting' => [],
-                        'limits' => [10, 25, 50],
-                        'fields' => [],
-                        'filters' => [],
-                        'actions' => [
-                            'main' => [
-                                'create' => [
-                                    'type' => 'create',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.create',
-                                ],
-                            ],
-                            'item' => [
-                                'show' => [
-                                    'type' => 'show',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.show'
-                                ],
-                                'update' => [
-                                    'type' => 'update',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.update'
-                                ],
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.delete'
-                                ],
-                            ],
-                            'bulk' => [
-                                'delete' => [
-                                    'type' => 'delete',
-                                    'enabled' => true,
-                                    'position' => 100,
-                                    'options' => [],
-                                    'label' => 'sylius.ui.delete'
-                                ],
-                            ],
+                    ],
+                    'item' => [
+                        'show' => [
+                            'type' => 'show',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.show'
+                        ],
+                        'update' => [
+                            'type' => 'update',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.update'
+                        ],
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.delete'
+                        ],
+                    ],
+                    'bulk' => [
+                        'delete' => [
+                            'type' => 'delete',
+                            'enabled' => true,
+                            'position' => 100,
+                            'options' => [],
+                            'label' => 'sylius.ui.delete'
                         ],
                     ],
                 ],
             ],
-            'grids'
-        );
+        ]);
     }
 
-    protected function getConfiguration(): Configuration
+    protected function getContainerExtensions(): array
     {
-        return new Configuration();
+        return [
+            new SyliusGridExtension(),
+        ];
     }
 }

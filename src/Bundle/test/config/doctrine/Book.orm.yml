@@ -18,9 +18,14 @@ App\Entity\Book:
             type: string
             lenght: 20
             nullable: false
+        enabled:
+            type: boolean
         createdAt:
             type: datetime
         updatedAt:
+            type: datetime
+            nullable: true
+        publishedAt:
             type: datetime
             nullable: true
     manyToOne:
