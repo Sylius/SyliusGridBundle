@@ -41,18 +41,33 @@ final class Field implements FieldInterface
         return $this->name;
     }
 
-    public function setPath(string $path): FieldInterface
+    public function getPath(): ?string
+    {
+        return $this->path;
+    }
+
+    public function setPath(?string $path): FieldInterface
     {
         $this->path = $path;
 
         return $this;
     }
 
-    public function setLabel(string $label): FieldInterface
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(?string $label): FieldInterface
     {
         $this->label = $label;
 
         return $this;
+    }
+
+    public function isEnabled(): bool
+    {
+        return $this->enabled ?? true;
     }
 
     public function setEnabled(bool $enabled): FieldInterface
@@ -60,6 +75,11 @@ final class Field implements FieldInterface
         $this->enabled = $enabled;
 
         return $this;
+    }
+
+    public function isSortable(): bool
+    {
+        return null !== $this->sortable;
     }
 
     public function setSortable(bool $sortable, string $path = null): FieldInterface
@@ -73,16 +93,43 @@ final class Field implements FieldInterface
         return $this;
     }
 
-    public function setPosition(int $position): FieldInterface
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(?int $position): FieldInterface
     {
         $this->position = $position;
 
         return $this;
     }
 
+    public function getOptions(): array
+    {
+        return $this->options;
+    }
+
     public function setOptions(array $options): FieldInterface
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    public function addOption(string $option, $value): FieldInterface
+    {
+        $this->options[$option] = $value;
+
+        return $this;
+    }
+
+    public function removeOption(string $option): FieldInterface
+    {
+        unset($this->options[$option]);
 
         return $this;
     }

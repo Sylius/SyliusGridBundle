@@ -25,66 +25,90 @@ final class FieldSpec extends ObjectBehavior
         $this->shouldImplement(FieldInterface::class);
     }
 
+    function it_has_no_path_by_default(): void
+    {
+        $this->getPath()->shouldReturn(null);
+    }
+
     function it_sets_path(): void
     {
-        $field = $this->setPath('custom_path');
+        $this->setPath('custom_path');
 
-        $field->toArray()['path']->shouldReturn('custom_path');
+        $this->getPath()->shouldReturn('custom_path');
+    }
+
+    function it_has_no_label_by_default(): void
+    {
+        $this->getLabel()->shouldReturn(null);
     }
 
     function it_sets_label(): void
     {
-        $field = $this->setLabel('Name');
+        $this->setLabel('Name');
 
-        $field->toArray()['label']->shouldReturn('Name');
+        $this->getLabel()->shouldReturn('Name');
     }
 
     function it_enables_fields(): void
     {
-        $field = $this->setEnabled(true);
+        $this->setEnabled(true);
 
-        $field->toArray()['enabled']->shouldReturn(true);
+        $this->isEnabled()->shouldReturn(true);
     }
 
     function it_disables_fields(): void
     {
-        $field = $this->setEnabled(false);
+        $this->setEnabled(false);
 
-        $field->toArray()['enabled']->shouldReturn(false);
+        $this->isEnabled()->shouldReturn(false);
     }
 
     function it_makes_fields_sortable(): void
     {
-        $field = $this->setSortable(true);
+        $this->setSortable(true);
 
-        $field->toArray()['sortable']->shouldReturn(true);
+        $this->isSortable()->shouldReturn(true);
+        $this->toArray()['sortable']->shouldReturn(true);
     }
 
     function it_makes_fields_sortable_with_path(): void
     {
-        $field = $this->setSortable(true, 'path');
+        $this->setSortable(true, 'path');
 
-        $field->toArray()['sortable']->shouldReturn('path');
+        $this->isSortable()->shouldReturn(true);
+        $this->toArray()['sortable']->shouldReturn('path');
     }
 
     function it_makes_fields_not_sortable(): void
     {
-        $field = $this->setSortable(false);
+        $this->setSortable(false);
 
-        $field->toArray()['sortable']->shouldReturn(null);
+        $this->isSortable()->shouldReturn(false);
+        $this->toArray()['sortable']->shouldReturn(null);
     }
 
     function it_sets_position(): void
     {
-        $field = $this->setPosition(42);
+        $this->setPosition(42);
 
-        $field->toArray()['position']->shouldReturn(42);
+        $this->getPosition()->shouldReturn(42);
     }
 
     function it_sets_options(): void
     {
-        $field = $this->setOptions(['template' => '/path/to/template']);
+        $this->setOptions(['template' => '/path/to/template']);
 
-        $field->toArray()['options']->shouldReturn(['template' => '/path/to/template']);
+        $this->getOptions()->shouldReturn(['template' => '/path/to/template']);
+    }
+
+    function it_adds_options(): void
+    {
+        $this->setOptions(['template' => '/path/to/template']);
+        $this->addOption('vars', ['labels' => '/path/to/label']);
+
+        $this->getOptions()->shouldReturn([
+            'template' => '/path/to/template',
+            'vars' => ['labels' => '/path/to/label'],
+        ]);
     }
 }

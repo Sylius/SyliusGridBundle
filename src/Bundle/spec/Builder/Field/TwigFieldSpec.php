@@ -22,4 +22,14 @@ final class TwigFieldSpec extends ObjectBehavior
         $field->shouldHaveType(FieldInterface::class);
         $field->getName()->shouldReturn('enabled');
     }
+
+    function it_creates_fields_with_vars(): void
+    {
+        $field = $this::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
+            ->addOption('vars', ['labels' => 'path/to/label'])
+        ;
+
+        $field->shouldHaveType(FieldInterface::class);
+        $field->getName()->shouldReturn('enabled');
+    }
 }
