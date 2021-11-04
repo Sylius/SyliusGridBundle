@@ -192,7 +192,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::ITEM_GROUP);
         $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]->shouldHaveKey('update');
         $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']->shouldHaveKey('label');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']['label']->shouldReturn('sylius.ui.update');
+        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']['label']->shouldReturn('sylius.ui.edit');
     }
 
     function it_adds_update_actions_on_a_specific_group(): void
@@ -202,7 +202,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->toArray()['actions']->shouldHaveKey('custom');
         $this->toArray()['actions']['custom']->shouldHaveKey('update');
         $this->toArray()['actions']['custom']['update']->shouldHaveKey('label');
-        $this->toArray()['actions']['custom']['update']['label']->shouldReturn('sylius.ui.update');
+        $this->toArray()['actions']['custom']['update']['label']->shouldReturn('sylius.ui.edit');
     }
 
     function it_adds_delete_actions(): void

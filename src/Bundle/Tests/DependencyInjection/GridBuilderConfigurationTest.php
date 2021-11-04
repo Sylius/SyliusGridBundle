@@ -520,7 +520,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.update'
+                            'label' => 'sylius.ui.edit'
                         ],
                         'delete' => [
                             'type' => 'delete',
@@ -600,7 +600,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.update'
+                            'label' => 'sylius.ui.edit'
                         ],
                         'delete' => [
                             'type' => 'delete',
