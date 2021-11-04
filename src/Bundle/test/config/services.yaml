@@ -2,11 +2,9 @@ imports:
     - { resource: "sylius/resources.yaml" }
 
 parameters:
-    database_driver: pdo_sqlite
-    database_path: "%kernel.project_dir%/config/db.sql"
-
     locale: en_US
     secret: "Three can keep a secret, if two of them are dead."
+    database_url: "sqlite:///%kernel.project_dir%/config/db.sql"
 
 services:
     app.english_books_query_builder:

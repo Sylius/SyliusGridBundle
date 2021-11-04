@@ -1,0 +1,5 @@
+imports:
+    - { resource: "sylius/grids/*.php" }
+
+parameters:
+    database_url: "pgsql://postgres:postgres@127.0.0.1/sylius?serverVersion=13.3"

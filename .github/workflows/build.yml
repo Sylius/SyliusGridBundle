@@ -12,11 +12,12 @@ on:
 jobs:
     tests:
         runs-on: ubuntu-latest
-        name: "PHP ${{ matrix.php }}${{ matrix.symfony != '' && format(', Symfony {0}', matrix.symfony) || '' }}${{ matrix.currency-bundle != '' && format(', CurrencyBundle {0}', matrix.currency-bundle) || '' }}"
+        name: "PHP ${{ matrix.php }}${{ matrix.symfony != '' && format(', Symfony {0}', matrix.symfony) || '' }}${{ matrix.currency-bundle != '' && format(', CurrencyBundle {0}', matrix.currency-bundle) || '' }}${{ matrix.postgres != '' && format(', PostgresSQL {0}', matrix.postgres) || '' }}"
         strategy:
             fail-fast: false
             matrix:
                 php: [7.4, 8.0]
+                postgres: [""]
                 symfony: [^4.4, ^5.3]
 
                 include:
@@ -24,16 +25,27 @@ jobs:
                         php: 7.4
                         symfony: ""
                         currency-bundle: "^1.7"
+                    -
+                        php: 8.0
+                        symfony: "^5.3"
+                        postgres: "13.3"
         steps:
             -
                 uses: actions/checkout@v2
-
             -
                 name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
                     php-version: "${{ matrix.php }}"
                     coverage: none
+
+            -
+                name: Setup PostgresSQL
+                if: matrix.postgres != ''
+                uses: harmon758/postgresql-action@v1
+                with:
+                    postgresql version: "${{ matrix.postgres }}"
+                    postgresql password: "postgres"
 
             -
                 name: Restrict Symfony version
@@ -88,3 +100,12 @@ jobs:
                 run: |
                     (cd src/Bundle/test && bin/console cache:clear --env=test_grids_as_service)
                     composer test-with-grids-as-service
+
+            -
+                name: Run tests with PostgresSQL
+                if: matrix.postgres != ''
+                run: |
+                    (cd src/Bundle/test && bin/console cache:clear --env=test_with_postgres)
+                    (cd src/Bundle/test && bin/console doctrine:database:create --env=test_with_postgres)
+                    (cd src/Bundle/test && bin/console doctrine:schema:create --env=test_with_postgres)
+                    composer test-with-postgres
