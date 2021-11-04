@@ -28,4 +28,18 @@ final class EntityFilterSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_creates_entity_filters_with_multiple_option(): void
+    {
+        $filter = $this::create('author', Author::class, true);
+
+        $filter->shouldHaveType(FilterInterface::class);
+        $filter->toArray()->shouldReturn([
+            'type' => 'entity',
+            'form_options' => [
+                'class' => Author::class,
+                'multiple' => true,
+            ],
+        ]);
+    }
 }

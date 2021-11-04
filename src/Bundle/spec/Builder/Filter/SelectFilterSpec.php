@@ -27,4 +27,18 @@ final class SelectFilterSpec extends ObjectBehavior
             ],
         ]);
     }
+
+    function it_creates_select_filters_with_multiple_option(): void
+    {
+        $filter = $this::create('search', ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'], true);
+
+        $filter->shouldHaveType(FilterInterface::class);
+        $filter->toArray()->shouldReturn([
+            'type' => 'select',
+            'form_options' => [
+                'choices' => ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'],
+                'multiple' => true,
+            ],
+        ]);
+    }
 }
