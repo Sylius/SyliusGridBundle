@@ -21,7 +21,7 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
-class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
+final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     public static function getName(): string
     {

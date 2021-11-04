@@ -22,7 +22,7 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
-class BookByEnglishAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
+final class BookByEnglishAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     private EnglishBooksQueryBuilder $englishBooksQueryBuilder;
 

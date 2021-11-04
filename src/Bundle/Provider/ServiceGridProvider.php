@@ -22,7 +22,7 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 final class ServiceGridProvider implements GridProviderInterface
 {
     private ArrayToDefinitionConverterInterface $converter;
-    private GridRegistry $gridRegistry;
+    private GridRegistryInterface $gridRegistry;
 
     public function __construct(ArrayToDefinitionConverterInterface $converter, GridRegistry $gridRegistry)
     {

@@ -20,7 +20,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
-class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterface
+final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
     public static function getName(): string
     {
