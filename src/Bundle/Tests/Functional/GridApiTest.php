@@ -100,6 +100,18 @@ final class GridApiTest extends JsonApiTestCase
     }
 
     /** @test */
+    public function it_filters_books_by_title_with_contains(): void
+    {
+        $this->client->request('GET', sprintf(
+            '/books/?criteria[title][type]=contains&criteria[title][value]=%s',
+            urlencode('jurassic')
+        ));
+
+        $this->assertCount(1, $this->getItemsFromCurrentResponse());
+        $this->assertSame('Jurassic Park', $this->getFirstItemFromCurrentResponse()['title']);
+    }
+
+    /** @test */
     public function it_filters_books_by_author(): void
     {
         $authorId = $this->data['author_michael_crichton']->getId();
