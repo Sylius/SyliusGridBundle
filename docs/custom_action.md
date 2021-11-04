@@ -33,6 +33,8 @@ From now on you can use your new action type in the grid configuration!
 Let's assume that you already have a route for contacting your
 suppliers, then you can configure the grid action:
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -52,3 +54,38 @@ sylius_grid:
                                 parameters:
                                     id: resource.id
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Supplier;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
+        ->addActionGroup(
+            ItemActionGroup::create(
+                Action::create('contactSupplier', 'contactSupplier')
+                    ->setLabel('Contact Supplier')
+                    ->setOptions([
+                        'link' => [
+                            'route' => 'app_admin_contact_supplier',
+                            'parameters' => [
+                                'id' => 'resource.id',
+                            ],
+                        ],
+                    ])
+            )
+        ])
+    )
+};
+```
+
+</details>
