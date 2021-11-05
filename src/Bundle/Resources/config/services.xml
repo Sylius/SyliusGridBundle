@@ -28,10 +28,26 @@
         <service id="sylius.grid.array_to_definition_converter" class="Sylius\Component\Grid\Definition\ArrayToDefinitionConverter">
             <argument type="service" id="event_dispatcher" />
         </service>
-        <service id="sylius.grid.provider" class="Sylius\Component\Grid\Provider\ArrayGridProvider">
+        <service id="sylius.grid.grid_registry" class="Sylius\Bundle\GridBundle\Registry\GridRegistry">
+            <argument type="tagged_locator" tag="sylius.grid" index-by="name" default-index-method="getName"/>
+        </service>
+        <service id="Sylius\Bundle\GridBundle\Registry\GridRegistryInterface" alias="sylius.grid.grid_registry" />
+
+        <service id="sylius.grid.array_grid_provider" class="Sylius\Component\Grid\Provider\ArrayGridProvider">
             <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument>%sylius.grids_definitions%</argument>
+            <tag name="sylius.grid_provider" key="array" priority="-200"/>
         </service>
+        <service id="sylius.grid.service_grid_provider" class="Sylius\Bundle\GridBundle\Provider\ServiceGridProvider">
+            <argument type="service" id="sylius.grid.array_to_definition_converter" />
+            <argument type="service" id="sylius.grid.grid_registry" />
+            <tag name="sylius.grid_provider" key="service" priority="-100"/>
+        </service>
+
+        <service id="sylius.grid.chain_provider" class="Sylius\Component\Grid\Provider\ChainProvider">
+            <argument type="tagged_iterator" tag="sylius.grid_provider" />
+        </service>
+        <service id="sylius.grid.provider" alias="sylius.grid.chain_provider"/>
 
         <service id="sylius.grid.view_factory" class="Sylius\Component\Grid\View\GridViewFactory">
             <argument type="service" id="sylius.grid.data_provider" />

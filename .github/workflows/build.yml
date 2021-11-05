@@ -82,3 +82,9 @@ jobs:
                 run: |
                     (cd src/Bundle/test && bin/console cache:clear --env=test_grids_with_php_config)
                     composer test-php-config
+
+            -
+                name: Run tests with grids as services
+                run: |
+                    (cd src/Bundle/test && bin/console cache:clear --env=test_grids_as_service)
+                    composer test-with-grids-as-service

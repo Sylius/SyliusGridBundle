@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\DependencyInjection;
 
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -52,6 +53,10 @@ final class SyliusGridExtension extends Extension
         if (\class_exists(SyliusCurrencyBundle::class)) {
             $loader->load('services/integrations/sylius_currency_bundle.xml');
         }
+
+        $container->registerForAutoconfiguration(GridInterface::class)
+            ->addTag('sylius.grid')
+        ;
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
