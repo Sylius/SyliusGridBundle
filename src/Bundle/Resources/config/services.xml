@@ -29,7 +29,8 @@
             <argument type="service" id="event_dispatcher" />
         </service>
         <service id="sylius.grid.grid_registry" class="Sylius\Bundle\GridBundle\Registry\GridRegistry">
-            <argument type="tagged_locator" tag="sylius.grid" index-by="name" default-index-method="getName"/>
+            <argument type="tagged_iterator" tag="sylius.grid" />
+<!--            <argument type="tagged_locator" tag="sylius.grid" index-by="name" default-index-method="getName"/>-->
         </service>
         <service id="Sylius\Bundle\GridBundle\Registry\GridRegistryInterface" alias="sylius.grid.grid_registry" />
 
@@ -43,7 +44,6 @@
             <argument type="service" id="sylius.grid.grid_registry" />
             <tag name="sylius.grid_provider" key="service" priority="-100"/>
         </service>
-        <service id="Sylius\Bundle\GridBundle\Provider\ServiceGridProviderInterface" alias="sylius.grid.service_grid_provider" />
 
         <service id="sylius.grid.chain_provider" class="Sylius\Component\Grid\Provider\ChainProvider">
             <argument type="tagged_iterator" tag="sylius.grid_provider" index-by="key" />
