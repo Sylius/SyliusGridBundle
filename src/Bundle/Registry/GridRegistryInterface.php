@@ -17,7 +17,5 @@ use Sylius\Bundle\GridBundle\Grid\GridInterface;
 
 interface GridRegistryInterface
 {
-    public function addGrid(GridInterface $grid): void;
-
     public function getGrid(string $code): ?GridInterface;
 }

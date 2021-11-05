@@ -14,25 +14,19 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Registry;
 
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class GridRegistry implements GridRegistryInterface
 {
-    private array $grids = [];
+    private ServiceLocator $gridLocator;
 
-    public function __construct(\Traversable $grids)
+    public function __construct(ServiceLocator $gridLocator)
     {
-        foreach ($grids as $grid) {
-            $this->addGrid($grid);
-        }
-    }
-
-    public function addGrid(GridInterface $grid): void
-    {
-        $this->grids[$grid::getName()] = $grid;
+        $this->gridLocator = $gridLocator;
     }
 
     public function getGrid(string $code): ?GridInterface
     {
-        return $this->grids[$code] ?? null;
+        return $this->gridLocator->has($code) ? $this->gridLocator->get($code) : null;
     }
 }

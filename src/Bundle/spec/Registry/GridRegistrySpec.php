@@ -3,20 +3,18 @@
 namespace spec\Sylius\Bundle\GridBundle\Registry;
 
 use PhpSpec\ObjectBehavior;
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Component\Grid\Tests\Dummy\BarGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class GridRegistrySpec extends ObjectBehavior
 {
-    function let(): void
+    function let(ServiceLocator $serviceLocator): void
     {
-        $this->beConstructedWith(new \ArrayIterator([
-            new FooGrid(),
-            new BarGrid(),
-            new NoResourceGrid(),
-        ]));
+        $this->beConstructedWith($serviceLocator);
     }
 
     function it_is_initializable(): void
@@ -24,26 +22,20 @@ class GridRegistrySpec extends ObjectBehavior
         $this->shouldHaveType(GridRegistry::class);
     }
 
-    function it_adds_grids(): void
-    {
-        $this->beConstructedWith(new \ArrayIterator([]));
+    function it_returns_grids_from_its_code(
+        ServiceLocator $serviceLocator,
+        GridInterface $bookGrid
+    ): void {
+        $serviceLocator->has('app_book')->willReturn(true);
+        $serviceLocator->get('app_book')->willReturn($bookGrid);
 
-        $grid = new FooGrid();
-
-        $this->addGrid($grid);
-
-        $this->getGrid('app_foo')->shouldReturn($grid);
+        $this->getGrid('app_book')->shouldReturn($bookGrid);
     }
 
-    function it_returns_grids_from_its_code(): void
+    function it_returns_null_when_grid_was_not_found(ServiceLocator $serviceLocator): void
     {
-        $this->getGrid('app_foo')->shouldHaveType(FooGrid::class);
-        $this->getGrid('app_bar')->shouldHaveType(BarGrid::class);
-        $this->getGrid('app_no_resource')->shouldHaveType(NoResourceGrid::class);
-    }
+        $serviceLocator->has('not_found')->willReturn(false);
 
-    function it_returns_null_when_grid_was_not_found(): void
-    {
         $this->getGrid('not_found')->shouldReturn(null);
     }
 }
