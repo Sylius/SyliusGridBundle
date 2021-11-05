@@ -54,6 +54,8 @@ app.grid_field.custom:
 
 Now you can use your new column type in the grid configuration!
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -67,3 +69,29 @@ sylius_grid:
                     type: custom
                     label: sylius.ui.name
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addField(
+            Field::create('name', 'custom')
+                ->setLabel('sylius.ui.name')
+        )
+    )
+};
+```
+
+</details>

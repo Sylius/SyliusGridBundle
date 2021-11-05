@@ -36,6 +36,7 @@ sylius_grid:
 <?php
 
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
@@ -45,6 +46,12 @@ return static function (GridConfig $grid) {
         ->addFilter(Filter::create('email', 'string'))
         ->addFilter(Filter::create('firstName', 'string'))
         ->addFilter(Filter::create('lastName', 'string'))
+    
+        // can be simplified using StringFilter
+        ->addFilter(StringFilter::create('username'))
+        ->addFilter(StringFilter::create('email'))
+        ->addFilter(StringFilter::create('firstName'))
+        ->addFilter(StringFilter::create('lastName'))
     )
 };
 ```
@@ -89,6 +96,7 @@ sylius_grid:
 <?php
 
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
@@ -99,6 +107,11 @@ return static function (GridConfig $grid) {
                 ->setFormOptions([
                     'type' => 'contains',
                 ])
+        )
+        
+        // can be simplified using StringFilter
+        ->addFilter(
+            StringFilter::create('username', null, 'contains')
         )
     )
 };
@@ -132,6 +145,7 @@ sylius_grid:
 ```php
 <?php
 
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
@@ -140,6 +154,11 @@ return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('enabled', 'boolean')
+        )
+        
+        // can be simplified using BooleanFilter
+        ->addFilter(
+            BooleanFilter::create('enabled')
         )
     )
 };
@@ -215,6 +234,7 @@ sylius_grid:
 ```php
 <?php
 
+use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
@@ -228,6 +248,14 @@ return static function (GridConfig $grid) {
         ->addFilter(
             Filter::create('customer', 'entity')
                 ->setFormOptions(['class' => '%app.model.customer.class%'])
+        )
+        
+        // can be simplified using EntityFilter
+        ->addFilter(
+            EntityFilter::create('channel', '%app.model.channel.class%')
+        )
+        ->addFilter(
+            EntityFilter::create('customer', '%app.model.customer.class%')
         )
     )
 };
@@ -263,6 +291,7 @@ sylius_grid:
 ```php
 <?php
 
+use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
@@ -276,6 +305,11 @@ return static function (GridConfig $grid) {
                     'currency_field' => 'currencyCode',
                     'scale' => 3,
                 ])
+        )
+        
+        // can be simplified using MoneyFilter
+        ->addFilter(
+            MoneyFilter::create('total', 'currencyCode', 3)
         )
     )
 };

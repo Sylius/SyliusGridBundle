@@ -86,6 +86,8 @@ services:
 
 Now you can use your new filter type in the grid configuration!
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -101,3 +103,29 @@ sylius_grid:
         filter:
             suppliers_statistics: 'App:Grid/Filter:suppliers_statistics.html.twig'
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Tournament;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_tournament', Tournament::class)
+        ->addFilter(
+            Filter::create('stats', 'suppliers_statistics')
+                ->setFormOptions(['range' => [0, 100]])
+        )
+    )
+};
+```
+
+</details>
