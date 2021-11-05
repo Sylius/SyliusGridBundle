@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
-use Sylius\Bundle\GridBundle\Registry\GridRegistry;
+use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -24,7 +24,7 @@ final class ServiceGridProvider implements GridProviderInterface
     private ArrayToDefinitionConverterInterface $converter;
     private GridRegistryInterface $gridRegistry;
 
-    public function __construct(ArrayToDefinitionConverterInterface $converter, GridRegistry $gridRegistry)
+    public function __construct(ArrayToDefinitionConverterInterface $converter, GridRegistryInterface $gridRegistry)
     {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;

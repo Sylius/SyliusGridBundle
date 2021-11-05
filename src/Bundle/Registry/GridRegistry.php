@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Registry;
 
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 
-final class GridRegistry
+final class GridRegistry implements GridRegistryInterface
 {
     private array $grids = [];
 
