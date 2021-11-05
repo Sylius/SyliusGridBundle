@@ -19,8 +19,7 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 final class ChainProvider implements GridProviderInterface
 {
-    /** @var array<int, GridProviderInterface> */
-    private array $providers;
+    private iterable $providers;
 
     public function __construct(iterable $providers)
     {
