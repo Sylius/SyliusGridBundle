@@ -46,7 +46,7 @@
         </service>
 
         <service id="sylius.grid.chain_provider" class="Sylius\Component\Grid\Provider\ChainProvider">
-            <argument type="tagged_iterator" tag="sylius.grid_provider" index-by="key" />
+            <argument type="tagged_iterator" tag="sylius.grid_provider" />
         </service>
         <service id="sylius.grid.provider" alias="sylius.grid.chain_provider"/>
 
