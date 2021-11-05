@@ -71,7 +71,7 @@ app_admin_supplier:
     resource: |
         alias: app.supplier
         section: admin
-        templates: SyliusAdminBundle:Crud
+        templates: "@SyliusAdmin\\Crud"
         except: ['show']
         redirect: update
         grid: app_admin_supplier
