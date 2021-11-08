@@ -120,9 +120,16 @@ final class Field implements FieldInterface
     /**
      * @param mixed $value
      */
-    public function addOption(string $option, $value): FieldInterface
+    public function setOption(string $option, $value): FieldInterface
     {
         $this->options[$option] = $value;
+
+        return $this;
+    }
+
+    public function addOptions(array $options): FieldInterface
+    {
+        $this->options = array_merge($this->options, $options);
 
         return $this;
     }

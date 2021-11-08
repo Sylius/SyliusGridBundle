@@ -43,10 +43,12 @@ interface FieldInterface
 
     public function setOptions(array $options): self;
 
+    public function addOptions(array $options): self;
+
     /**
      * @param mixed $value
      */
-    public function addOption(string $option, $value): FieldInterface;
+    public function setOption(string $option, $value): FieldInterface;
 
     public function removeOption(string $option): FieldInterface;
 

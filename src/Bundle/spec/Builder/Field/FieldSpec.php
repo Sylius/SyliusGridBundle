@@ -101,14 +101,41 @@ final class FieldSpec extends ObjectBehavior
         $this->getOptions()->shouldReturn(['template' => '/path/to/template']);
     }
 
-    function it_adds_options(): void
+    function it_sets_one_option(): void
     {
         $this->setOptions(['template' => '/path/to/template']);
-        $this->addOption('vars', ['labels' => '/path/to/label']);
+        $this->setOption('vars', ['labels' => '/path/to/label']);
 
         $this->getOptions()->shouldReturn([
             'template' => '/path/to/template',
             'vars' => ['labels' => '/path/to/label'],
+        ]);
+    }
+
+    function it_adds_options(): void
+    {
+        $this->setOptions(['template' => '/path/to/template']);
+        $this->addOptions(['vars' => ['labels' => '/path/to/label']]);
+
+        $this->getOptions()->shouldReturn([
+            'template' => '/path/to/template',
+            'vars' => ['labels' => '/path/to/label'],
+        ]);
+    }
+
+    function it_removes_options(): void
+    {
+        $this->setOptions([
+            'template' => '/path/to/template',
+            'vars' => [
+                'labels' => '/path/to/label',
+            ],
+        ]);
+
+        $this->removeOption('vars');
+
+        $this->getOptions()->shouldReturn([
+            'template' => '/path/to/template',
         ]);
     }
 }
