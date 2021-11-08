@@ -36,7 +36,7 @@ final class BookByEnglishAuthorsGrid extends AbstractGrid implements ResourceAwa
         return 'app_book_by_english_authors';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
         return Book::class;
     }

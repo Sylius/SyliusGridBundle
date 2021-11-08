@@ -15,5 +15,5 @@ namespace Sylius\Bundle\GridBundle\Grid;
 
 interface ResourceAwareGridInterface extends GridInterface
 {
-    public static function getResourceClass(): string;
+    public function getResourceClass(): string;
 }

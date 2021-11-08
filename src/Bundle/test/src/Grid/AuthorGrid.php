@@ -22,14 +22,21 @@ use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
+    private string $authorClass;
+
+    public function __construct(string $authorClass)
+    {
+        $this->authorClass = $authorClass;
+    }
+
     public static function getName(): string
     {
         return 'app_author';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
-        return Author::class;
+        return $this->authorClass;
     }
 
     public function buildGrid(GridBuilderInterface $gridBuilder): void

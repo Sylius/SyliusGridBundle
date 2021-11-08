@@ -25,7 +25,7 @@ final class AuthorWithBooksWithFetchJoinCollectionEnabled extends AbstractGrid i
         return 'app_author_with_books_with_fetch_join_collection_enabled';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
         return Author::class;
     }

@@ -9,6 +9,9 @@ parameters:
     secret: "Three can keep a secret, if two of them are dead."
 
 services:
+    bind:
+        $authorClass: '%app.model.author.class%'
+
     app.english_books_query_builder:
         class: App\QueryBuilder\EnglishBooksQueryBuilder
         arguments:

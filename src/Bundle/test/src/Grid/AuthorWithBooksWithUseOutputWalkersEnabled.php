@@ -26,7 +26,7 @@ final class AuthorWithBooksWithUseOutputWalkersEnabled extends AbstractGrid impl
         return 'app_author_with_books_with_use_output_walkers_enabled';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
         return Author::class;
     }
