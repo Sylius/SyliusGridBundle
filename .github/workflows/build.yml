@@ -29,6 +29,10 @@ jobs:
                         php: 8.0
                         symfony: "^5.3"
                         postgres: "13.3"
+                    -
+                        php: 8.0
+                        symfony: "^5.3"
+                        postgres: "14.0"
         steps:
             -
                 uses: actions/checkout@v2
