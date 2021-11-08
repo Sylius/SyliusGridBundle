@@ -190,7 +190,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
             ->addFilter(SelectFilter::create('state', [
                 'sylius.ui.published' => 'published',
                 'sylius.ui.unpublished' => 'unpublished',
-            ], true))
+            ]))
         ;
 
         $this->load([
@@ -270,6 +270,97 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                                 'sylius.ui.published' => 'published',
                                 'sylius.ui.unpublished' => 'unpublished',
                             ],
+                        ],
+                    ],
+                ],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_select_filter_with_multiple_option(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addFilter(SelectFilter::create('state', [
+                'sylius.ui.published' => 'published',
+                'sylius.ui.unpublished' => 'unpublished',
+            ], true))
+        ;
+
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [
+                    'state' => [
+                        'type' => 'select',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [
+                            'choices' => [
+                                'sylius.ui.published' => 'published',
+                                'sylius.ui.unpublished' => 'unpublished',
+                            ],
+                            'multiple' => true,
+                        ],
+                    ],
+                ],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_predefined_entity_filter_with_multiple_option(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addFilter(EntityFilter::create('author', Author::class, true))
+        ;
+
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [
+                    'author' => [
+                        'type' => 'entity',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [
+                            'class' => Author::class,
                             'multiple' => true,
                         ],
                     ],
