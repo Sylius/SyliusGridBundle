@@ -2,6 +2,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $authorClass: '%app.model.author.class%'
 
     App\QueryBuilder\EnglishBooksQueryBuilder: null
 
