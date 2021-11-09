@@ -19,17 +19,38 @@ interface FieldInterface
 
     public function getName(): string;
 
-    public function setPath(string $path): self;
+    public function getPath(): ?string;
 
-    public function setLabel(string $label): self;
+    public function setPath(?string $path): self;
+
+    public function getLabel(): ?string;
+
+    public function setLabel(?string $label): self;
+
+    public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
 
+    public function isSortable(): bool;
+
     public function setSortable(bool $sortable, string $path = null): self;
 
-    public function setPosition(int $position): self;
+    public function getPosition(): ?int;
+
+    public function setPosition(?int $position): self;
+
+    public function getOptions(): array;
 
     public function setOptions(array $options): self;
+
+    public function addOptions(array $options): self;
+
+    /**
+     * @param mixed $value
+     */
+    public function setOption(string $option, $value): FieldInterface;
+
+    public function removeOption(string $option): FieldInterface;
 
     public function toArray(): array;
 }
