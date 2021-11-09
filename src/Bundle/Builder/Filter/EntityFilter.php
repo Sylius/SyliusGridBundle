@@ -26,7 +26,7 @@ final class EntityFilter
         }
 
         if (null !== $multiple) {
-            $filter->setFormOptions(['multiple' => $multiple]);
+            $filter->addFormOption('multiple', $multiple);
         }
 
         return $filter;
