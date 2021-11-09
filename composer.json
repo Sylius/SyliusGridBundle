@@ -116,6 +116,9 @@
         ],
         "test-with-grids-as-service": [
             "APP_ENV=test_grids_as_service vendor/bin/phpunit --colors=always"
+        ],
+        "test-with-postgres": [
+            "APP_ENV=test_with_postgres vendor/bin/phpunit --colors=always"
         ]
     }
 }
