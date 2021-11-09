@@ -129,14 +129,20 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
 
-        return $this->queryBuilder->expr()->like($this->resolveFieldByAddingJoins($field), $this->queryBuilder->expr()->literal($pattern));
+        return $this->queryBuilder->expr()->like(
+            (string) $this->queryBuilder->expr()->lower($this->resolveFieldByAddingJoins($field)),
+            $this->queryBuilder->expr()->literal(strtolower($pattern))
+        );
     }
 
     public function notLike(string $field, string $pattern)
     {
         $field = $this->adjustField($field);
 
-        return $this->queryBuilder->expr()->notLike($this->resolveFieldByAddingJoins($field), $this->queryBuilder->expr()->literal($pattern));
+        return $this->queryBuilder->expr()->notLike(
+            (string) $this->queryBuilder->expr()->lower($this->resolveFieldByAddingJoins($field)),
+            $this->queryBuilder->expr()->literal(strtolower($pattern))
+        );
     }
 
     public function orderBy(string $field, string $direction)
