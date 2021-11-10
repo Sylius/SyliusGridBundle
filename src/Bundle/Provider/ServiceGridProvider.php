@@ -18,6 +18,7 @@ use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Webmozart\Assert\Assert;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
@@ -40,6 +41,27 @@ final class ServiceGridProvider implements GridProviderInterface
 
         $gridConfiguration = $grid->toArray();
 
+        if (isset($gridConfiguration['extends'])) {
+            $gridConfiguration = $this->extend($gridConfiguration, $gridConfiguration['extends']);
+        }
+
         return $this->converter->convert($code, $gridConfiguration);
+    }
+
+    private function extend(array $gridConfiguration, string $parentGridCode): array
+    {
+        $parentGrid = $this->gridRegistry->getGrid($parentGridCode);
+
+        Assert::notNull($parentGrid, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
+
+        $parentGridConfiguration = $parentGrid->toArray();
+
+        unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
+
+        $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
+
+        unset($configuration['extends']);
+
+        return $configuration;
     }
 }
