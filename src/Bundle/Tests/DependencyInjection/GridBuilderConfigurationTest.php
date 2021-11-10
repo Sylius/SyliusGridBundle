@@ -40,9 +40,11 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
+use Sylius\Component\Grid\Tests\Dummy\ClassAsParameterGrid;
 use Sylius\Component\Grid\Tests\Dummy\Foo;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
+use Symfony\Component\DependencyInjection\Definition;
 
 final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
@@ -765,6 +767,36 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                     'name' => Driver::NAME,
                     'options' => [
                         'class' => Foo::class,
+                    ],
+                ],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_grid_with_resource_class_as_parameter_and_grid_as_service(): void
+    {
+        $grid = new ClassAsParameterGrid(Author::class);
+
+        $this->load([
+            'grids' => [
+                'app_class_as_parameter' => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_class_as_parameter' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Author::class,
                     ],
                 ],
                 'sorting' => [],

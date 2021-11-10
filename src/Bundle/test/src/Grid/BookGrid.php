@@ -29,7 +29,7 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
         return 'app_book';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
         return Book::class;
     }

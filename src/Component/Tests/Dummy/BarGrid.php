@@ -24,7 +24,7 @@ final class BarGrid extends AbstractGrid implements ResourceAwareGridInterface
         return 'app_bar';
     }
 
-    public static function getResourceClass(): string
+    public function getResourceClass(): string
     {
         return Bar::class;
     }
