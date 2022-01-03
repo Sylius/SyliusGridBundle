@@ -38,6 +38,7 @@ final class BookmarkGrid extends AbstractGrid implements ResourceAwareGridInterf
     {
         $gridBuilder
             ->extends('app_book')
+            ->addField(StringField::create('id'))
         ;
     }
 }
