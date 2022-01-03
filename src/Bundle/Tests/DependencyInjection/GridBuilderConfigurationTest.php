@@ -833,7 +833,14 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 'extends' => 'app_foo',
                 'sorting' => [],
                 'limits' => [10, 25, 50],
-                'fields' => [],
+                'fields' => [
+                    'id' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => []
+                    ],
+                ],
                 'filters' => [],
                 'actions' => [],
             ],
