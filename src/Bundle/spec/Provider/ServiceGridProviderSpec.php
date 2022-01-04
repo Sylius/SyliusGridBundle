@@ -50,8 +50,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
         GridInterface $fooFightersGrid,
         Grid $fooGridDefinition,
         Grid $fooFightersGridDefinition
-    ): void
-    {
+    ): void {
         $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
         $gridRegistry->getGrid('app_foo_fighters')->willReturn($fooFightersGrid);
 
