@@ -1,4 +1,4 @@
-Sylius Grid Component [![Build status...](https://secure.travis-ci.org/Sylius/Grid.png?branch=master)](http://travis-ci.org/Sylius/Grid)
+Sylius Grid Component
 =====================
 
 PHP library for building grids of objects. Supports different drivers with filtering, sorting and custom field types.
