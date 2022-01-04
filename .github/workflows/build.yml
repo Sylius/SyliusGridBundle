@@ -16,22 +16,18 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.4, 8.0]
+                php: [8.0]
                 postgres: [""]
-                symfony: [^4.4, ^5.3]
+                symfony: [^4.4, ^5.4]
 
                 include:
                     -
-                        php: 7.4
-                        symfony: ""
-                        currency-bundle: "^1.7"
-                    -
                         php: 8.0
-                        symfony: "^5.3"
+                        symfony: "^5.4"
                         postgres: "13.3"
                     -
                         php: 8.0
-                        symfony: "^5.3"
+                        symfony: "^5.4"
                         postgres: "14.0"
         steps:
             -
