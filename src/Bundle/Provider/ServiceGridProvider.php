@@ -18,10 +18,13 @@ use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Sylius\Component\Grid\Provider\OverrideGridConfigurationTrait;
 use Webmozart\Assert\Assert;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
+    use OverrideGridConfigurationTrait;
+
     private ArrayToDefinitionConverterInterface $converter;
     private GridRegistryInterface $gridRegistry;
 
@@ -56,12 +59,6 @@ final class ServiceGridProvider implements GridProviderInterface
 
         $parentGridConfiguration = $parentGrid->toArray();
 
-        unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
-
-        $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
-
-        unset($configuration['extends']);
-
-        return $configuration;
+        return $this->overrideGridConfiguration($gridConfiguration, $parentGridConfiguration);
     }
 }

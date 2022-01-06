@@ -19,6 +19,8 @@ use Sylius\Component\Grid\Exception\UndefinedGridException;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
+    use OverrideGridConfigurationTrait;
+
     private ArrayToDefinitionConverterInterface $converter;
 
     /** @var array[] */
@@ -47,12 +49,6 @@ final class ArrayGridProvider implements GridProviderInterface
 
     private function extend(array $gridConfiguration, array $parentGridConfiguration): array
     {
-        unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
-
-        $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
-
-        unset($configuration['extends']);
-
-        return $configuration;
+        return $this->overrideGridConfiguration($gridConfiguration, $parentGridConfiguration);
     }
 }
