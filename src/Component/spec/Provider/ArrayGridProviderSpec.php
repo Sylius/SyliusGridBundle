@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Sylius\Component\Grid\Provider;
 
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -33,7 +34,7 @@ final class ArrayGridProviderSpec extends ObjectBehavior
             'sylius_admin_product' => ['configuration2' => 'foo'],
             'sylius_admin_order' => ['configuration3'],
             'sylius_admin_product_from_taxon' => ['extends' => 'sylius_admin_product', 'configuration4' => 'bar'],
-        ]);
+        ], new GridConfigurationExtender());
     }
 
     function it_implements_grid_provider_interface(): void

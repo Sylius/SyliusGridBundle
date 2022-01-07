@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
-use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -14,9 +14,11 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 class ServiceGridProviderSpec extends ObjectBehavior
 {
-    function let(ArrayToDefinitionConverterInterface $converter, GridRegistryInterface $gridRegistry): void
-    {
-        $this->beConstructedWith($converter, $gridRegistry);
+    function let(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry
+    ): void {
+        $this->beConstructedWith($converter, $gridRegistry, new GridConfigurationExtender());
     }
 
     function it_is_initializable(): void
