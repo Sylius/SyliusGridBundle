@@ -41,4 +41,12 @@ final class GridConfigurationExtenderSpec extends ObjectBehavior
             'foo' => 'fighters',
         ]);
     }
+
+    function it_removes_extends_key(): void
+    {
+        $gridConfiguration = ['extends' => 'Artist'];
+        $parentGridConfiguration = [];
+
+        $this->extends($gridConfiguration, $parentGridConfiguration)->shouldReturn([]);
+    }
 }
