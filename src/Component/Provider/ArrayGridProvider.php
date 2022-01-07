@@ -17,6 +17,7 @@ use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Webmozart\Assert\Assert;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
@@ -43,9 +44,11 @@ final class ArrayGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurations[$code];
+        $parentGridConfiguration = $this->gridConfigurations[$gridConfiguration['extends']] ?? null;
 
-        if (isset($gridConfiguration['extends'], $this->gridConfigurations[$gridConfiguration['extends']])) {
-            $gridConfiguration = $this->extend($gridConfiguration, $this->gridConfigurations[$gridConfiguration['extends']]);
+        if (isset($gridConfiguration['extends'])) {
+            Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $gridConfiguration['extends']));
+            $gridConfiguration = $this->extend($gridConfiguration, $parentGridConfiguration);
         }
 
         return $this->converter->convert($code, $gridConfiguration);
