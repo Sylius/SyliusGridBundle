@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Provider;
 
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -23,15 +24,18 @@ use Webmozart\Assert\Assert;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
-    use OverrideGridConfigurationTrait;
-
     private ArrayToDefinitionConverterInterface $converter;
     private GridRegistryInterface $gridRegistry;
+    private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
-    public function __construct(ArrayToDefinitionConverterInterface $converter, GridRegistryInterface $gridRegistry)
-    {
+    public function __construct(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry,
+        GridConfigurationExtenderInterface $gridConfigurationExtender
+    ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
+        $this->gridConfigurationExtender = $gridConfigurationExtender;
     }
 
     public function get(string $code): Grid
@@ -59,6 +63,6 @@ final class ServiceGridProvider implements GridProviderInterface
 
         $parentGridConfiguration = $parentGrid->toArray();
 
-        return $this->overrideGridConfiguration($gridConfiguration, $parentGridConfiguration);
+        return $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
     }
 }

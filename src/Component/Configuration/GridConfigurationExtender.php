@@ -8,13 +8,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Provider;
+namespace Sylius\Component\Grid\Configuration;
 
-trait OverrideGridConfigurationTrait
+final class GridConfigurationExtender implements GridConfigurationExtenderInterface
 {
-    protected function overrideGridConfiguration(array $gridConfiguration, array $parentGridConfiguration): array
+    public function extends(array $gridConfiguration, array $parentGridConfiguration): array
     {
         unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
 

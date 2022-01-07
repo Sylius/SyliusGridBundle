@@ -13,23 +13,27 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Provider;
 
+use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
-    use OverrideGridConfigurationTrait;
-
     private ArrayToDefinitionConverterInterface $converter;
+    private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
     /** @var array[] */
     private array $gridConfigurations;
 
-    public function __construct(ArrayToDefinitionConverterInterface $converter, array $gridConfigurations)
-    {
+    public function __construct(
+        ArrayToDefinitionConverterInterface $converter,
+        array $gridConfigurations,
+        GridConfigurationExtenderInterface $gridConfigurationExtender
+    ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;
+        $this->gridConfigurationExtender = $gridConfigurationExtender;
     }
 
     public function get(string $code): Grid
@@ -49,6 +53,6 @@ final class ArrayGridProvider implements GridProviderInterface
 
     private function extend(array $gridConfiguration, array $parentGridConfiguration): array
     {
-        return $this->overrideGridConfiguration($gridConfiguration, $parentGridConfiguration);
+        return $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
     }
 }
