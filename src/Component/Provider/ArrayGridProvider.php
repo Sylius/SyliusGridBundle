@@ -44,9 +44,11 @@ final class ArrayGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurations[$code];
-        $parentGridConfiguration = $this->gridConfigurations[$gridConfiguration['extends']] ?? null;
+        $parentGridCode = $gridConfiguration['extends'] ?? null;
 
-        if (isset($gridConfiguration['extends'])) {
+        if (null !== $parentGridCode) {
+            $parentGridConfiguration = $this->gridConfigurations[$gridConfiguration['extends']] ?? null;
+
             Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $gridConfiguration['extends']));
             $gridConfiguration = $this->extend($gridConfiguration, $parentGridConfiguration);
         }
