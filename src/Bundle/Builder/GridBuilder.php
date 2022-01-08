@@ -95,6 +95,13 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function removeField(string $name): GridBuilderInterface
+    {
+        unset($this->fields[$name]);
+
+        return $this;
+    }
+
     public function orderBy(string $name, string $direction = 'asc'): self
     {
         $this->sorting = [$name => $direction];
@@ -112,6 +119,13 @@ final class GridBuilder implements GridBuilderInterface
     public function addFilter(FilterInterface $filter): self
     {
         $this->filters[$filter->getName()] = $filter;
+
+        return $this;
+    }
+
+    public function removeFilter(string $name): GridBuilderInterface
+    {
+        unset($this->filters[$name]);
 
         return $this;
     }
@@ -150,23 +164,9 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    public function removeField(string $name): GridBuilderInterface
-    {
-        unset($this->fields[$name]);
-
-        return $this;
-    }
-
     public function setLimits(array $limits): GridBuilderInterface
     {
         $this->limits = $limits;
-
-        return $this;
-    }
-
-    public function removeFilter(string $name): GridBuilderInterface
-    {
-        unset($this->filters[$name]);
 
         return $this;
     }
