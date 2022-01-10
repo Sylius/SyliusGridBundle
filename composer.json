@@ -46,6 +46,7 @@
         "sylius/grid": "self.version"
     },
     "conflict": {
+        "pagerfanta/pagerfanta": "^3.0",
         "twig/twig": "^1.0"
     },
     "require-dev": {
