@@ -1,4 +1,4 @@
-SyliusGridBundle
+SyliusGridBundle [![Build](https://github.com/Sylius/SyliusGridBundle/actions/workflows/build.yml/badge.svg)](https://github.com/Sylius/SyliusGridBundle/actions/workflows/build.yml)
 ================
 
 Advanced grids for your Symfony project.
