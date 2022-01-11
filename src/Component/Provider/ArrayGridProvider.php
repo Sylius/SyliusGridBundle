@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Provider;
 
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
@@ -30,11 +31,11 @@ final class ArrayGridProvider implements GridProviderInterface
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         array $gridConfigurations,
-        GridConfigurationExtenderInterface $gridConfigurationExtender
+        ?GridConfigurationExtenderInterface $gridConfigurationExtender = null
     ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;
-        $this->gridConfigurationExtender = $gridConfigurationExtender;
+        $this->gridConfigurationExtender = $gridConfigurationExtender ?? new GridConfigurationExtender();
     }
 
     public function get(string $code): Grid
