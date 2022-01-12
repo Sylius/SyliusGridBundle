@@ -46,7 +46,10 @@
         "sylius/grid": "self.version"
     },
     "conflict": {
-        "pagerfanta/pagerfanta": "^3.0",
+        "pagerfanta/doctrine-dbal-adapter": ">=3.0",
+        "pagerfanta/doctrine-orm-adapter": ">=3.0",
+        "pagerfanta/doctrine-phpcr-odm-adapter": ">=3.0",
+        "pagerfanta/pagerfanta": ">=3.0",
         "twig/twig": "^1.0"
     },
     "require-dev": {
