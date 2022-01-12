@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
-use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -14,9 +14,11 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 class ServiceGridProviderSpec extends ObjectBehavior
 {
-    function let(ArrayToDefinitionConverterInterface $converter, GridRegistryInterface $gridRegistry): void
-    {
-        $this->beConstructedWith($converter, $gridRegistry);
+    function let(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry
+    ): void {
+        $this->beConstructedWith($converter, $gridRegistry, new GridConfigurationExtender());
     }
 
     function it_is_initializable(): void
@@ -43,11 +45,43 @@ class ServiceGridProviderSpec extends ObjectBehavior
         $this->get('app_book')->shouldReturn($gridDefinition);
     }
 
+    function it_supports_grid_inheritance(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry,
+        GridInterface $fooGrid,
+        GridInterface $fooFightersGrid,
+        Grid $fooGridDefinition,
+        Grid $fooFightersGridDefinition
+    ): void {
+        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
+        $gridRegistry->getGrid('app_foo_fighters')->willReturn($fooFightersGrid);
+
+        $fooGrid->toArray()->willReturn(['configuration_foo' => 'foo']);
+        $fooFightersGrid->toArray()->willReturn(['extends' => 'app_foo', 'configuration_foo_fighters' => 'foo_fighters']);
+
+        $converter->convert('app_foo', ['configuration_foo' => 'foo'])->willReturn($fooGridDefinition);
+        $converter->convert('app_foo_fighters', ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn($fooFightersGridDefinition);
+
+        $this->get('app_foo_fighters')->shouldReturn($fooFightersGridDefinition);
+    }
+
     function it_throws_an_undefined_grid_exception_when_grid_is_not_found(
         GridRegistryInterface $gridRegistry
     ): void {
         $gridRegistry->getGrid('app_book')->willReturn(null);
 
         $this->shouldThrow(UndefinedGridException::class)->during('get', ['app_book']);
+    }
+
+    function it_throws_an_invalid_argument_exception_when_parent_grid_is_not_found(
+        GridRegistryInterface $gridRegistry,
+        GridInterface $grid
+    ): void {
+        $gridRegistry->getGrid('app_foo_fighters')->willReturn($grid);
+        $gridRegistry->getGrid('app_foo')->willReturn(null);
+
+        $grid->toArray()->willReturn(['extends' => 'app_foo']);
+
+        $this->shouldThrow(\InvalidArgumentException::class)->during('get', ['app_foo_fighters']);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace spec\Sylius\Component\Grid\Provider;
 
 use PhpSpec\ObjectBehavior;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -21,19 +22,21 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 final class ArrayGridProviderSpec extends ObjectBehavior
 {
-    function let(ArrayToDefinitionConverterInterface $converter, Grid $firstGrid, Grid $secondGrid, Grid $thirdGrid, Grid $fourthGrid): void
+    function let(ArrayToDefinitionConverterInterface $converter, Grid $firstGrid, Grid $secondGrid, Grid $thirdGrid, Grid $fourthGrid, Grid $fifthGrid): void
     {
         $converter->convert('sylius_admin_tax_category', ['configuration1'])->willReturn($firstGrid);
         $converter->convert('sylius_admin_product', ['configuration2' => 'foo'])->willReturn($secondGrid);
         $converter->convert('sylius_admin_order', ['configuration3'])->willReturn($thirdGrid);
         $converter->convert('sylius_admin_product_from_taxon', ['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn($fourthGrid);
+        $converter->convert('sylius_admin_book', ['extends' => '404'])->willReturn($fourthGrid);
 
         $this->beConstructedWith($converter, [
             'sylius_admin_tax_category' => ['configuration1'],
             'sylius_admin_product' => ['configuration2' => 'foo'],
             'sylius_admin_order' => ['configuration3'],
             'sylius_admin_product_from_taxon' => ['extends' => 'sylius_admin_product', 'configuration4' => 'bar'],
-        ]);
+            'sylius_admin_book' => ['extends' => '404'],
+        ], new GridConfigurationExtender());
     }
 
     function it_implements_grid_provider_interface(): void
@@ -59,5 +62,10 @@ final class ArrayGridProviderSpec extends ObjectBehavior
             ->shouldThrow(new UndefinedGridException('sylius_admin_order_item'))
             ->during('get', ['sylius_admin_order_item'])
         ;
+    }
+
+    function it_throws_an_invalid_argument_exception_when_parent_grid_is_not_found(): void
+    {
+        $this->shouldThrow(\InvalidArgumentException::class)->during('get', ['sylius_admin_book']);
     }
 }

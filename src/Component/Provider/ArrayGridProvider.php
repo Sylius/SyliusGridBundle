@@ -13,21 +13,29 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Provider;
 
+use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Webmozart\Assert\Assert;
 
 final class ArrayGridProvider implements GridProviderInterface
 {
     private ArrayToDefinitionConverterInterface $converter;
+    private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
     /** @var array[] */
     private array $gridConfigurations;
 
-    public function __construct(ArrayToDefinitionConverterInterface $converter, array $gridConfigurations)
-    {
+    public function __construct(
+        ArrayToDefinitionConverterInterface $converter,
+        array $gridConfigurations,
+        ?GridConfigurationExtenderInterface $gridConfigurationExtender = null
+    ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;
+        $this->gridConfigurationExtender = $gridConfigurationExtender ?? new GridConfigurationExtender();
     }
 
     public function get(string $code): Grid
@@ -37,22 +45,15 @@ final class ArrayGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurations[$code];
+        $parentGridCode = $gridConfiguration['extends'] ?? null;
 
-        if (isset($gridConfiguration['extends'], $this->gridConfigurations[$gridConfiguration['extends']])) {
-            $gridConfiguration = $this->extend($gridConfiguration, $this->gridConfigurations[$gridConfiguration['extends']]);
+        if (null !== $parentGridCode) {
+            $parentGridConfiguration = $this->gridConfigurations[$gridConfiguration['extends']] ?? null;
+
+            Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $gridConfiguration['extends']));
+            $gridConfiguration = $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
         }
 
         return $this->converter->convert($code, $gridConfiguration);
-    }
-
-    private function extend(array $gridConfiguration, array $parentGridConfiguration): array
-    {
-        unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
-
-        $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
-
-        unset($configuration['extends']);
-
-        return $configuration;
     }
 }

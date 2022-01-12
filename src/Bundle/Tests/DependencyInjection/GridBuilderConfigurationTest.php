@@ -42,6 +42,7 @@ use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
 use Sylius\Component\Grid\Tests\Dummy\ClassAsParameterGrid;
 use Sylius\Component\Grid\Tests\Dummy\Foo;
+use Sylius\Component\Grid\Tests\Dummy\FooFightersGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
 use Symfony\Component\DependencyInjection\Definition;
@@ -802,6 +803,44 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 'sorting' => [],
                 'limits' => [10, 25, 50],
                 'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_builds_extended_grids_with_grids_as_service(): void
+    {
+        $grid = new FooFightersGrid();
+
+        $this->load([
+            'grids' => [
+                'app_foo_fighters' => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_foo_fighters' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Foo::class,
+                    ],
+                ],
+                'extends' => 'app_foo',
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [
+                    'id' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => []
+                    ],
+                ],
                 'filters' => [],
                 'actions' => [],
             ],

@@ -14,20 +14,28 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Provider;
 
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Sylius\Component\Grid\Provider\OverrideGridConfigurationTrait;
+use Webmozart\Assert\Assert;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
     private ArrayToDefinitionConverterInterface $converter;
     private GridRegistryInterface $gridRegistry;
+    private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
-    public function __construct(ArrayToDefinitionConverterInterface $converter, GridRegistryInterface $gridRegistry)
-    {
+    public function __construct(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry,
+        GridConfigurationExtenderInterface $gridConfigurationExtender
+    ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
+        $this->gridConfigurationExtender = $gridConfigurationExtender;
     }
 
     public function get(string $code): Grid
@@ -40,6 +48,21 @@ final class ServiceGridProvider implements GridProviderInterface
 
         $gridConfiguration = $grid->toArray();
 
+        if (isset($gridConfiguration['extends'])) {
+            $gridConfiguration = $this->extend($gridConfiguration, $gridConfiguration['extends']);
+        }
+
         return $this->converter->convert($code, $gridConfiguration);
+    }
+
+    private function extend(array $gridConfiguration, string $parentGridCode): array
+    {
+        $parentGrid = $this->gridRegistry->getGrid($parentGridCode);
+
+        Assert::notNull($parentGrid, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
+
+        $parentGridConfiguration = $parentGrid->toArray();
+
+        return $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
     }
 }
