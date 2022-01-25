@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Pagerfanta\Doctrine\ORM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -68,7 +68,7 @@ final class DataSource implements DataSourceInterface
     public function getData(Parameters $parameters)
     {
         $paginator = new Pagerfanta(
-            new DoctrineORMAdapter($this->queryBuilder, $this->fetchJoinCollection, $this->useOutputWalkers)
+            new QueryAdapter($this->queryBuilder, $this->fetchJoinCollection, $this->useOutputWalkers)
         );
         $paginator->setNormalizeOutOfRangePages(true);
         $paginator->setCurrentPage($parameters->get('page', 1));
