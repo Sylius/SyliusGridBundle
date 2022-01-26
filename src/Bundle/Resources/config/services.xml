@@ -84,5 +84,10 @@
             <argument>Sylius\Component\Grid\FieldTypes\FieldTypeInterface</argument>
             <argument>grid field</argument>
         </service>
+
+        <service id="sylius.grid.maker" class="Sylius\Bundle\GridBundle\Maker\MakeGrid">
+            <argument type="service" id="doctrine" />
+            <tag name="maker.command" />
+        </service>
     </services>
 </container>

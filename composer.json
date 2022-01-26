@@ -68,6 +68,7 @@
         "sylius/resource-bundle": "^1.8",
         "symfony/console": "^4.4 || ^5.4",
         "symfony/dotenv": "^4.4 || ^5.4",
+        "symfony/maker-bundle": "^1.36",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/twig-bundle": "^4.4 || ^5.4",
         "twig/extensions": "^1.5",
@@ -94,7 +95,8 @@
             "Sylius\\Bundle\\GridBundle\\spec\\": "src/Bundle/spec/",
             "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/",
             "App\\": "src/Bundle/test/src/",
-            "AppBundle\\": "src/Bundle/test/src/AppBundle/"
+            "AppBundle\\": "src/Bundle/test/src/AppBundle/",
+            "App\\Tests\\Tmp\\": "src/Bundle/test/tmp"
         }
     },
     "scripts": {

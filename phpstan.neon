@@ -13,6 +13,7 @@ parameters:
         - %currentWorkingDirectory%/src/Bundle/Config/GridConfigInterface.php
         - %currentWorkingDirectory%/src/Bundle/Doctrine/PHPCRODM/*
         - %currentWorkingDirectory%/src/Bundle/DependencyInjection/Configuration.php
+        - %currentWorkingDirectory%/src/Bundle/Resources/*
         - %currentWorkingDirectory%/src/Bundle/spec/*
         - %currentWorkingDirectory%/src/Bundle/test/*
         - %currentWorkingDirectory%/src/Bundle/Tests/*
