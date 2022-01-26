@@ -28,6 +28,6 @@ abstract class StubCommand extends Command
             )
         ;
 
-        return Command::SUCCESS;
+        return 0;
     }
 }
