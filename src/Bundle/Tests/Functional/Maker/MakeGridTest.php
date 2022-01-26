@@ -1,18 +1,27 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
 use App\Entity\Price;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Component\Console\Tester\CommandTester;
+use Zenstruck\Foundry\Tests\Fixtures\Entity\Tag;
 
 final class MakeGridTest extends MakerTestCase
 {
-    /**
-     * @test
-     */
+    /** @test */
     public function it_can_create_grids(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
@@ -22,7 +31,47 @@ final class MakeGridTest extends MakerTestCase
         $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile('Grid/PriceGrid.php'));
-        $this->assertSame(<<<EOF
+        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile('Grid/PriceGrid.php'))
+        );
+    }
+
+    /** @test */
+    public function it_can_create_grids_interactively(): void
+    {
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+
+        $this->assertFileDoesNotExist(self::tempFile('Grid/PriceGrid.php'));
+
+        $tester->setInputs([Price::class]);
+        $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
+
+        $this->assertFileExists(self::tempFile('Grid/PriceGrid.php'));
+        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile('Grid/PriceGrid.php'))
+        );
+    }
+
+    /** @test */
+    public function invalid_entity_throws_exception(): void
+    {
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+
+        $this->assertFileDoesNotExist(self::tempFile('Grid/InvalidGrid.php'));
+
+        try {
+            $tester->execute(['entity' => 'Invalid']);
+        } catch (RuntimeCommandException $e) {
+            $this->assertSame('Entity "Invalid" not found.', $e->getMessage());
+            $this->assertFileDoesNotExist(self::tempFile('Grid/InvalidGrid.php'));
+
+            return;
+        }
+
+        $this->fail('Exception not thrown.');
+    }
+
+    private static function getPriceGridExpectedContent(): string
+    {
+        return <<<EOF
 <?php
 
 namespace App\Tests\Tmp\Grid;
@@ -90,7 +139,6 @@ final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
 }
 
 EOF
-            , \file_get_contents(self::tempFile('Grid/PriceGrid.php'))
-        );
+   ;
     }
 }
