@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\DependencyInjection;
 
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
+use Sylius\Bundle\GridBundle\Command\StubMakeGrid;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
+use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -57,6 +59,10 @@ final class SyliusGridExtension extends Extension
         $container->registerForAutoconfiguration(GridInterface::class)
             ->addTag('sylius.grid')
         ;
+
+        if (!\class_exists(AbstractMaker::class)) {
+            $container->register(StubMakeGrid::class)->addTag('console.command');
+        }
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
