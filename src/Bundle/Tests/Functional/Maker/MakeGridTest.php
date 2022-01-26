@@ -17,7 +17,6 @@ use App\Entity\Price;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Component\Console\Tester\CommandTester;
-use Zenstruck\Foundry\Tests\Fixtures\Entity\Tag;
 
 final class MakeGridTest extends MakerTestCase
 {
