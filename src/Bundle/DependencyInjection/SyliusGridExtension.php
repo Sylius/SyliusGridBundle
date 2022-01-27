@@ -18,6 +18,7 @@ use Sylius\Bundle\GridBundle\Command\StubMakeGrid;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Symfony\Bundle\MakerBundle\Maker\AbstractMaker;
+use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -76,6 +77,10 @@ final class SyliusGridExtension extends Extension
 
     private function isMakerEnabled(ContainerBuilder $container): bool
     {
+        if (!class_exists(MakerBundle::class)) {
+            return false;
+        }
+
         /** @var array $bundles */
         $bundles = $container->getParameter('kernel.bundles');
 
