@@ -30,8 +30,7 @@ final class MakeGridTest extends MakerTestCase
         $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile('Grid/PriceGrid.php'));
-        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile('Grid/PriceGrid.php'))
-        );
+        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile('Grid/PriceGrid.php')));
     }
 
     /** @test */
