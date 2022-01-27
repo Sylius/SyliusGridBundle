@@ -38,5 +38,5 @@ return [
     winzouStateMachineBundle::class => ['all' => true],
     FidryAliceDataFixturesBundle::class => ['all' => true],
     NelmioAliceBundle::class => ['all' => true],
-    MakerBundle::class => ['all' => true],
+    MakerBundle::class => ['test' => true],
 ];

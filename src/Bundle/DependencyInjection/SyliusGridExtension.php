@@ -60,7 +60,7 @@ final class SyliusGridExtension extends Extension
             ->addTag('sylius.grid')
         ;
 
-        if (!\class_exists(AbstractMaker::class)) {
+        if (!$this->isMakerEnabled($container)) {
             $container->register(StubMakeGrid::class)->addTag('console.command');
         }
     }
@@ -72,5 +72,13 @@ final class SyliusGridExtension extends Extension
         $container->addObjectResource($configuration);
 
         return $configuration;
+    }
+
+    private function isMakerEnabled(ContainerBuilder $container): bool
+    {
+        /** @var array $bundles */
+        $bundles = $container->getParameter('kernel.bundles');
+
+        return in_array(MakerBundle::class, $bundles, true);
     }
 }
