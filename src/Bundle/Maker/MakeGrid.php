@@ -118,7 +118,7 @@ final class MakeGrid extends AbstractMaker
 
     public function configureDependencies(DependencyBuilder $dependencies): void
     {
-        // noop
+        // No dependencies needed
     }
 
     private function entityChoices(): array

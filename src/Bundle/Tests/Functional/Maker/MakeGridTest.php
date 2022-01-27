@@ -21,9 +21,9 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class MakeGridTest extends MakerTestCase
 {
-    public const BOOK_GRID_PATH = 'Grid/BookGrid.php';
-    public const PRICE_GRID_PATH = 'Grid/PriceGrid.php';
-    public const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
+    private const BOOK_GRID_PATH = 'Grid/BookGrid.php';
+    private const PRICE_GRID_PATH = 'Grid/PriceGrid.php';
+    private const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
 
     /** @test */
     public function it_can_create_grids(): void
