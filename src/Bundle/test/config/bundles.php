@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use FOS\RestBundle\FOSRestBundle;
 use JMS\SerializerBundle\JMSSerializerBundle;
@@ -37,4 +38,5 @@ return [
     winzouStateMachineBundle::class => ['all' => true],
     FidryAliceDataFixturesBundle::class => ['all' => true],
     NelmioAliceBundle::class => ['all' => true],
+    MakerBundle::class => ['all' => true, 'test_without_maker' => false],
 ];
