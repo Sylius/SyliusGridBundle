@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
 
 use Doctrine\DBAL\Query\QueryBuilder;
-use Pagerfanta\Adapter\DoctrineDbalAdapter;
+use Pagerfanta\Doctrine\DBAL\QueryAdapter;;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -60,7 +60,7 @@ final class DataSource implements DataSourceInterface
             ;
         };
 
-        $paginator = new Pagerfanta(new DoctrineDbalAdapter($this->queryBuilder, $countQueryBuilderModifier));
+        $paginator = new Pagerfanta(new QueryAdapter($this->queryBuilder, $countQueryBuilderModifier));
         $paginator->setNormalizeOutOfRangePages(true);
         $paginator->setCurrentPage($parameters->get('page', 1));
 
