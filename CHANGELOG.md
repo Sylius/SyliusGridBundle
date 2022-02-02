@@ -1,6 +1,50 @@
 # CHANGELOG
 
-## CHANGELOG FO `1.10.x`
+## CHANGELOG FOR `1.11.x`
+
+### v1.11.0-ALPHA.1 (2022-02-02)
+
+#### TL;DR
+
+- GridBuilder configurable in PHP 🎉
+- Bump PHP to 8.0 and Symfony to 5.4
+- Make grid command
+
+#### Details
+
+- [#119](https://github.com/Sylius/SyliusGridBundle/issues/119) [GridBuilder] Grids as service ([@loic425](https://github.com/loic425))
+- [#152](https://github.com/Sylius/SyliusGridBundle/issues/152) Upgrade to GitHub-native Dependabot ([@dependabot-preview](https://github.com/dependabot-preview)[[@bot](https://github.com/bot)])
+- [#155](https://github.com/Sylius/SyliusGridBundle/issues/155) Grid config builders ([@loic425](https://github.com/loic425))
+- [#163](https://github.com/Sylius/SyliusGridBundle/issues/163) Update phpstan/phpstan-webmozart-assert requirement from 0.12.12 to 0.12.13 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#169](https://github.com/Sylius/SyliusGridBundle/issues/169) Update vimeo/psalm requirement from 4.6.4 to 4.9.2 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#173](https://github.com/Sylius/SyliusGridBundle/issues/173) [GridBuilder] Predefined fields ([@loic425](https://github.com/loic425))
+- [#174](https://github.com/Sylius/SyliusGridBundle/issues/174) [GridBuilder] Predefined action groups ([@loic425](https://github.com/loic425))
+- [#175](https://github.com/Sylius/SyliusGridBundle/issues/175) [GridBuilder] Predefined filters ([@loic425](https://github.com/loic425))
+- [#176](https://github.com/Sylius/SyliusGridBundle/issues/176) [GridBuilder] Test PHP config without yaml config and add some missing features ([@loic425](https://github.com/loic425))
+- [#177](https://github.com/Sylius/SyliusGridBundle/issues/177) [GridBuilder] Docs ([@loic425](https://github.com/loic425))
+- [#178](https://github.com/Sylius/SyliusGridBundle/issues/178) Update vimeo/psalm requirement from 4.6.4 to 4.11.2 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#179](https://github.com/Sylius/SyliusGridBundle/issues/179) Update phpstan/phpstan-phpunit requirement from 0.12.18 to 0.12.22 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#180](https://github.com/Sylius/SyliusGridBundle/issues/180) Update phpstan/phpstan requirement from 0.12.94 to 0.12.99 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#182](https://github.com/Sylius/SyliusGridBundle/issues/182) [GridBuilder] Fix update action label ([@loic425](https://github.com/loic425))
+- [#183](https://github.com/Sylius/SyliusGridBundle/issues/183) Tests with Postgres ([@loic425](https://github.com/loic425))
+- [#184](https://github.com/Sylius/SyliusGridBundle/issues/184) Fix like with PostgresSQL ([@loic425](https://github.com/loic425))
+- [#185](https://github.com/Sylius/SyliusGridBundle/issues/185) [GridBuilder] Fix entity filter with multiple option ([@loic425](https://github.com/loic425))
+- [#186](https://github.com/Sylius/SyliusGridBundle/issues/186) [GridBuilder] Add some missing features on field builder ([@loic425](https://github.com/loic425))
+- [#187](https://github.com/Sylius/SyliusGridBundle/issues/187) [GridBuilder] Improve documentation for Grid builders ([@loic425](https://github.com/loic425))
+- [#188](https://github.com/Sylius/SyliusGridBundle/issues/188) Fixed template syntax in route config ([@veloxy](https://github.com/veloxy))
+- [#189](https://github.com/Sylius/SyliusGridBundle/issues/189) Update vimeo/psalm requirement from 4.11.2 to 4.12.0 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#190](https://github.com/Sylius/SyliusGridBundle/issues/190) [GridBuilder] Allow using class as parameter for grids as service ([@loic425](https://github.com/loic425))
+- [#191](https://github.com/Sylius/SyliusGridBundle/issues/191) [GridBuilder] Fix extending a grids as service ([@loic425](https://github.com/loic425))
+- [#197](https://github.com/Sylius/SyliusGridBundle/issues/197) Drop support for PHP7.4, Symfony version upgraded to 5.4 ([@Rafikooo](https://github.com/Rafikooo))
+- [#200](https://github.com/Sylius/SyliusGridBundle/issues/200) Remove travis build status from README ([@GSadee](https://github.com/GSadee))
+- [#202](https://github.com/Sylius/SyliusGridBundle/issues/202) Fix grid builder method positions ([@loic425](https://github.com/loic425))
+- [#203](https://github.com/Sylius/SyliusGridBundle/issues/203) Update vimeo/psalm requirement from 4.12.0 to 4.18.1 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#205](https://github.com/Sylius/SyliusGridBundle/issues/205) Add support for pagerfanta 3 ([@loic425](https://github.com/loic425))
+- [#206](https://github.com/Sylius/SyliusGridBundle/issues/206) Make grid ([@loic425](https://github.com/loic425))
+- [#207](https://github.com/Sylius/SyliusGridBundle/issues/207) Update vimeo/psalm requirement from 4.18.1 to 4.19.0 ([@dependabot](https://github.com/dependabot)[[@bot](https://github.com/bot)])
+- [#208](https://github.com/Sylius/SyliusGridBundle/issues/208) Allow to run workflow manually  ([@Zales0123](https://github.com/Zales0123))
+
+## CHANGELOG FOR `1.10.x`
 
 ### v1.10.0 (2021-08-18)
 
