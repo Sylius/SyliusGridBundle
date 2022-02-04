@@ -22,17 +22,19 @@ use Sylius\Component\Grid\Parameters;
 
 final class DataSourceSpec extends ObjectBehavior
 {
-    function it_implements_data_source(QueryBuilder $queryBuilder): void
+    function let(QueryBuilder $queryBuilder): void
     {
         $this->beConstructedWith($queryBuilder);
+    }
 
+    function it_implements_data_source(): void
+    {
         $this->shouldImplement(DataSourceInterface::class);
     }
 
     function it_gets_the_data(QueryBuilder $queryBuilder): void
     {
         $queryBuilder->getType()->willReturn(QueryBuilder::SELECT);
-        $this->beConstructedWith($queryBuilder);
 
         $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
     }
