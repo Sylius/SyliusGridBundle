@@ -21,16 +21,14 @@ use Sylius\Component\Grid\Parameters;
 
 final class DataSourceSpec extends ObjectBehavior
 {
-    function it_implements_data_source(
-        QueryBuilder $queryBuilder
-    ): void
+    function it_implements_data_source(QueryBuilder $queryBuilder): void
     {
         $this->beConstructedWith($queryBuilder, false, false);
 
         $this->shouldImplement(DataSourceInterface::class);
     }
 
-    function it_should_get_the_data(QueryBuilder $queryBuilder): void
+    function it_gets_the_data(QueryBuilder $queryBuilder): void
     {
         $this->beConstructedWith($queryBuilder, false, false);
 
