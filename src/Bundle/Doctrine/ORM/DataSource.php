@@ -67,11 +67,13 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
+        $page = (int) $parameters->get('page', 1);
+
         $paginator = new Pagerfanta(
             new QueryAdapter($this->queryBuilder, $this->fetchJoinCollection, $this->useOutputWalkers)
         );
         $paginator->setNormalizeOutOfRangePages(true);
-        $paginator->setCurrentPage((int) $parameters->get('page', 1));
+        $paginator->setCurrentPage($page > 0 ? $page : 1);
 
         return $paginator;
     }

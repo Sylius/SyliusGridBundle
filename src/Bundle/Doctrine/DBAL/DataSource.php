@@ -53,6 +53,8 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
+        $page = (int) $parameters->get('page', 1);
+
         $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
             $queryBuilder
                 ->select('COUNT(DISTINCT o.id) AS total_results')
@@ -62,7 +64,7 @@ final class DataSource implements DataSourceInterface
 
         $paginator = new Pagerfanta(new QueryAdapter($this->queryBuilder, $countQueryBuilderModifier));
         $paginator->setNormalizeOutOfRangePages(true);
-        $paginator->setCurrentPage((int) $parameters->get('page', 1));
+        $paginator->setCurrentPage($page > 0 ? $page : 1);
 
         return $paginator;
     }
