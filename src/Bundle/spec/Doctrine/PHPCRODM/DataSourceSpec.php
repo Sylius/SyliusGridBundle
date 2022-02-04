@@ -103,7 +103,7 @@ final class DataSourceSpec extends ObjectBehavior
         $query->setFirstResult(Argument::any())->willReturn($query);
         $query->execute()->willReturn([]);
 
-        $this->getData(new Parameters(['page' => 1]))->shouldHaveType(Pagerfanta::class);
+        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
     }
 
     function it_should_set_the_order_on_the_query_builder(
@@ -130,7 +130,7 @@ final class DataSourceSpec extends ObjectBehavior
         $query->setFirstResult(Argument::any())->willReturn($query);
         $query->execute()->willReturn([]);
 
-        $this->getData(new Parameters(['page' => 1]))->shouldHaveType(Pagerfanta::class);
+        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
     }
 
     function it_should_set_the_order_on_the_query_builder_as_fields_only(
@@ -157,6 +157,6 @@ final class DataSourceSpec extends ObjectBehavior
         $query->setFirstResult(Argument::any())->willReturn($query);
         $query->execute()->willReturn([]);
 
-        $this->getData(new Parameters(['page' => 1]))->shouldHaveType(Pagerfanta::class);
+        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
     }
 }
