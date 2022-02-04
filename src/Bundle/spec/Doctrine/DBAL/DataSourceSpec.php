@@ -36,6 +36,10 @@ final class DataSourceSpec extends ObjectBehavior
     {
         $queryBuilder->getType()->willReturn(QueryBuilder::SELECT);
 
-        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
+        $data = $this->getData(new Parameters(['page' => '1']));
+
+        $data->shouldHaveType(Pagerfanta::class);
+        $data->getCurrentPage()->shouldReturn(1);
+        $data->getNormalizeOutOfRangePages()->shouldReturn(true);
     }
 }
