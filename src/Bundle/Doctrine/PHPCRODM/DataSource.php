@@ -63,6 +63,10 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
+        if (!class_exists(QueryAdapter::class)) {
+            throw new \LogicException('Pagerfanta PHPCR-ODM adapter is not available. Try running "composer require pagerfanta/doctrine-phpcr-odm-adapter".');
+        }
+
         $orderBy = $this->queryBuilder->orderBy();
         foreach ($this->expressionBuilder->getOrderBys() as $field => $direction) {
             if (is_int($field)) {
