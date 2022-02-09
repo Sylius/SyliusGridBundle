@@ -90,6 +90,10 @@ jobs:
                 run: composer test
 
             -
+                name: Run lint container
+                run: (cd src/Bundle/test && bin/console lint:container)
+
+            -
                 name: Run tests for grids with php config
                 if: matrix.symfony == '^5.3'
                 run: |
@@ -110,3 +114,9 @@ jobs:
                     (cd src/Bundle/test && bin/console doctrine:database:create --env=test_with_postgres)
                     (cd src/Bundle/test && bin/console doctrine:schema:create --env=test_with_postgres)
                     composer test-with-postgres
+
+            -
+                name: Run lint container without maker bundle
+                run: |
+                    APP_ENV=test_without_maker composer remove --dev symfony/maker-bundle
+                    (cd src/Bundle/test && bin/console lint:container --env=test_without_maker)
