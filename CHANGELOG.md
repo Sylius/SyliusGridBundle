@@ -2,6 +2,14 @@
 
 ## CHANGELOG FOR `1.11.x`
 
+### v1.11.0-BETA.1 (2022-02-10)
+
+#### Details
+
+- [#209](https://github.com/Sylius/SyliusGridBundle/issues/209) Hotfix with datasources ([@loic425](https://github.com/loic425))
+- [#211](https://github.com/Sylius/SyliusGridBundle/issues/211) [Fix] Register grid maker only when maker is enabled ([@loic425](https://github.com/loic425))
+- [#212](https://github.com/Sylius/SyliusGridBundle/issues/212) [Fix] Add a logic exception to install the needed adapter ([@loic425](https://github.com/loic425))
+
 ### v1.11.0-ALPHA.1 (2022-02-02)
 
 #### TL;DR
