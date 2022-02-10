@@ -67,6 +67,10 @@ final class DataSource implements DataSourceInterface
 
     public function getData(Parameters $parameters)
     {
+        if (!class_exists(QueryAdapter::class)) {
+            throw new \LogicException('Pagerfanta ORM adapter is not available. Try running "composer require pagerfanta/doctrine-orm-adapter".');
+        }
+
         $page = (int) $parameters->get('page', 1);
 
         $paginator = new Pagerfanta(
