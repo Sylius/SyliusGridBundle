@@ -25,6 +25,15 @@ mean, please refer to the
 [SyliusResourceBundle](https://github.com/Sylius/SyliusResourceBundle/blob/master/docs/index.md)
 documentation.
 
+Grid Maker
+----------
+
+You can create your grid using the Symfony Maker bundle.
+
+```shell
+$ bin/console make:grid
+```
+
 Grid Definition
 ---------------
 
