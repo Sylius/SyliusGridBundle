@@ -36,6 +36,8 @@ configuration!
 Let's assume that you already have a route for exporting by injecting
 ids, then you can configure the grid action:
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -52,3 +54,90 @@ sylius_grid:
                                 parameters:
                                     format: csv
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Product;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_product', Product::class)
+        ->addActionGroup(
+            BulkActionGroup::create(
+                Action::create('export', 'export')
+                    ->setLabel('Export Data')
+                    ->setOptions([
+                        'link' => [
+                            'route' => 'app_admin_product_export',
+                            'parameters' => [
+                                'format' => 'csv',
+                            ],
+                        ]
+                    ])
+            )
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminProductGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Product;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminProductGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_product';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addActionGroup(
+                BulkActionGroup::create(
+                    Action::create('export', 'export')
+                        ->setLabel('Export Data')
+                        ->setOptions([
+                            'link' => [
+                                'route' => 'app_admin_product_export',
+                                'parameters' => [
+                                    'format' => 'csv',
+                                ],
+                            ]
+                        ])
+                )
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Product::class;
+    }
+}
+```
+
+</details>
