@@ -55,7 +55,7 @@ sylius_grid:
                     type: twig
                     label: sylius.ui.enabled
                     options:
-                        template: SyliusUiBundle:Grid/Field:enabled.html.twig # This will be a checkbox field
+                        template: "@SyliusUi/Grid/Field/enabled.html.twig" # This will be a checkbox field
 ```
 
 Generating The CRUD Routing
