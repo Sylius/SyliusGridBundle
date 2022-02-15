@@ -81,28 +81,24 @@ sylius_grid:
                         type: create
                         label: sylius.ui.create
                         enabled: true
-                        icon: ~
                         position: 100
                 item:
                     update:
                         type: update
                         label: sylius.ui.edit
                         enabled: true
-                        icon: ~
                         position: 100
                         options: { }
                     delete:
                         type: delete
                         label: sylius.ui.delete
                         enabled: true
-                        icon: ~
                         position: 100
                         options: { }
                     show:
                         type: show
                         label: sylius.ui.show
                         enabled: true
-                        icon: ~
                         position: 100
                         options:
                             link:
@@ -122,7 +118,6 @@ sylius_grid:
                         type: delete
                         label: sylius.ui.delete
                         enabled: true
-                        icon: ~
                         position: 100
                         options: { }
                 subitem:
