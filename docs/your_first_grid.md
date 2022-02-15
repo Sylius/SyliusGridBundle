@@ -341,12 +341,7 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
-        ->addFilter(
-            StringFilter::create('name')
-        )
-        ->addFilter(
-            BooleanFilter::create('enabled')
-        )
+        ->setRepositoryMethod('mySupplierGridQuery')
     )
 };
 ```
@@ -378,12 +373,7 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
     public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->addFilter(
-                StringFilter::create('name')
-            )
-            ->addFilter(
-                BooleanFilter::create('enabled')
-            )
+            ->setRepositoryMethod('mySupplierGridQuery')
         ;    
     }
     
