@@ -101,7 +101,7 @@ sylius_grid:
                         range: [0, 100]
     templates:
         filter:
-            suppliers_statistics: 'App:Grid/Filter:suppliers_statistics.html.twig'
+            suppliers_statistics: '@App/Grid/Filter/suppliers_statistics.html.twig'
 ```
 
 </details>

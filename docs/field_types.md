@@ -114,7 +114,7 @@ sylius_grid:
                     type: twig
                     label: app.ui.name
                     options:
-                        template: :Grid/Column:_prettyName.html.twig
+                        template: "@Grid/Column/_prettyName.html.twig"
 ```
 
 </details>
@@ -131,7 +131,7 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addField(
-            TwigField::create('name', ':Grid/Column:_prettyName.html.twig')
+            TwigField::create('name', '@Grid/Column/_prettyName.html.twig')
                 ->setLabel('app.ui.name')
         )
     )
@@ -140,7 +140,7 @@ return static function (GridConfig $grid) {
 
 </details>
 
-In the `:Grid/Column:_prettyName.html.twig` template, you just need to
+In the `@Grid/Column/_prettyName.html.twig` template, you just need to
 render the value for example as you see below:
 
 ```twig
