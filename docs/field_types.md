@@ -36,7 +36,7 @@ use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addField(
             StringField::create('email')
@@ -83,7 +83,7 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addField(
             DateTimeField::create('birthday', 'Y:m:d H:i:s') // this format is the default value, but you can modify it
@@ -128,7 +128,7 @@ use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addField(
             TwigField::create('name', ':Grid/Column:_prettyName.html.twig')

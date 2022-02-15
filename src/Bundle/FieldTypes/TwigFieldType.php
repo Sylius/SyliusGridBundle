@@ -31,7 +31,7 @@ final class TwigFieldType implements FieldTypeInterface
         $this->twig = $twig;
     }
 
-    public function render(Field $field, $data, array $options)
+    public function render(Field $field, $data, array $options): string
     {
         if ('.' !== $field->getPath()) {
             $data = $this->dataExtractor->get($field, $data);

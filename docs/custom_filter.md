@@ -15,7 +15,7 @@ use Sylius\Component\Grid\Filtering\FilterInterface;
 
 class SuppliersStatisticsFilter implements FilterInterface
 {
-    public function apply(DataSourceInterface $dataSource, $name, $data, array $options = [])
+    public function apply(DataSourceInterface $dataSource, $name, $data, array $options = []): void
     {
         // Your filtering logic. DataSource is kind of query builder.
         // $data['stats'] contains the submitted value!
@@ -39,7 +39,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SuppliersStatisticsFilterType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add(
             'stats',
@@ -48,7 +48,7 @@ class SuppliersStatisticsFilterType extends AbstractType
         );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

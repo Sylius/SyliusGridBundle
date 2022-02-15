@@ -26,7 +26,7 @@ final class StringFieldType implements FieldTypeInterface
         $this->dataExtractor = $dataExtractor;
     }
 
-    public function render(Field $field, $data, array $options)
+    public function render(Field $field, $data, array $options): string
     {
         $value = $this->dataExtractor->get($field, $data);
 

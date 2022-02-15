@@ -26,7 +26,7 @@ interface FieldTypeInterface
      *
      * @return string
      */
-    public function render(Field $field, $data, array $options);
+    public function render(Field $field, $data, array $options): string;
 
     /**
      * Configure options for this field type.

@@ -40,7 +40,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(Filter::create('username', 'string'))
         ->addFilter(Filter::create('email', 'string'))
@@ -100,7 +100,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('username', 'string')
@@ -150,7 +150,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('enabled', 'boolean')
@@ -195,7 +195,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(Filter::create('createdAt', 'date'))
         ->addFilter(Filter::create('completedAt', 'date'))
@@ -239,7 +239,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('channel', 'entity')
@@ -296,7 +296,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('total', 'money')
@@ -351,7 +351,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('date', 'exists')
@@ -394,7 +394,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('state', 'select')
