@@ -36,6 +36,8 @@ suppliers, then you can configure the grid action:
 <details open><summary>Yaml</summary>
 
 ```yaml
+# config/packages/sylius_grid.yaml
+
 sylius_grid:
     grids:
         app_admin_supplier:
@@ -61,6 +63,7 @@ sylius_grid:
 
 ```php
 <?php
+// config/packages/sylius_grid.php
 
 use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
@@ -86,6 +89,57 @@ return static function (GridConfig $grid) {
         ])
     )
 };
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Supplier;
+use Sylius\Bundle\GridBundle\Builder\Action\Action;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    Action::create('contactSupplier', 'contactSupplier')
+                        ->setLabel('Contact Supplier')
+                        ->setOptions([
+                            'link' => [
+                                'route' => 'app_admin_contact_supplier',
+                                'parameters' => [
+                                    'id' => 'resource.id',
+                                ],
+                            ],
+                        ])
+                )
+            ])
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Supplier::class;
+    }
+}
 ```
 
 </details>

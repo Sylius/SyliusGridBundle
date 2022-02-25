@@ -47,6 +47,8 @@ for identification of objects are available - only `string` and `twig`
 type. Then even though a Supplier has also a description field, it is
 not needed on index and can't be displayed here.
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
@@ -66,6 +68,80 @@ sylius_grid:
                     options:
                         template: SyliusUiBundle:Grid/Field:enabled.html.twig # This will be a checkbox field
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addField(
+            StringField::create('name')
+                ->setLabel('sylius.ui.name')
+        )
+        ->addField(
+            TwigField::create('enabled', 'SyliusUiBundle:Grid/Field:enabled.html.twig')
+                ->setLabel('sylius.ui.enabled')
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                StringField::create('name')
+                    ->setLabel('sylius.ui.name')
+            )
+            ->addField(
+                TwigField::create('enabled', 'SyliusUiBundle:Grid/Field:enabled.html.twig')
+                    ->setLabel('sylius.ui.enabled')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
 
 Generating The CRUD Routing
 ---------------------------
@@ -147,6 +223,8 @@ Defining Filters
 In order to make searching for certain things in your grid you can use
 filters.
 
+<details open><summary>Yaml</summary>
+
 ```yaml
 sylius_grid:
     grids:
@@ -159,6 +237,76 @@ sylius_grid:
                     type: boolean
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addFilter(
+            StringFilter::create('name')
+        )
+        ->addFilter(
+            BooleanFilter::create('enabled')
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addFilter(
+                StringFilter::create('name')
+            )
+            ->addFilter(
+                BooleanFilter::create('enabled')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 How will it look like in the admin panel?
 
 ![image](./_images/grid_filters.png)
@@ -170,6 +318,8 @@ a property of the associated address entity.
 This first requires a
 custom [repository method](https://docs.sylius.com/en/latest/customization/repository.html) for your grid
 query:
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 # config/packages/sylius_grid.yaml
@@ -184,6 +334,67 @@ sylius_grid:
                         method: mySupplierGridQuery
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->setRepositoryMethod('mySupplierGridQuery')
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->setRepositoryMethod('mySupplierGridQuery')
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 ### *Note*
 
 The repository method has to return a queryBuilder object, since the
@@ -194,6 +405,8 @@ later applies.
 have to be joined explicitly in the query.
 
 Then you can set up your filter to accordingly:
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 sylius_grid:
@@ -211,10 +424,77 @@ sylius_grid:
                         type: contains
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addFilter(
+            StringFilter::create('country', ['address.country'], 'contains')
+                ->setLabel('origin')
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addFilter(
+                StringFilter::create('country', ['address.country'], 'contains')
+                    ->setLabel('origin')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 Default Sorting
 ---------------
 
 You can define by which field you want the grid to be sorted and how.
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 # config/packages/sylius_grid.yaml
@@ -227,7 +507,66 @@ sylius_grid:
                 # ...
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->orderBy('name', 'asc')
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->orderBy('name', 'asc')
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 Then at the fields level, define that the field can be used for sorting:
+
+<details open><summary>Yaml</summary>
 
 ```yaml
 # config/packages/sylius_grid.yaml
@@ -243,8 +582,77 @@ sylius_grid:
                 # ...
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addField(
+            StringField::create('name')
+                ->setLabel('sylius.ui.name')
+                ->setSortable(true)
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                StringField::create('name')
+                    ->setLabel('sylius.ui.name')
+                    ->setSortable(true)
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 If your field is not of a "simple" type, f.i. a twig template with a
 specific path, you get sorting working with the following definition:
+
+<details open><summary>YAML</summary>
 
 ```yaml
 # config/packages/sylius_grid.yaml
@@ -264,12 +672,83 @@ sylius_grid:
                 # ...
 ```
 
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addField(
+            TwigField::create('name', '@App/Grid/Fields/myCountryFlags.html.twig')
+                ->setPath('address.country')
+                ->setLabel('app.ui.country')
+                ->setSortable(true, 'address.country')
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                TwigField::create('name', '@App/Grid/Fields/myCountryFlags.html.twig')
+                    ->setPath('address.country')
+                    ->setLabel('app.ui.country')
+                    ->setSortable(true, 'address.country')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
+
 Pagination
 ----------
 
 You can limit how many items are visible on each page by providing an
 array of integers into the `limits` parameter. The first element of the
 array will be treated as the default, so by configuring:
+
+<details open><summary>YAML</summary>
 
 ```yaml
 # config/packages/sylius_grid.yaml
@@ -280,6 +759,64 @@ sylius_grid:
             limits: [30, 12, 48]
                 # ...
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->setLimits([30, 12, 48])
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->setLimits([30, 12, 48])
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
 
 you will see thirty suppliers per page, also you will have the
 possibility to change the number of elements to either 12 or 48.
@@ -301,6 +838,8 @@ which "influence" the whole grid (like adding new objects) and `item`
 which influence one row of the grid (one object) like editing or
 deleting.
 
+<details open><summary>YAML</summary>
+
 ```yaml
 # config/packages/sylius_grid.yaml
 sylius_grid:
@@ -317,6 +856,93 @@ sylius_grid:
                     delete:
                         type: delete
 ```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+// config/packages/sylius_grid.php
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid) {
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+        ->addActionGroup(
+            MainActionGroup::create(
+                CreateAction::create()
+            )
+        )
+        ->addActionGroup(
+            ItemActionGroup::create(
+                UpdateAction::create(),
+                DeleteAction::create()
+            )
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addActionGroup(
+                MainActionGroup::create(
+                    CreateAction::create()
+                )
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    UpdateAction::create(),
+                    DeleteAction::create()
+                )
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
+</details>
 
 This activates such a view on the `/admin/suppliers/` path:
 

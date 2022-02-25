@@ -15,6 +15,8 @@ alternatively. For example:
 <details open><summary>Yaml</summary>
 
 ```yaml
+# config/packages/sylius_grid.yaml
+
 sylius_grid:
     grids:
         app_user:
@@ -31,6 +33,7 @@ sylius_grid:
 
 ```php
 <?php
+// config/packages/sylius_grid.php
 
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
@@ -47,6 +50,47 @@ return static function (GridConfig $grid) {
 };
 ```
 
+OR
+
+```php
+<?php
+# src/Grid/UserGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\User;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_user';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                StringField::create('email')
+                    ->setLabel('app.ui.email') // # each filed type can have a label, we suggest using translation keys instead of messages
+                    ->setPath('contactDetails.email')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return User::class;
+    }
+}
+```
+
 </details>
 
 This configuration will display the value from
@@ -61,6 +105,8 @@ This column type works exactly the same way as *string*, but expects
 <details open><summary>Yaml</summary>
 
 ```yaml
+# config/packages/sylius_grid.yaml
+
 sylius_grid:
     grids:
         app_user:
@@ -78,6 +124,7 @@ sylius_grid:
 
 ```php
 <?php
+// config/packages/sylius_grid.php
 
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
@@ -93,6 +140,46 @@ return static function (GridConfig $grid) {
 };
 ```
 
+OR
+
+```php
+<?php
+# src/Grid/UserGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\User;
+use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_user';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                DateTimeField::create('birthday', 'Y:m:d H:i:s') // this format is the default value, but you can modify it
+                    ->setLabel('app.ui.birthday')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return User::class;
+    }
+}
+```
+
 </details>
 
 Twig (*twig*)
@@ -106,6 +193,8 @@ You just have to specify the template and it will be rendered with the
 <details open><summary>Yaml</summary>
 
 ```yaml
+# config/packages/sylius_grid.yaml
+
 sylius_grid:
     grids:
         app_user:
@@ -123,6 +212,7 @@ sylius_grid:
 
 ```php
 <?php
+// config/packages/sylius_grid.php
 
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
@@ -136,6 +226,46 @@ return static function (GridConfig $grid) {
         )
     )
 };
+```
+
+OR
+
+```php
+<?php
+# src/Grid/UserGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\User;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_user';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                TwigField::create('name', ':Grid/Column:_prettyName.html.twig')
+                    ->setLabel('app.ui.name')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return User::class;
+    }
+}
 ```
 
 </details>

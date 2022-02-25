@@ -89,6 +89,8 @@ Now you can use your new filter type in the grid configuration!
 <details open><summary>Yaml</summary>
 
 ```yaml
+# config/packages/sylius_grid.yaml
+
 sylius_grid:
     grids:
         app_tournament:
@@ -110,6 +112,7 @@ sylius_grid:
 
 ```php
 <?php
+// config/packages/sylius_grid.php
 
 use App\Entity\Tournament;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
@@ -126,6 +129,45 @@ return static function (GridConfig $grid) {
         )
     )
 };
+```
+
+OR
+
+```php
+<?php
+# src/Grid/TournamentGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Tournament;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class TournamentGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_tournament';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addFilter(
+                Filter::create('stats', 'suppliers_statistics')
+                    ->setFormOptions(['range' => [0, 100]])
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Tournament::class;
+    }
+}
 ```
 
 </details>

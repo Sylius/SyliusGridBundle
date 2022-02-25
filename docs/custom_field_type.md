@@ -94,4 +94,44 @@ return static function (GridConfig $grid) {
 };
 ```
 
+OR
+
+```php
+<?php
+# src/Grid/AdminSupplierGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Suplier;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_admin_supplier';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addField(
+                Field::create('name', 'custom')
+                    ->setLabel('sylius.ui.name')
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return Suplier::class;
+    }
+}
+```
+
 </details>
