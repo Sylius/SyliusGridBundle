@@ -28,7 +28,7 @@ sylius_grid:
                     sortable: ~ | field path
                     position: 100
                     options:
-                        template: :Grid/Column:_name.html.twig # Only twig column
+                        template: "@Grid/Column/_name.html.twig" # Only twig column
                         vars:
                             labels: # a template of how does the label look like
                     enabled: true
@@ -177,7 +177,7 @@ return static function (GridConfig $grid) {
                 ->setSortable(true)
                 ->setPosition(100)
                 ->setOptions([
-                    'template' => ':Grid/Column:_name.html.twig', // Only twig column
+                    'template' => '@Grid/Column/_name.html.twig', // Only twig column
                 ])
                 ->setEnabled(true)
         )
