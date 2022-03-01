@@ -23,8 +23,10 @@ interface FieldTypeInterface
      * $options.
      *
      * @param mixed $data
+     *
+     * @return string
      */
-    public function render(Field $field, $data, array $options): string;
+    public function render(Field $field, $data, array $options);
 
     /**
      * Configure options for this field type.
