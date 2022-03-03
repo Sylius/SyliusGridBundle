@@ -23,7 +23,7 @@ class CustomType implements FieldTypeInterface
         // Your rendering logic... Use Twig, PHP or even external api...
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -35,7 +35,7 @@ class CustomType implements FieldTypeInterface
         ;
     }
 
-    public function getName()
+    public function getName(): string
     {
         return 'custom';
     }

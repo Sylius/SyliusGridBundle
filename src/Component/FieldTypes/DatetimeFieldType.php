@@ -30,7 +30,7 @@ final class DatetimeFieldType implements FieldTypeInterface
     /**
      * @throws \InvalidArgumentException
      */
-    public function render(Field $field, $data, array $options)
+    public function render(Field $field, $data, array $options): string
     {
         $value = $this->dataExtractor->get($field, $data);
         if (null === $value) {

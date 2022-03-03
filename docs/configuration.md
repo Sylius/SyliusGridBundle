@@ -164,7 +164,7 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
-return static function (GridConfig $grid) {
+return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->setDriver('doctrine/orm')
         ->setRepositoryMethod('myCustomMethod', ['id' => 'resource.id'])
