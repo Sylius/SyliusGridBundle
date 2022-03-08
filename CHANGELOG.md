@@ -2,6 +2,16 @@
 
 ## CHANGELOG FOR `1.11.x`
 
+### v1.11.0-RC.1 (2022-03-08)
+
+#### Details
+
+- [#214](https://github.com/Sylius/SyliusGridBundle/issues/214) [Docs] Resorting pages on docs homepage ([@loic425](https://github.com/loic425))
+- [#215](https://github.com/Sylius/SyliusGridBundle/issues/215) [Docs] Add docs for the grid maker ([@loic425](https://github.com/loic425))
+- [#216](https://github.com/Sylius/SyliusGridBundle/issues/216) [Docs] Add documentation for Grids as service ([@loic425](https://github.com/loic425))
+- [#218](https://github.com/Sylius/SyliusGridBundle/issues/218) [Docs] Fix the template reference ([@Roshyo](https://github.com/Roshyo))
+- [#219](https://github.com/Sylius/SyliusGridBundle/issues/219) [DX] [Docs] Adding more typing to FieldType and in doc ([@Roshyo](https://github.com/Roshyo))
+
 ### v1.11.0-BETA.1 (2022-02-10)
 
 #### Details
