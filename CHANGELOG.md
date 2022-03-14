@@ -2,6 +2,12 @@
 
 ## CHANGELOG FOR `1.11.x`
 
+### v1.11.0-RC.2 (2022-03-14)
+
+#### Details
+
+- [#222](https://github.com/Sylius/SyliusGridBundle/issues/222) [Security] Dql injection through sorting parameters blocked ([@TheMilek](https://github.com/TheMilek))
+
 ### v1.11.0-RC.1 (2022-03-08)
 
 #### Details
