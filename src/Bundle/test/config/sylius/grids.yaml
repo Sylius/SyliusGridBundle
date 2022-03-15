@@ -61,6 +61,11 @@ sylius_grid:
             sorting:
                 name: asc
             fields:
+                id:
+                    type: string
+                    label: ID
+                    sortable: ~
+                    enabled: false
                 name:
                     type: string
                     label: Name

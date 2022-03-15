@@ -49,7 +49,7 @@ final class SorterSpec extends ObjectBehavior
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $grid->getSorting()->willReturn(['name' => 'desc']);
-        $grid->getEnabledFields()->willReturn(['name'=> $field, 'code' => $anotherField]);
+        $grid->getFields()->willReturn(['name'=> $field, 'code' => $anotherField]);
 
         $sortingValidator->validateSortingParameters(['name' => 'desc'], ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
         $fieldValidator->validateFieldName('name', ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
@@ -78,7 +78,7 @@ final class SorterSpec extends ObjectBehavior
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $grid->getSorting()->willReturn(['code' => 'asc']);
-        $grid->getEnabledFields()->willReturn(['name' => $field , 'code' => $anotherField]);
+        $grid->getFields()->willReturn(['name' => $field , 'code' => $anotherField]);
 
         $sortingValidator->validateSortingParameters(['name' => 'asc'], ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
         $fieldValidator->validateFieldName('name', ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
