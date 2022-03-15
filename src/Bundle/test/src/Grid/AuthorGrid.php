@@ -44,6 +44,10 @@ final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterfac
         $gridBuilder
             ->addFilter(Filter::create('name', 'string'))
             ->orderBy('name', 'asc')
+            ->addField(StringField::create('id')
+                ->setSortable(true)
+                ->setEnabled(false)
+            )
             ->addField(StringField::create('name')
                 ->setLabel('Name')
                 ->setSortable(true)
