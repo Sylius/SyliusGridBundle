@@ -45,6 +45,14 @@ final class SortingTest extends JsonApiTestCase
         self::assertCount(10, $this->getItemsFromCurrentResponse());
     }
 
+    /** @test */
+    public function it_allows_for_sorting_by_disabled_field(): void
+    {
+        $this->client->request('GET', '/authors/?sorting[id]=asc');
+
+        self::assertCount(10, $this->getItemsFromCurrentResponse());
+    }
+
     private function getItemsFromCurrentResponse(): array
     {
         return json_decode($this->client->getResponse()->getContent(), true)['_embedded']['items'];
