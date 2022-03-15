@@ -2,6 +2,13 @@
 
 ## CHANGELOG FOR `1.11.x`
 
+### v1.11.0-RC.3 (2022-03-15)
+
+#### Details
+
+- [#223](https://github.com/Sylius/SyliusGridBundle/issues/223) [Sorting] Allow for sorting on disabled, declared fields (to preserve bc) ([@lchrusciel](https://github.com/lchrusciel))
+- [#224](https://github.com/Sylius/SyliusGridBundle/issues/224) [Sorting] Allow for sorting on disabled, declared fields (to preserve bc) ([@lchrusciel](https://github.com/lchrusciel))
+
 ### v1.11.0-RC.2 (2022-03-14)
 
 #### Details
