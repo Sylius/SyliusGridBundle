@@ -35,7 +35,7 @@ final class Sorter implements SorterInterface
 
     public function sort(DataSourceInterface $dataSource, Grid $grid, Parameters $parameters): void
     {
-        $enabledFields = $grid->getEnabledFields();
+        $enabledFields = $grid->getFields();
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
