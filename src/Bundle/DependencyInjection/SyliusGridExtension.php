@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\DependencyInjection;
 
+use Doctrine\ODM\PHPCR\DocumentManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
@@ -39,15 +41,17 @@ final class SyliusGridExtension extends Extension
         $container->setAlias('sylius.grid.bulk_action_renderer', 'sylius.grid.bulk_action_renderer.twig');
         $container->setAlias('sylius.grid.data_extractor', 'sylius.grid.data_extractor.property_access');
 
-        foreach ($config['drivers'] as $enabledDriver) {
-            if ($enabledDriver === SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM) {
-                @trigger_error(sprintf(
-                    'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
-                    SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM
-                ), \E_USER_DEPRECATED);
-            }
+        if (ContainerBuilder::willBeAvailable('doctrine/orm', EntityManagerInterface::class, ['doctrine/doctrine-bundle'])) {
+            $loader->load('services/integrations/doctrine/orm.xml');
+        }
 
-            $loader->load(sprintf('services/integrations/%s.xml', $enabledDriver));
+        if (ContainerBuilder::willBeAvailable('doctrine/phpcr-odm', DocumentManagerInterface::class, ['doctrine/phpcr-bundle'])) {
+            @trigger_error(sprintf(
+                'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
+                SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM
+            ), \E_USER_DEPRECATED);
+
+            $loader->load('services/integrations/doctrine/phpcr-odm.xml');
         }
 
         if (\class_exists(SyliusCurrencyBundle::class)) {
