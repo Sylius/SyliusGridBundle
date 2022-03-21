@@ -126,12 +126,12 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                 StringField::create('title')
                     ->setLabel('Title')
                     ->setSortable(true)
-             )
+            )
             ->addField(
                 StringField::create('state')
                     ->setLabel('State')
                     ->setSortable(true)
-             )
+            )
              //->addField(
              //    TwigField::create('enabled', 'path/to/field/template.html.twig')
              //        ->setLabel('Enabled')
@@ -139,20 +139,20 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
             ->addField(
                 DateTimeField::create('createdAt')
                     ->setLabel('CreatedAt')
-             )
+            )
             ->addField(
                 DateTimeField::create('updatedAt')
                     ->setLabel('UpdatedAt')
-             )
+            )
             ->addField(
                 DateTimeField::create('publishedAt')
                     ->setLabel('PublishedAt')
-             )
+            )
             ->addField(
                 StringField::create('price.currencyCode')
                     ->setLabel('Price.currencyCode')
                     ->setSortable(true)
-             )
+            )
             ->addActionGroup(
                 MainActionGroup::create(
                     CreateAction::create(),
@@ -225,7 +225,7 @@ final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
                 StringField::create('currencyCode')
                     ->setLabel('CurrencyCode')
                     ->setSortable(true)
-             )
+            )
             ->addActionGroup(
                 MainActionGroup::create(
                     CreateAction::create(),

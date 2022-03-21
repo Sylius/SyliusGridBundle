@@ -40,14 +40,14 @@ foreach ($defaultFields as $fieldname => $type) {
         echo "                StringField::create('".$fieldname."')\n";
         echo "                    ->setLabel('".ucfirst($fieldname)."')\n";
         echo "                    ->setSortable(true)\n";
-        echo "             )\n";
+        echo "            )\n";
     }
 
     if (str_starts_with($type, 'DATE')) {
         echo "            ->addField(\n";
         echo "                DateTimeField::create('".$fieldname."')\n";
         echo "                    ->setLabel('".ucfirst($fieldname)."')\n";
-        echo "             )\n";
+        echo "            )\n";
     }
 
     if ('BOOLEAN' === $type) {
