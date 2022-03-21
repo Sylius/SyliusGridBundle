@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
+use App\Entity\AdminUser;
 use App\Entity\Book;
 use App\Entity\Price;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -21,6 +22,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class MakeGridTest extends MakerTestCase
 {
+    private const ADMIN_USER_GRID_PATH = 'Grid/AdminUserGrid.php';
     private const BOOK_GRID_PATH = 'Grid/BookGrid.php';
     private const PRICE_GRID_PATH = 'Grid/PriceGrid.php';
     private const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
@@ -49,6 +51,19 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileExists(self::tempFile(self::BOOK_GRID_PATH));
         $this->assertSame(self::getBookGridExpectedContent(), \file_get_contents(self::tempFile(self::BOOK_GRID_PATH)));
+    }
+
+    /** @test */
+    public function it_uses_snake_case_names_for_grids(): void
+    {
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+
+        $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
+
+        $tester->execute(['entity' => AdminUser::class, '--namespace' => 'Tests\Tmp\Grid']);
+
+        $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
+        $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
     }
 
     /** @test */
@@ -254,5 +269,78 @@ final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
 
 EOF
    ;
+    }
+
+    private static function getAdminUserGridExpectedContent(): string
+    {
+        return <<<EOF
+<?php
+
+namespace App\Tests\Tmp\Grid;
+
+use App\Entity\AdminUser;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
+use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+
+final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public function __construct()
+    {
+        // TODO inject services if required
+    }
+
+    public static function getName(): string
+    {
+        return 'app_admin_user';
+    }
+
+    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    {
+        \$gridBuilder
+            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
+            ->addField(
+                StringField::create('username')
+                    ->setLabel('Username')
+                    ->setSortable(true)
+            )
+            ->addActionGroup(
+                MainActionGroup::create(
+                    CreateAction::create(),
+                )
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    // ShowAction::create(),
+                    UpdateAction::create(),
+                    DeleteAction::create()
+                )
+            )
+            ->addActionGroup(
+                BulkActionGroup::create(
+                    DeleteAction::create()
+                )
+            )
+        ;
+    }
+
+    public function getResourceClass(): string
+    {
+        return AdminUser::class;
+    }
+}
+
+EOF
+            ;
     }
 }

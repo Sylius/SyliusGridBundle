@@ -1,3 +1,8 @@
+<?php
+
+use Symfony\Bundle\MakerBundle\Str;
+
+?>
 <?= "<?php\n" ?>
 
 namespace <?= $namespace; ?>;
@@ -26,7 +31,7 @@ final class <?= $class_name ?> extends AbstractGrid implements ResourceAwareGrid
 
     public static function getName(): string
     {
-        return 'app_<?= strtolower($entity->getShortName()) ?>';
+        return 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>';
     }
 
     public function buildGrid(GridBuilderInterface $gridBuilder): void
