@@ -132,10 +132,10 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                     ->setLabel('State')
                     ->setSortable(true)
             )
-             //->addField(
-             //    TwigField::create('enabled', 'path/to/field/template.html.twig')
-             //        ->setLabel('Enabled')
-             //)
+            //->addField(
+            //    TwigField::create('enabled', 'path/to/field/template.html.twig')
+            //        ->setLabel('Enabled')
+            //)
             ->addField(
                 DateTimeField::create('createdAt')
                     ->setLabel('CreatedAt')

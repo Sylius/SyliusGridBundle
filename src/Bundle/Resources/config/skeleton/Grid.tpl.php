@@ -51,10 +51,10 @@ foreach ($defaultFields as $fieldname => $type) {
     }
 
     if ('BOOLEAN' === $type) {
-        echo "             //->addField(\n";
-        echo "             //    TwigField::create('".$fieldname."', 'path/to/field/template.html.twig')\n";
-        echo "             //        ->setLabel('".ucfirst($fieldname)."')\n";
-        echo "             //)\n";
+        echo "            //->addField(\n";
+        echo "            //    TwigField::create('".$fieldname."', 'path/to/field/template.html.twig')\n";
+        echo "            //        ->setLabel('".ucfirst($fieldname)."')\n";
+        echo "            //)\n";
     }
 }
 ?>
