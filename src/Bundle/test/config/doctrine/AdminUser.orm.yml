@@ -1,0 +1,13 @@
+App\Entity\AdminUser:
+    type: mappedSuperclass
+    table: app_admin_user
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        username:
+            type: string
+            length: 255
