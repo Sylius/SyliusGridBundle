@@ -35,9 +35,7 @@ class Author implements ResourceInterface
      */
     private ?string $name = null;
 
-    /**
-     * @Serializer\Expose
-     */
+    /** @Serializer\Expose */
     private ?Nationality $nationality = null;
 
     /** @var Collection&Book[] */

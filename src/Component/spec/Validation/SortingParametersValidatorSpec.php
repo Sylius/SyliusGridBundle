@@ -31,12 +31,12 @@ final class SortingParametersValidatorSpec extends ObjectBehavior
         Field $field,
         Field $anotherField
     ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field , 'code' => $anotherField]);
+        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
         $grid->getSorting()->willReturn(['name' => 'non_sortable_parameter']);
 
         $this
             ->shouldThrow(new BadRequestHttpException('non_sortable_parameter is not valid, use asc or desc instead.'))
-            ->during('validateSortingParameters', [['name' => 'non_sortable_parameter'], ['name' => $field , 'code' => $anotherField]])
+            ->during('validateSortingParameters', [['name' => 'non_sortable_parameter'], ['name' => $field, 'code' => $anotherField]])
         ;
     }
 
@@ -45,12 +45,12 @@ final class SortingParametersValidatorSpec extends ObjectBehavior
         Field $field,
         Field $anotherField
     ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field , 'code' => $anotherField]);
+        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
         $grid->getSorting()->willReturn(['name' => 'asc']);
 
         $this
             ->shouldNotThrow(new BadRequestHttpException())
-            ->during('validateSortingParameters', [['name' => 'asc'], ['name' => $field , 'code' => $anotherField]])
+            ->during('validateSortingParameters', [['name' => 'asc'], ['name' => $field, 'code' => $anotherField]])
         ;
     }
 }

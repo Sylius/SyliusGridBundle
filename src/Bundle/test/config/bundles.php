@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
-use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
-use Symfony\Bundle\TwigBundle\TwigBundle;
-use FOS\RestBundle\FOSRestBundle;
-use JMS\SerializerBundle\JMSSerializerBundle;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
-use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use BabDev\PagerfantaBundle\BabDevPagerfantaBundle;
 use Bazinga\Bundle\HateoasBundle\BazingaHateoasBundle;
-use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
+use FOS\RestBundle\FOSRestBundle;
+use JMS\SerializerBundle\JMSSerializerBundle;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
+use Sylius\Bundle\GridBundle\SyliusGridBundle;
+use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
+use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
+use Symfony\Bundle\TwigBundle\TwigBundle;
+use winzou\Bundle\StateMachineBundle\winzouStateMachineBundle;
 
 return [
     FrameworkBundle::class => ['all' => true],

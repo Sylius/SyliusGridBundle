@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Sorting;
 
-use Sylius\Component\Grid\Validation\FieldValidator;
-use Sylius\Component\Grid\Validation\SortingParametersValidator;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
-use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
+use Sylius\Component\Grid\Validation\FieldValidator;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
+use Sylius\Component\Grid\Validation\SortingParametersValidator;
+use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 
 final class Sorter implements SorterInterface
 {
