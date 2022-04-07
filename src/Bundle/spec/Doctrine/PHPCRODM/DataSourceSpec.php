@@ -36,8 +36,7 @@ final class DataSourceSpec extends ObjectBehavior
     function it_implements_data_source(
         QueryBuilder $queryBuilder,
         ExpressionBuilderInterface $expressionBuilder
-    ): void
-    {
+    ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
         $this->shouldImplement(DataSourceInterface::class);
