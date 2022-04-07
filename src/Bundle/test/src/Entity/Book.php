@@ -42,14 +42,10 @@ class Book implements ResourceInterface
      */
     private ?string $title = null;
 
-    /**
-     * @Serializer\Expose
-     */
+    /** @Serializer\Expose */
     private ?Author $author = null;
 
-    /**
-     * @Serializer\Expose
-     */
+    /** @Serializer\Expose */
     private ?Price $price = null;
 
     private string $state;

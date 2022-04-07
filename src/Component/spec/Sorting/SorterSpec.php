@@ -20,8 +20,8 @@ use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Sorting\SorterInterface;
-use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
+use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 
 final class SorterSpec extends ObjectBehavior
 {
@@ -49,10 +49,10 @@ final class SorterSpec extends ObjectBehavior
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $grid->getSorting()->willReturn(['name' => 'desc']);
-        $grid->getFields()->willReturn(['name'=> $field, 'code' => $anotherField]);
+        $grid->getFields()->willReturn(['name' => $field, 'code' => $anotherField]);
 
-        $sortingValidator->validateSortingParameters(['name' => 'desc'], ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
-        $fieldValidator->validateFieldName('name', ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
+        $sortingValidator->validateSortingParameters(['name' => 'desc'], ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
+        $fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
 
         $grid->hasField('name')->willReturn(true);
         $grid->getField('name')->willReturn($field);
@@ -78,10 +78,10 @@ final class SorterSpec extends ObjectBehavior
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
         $grid->getSorting()->willReturn(['code' => 'asc']);
-        $grid->getFields()->willReturn(['name' => $field , 'code' => $anotherField]);
+        $grid->getFields()->willReturn(['name' => $field, 'code' => $anotherField]);
 
-        $sortingValidator->validateSortingParameters(['name' => 'asc'], ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
-        $fieldValidator->validateFieldName('name', ['name' => $field , 'code' => $anotherField])->shouldBeCalled();
+        $sortingValidator->validateSortingParameters(['name' => 'asc'], ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
+        $fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
 
         $grid->hasField('name')->willReturn(true);
         $grid->getField('name')->willReturn($field);
