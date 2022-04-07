@@ -9,6 +9,8 @@
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -26,7 +28,7 @@ abstract class MakerTestCase extends KernelTestCase
 
     protected static function tempDir(): string
     {
-        return __DIR__.'/../../../test/tmp';
+        return __DIR__ . '/../../../test/tmp';
     }
 
     protected static function tempFile(string $path): string

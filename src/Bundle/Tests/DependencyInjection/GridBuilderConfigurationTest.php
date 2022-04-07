@@ -37,7 +37,6 @@ use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
-use Sylius\Bundle\GridBundle\DependencyInjection\Configuration;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
 use Sylius\Component\Grid\Tests\Dummy\ClassAsParameterGrid;
@@ -45,7 +44,6 @@ use Sylius\Component\Grid\Tests\Dummy\Foo;
 use Sylius\Component\Grid\Tests\Dummy\FooFightersGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
 use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
-use Symfony\Component\DependencyInjection\Definition;
 
 final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
@@ -95,7 +93,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 'driver' => [
                     'name' => Driver::NAME,
                     'options' => [
-                        'class' => Book::class
+                        'class' => Book::class,
                     ],
                 ],
                 'sorting' => [],
@@ -383,7 +381,8 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
             ->addField(Field::create('name', 'string'))
-            ->addField(Field::create('author', 'twig')
+            ->addField(
+                Field::create('author', 'twig')
                 ->setOptions(['template' => 'admin/book/grid/field/author.html.twig'])
             )
         ;
@@ -514,10 +513,6 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 'limits' => [10, 25, 50],
                 'fields' => [],
 
-
-
-
-
                 'filters' => [],
                 'actions' => [
                     'main' => [
@@ -610,21 +605,21 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.show'
+                            'label' => 'sylius.ui.show',
                         ],
                         'update' => [
                             'type' => 'update',
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.edit'
+                            'label' => 'sylius.ui.edit',
                         ],
                         'delete' => [
                             'type' => 'delete',
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.delete'
+                            'label' => 'sylius.ui.delete',
                         ],
                     ],
                     'bulk' => [
@@ -633,7 +628,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.delete'
+                            'label' => 'sylius.ui.delete',
                         ],
                     ],
                 ],
@@ -690,21 +685,21 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.show'
+                            'label' => 'sylius.ui.show',
                         ],
                         'update' => [
                             'type' => 'update',
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.edit'
+                            'label' => 'sylius.ui.edit',
                         ],
                         'delete' => [
                             'type' => 'delete',
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.delete'
+                            'label' => 'sylius.ui.delete',
                         ],
                     ],
                     'bulk' => [
@@ -713,7 +708,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                             'enabled' => true,
                             'position' => 100,
                             'options' => [],
-                            'label' => 'sylius.ui.delete'
+                            'label' => 'sylius.ui.delete',
                         ],
                     ],
                 ],
@@ -838,7 +833,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                         'type' => 'string',
                         'enabled' => true,
                         'position' => 100,
-                        'options' => []
+                        'options' => [],
                     ],
                 ],
                 'filters' => [],

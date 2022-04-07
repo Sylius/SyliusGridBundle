@@ -16,12 +16,19 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 final class Filter implements FilterInterface
 {
     private string $name;
+
     private string $type;
+
     private ?string $label = null;
+
     private ?bool $enabled = null;
+
     private ?string $template = null;
+
     private array $options = [];
+
     private array $formOptions = [];
+
     private array $criteria = [];
 
     private function __construct(string $name, string $type)

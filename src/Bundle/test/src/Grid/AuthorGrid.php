@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Author;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterface
@@ -44,15 +43,18 @@ final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterfac
         $gridBuilder
             ->addFilter(Filter::create('name', 'string'))
             ->orderBy('name', 'asc')
-            ->addField(StringField::create('id')
+            ->addField(
+                StringField::create('id')
                 ->setSortable(true)
                 ->setEnabled(false)
             )
-            ->addField(StringField::create('name')
+            ->addField(
+                StringField::create('name')
                 ->setLabel('Name')
                 ->setSortable(true)
             )
-            ->addField(StringField::create('nationality')
+            ->addField(
+                StringField::create('nationality')
                 ->setLabel('Name')
                 ->setPath('nationality.name')
                 ->setSortable(true, 'nationality.name')

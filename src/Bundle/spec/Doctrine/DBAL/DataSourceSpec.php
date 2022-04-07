@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace spec\Sylius\Bundle\GridBundle\Doctrine\DBAL;
 
-use Doctrine\DBAL\Query;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Pagerfanta;
 use PhpSpec\ObjectBehavior;

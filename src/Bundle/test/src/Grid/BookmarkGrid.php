@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Author;
 use App\Entity\Book;
-use App\Entity\Nationality;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;

@@ -18,6 +18,7 @@ use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 final class ActionGroup implements ActionGroupInterface
 {
     private string $name;
+
     private array $actions = [];
 
     private function __construct(string $name)

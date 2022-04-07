@@ -179,7 +179,7 @@ final class GridBuilder implements GridBuilderInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function toArray(): array
     {

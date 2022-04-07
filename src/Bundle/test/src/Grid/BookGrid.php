@@ -38,13 +38,15 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
     {
         $gridBuilder
             ->addFilter(Filter::create('title', 'string'))
-            ->addFilter(Filter::create('author', 'entity')
+            ->addFilter(
+                Filter::create('author', 'entity')
                 ->setFormOptions([
                     'class' => Author::class,
                     'multiple' => true,
                 ])
             )
-            ->addFilter(Filter::create('nationality', 'entity')
+            ->addFilter(
+                Filter::create('nationality', 'entity')
                 ->setOptions([
                     'fields' => ['author.nationality'],
                 ])
@@ -52,12 +54,14 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                     'class' => Nationality::class,
                 ])
             )
-            ->addFilter(Filter::create('currencyCode', 'string')
+            ->addFilter(
+                Filter::create('currencyCode', 'string')
                 ->setOptions([
                     'fields' => ['price.currencyCode'],
                 ])
             )
-            ->addFilter(Filter::create('state', 'select')
+            ->addFilter(
+                Filter::create('state', 'select')
                 ->setFormOptions([
                     'multiple' => true,
                     'choices' => [
