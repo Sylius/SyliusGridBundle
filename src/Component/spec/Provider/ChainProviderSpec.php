@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\Sylius\Component\Grid\Provider;
 
 use PhpSpec\ObjectBehavior;
@@ -27,8 +38,7 @@ class ChainProviderSpec extends ObjectBehavior
         GridProviderInterface $firstGridProvider,
         GridProviderInterface $secondGridProvider,
         Grid $gridDefinition
-    ): void
-    {
+    ): void {
         $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
         $secondGridProvider->get('app_book')->willReturn($gridDefinition);
 
@@ -38,8 +48,7 @@ class ChainProviderSpec extends ObjectBehavior
     function it_throws_an_undefined_grid_exception_when_its_providers_do_not_contains_definition(
         GridProviderInterface $firstGridProvider,
         GridProviderInterface $secondGridProvider
-    ): void
-    {
+    ): void {
         $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
         $secondGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
 

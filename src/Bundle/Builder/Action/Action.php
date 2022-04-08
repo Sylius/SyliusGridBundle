@@ -16,11 +16,17 @@ namespace Sylius\Bundle\GridBundle\Builder\Action;
 final class Action implements ActionInterface
 {
     private string $name;
+
     private string $type;
+
     private ?string $label = null;
+
     private ?bool $enabled = null;
+
     private ?string $icon = null;
+
     private array $options = [];
+
     private ?int $position = null;
 
     private function __construct(string $name, string $type)
@@ -69,7 +75,7 @@ final class Action implements ActionInterface
 
     public function setPosition(int $position): ActionInterface
     {
-        $this->position  = $position;
+        $this->position = $position;
 
         return $this;
     }

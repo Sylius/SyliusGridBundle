@@ -15,7 +15,6 @@ namespace Sylius\Component\Grid\Provider;
 
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
-use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 final class ChainProvider implements GridProviderInterface
 {

@@ -29,7 +29,7 @@ interface GridBuilderInterface
     /**
      * @param mixed $value
      */
-    public function setDriverOption(string $option, $value): GridBuilderInterface;
+    public function setDriverOption(string $option, $value): self;
 
     /**
      * @param string|array $method
@@ -53,9 +53,9 @@ interface GridBuilderInterface
     public function addActionGroup(ActionGroupInterface $actionGroup): self;
 
     public function removeActionGroup(string $name): self;
-    
+
     public function addAction(ActionInterface $action, string $group): self;
-    
+
     public function removeAction(string $name, string $group): self;
 
     public function extends(string $gridName): self;

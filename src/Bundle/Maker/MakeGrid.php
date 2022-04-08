@@ -103,7 +103,7 @@ final class MakeGrid extends AbstractMaker
 
         $generator->generateClass(
             $grid->getFullName(),
-            __DIR__.'/../Resources/config/skeleton/Grid.tpl.php',
+            __DIR__ . '/../Resources/config/skeleton/Grid.tpl.php',
             [
                 'entity' => $entity,
                 'defaultFields' => $this->defaultFieldsFor($entity->getName()),

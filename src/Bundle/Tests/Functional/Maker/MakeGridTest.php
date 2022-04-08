@@ -23,8 +23,11 @@ use Symfony\Component\Console\Tester\CommandTester;
 final class MakeGridTest extends MakerTestCase
 {
     private const ADMIN_USER_GRID_PATH = 'Grid/AdminUserGrid.php';
+
     private const BOOK_GRID_PATH = 'Grid/BookGrid.php';
+
     private const PRICE_GRID_PATH = 'Grid/PriceGrid.php';
+
     private const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
 
     /** @test */

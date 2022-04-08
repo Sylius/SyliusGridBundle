@@ -19,13 +19,14 @@ use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
-use Sylius\Component\Grid\Provider\OverrideGridConfigurationTrait;
 use Webmozart\Assert\Assert;
 
 final class ServiceGridProvider implements GridProviderInterface
 {
     private ArrayToDefinitionConverterInterface $converter;
+
     private GridRegistryInterface $gridRegistry;
+
     private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
     public function __construct(

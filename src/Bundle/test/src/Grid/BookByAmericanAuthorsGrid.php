@@ -38,12 +38,14 @@ final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAw
         $gridBuilder
             ->setRepositoryMethod('createAmericanBooksQueryBuilder')
             ->addFilter(Filter::create('title', 'string'))
-            ->addFilter(Filter::create('author', 'entity')
+            ->addFilter(
+                Filter::create('author', 'entity')
                 ->setFormOptions([
                     'class' => Nationality::class,
                 ])
             )
-            ->addFilter(Filter::create('nationality', 'entity')
+            ->addFilter(
+                Filter::create('nationality', 'entity')
                 ->setOptions([
                     'fields' => ['author.nationality'],
                 ])
@@ -52,16 +54,19 @@ final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAw
                 ])
             )
             ->orderBy('title', 'asc')
-            ->addField(StringField::create('title')
+            ->addField(
+                StringField::create('title')
                 ->setLabel('Title')
                 ->setSortable(true)
             )
-            ->addField(StringField::create('author')
+            ->addField(
+                StringField::create('author')
                 ->setLabel('Author')
                 ->setPath('author.name')
                 ->setSortable(true, 'author.name')
             )
-            ->addField(StringField::create('nationality')
+            ->addField(
+                StringField::create('nationality')
                 ->setLabel('Nationality')
                 ->setPath('na.name')
                 ->setSortable(true, 'na.name')

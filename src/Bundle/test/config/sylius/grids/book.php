@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Nationality;
@@ -11,7 +22,8 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_book', Book::class)
+    $grid->addGrid(
+        GridBuilder::create('app_book', Book::class)
         ->addFilter(StringFilter::create('title'))
         ->addFilter(EntityFilter::create('author', Author::class, true))
         ->addFilter(EntityFilter::create(

@@ -1,13 +1,21 @@
 <?php
 
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Paweł Jędrzejewski
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace spec\Sylius\Bundle\GridBundle\Registry;
 
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Registry\GridRegistry;
-use Sylius\Component\Grid\Tests\Dummy\BarGrid;
-use Sylius\Component\Grid\Tests\Dummy\FooGrid;
-use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class GridRegistrySpec extends ObjectBehavior

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class StubMakeGridTest extends KernelTestCase
 {
-   /** @test */
+    /** @test */
     public function it_informs_maker_bundle_is_not_registered(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel(['environment' => 'test_without_maker'])))->find('make:grid'));

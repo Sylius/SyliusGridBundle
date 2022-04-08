@@ -16,13 +16,20 @@ namespace Sylius\Bundle\GridBundle\Builder\Field;
 final class Field implements FieldInterface
 {
     private string $name;
+
     private string $type;
+
     private ?string $path = null;
+
     private ?string $label = null;
+
     private ?bool $enabled = null;
+
     /** @var bool|string|null */
-    private $sortable = null;
+    private $sortable;
+
     private ?int $position = null;
+
     private array $options = [];
 
     private function __construct(string $name, string $type)

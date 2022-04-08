@@ -38,7 +38,7 @@ class Author implements ResourceInterface
     /** @Serializer\Expose */
     private ?Nationality $nationality = null;
 
-    /** @var Collection&Book[] */
+    /** @var Collection|Book[] */
     private Collection $books;
 
     public function __construct()
@@ -77,7 +77,7 @@ class Author implements ResourceInterface
     }
 
     /**
-     * @return Collection&Book[]
+     * @return Collection|Book[]
      */
     public function getBooks(): Collection
     {

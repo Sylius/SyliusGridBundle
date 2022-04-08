@@ -18,8 +18,11 @@ use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 interface ActionGroupInterface
 {
     public const MAIN_GROUP = 'main';
+
     public const ITEM_GROUP = 'item';
+
     public const SUB_ITEM_GROUP = 'subitem';
+
     public const BULK_GROUP = 'bulk';
 
     public static function create(string $name, ActionInterface ...$actions): self;
