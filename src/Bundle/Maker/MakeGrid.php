@@ -50,7 +50,7 @@ final class MakeGrid extends AbstractMaker
         $command
             ->setDescription(self::getCommandDescription())
             ->addArgument('entity', InputArgument::OPTIONAL, 'Entity class to create a grid for')
-            ->addOption('namespace', null, InputOption::VALUE_REQUIRED, 'Customize the namespace for generated factories', 'Grid')
+            ->addOption('namespace', null, InputOption::VALUE_REQUIRED, 'Customize the namespace for generated grids', 'Grid')
         ;
 
         $inputConfig->setArgumentAsNonInteractive('entity');
