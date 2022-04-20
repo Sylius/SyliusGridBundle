@@ -61,6 +61,7 @@
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::scalarNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeDefinition::variableNode" />
                 <referencedMethod name="Symfony\Component\Config\Definition\Builder\NodeParentInterface::end" />
+                <referencedMethod name="Symfony\Component\Config\Definition\Builder\VariableNodeDefinition::arrayNode" />
             </errorLevel>
         </PossiblyUndefinedMethod>
 
