@@ -1,4 +1,25 @@
 sylius_grid:
+    templates:
+        action:
+            default: "@SyliusGrid/semantic_ui/action/default.html.twig"
+            create: "@SyliusGrid/semantic_ui/action/create.html.twig"
+            delete: "@SyliusGrid/semantic_ui/action/delete.html.twig"
+            show: "@SyliusGrid/semantic_ui/action/show.html.twig"
+            update: "@SyliusGrid/semantic_ui/action/update.html.twig"
+            apply_transition: "@SyliusGrid/semantic_ui/action/applyTransition.html.twig"
+            links: "@SyliusGrid/semantic_ui/action/links.html.twig"
+            archive: "@SyliusGrid/semantic_ui/action/archive.html.twig"
+        bulk_action:
+            delete: "@SyliusGrid/semantic_ui/bulk_action/delete.html.twig"
+        filter:
+            string: "@SyliusGrid/filter/string.html.twig"
+            boolean: "@SyliusGrid/filter/boolean.html.twig"
+            date: "@SyliusGrid/filter/date.html.twig"
+            entity: "@SyliusGrid/filter/entity.html.twig"
+            money: "@SyliusGrid/filter/money.html.twig"
+            exists: "@SyliusGrid/filter/exists.html.twig"
+            select: "@SyliusGrid/filter/select.html.twig"
+
     grids:
         app_book:
             driver:

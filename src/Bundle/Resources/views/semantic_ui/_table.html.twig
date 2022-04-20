@@ -1,0 +1,23 @@
+{% import '@SyliusGrid/semantic_ui/macro/table.html.twig' as table %}
+{% import '@SyliusGrid/semantic_ui/macro/messages.html.twig' as messages %}
+
+{% if data|length > 0 %}
+    <div class="ui segment spaceless sylius-grid-table-wrapper">
+{#        <table class="ui sortable stackable very basic celled table" {{ sylius_test_html_attribute('grid-table') }}>#}
+        <table class="ui sortable stackable very basic celled table">
+            <thead>
+            <tr>
+                {{ table.headers(grid, definition, app.request.attributes) }}
+            </tr>
+            </thead>
+{#            <tbody {{ sylius_test_html_attribute('grid-table-body') }}>#}
+            <tbody>
+            {% for row in data %}
+                {{ table.row(grid, definition, row) }}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    {{ messages.info('sylius.ui.no_results_to_display') }}
+{% endif %}

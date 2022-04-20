@@ -1,3 +1,13 @@
+app_library:
+    resource: |
+        path: /library
+        section: library
+        alias: app.book
+        grid: app_book
+        except: ['show']
+        templates: crud
+    type: sylius.resource
+
 app_books:
     resource: |
         alias: app.book

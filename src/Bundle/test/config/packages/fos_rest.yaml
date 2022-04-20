@@ -5,4 +5,6 @@ fos_rest:
         empty_content: 204
     format_listener:
         rules:
-            - { path: '^/', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '^/authors', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '^/books', priorities: ['json'], fallback_format: json, prefer_extension: true }
+            - { path: '^/', priorities: ['html'], fallback_format: json, prefer_extension: true }
