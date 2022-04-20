@@ -5,3 +5,6 @@
 
 /.phpunit.result.cache
 src/Bundle/test/tmp
+
+src/Bundle/test/vendor/
+src/Bundle/test/composer.lock
