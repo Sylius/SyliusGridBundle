@@ -34,7 +34,7 @@ app_author_with_books_with_fetch_join_collection_disabled:
     path: /authors/with-books/with-fetch-join-collection-disabled
     methods: [GET]
     defaults:
-        _controller: app.controller.author:indexAction
+        _controller: app.controller.author::indexAction
         _sylius:
             grid: app_author_with_books_with_fetch_join_collection_disabled
 
@@ -42,7 +42,7 @@ app_author_with_books_with_fetch_join_collection_enabled:
     path: /authors/with-books/with-fetch-join-collection-enabled
     methods: [GET]
     defaults:
-        _controller: app.controller.author:indexAction
+        _controller: app.controller.author::indexAction
         _sylius:
             grid: app_author_with_books_with_fetch_join_collection_enabled
 
@@ -50,7 +50,7 @@ app_author_with_books_with_use_output_walkers_disabled:
     path: /authors/with-books/with-use-output-walkers-disabled
     methods: [GET]
     defaults:
-        _controller: app.controller.author:indexAction
+        _controller: app.controller.author::indexAction
         _sylius:
             grid: app_author_with_books_with_use_output_walkers_disabled
 
@@ -58,6 +58,6 @@ app_author_with_books_with_use_output_walkers_enabled:
     path: /authors/with-books/with-use-output-walkers-enabled
     methods: [GET]
     defaults:
-        _controller: app.controller.author:indexAction
+        _controller: app.controller.author::indexAction
         _sylius:
             grid: app_author_with_books_with_use_output_walkers_enabled
