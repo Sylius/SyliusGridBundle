@@ -24,7 +24,7 @@ final class ServiceGridProviderTest extends KernelTestCase
     {
         self::bootKernel(['environment' => 'test_grids_as_service']);
 
-        $container = static::$container;
+        $container = self::getContainer();
 
         $serviceGridProvider = $container->get('sylius.grid.service_grid_provider');
 
