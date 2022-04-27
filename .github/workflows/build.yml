@@ -19,7 +19,7 @@ jobs:
             matrix:
                 php: ["8.0", "8.1"]
                 postgres: [""]
-                symfony: ["^4.4", "^5.4"]
+                symfony: ["^5.4", "^6.0"]
 
                 include:
                     -

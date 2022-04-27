@@ -2,6 +2,22 @@
 
 ## CHANGELOG FOR `1.11.x`
 
+### v1.11.0 (2022-04-27)
+
+#### TL;DR
+
+Stable 1.11.0 release 🎉🎉🎉
+
+#### Details
+
+- [#225](https://github.com/Sylius/SyliusGridBundle/issues/225) Testing with PHP 8.1 ([@loic425](https://github.com/loic425))
+- [#228](https://github.com/Sylius/SyliusGridBundle/issues/228) Fix coding style for make grid command ([@loic425](https://github.com/loic425))
+- [#229](https://github.com/Sylius/SyliusGridBundle/issues/229) [GridMaker] Use snake case for grid names ([@loic425](https://github.com/loic425))
+- [#230](https://github.com/Sylius/SyliusGridBundle/issues/230) Bring back checking coding standard ([@loic425](https://github.com/loic425))
+- [#231](https://github.com/Sylius/SyliusGridBundle/issues/231) Remove tmp Price grid ([@loic425](https://github.com/loic425))
+- [#233](https://github.com/Sylius/SyliusGridBundle/issues/233) Fix coding standards (and the build as well) ([@Zales0123](https://github.com/Zales0123))
+- [#234](https://github.com/Sylius/SyliusGridBundle/issues/234) Fix description for grid maker namespace ([@loic425](https://github.com/loic425))
+
 ### v1.11.0-RC.3 (2022-03-15)
 
 #### Details
