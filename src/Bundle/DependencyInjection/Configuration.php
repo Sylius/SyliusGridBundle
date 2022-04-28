@@ -100,7 +100,7 @@ final class Configuration implements ConfigurationInterface
                             ->arrayNode('limits')
                                 ->performNoDeepMerging()
                                 ->integerPrototype()->end()
-                                ->defaultValue([10, 25, 50])
+                                ->defaultValue([50, 100, 250, 500, 1000])
                             ->end()
                             ->arrayNode('fields')
                                 ->useAttributeAsKey('name')
