@@ -1,0 +1,15 @@
+{% extends '@SyliusGrid/default.html.twig' %}
+
+{% import '@SyliusGrid/semantic_ui/macro/pagination.html.twig' as pagination %}
+{% import '@SyliusGrid/semantic_ui/macro/buttons.html.twig' as buttons %}
+
+{% block grid_content %}
+    {% include '@SyliusGrid/semantic_ui/_filters.html.twig' %}
+
+    <div class="ui hidden divider"></div>
+    <div class="sylius-grid-wrapper">
+        {% include '@SyliusGrid/semantic_ui/_nav.html.twig' %}
+        {% include '@SyliusGrid/semantic_ui/_table.html.twig' %}
+        {{ pagination.simple(data) }}
+    </div>
+{% endblock %}

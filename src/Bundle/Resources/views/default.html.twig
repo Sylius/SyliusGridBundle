@@ -1,0 +1,8 @@
+{% set definition = grid.definition %}
+{% set data = grid.data %}
+
+{% set path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% set criteria = app.request.query.get('criteria') %}
+
+{% block grid_content %}
+{% endblock %}

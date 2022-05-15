@@ -1,5 +1,6 @@
 imports:
     - { resource: "sylius/resources.yaml" }
+    - { resource: "sylius/grids.yaml" }
 
 parameters:
     locale: en_US
