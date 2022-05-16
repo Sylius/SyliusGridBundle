@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v1.12.0-ALPHA.1 (2022-05-16)
+
+#### Details
+
+- [#236](https://github.com/Sylius/SyliusGridBundle/issues/236) Drop support for Symfony 4 ([@loic425](https://github.com/loic425))
+- [#237](https://github.com/Sylius/SyliusGridBundle/issues/237) Add support for Symfony 6 ([@loic425](https://github.com/loic425), [@lchrusciel](https://github.com/lchrusciel))
+- [#238](https://github.com/Sylius/SyliusGridBundle/issues/238) Fix Bootstrap for Symfony 6 ([@loic425](https://github.com/loic425))
+- [#240](https://github.com/Sylius/SyliusGridBundle/issues/240) Use storage factory id ([@loic425](https://github.com/loic425))
+- [#242](https://github.com/Sylius/SyliusGridBundle/issues/242) Fix Kernel on test app ([@loic425](https://github.com/loic425))
+- [#244](https://github.com/Sylius/SyliusGridBundle/issues/244) Fix psalm error ([@loic425](https://github.com/loic425))
+- [#245](https://github.com/Sylius/SyliusGridBundle/issues/245) Fix routes on test app ([@loic425](https://github.com/loic425))
+- [#246](https://github.com/Sylius/SyliusGridBundle/issues/246) Fix getting container deprecation ([@loic425](https://github.com/loic425))
+
 ## CHANGELOG FOR `1.11.x`
 
 ### v1.11.0 (2022-04-27)
