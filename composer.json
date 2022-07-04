@@ -99,6 +99,11 @@
             "App\\Tests\\Tmp\\": "src/Bundle/test/tmp"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true
+        }
+    },
     "scripts": {
         "analyse": [
             "@composer validate --strict",
