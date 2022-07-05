@@ -28,7 +28,7 @@ final class BulkActionGridHelperSpec extends ObjectBehavior
     function it_uses_a_grid_renderer_to_render_a_bulk_action(
         BulkActionGridRendererInterface $bulkActionGridRenderer,
         GridView $gridView,
-        Action $bulkAction
+        Action $bulkAction,
     ): void {
         $bulkActionGridRenderer->renderBulkAction($gridView, $bulkAction, null)->willReturn('<a href="#">Delete</a>');
         $this->renderBulkAction($gridView, $bulkAction)->shouldReturn('<a href="#">Delete</a>');

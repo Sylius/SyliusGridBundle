@@ -28,7 +28,7 @@ final class SelectFilterSpec extends ObjectBehavior
 
     function it_filters_by_id(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -41,7 +41,7 @@ final class SelectFilterSpec extends ObjectBehavior
 
     function it_filters_with_multiple_ids(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -54,7 +54,7 @@ final class SelectFilterSpec extends ObjectBehavior
 
     function it_does_not_filters_when_data_id_is_not_defined(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 

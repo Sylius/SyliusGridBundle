@@ -100,7 +100,7 @@ final class FiltersCriteriaResolverSpec extends ObjectBehavior
     function it_prioritizes_parameters_criteria_over_filters_default(
         Grid $grid,
         Filter $firstFilter,
-        Filter $secondFilter
+        Filter $secondFilter,
     ): void {
         $parametersDate = new \DateTime();
 

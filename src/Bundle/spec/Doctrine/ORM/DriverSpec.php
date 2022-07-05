@@ -38,14 +38,15 @@ final class DriverSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('getDataSource', [[], new Parameters()]);
+            ->during('getDataSource', [[], new Parameters()])
+        ;
     }
 
     function it_creates_data_source_via_doctrine_orm_query_builder(
         ManagerRegistry $managerRegistry,
         EntityManagerInterface $entityManager,
         EntityRepository $entityRepository,
-        QueryBuilder $queryBuilder
+        QueryBuilder $queryBuilder,
     ): void {
         $managerRegistry->getManagerForClass('App:Book')->willReturn($entityManager);
         $entityManager->getRepository('App:Book')->willReturn($entityRepository);

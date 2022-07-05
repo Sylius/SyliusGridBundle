@@ -27,7 +27,7 @@ final class DataProviderSpec extends ObjectBehavior
     function let(
         DataSourceProviderInterface $dataSourceProvider,
         FiltersApplicatorInterface $filtersApplicator,
-        SorterInterface $sorter
+        SorterInterface $sorter,
     ): void {
         $this->beConstructedWith($dataSourceProvider, $filtersApplicator, $sorter);
     }
@@ -42,7 +42,7 @@ final class DataProviderSpec extends ObjectBehavior
         DataSourceInterface $dataSource,
         FiltersApplicatorInterface $filtersApplicator,
         SorterInterface $sorter,
-        Grid $grid
+        Grid $grid,
     ): void {
         $parameters = new Parameters();
 

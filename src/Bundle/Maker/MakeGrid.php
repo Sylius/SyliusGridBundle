@@ -108,7 +108,7 @@ final class MakeGrid extends AbstractMaker
                 'entity' => $entity,
                 'defaultFields' => $this->defaultFieldsFor($entity->getName()),
                 'repository' => $repository,
-            ]
+            ],
         );
 
         $generator->writeChanges();

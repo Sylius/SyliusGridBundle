@@ -33,7 +33,7 @@ final class DatetimeFieldTypeSpec extends ObjectBehavior
     function it_uses_data_extractor_to_obtain_data_parse_it_with_given_configuration_and_renders_it(
         DataExtractorInterface $dataExtractor,
         \DateTime $dateTime,
-        Field $field
+        Field $field,
     ): void {
         $dataExtractor->get($field, ['foo' => 'bar'])->willReturn($dateTime);
 

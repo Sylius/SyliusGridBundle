@@ -32,7 +32,7 @@ final class ServiceGridProvider implements GridProviderInterface
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
-        GridConfigurationExtenderInterface $gridConfigurationExtender
+        GridConfigurationExtenderInterface $gridConfigurationExtender,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;

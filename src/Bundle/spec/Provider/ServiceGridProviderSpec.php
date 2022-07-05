@@ -27,7 +27,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
 {
     function let(
         ArrayToDefinitionConverterInterface $converter,
-        GridRegistryInterface $gridRegistry
+        GridRegistryInterface $gridRegistry,
     ): void {
         $this->beConstructedWith($converter, $gridRegistry, new GridConfigurationExtender());
     }
@@ -46,7 +46,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridInterface $bookGrid,
-        Grid $gridDefinition
+        Grid $gridDefinition,
     ): void {
         $gridRegistry->getGrid('app_book')->willReturn($bookGrid);
         $bookGrid->toArray()->willReturn([]);
@@ -62,7 +62,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
         GridInterface $fooGrid,
         GridInterface $fooFightersGrid,
         Grid $fooGridDefinition,
-        Grid $fooFightersGridDefinition
+        Grid $fooFightersGridDefinition,
     ): void {
         $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
         $gridRegistry->getGrid('app_foo_fighters')->willReturn($fooFightersGrid);
@@ -77,7 +77,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
     }
 
     function it_throws_an_undefined_grid_exception_when_grid_is_not_found(
-        GridRegistryInterface $gridRegistry
+        GridRegistryInterface $gridRegistry,
     ): void {
         $gridRegistry->getGrid('app_book')->willReturn(null);
 
@@ -86,7 +86,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
 
     function it_throws_an_invalid_argument_exception_when_parent_grid_is_not_found(
         GridRegistryInterface $gridRegistry,
-        GridInterface $grid
+        GridInterface $grid,
     ): void {
         $gridRegistry->getGrid('app_foo_fighters')->willReturn($grid);
         $gridRegistry->getGrid('app_foo')->willReturn(null);

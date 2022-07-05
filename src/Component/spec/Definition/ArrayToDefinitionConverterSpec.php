@@ -41,7 +41,7 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
         $grid = Grid::fromCodeAndDriverConfiguration(
             'sylius_admin_tax_category',
             'doctrine/orm',
-            ['resource' => 'sylius.tax_category']
+            ['resource' => 'sylius.tax_category'],
         );
 
         $grid->setSorting(['code' => 'desc']);

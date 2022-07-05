@@ -47,7 +47,7 @@ final class RegisterDriversPassTest extends AbstractCompilerPassTestCase
                 [
                     $tag['alias'],
                     new Reference($driverServiceId),
-                ]
+                ],
             );
         }
     }

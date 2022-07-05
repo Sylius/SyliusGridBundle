@@ -41,7 +41,7 @@ final class FiltersApplicatorSpec extends ObjectBehavior
         FilterInterface $stringFilter,
         Grid $grid,
         Filter $filter,
-        DataSourceInterface $dataSource
+        DataSourceInterface $dataSource,
     ): void {
         $parameters = new Parameters();
 
@@ -60,7 +60,7 @@ final class FiltersApplicatorSpec extends ObjectBehavior
         FilterInterface $stringFilter,
         Grid $grid,
         Filter $filter,
-        DataSourceInterface $dataSource
+        DataSourceInterface $dataSource,
     ): void {
         $parameters = new Parameters();
 
@@ -88,7 +88,7 @@ final class FiltersApplicatorSpec extends ObjectBehavior
         FilterInterface $stringFilter,
         Grid $grid,
         Filter $filter,
-        DataSourceInterface $dataSource
+        DataSourceInterface $dataSource,
     ): void {
         $parameters = new Parameters(['criteria' => ['keywords' => 'Banana', 'enabled' => true]]);
 

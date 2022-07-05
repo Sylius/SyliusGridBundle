@@ -49,7 +49,7 @@ final class TwigGridRenderer implements GridRendererInterface
         FormTypeRegistryInterface $formTypeRegistry,
         string $defaultTemplate,
         array $actionTemplates = [],
-        array $filterTemplates = []
+        array $filterTemplates = [],
     ) {
         $this->twig = $twig;
         $this->fieldsRegistry = $fieldsRegistry;
@@ -102,7 +102,7 @@ final class TwigGridRenderer implements GridRendererInterface
         $form->add(
             $filter->getName(),
             $this->formTypeRegistry->get($filter->getType(), 'default'),
-            $filter->getFormOptions()
+            $filter->getFormOptions(),
         );
 
         $criteria = $gridView->getParameters()->get('criteria', []);

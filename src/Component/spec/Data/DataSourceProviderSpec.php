@@ -38,7 +38,7 @@ final class DataSourceProviderSpec extends ObjectBehavior
         ServiceRegistryInterface $driversRegistry,
         DataSourceInterface $dataSource,
         DriverInterface $driver,
-        Grid $grid
+        Grid $grid,
     ): void {
         $parameters = new Parameters();
 

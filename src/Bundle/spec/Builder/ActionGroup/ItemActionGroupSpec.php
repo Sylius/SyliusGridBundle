@@ -32,7 +32,7 @@ final class ItemActionGroupSpec extends ObjectBehavior
 
     function it_builds_an_action_group_with_actions(
         ActionInterface $firstAction,
-        ActionInterface $secondAction
+        ActionInterface $secondAction,
     ): void {
         $firstAction->getName()->willReturn('first');
         $firstAction->toArray()->willReturn([]);

@@ -96,7 +96,7 @@ class GridView implements GridViewInterface
         Assert::true($this->definition->hasField($fieldName), sprintf('Field "%s" does not exist.', $fieldName));
         Assert::true(
             $this->definition->getField($fieldName)->isSortable(),
-            sprintf('Field "%s" is not sortable.', $fieldName)
+            sprintf('Field "%s" is not sortable.', $fieldName),
         );
     }
 }

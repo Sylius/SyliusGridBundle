@@ -42,7 +42,7 @@ final class SorterSpec extends ObjectBehavior
         DataSourceInterface $dataSource,
         ExpressionBuilderInterface $expressionBuilder,
         SortingParametersValidatorInterface $sortingValidator,
-        FieldValidatorInterface $fieldValidator
+        FieldValidatorInterface $fieldValidator,
     ): void {
         $parameters = new Parameters();
 
@@ -71,7 +71,7 @@ final class SorterSpec extends ObjectBehavior
         DataSourceInterface $dataSource,
         ExpressionBuilderInterface $expressionBuilder,
         SortingParametersValidatorInterface $sortingValidator,
-        FieldValidatorInterface $fieldValidator
+        FieldValidatorInterface $fieldValidator,
     ): void {
         $parameters = new Parameters(['sorting' => ['name' => 'asc']]);
 

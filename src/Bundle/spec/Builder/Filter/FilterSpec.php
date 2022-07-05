@@ -117,7 +117,8 @@ final class FilterSpec extends ObjectBehavior
     {
         $this
             ->addFormOption('class', Author::class)
-            ->addFormOption('multiple', true);
+            ->addFormOption('multiple', true)
+        ;
 
         $this->getFormOptions()->shouldReturn([
             'class' => Author::class,
@@ -130,7 +131,8 @@ final class FilterSpec extends ObjectBehavior
         $this
             ->addFormOption('class', Author::class)
             ->addFormOption('multiple', true)
-            ->removeFormOption('multiple');
+            ->removeFormOption('multiple')
+        ;
 
         $this->getFormOptions()->shouldReturn([
             'class' => Author::class,
