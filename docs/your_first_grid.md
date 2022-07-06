@@ -89,7 +89,7 @@ return static function (GridConfig $grid) {
                 ->setLabel('sylius.ui.name')
         )
         ->addField(
-            TwigField::create('enabled', 'SyliusUiBundle:Grid/Field:enabled.html.twig')
+            TwigField::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
                 ->setLabel('sylius.ui.enabled')
         )
     )
@@ -128,7 +128,7 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                     ->setLabel('sylius.ui.name')
             )
             ->addField(
-                TwigField::create('enabled', 'SyliusUiBundle:Grid/Field:enabled.html.twig')
+                TwigField::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
                     ->setLabel('sylius.ui.enabled')
             )
         ;    
