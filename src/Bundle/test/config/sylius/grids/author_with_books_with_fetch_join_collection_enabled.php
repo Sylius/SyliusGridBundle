@@ -18,6 +18,6 @@ return static function (GridConfig $grid) {
     $grid->addGrid(
         GridBuilder::create('app_author_with_books_with_fetch_join_collection_enabled')
         ->extends('app_author')
-        ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
+        ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create']),
     );
 };

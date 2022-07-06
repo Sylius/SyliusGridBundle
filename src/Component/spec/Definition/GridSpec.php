@@ -239,7 +239,7 @@ final class GridSpec extends ObjectBehavior
     function it_returns_only_enabled_actions_for_given_group(
         ActionGroup $actionGroup,
         Action $firstAction,
-        Action $secondAction
+        Action $secondAction,
     ): void {
         $firstAction->isEnabled()->willReturn(true);
         $secondAction->isEnabled()->willReturn(false);

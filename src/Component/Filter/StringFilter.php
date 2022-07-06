@@ -84,7 +84,7 @@ final class StringFilter implements FilterInterface
         ExpressionBuilderInterface $expressionBuilder,
         string $type,
         string $field,
-        $value
+        $value,
     ) {
         switch ($type) {
             case self::TYPE_EQUAL:

@@ -28,7 +28,7 @@ final class BooleanFilterSpec extends ObjectBehavior
 
     function it_filters_true_boolean_values(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -40,7 +40,7 @@ final class BooleanFilterSpec extends ObjectBehavior
 
     function it_filters_false_boolean_values(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 

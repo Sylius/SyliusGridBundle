@@ -29,7 +29,7 @@ final class FieldValidatorSpec extends ObjectBehavior
     function it_throws_exception_if_wrong_field_name_provided(
         Grid $grid,
         Field $field,
-        Field $anotherField
+        Field $anotherField,
     ): void {
         $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
         $grid->getSorting()->willReturn(['sorting' => ['non_sortable_field' => 'desc']]);
@@ -43,7 +43,7 @@ final class FieldValidatorSpec extends ObjectBehavior
     function it_passes_if_valid_sorting_parameter_provided(
         Grid $grid,
         Field $field,
-        Field $anotherField
+        Field $anotherField,
     ): void {
         $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
         $grid->getSorting()->willReturn(['sorting' => ['sortable_field' => 'desc']]);

@@ -32,7 +32,7 @@ final class ArrayGridProvider implements GridProviderInterface
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         array $gridConfigurations,
-        ?GridConfigurationExtenderInterface $gridConfigurationExtender = null
+        ?GridConfigurationExtenderInterface $gridConfigurationExtender = null,
     ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;

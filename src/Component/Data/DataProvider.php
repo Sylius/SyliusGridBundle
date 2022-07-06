@@ -29,7 +29,7 @@ final class DataProvider implements DataProviderInterface
     public function __construct(
         DataSourceProviderInterface $dataSourceProvider,
         FiltersApplicatorInterface $filtersApplicator,
-        SorterInterface $sorter
+        SorterInterface $sorter,
     ) {
         $this->dataSourceProvider = $dataSourceProvider;
         $this->filtersApplicator = $filtersApplicator;

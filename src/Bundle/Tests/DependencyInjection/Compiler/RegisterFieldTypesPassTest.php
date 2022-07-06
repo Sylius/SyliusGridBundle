@@ -47,7 +47,7 @@ final class RegisterFieldTypesPassTest extends AbstractCompilerPassTestCase
                 [
                     $tag['type'],
                     new Reference($fieldServiceId),
-                ]
+                ],
             );
         }
     }

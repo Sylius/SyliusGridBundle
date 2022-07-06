@@ -33,7 +33,7 @@ final class SortingTest extends JsonApiTestCase
 
         self::assertStringContainsString(
             'Cannot select distinct identifiers from query with LIMIT and ORDER BY on a column from a fetch joined to-many association. Use output walkers.',
-            $this->client->getResponse()->getContent()
+            $this->client->getResponse()->getContent(),
         );
     }
 

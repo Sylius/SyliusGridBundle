@@ -35,7 +35,7 @@ final class DataSourceSpec extends ObjectBehavior
 {
     function it_implements_data_source(
         QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
@@ -48,7 +48,7 @@ final class DataSourceSpec extends ObjectBehavior
         Comparison $comparison,
         Value $value,
         ConstraintOrx $constraint,
-        ConstraintComparison $comparisonConstraint
+        ConstraintComparison $comparisonConstraint,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
@@ -69,18 +69,18 @@ final class DataSourceSpec extends ObjectBehavior
     function it_should_throw_an_exception_if_an_unknown_condition_is_passed(
         QueryBuilder $queryBuilder,
         ExpressionBuilderInterface $expressionBuilder,
-        Comparison $comparison
+        Comparison $comparison,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
         $this->shouldThrow(
-            new \RuntimeException('Unknown restrict condition "foo"')
+            new \RuntimeException('Unknown restrict condition "foo"'),
         )->during('restrict', [$comparison, 'foo']);
     }
 
     function it_should_return_the_expression_builder(
         QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
@@ -90,7 +90,7 @@ final class DataSourceSpec extends ObjectBehavior
     function it_should_get_the_data(
         QueryBuilder $queryBuilder,
         ExpressionBuilderInterface $expressionBuilder,
-        Query $query
+        Query $query,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
@@ -114,7 +114,7 @@ final class DataSourceSpec extends ObjectBehavior
         ExpressionBuilderInterface $expressionBuilder,
         Query $query,
         OrderBy $orderBy,
-        Ordering $ordering
+        Ordering $ordering,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 
@@ -141,7 +141,7 @@ final class DataSourceSpec extends ObjectBehavior
         ExpressionBuilderInterface $expressionBuilder,
         Query $query,
         OrderBy $orderBy,
-        Ordering $ordering
+        Ordering $ordering,
     ): void {
         $this->beConstructedWith($queryBuilder, $expressionBuilder);
 

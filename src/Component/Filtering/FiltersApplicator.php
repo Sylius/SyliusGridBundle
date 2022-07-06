@@ -26,7 +26,7 @@ final class FiltersApplicator implements FiltersApplicatorInterface
 
     public function __construct(
         ServiceRegistryInterface $filtersRegistry,
-        FiltersCriteriaResolverInterface $criteriaResolver
+        FiltersCriteriaResolverInterface $criteriaResolver,
     ) {
         $this->filtersRegistry = $filtersRegistry;
         $this->criteriaResolver = $criteriaResolver;

@@ -43,7 +43,7 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                 ->setFormOptions([
                     'class' => Author::class,
                     'multiple' => true,
-                ])
+                ]),
             )
             ->addFilter(
                 Filter::create('nationality', 'entity')
@@ -52,13 +52,13 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                 ])
                 ->setFormOptions([
                     'class' => Nationality::class,
-                ])
+                ]),
             )
             ->addFilter(
                 Filter::create('currencyCode', 'string')
                 ->setOptions([
                     'fields' => ['price.currencyCode'],
-                ])
+                ]),
             )
             ->addFilter(
                 Filter::create('state', 'select')
@@ -69,25 +69,25 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                         'published' => 'published',
                         'unpublished' => 'unpublished',
                     ],
-                ])
+                ]),
             )
             ->orderBy('title', 'asc')
             ->addField(
                 StringField::create('title')
                     ->setLabel('Title')
-                    ->setSortable(true)
+                    ->setSortable(true),
             )
             ->addField(
                 StringField::create('author')
                     ->setLabel('Author')
                     ->setPath('author.name')
-                    ->setSortable(true, 'author.name')
+                    ->setSortable(true, 'author.name'),
             )
             ->addField(
                 StringField::create('nationality')
                     ->setLabel('Nationality')
                     ->setPath('author.nationality.name')
-                    ->setSortable(true, 'author.nationality.name')
+                    ->setSortable(true, 'author.nationality.name'),
             )
             ->setLimits([10, 5, 15])
         ;

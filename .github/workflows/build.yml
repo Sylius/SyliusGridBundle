@@ -65,8 +65,8 @@ jobs:
             -
                 name: Install dependencies
                 run: |
-                    composer update ${{ matrix.php == '8.0' && '--ignore-platform-req=php' || '' }} --no-scripts
-                    (cd src/Component && composer update ${{ matrix.php == '8.0' && '--ignore-platform-req=php' || '' }} --no-scripts)
+                    composer update --no-scripts
+                    (cd src/Component && composer update --no-scripts)
 
             -
                 name: Prepare test application

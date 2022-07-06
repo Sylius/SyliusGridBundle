@@ -34,7 +34,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
         Environment $twig,
         ServiceRegistryInterface $fieldsRegistry,
         FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $formTypeRegistry
+        FormTypeRegistryInterface $formTypeRegistry,
     ): void {
         $actionTemplates = [
             'link' => '@SyliusGrid/Action/_link.html.twig',
@@ -51,7 +51,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
             $formTypeRegistry,
             '"@SyliusGrid/default"',
             $actionTemplates,
-            $filterTemplates
+            $filterTemplates,
         );
     }
 
@@ -93,7 +93,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
         GridViewInterface $gridView,
         Field $field,
         ServiceRegistryInterface $fieldsRegistry,
-        FieldTypeInterface $fieldType
+        FieldTypeInterface $fieldType,
     ): void {
         $field->getType()->willReturn('string');
         $fieldsRegistry->get('string')->willReturn($fieldType);
@@ -113,7 +113,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_template_is_not_configured_for_given_action_type(
         GridViewInterface $gridView,
-        Action $action
+        Action $action,
     ): void {
         $action->getType()->willReturn('foo');
 

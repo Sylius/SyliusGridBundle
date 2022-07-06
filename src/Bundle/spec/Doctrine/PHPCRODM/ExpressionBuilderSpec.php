@@ -30,7 +30,7 @@ final class ExpressionBuilderSpec extends ObjectBehavior
 
     function it_builds_andx(
         Comparison $comparison,
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->andX([$comparison]);
         $expressionBuilder->andX([$comparison])->shouldHaveBeenCalled();
@@ -38,56 +38,56 @@ final class ExpressionBuilderSpec extends ObjectBehavior
 
     function it_builds_orx(
         Comparison $comparison,
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->orX([$comparison]);
         $expressionBuilder->orX([$comparison])->shouldHaveBeenCalled();
     }
 
     function it_builds_equals(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->equals('o.foo', 'value');
         $expressionBuilder->eq('o.foo', 'value')->shouldHaveBeenCalled();
     }
 
     function it_builds_not_equals(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->notEquals('o.foo', 'value');
         $expressionBuilder->neq('o.foo', 'value')->shouldHaveBeenCalled();
     }
 
     function it_builds_less_than_or_equal(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->lessThanOrEqual('o.foo', 'value');
         $expressionBuilder->lte('o.foo', 'value')->shouldHaveBeenCalled();
     }
 
     function it_builds_greater_than(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->greaterThan('o.foo', 'value');
         $expressionBuilder->gt('o.foo', 'value')->shouldHaveBeenCalled();
     }
 
     function it_builds_greater_than_or_equal(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->greaterThanOrequal('o.foo', 'value');
         $expressionBuilder->gte('o.foo', 'value')->shouldHaveBeenCalled();
     }
 
     function it_builds_in(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->in('o.foo', ['value']);
         $expressionBuilder->in('o.foo', ['value'])->shouldHaveBeenCalled();
     }
 
     function it_builds_not_in(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->notIn('o.foo', ['value']);
         $expressionBuilder->notIn('o.foo', ['value'])->shouldHaveBeenCalled();
@@ -108,7 +108,7 @@ final class ExpressionBuilderSpec extends ObjectBehavior
     }
 
     function it_builds_like(
-        CollectionsExpressionBuilder $expressionBuilder
+        CollectionsExpressionBuilder $expressionBuilder,
     ): void {
         $this->like('o.foo', 'value');
         $expressionBuilder->contains('o.foo', 'value')->shouldHaveBeenCalled();

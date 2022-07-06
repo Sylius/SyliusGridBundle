@@ -23,7 +23,7 @@ return static function (GridConfig $grid) {
         ->setDriverOption('pagination', ['use_output_walkers' => false])
         ->addField(
             StringField::create('book')
-            ->setSortable(true, 'book.title')
-        )
+            ->setSortable(true, 'book.title'),
+        ),
     );
 };

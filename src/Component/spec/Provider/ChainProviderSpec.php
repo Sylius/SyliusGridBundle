@@ -37,7 +37,7 @@ class ChainProviderSpec extends ObjectBehavior
     function it_get_grids_from_its_providers(
         GridProviderInterface $firstGridProvider,
         GridProviderInterface $secondGridProvider,
-        Grid $gridDefinition
+        Grid $gridDefinition,
     ): void {
         $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
         $secondGridProvider->get('app_book')->willReturn($gridDefinition);
@@ -47,7 +47,7 @@ class ChainProviderSpec extends ObjectBehavior
 
     function it_throws_an_undefined_grid_exception_when_its_providers_do_not_contains_definition(
         GridProviderInterface $firstGridProvider,
-        GridProviderInterface $secondGridProvider
+        GridProviderInterface $secondGridProvider,
     ): void {
         $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
         $secondGridProvider->get('app_book')->willThrow(UndefinedGridException::class);

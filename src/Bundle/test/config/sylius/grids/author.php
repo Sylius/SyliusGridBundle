@@ -24,19 +24,19 @@ return static function (GridConfig $grid) {
         ->addField(
             StringField::create('id')
             ->setSortable(true)
-            ->setEnabled(false)
+            ->setEnabled(false),
         )
         ->addField(
             StringField::create('name')
             ->setLabel('Name')
-            ->setSortable(true)
+            ->setSortable(true),
         )
         ->addField(
             StringField::create('nationality')
             ->setLabel('Name')
             ->setPath('nationality.name')
-            ->setSortable(true, 'nationality.name')
+            ->setSortable(true, 'nationality.name'),
         )
-        ->setLimits([10, 5, 15])
+        ->setLimits([10, 5, 15]),
     );
 };

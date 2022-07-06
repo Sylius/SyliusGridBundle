@@ -92,7 +92,7 @@ final class GridApiTest extends JsonApiTestCase
     {
         $this->client->request('GET', sprintf(
             '/books/?criteria[title][type]=equal&criteria[title][value]=%s',
-            urlencode('Book 5')
+            urlencode('Book 5'),
         ));
 
         $this->assertCount(1, $this->getItemsFromCurrentResponse());
@@ -104,7 +104,7 @@ final class GridApiTest extends JsonApiTestCase
     {
         $this->client->request('GET', sprintf(
             '/books/?criteria[title][type]=contains&criteria[title][value]=%s',
-            urlencode('jurassic')
+            urlencode('jurassic'),
         ));
 
         $this->assertCount(1, $this->getItemsFromCurrentResponse());

@@ -37,13 +37,13 @@ final class MoneyFilterSpec extends ObjectBehavior
             $dataSource,
             'total',
             [],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function it_filters_by_total_alone_in_all_currencies_when_none_has_been_given(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -63,7 +63,7 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'lessThan' => '',
                 'currency' => '',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
 
         $this->apply(
@@ -73,13 +73,13 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'greaterThan' => '12.00',
                 'lessThan' => '',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function it_filters_by_given_currency(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -92,7 +92,7 @@ final class MoneyFilterSpec extends ObjectBehavior
             [
                 'currency' => 'GBP',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
 
         $this->apply(
@@ -103,13 +103,13 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'lessThan' => '',
                 'currency' => 'GBP',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function it_filters_money_greater_than(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -127,13 +127,13 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'lessThan' => '',
                 'currency' => 'GBP',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function it_filters_money_less_than(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -151,13 +151,13 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'lessThan' => '120.00',
                 'currency' => 'GBP',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function it_filters_money_in_specified_range(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -178,13 +178,13 @@ final class MoneyFilterSpec extends ObjectBehavior
                 'lessThan' => '120.00',
                 'currency' => 'GBP',
             ],
-            ['currency_field' => 'currencyCode']
+            ['currency_field' => 'currencyCode'],
         );
     }
 
     function its_amount_scale_can_be_configured(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -208,7 +208,7 @@ final class MoneyFilterSpec extends ObjectBehavior
             [
                 'currency_field' => 'currencyCode',
                 'scale' => 5,
-            ]
+            ],
         );
     }
 }

@@ -34,7 +34,7 @@ final class TwigBulkActionGridRendererSpec extends ObjectBehavior
     function it_uses_twig_to_render_the_bulk_action(
         Environment $twig,
         GridViewInterface $gridView,
-        Action $bulkAction
+        Action $bulkAction,
     ): void {
         $bulkAction->getType()->willReturn('delete');
         $bulkAction->getOptions()->willReturn([]);
@@ -53,7 +53,7 @@ final class TwigBulkActionGridRendererSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_template_is_not_configured_for_given_bulk_action_type(
         GridViewInterface $gridView,
-        Action $bulkAction
+        Action $bulkAction,
     ): void {
         $bulkAction->getType()->willReturn('foo');
 
