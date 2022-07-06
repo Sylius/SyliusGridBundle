@@ -43,28 +43,28 @@ return static function (GridConfig $grid) {
                     'initial' => 'initial',
                     'published' => 'published',
                     'unpublished' => 'unpublished',
-                ]
+                ],
             )
-            ->addFormOption('multiple', true)
+            ->addFormOption('multiple', true),
         )
         ->orderBy('title', 'asc')
         ->addField(
             StringField::create('title')
                 ->setLabel('Title')
-                ->setSortable(true)
+                ->setSortable(true),
         )
         ->addField(
             StringField::create('author')
                 ->setLabel('Author')
                 ->setPath('author.name')
-                ->setSortable(true, 'author.name')
+                ->setSortable(true, 'author.name'),
         )
         ->addField(
             StringField::create('nationality')
                 ->setLabel('Nationality')
                 ->setPath('author.nationality.name')
-                ->setSortable(true, 'author.nationality.name')
+                ->setSortable(true, 'author.nationality.name'),
         )
-        ->setLimits([10, 5, 15])
+        ->setLimits([10, 5, 15]),
     );
 };

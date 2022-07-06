@@ -32,7 +32,7 @@ final class BulkActionGridExtension extends AbstractExtension
             new TwigFunction(
                 'sylius_grid_render_bulk_action',
                 [$this->bulkActionGridHelper, 'renderBulkAction'],
-                ['is_safe' => ['html']]
+                ['is_safe' => ['html']],
             ),
         ];
     }

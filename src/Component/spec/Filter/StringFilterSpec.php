@@ -28,7 +28,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_with_like_by_default(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -40,7 +40,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_equal_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -52,7 +52,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_not_equal_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -64,7 +64,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_empty_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -76,7 +76,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_not_empty_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -88,7 +88,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_a_string(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -100,7 +100,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_not_containing_a_string(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -112,7 +112,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_starting_with_a_string(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -124,7 +124,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_ending_with_a_string(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -136,7 +136,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_one_of_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -148,7 +148,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_none_of_strings(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -160,7 +160,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_in_multiple_fields(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -175,7 +175,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_translation_fields(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -188,7 +188,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_throws_an_exception_if_type_is_unknown(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -202,7 +202,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_ignores_filter_if_its_value_is_empty_and_the_filter_depends_on_it(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -218,7 +218,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_does_not_ignore_filter_if_its_value_is_zero(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -230,7 +230,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_uses_scalar_data_as_value(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -242,7 +242,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_uses_type_from_options_if_set(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 

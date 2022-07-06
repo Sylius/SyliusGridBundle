@@ -43,7 +43,7 @@ final class SyliusGridExtension extends Extension
             if ($enabledDriver === SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM) {
                 @trigger_error(sprintf(
                     'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
-                    SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM
+                    SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM,
                 ), \E_USER_DEPRECATED);
             }
 

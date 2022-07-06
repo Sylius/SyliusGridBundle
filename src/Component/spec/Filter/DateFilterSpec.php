@@ -27,7 +27,7 @@ final class DateFilterSpec extends ObjectBehavior
 
     function it_filters_date_from(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -43,13 +43,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '08:00',
                 ],
             ],
-            []
+            [],
         );
     }
 
     function it_filters_date_from_not_inclusive(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -69,13 +69,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '',
                 ],
             ],
-            ['inclusive_from' => false]
+            ['inclusive_from' => false],
         );
     }
 
     function it_filters_date_from_with_default_time(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -95,13 +95,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '',
                 ],
             ],
-            []
+            [],
         );
     }
 
     function it_filters_date_to(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -117,13 +117,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '08:00',
                 ],
             ],
-            []
+            [],
         );
     }
 
     function it_filters_date_to_inclusive(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -143,13 +143,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '08:00',
                 ],
             ],
-            ['inclusive_to' => true]
+            ['inclusive_to' => true],
         );
     }
 
     function it_filters_date_to_with_default_time(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -165,13 +165,13 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '',
                 ],
             ],
-            []
+            [],
         );
     }
 
     function it_filters_date_from_to(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder
+        ExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
@@ -194,7 +194,7 @@ final class DateFilterSpec extends ObjectBehavior
                     'time' => '08:00',
                 ],
             ],
-            []
+            [],
         );
     }
 }

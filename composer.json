@@ -99,6 +99,12 @@
             "App\\Tests\\Tmp\\": "src/Bundle/test/tmp"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "symfony/flex": true,
+            "dealerdirect/phpcodesniffer-composer-installer": false
+        }
+    },
     "scripts": {
         "analyse": [
             "@composer validate --strict",

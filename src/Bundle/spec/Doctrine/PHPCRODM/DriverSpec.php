@@ -40,13 +40,14 @@ final class DriverSpec extends ObjectBehavior
     {
         $this
             ->shouldThrow(\InvalidArgumentException::class)
-            ->during('getDataSource', [[], new Parameters()]);
+            ->during('getDataSource', [[], new Parameters()])
+        ;
     }
 
     function it_creates_data_source_via_doctrine_phpcrodm_query_builder(
         DocumentManagerInterface $documentManager,
         DocumentRepository $documentRepository,
-        QueryBuilder $queryBuilder
+        QueryBuilder $queryBuilder,
     ): void {
         $documentManager->getRepository('App:Book')->willReturn($documentRepository);
         $documentRepository->createQueryBuilder('o')->willReturn($queryBuilder);

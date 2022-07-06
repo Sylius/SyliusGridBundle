@@ -32,7 +32,7 @@ class GridRegistrySpec extends ObjectBehavior
 
     function it_returns_grids_from_its_code(
         ServiceLocator $serviceLocator,
-        GridInterface $bookGrid
+        GridInterface $bookGrid,
     ): void {
         $serviceLocator->has('app_book')->willReturn(true);
         $serviceLocator->get('app_book')->willReturn($bookGrid);

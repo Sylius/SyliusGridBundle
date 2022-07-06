@@ -49,7 +49,7 @@ final class GridViewSpec extends ObjectBehavior
     function it_uses_the_default_sorting_from_definition_if_not_provided_in_parameters(
         Grid $gridDefinition,
         Field $codeField,
-        Field $nameField
+        Field $nameField,
     ): void {
         $gridDefinition->hasField('foo')->willReturn(true);
 
@@ -104,7 +104,7 @@ final class GridViewSpec extends ObjectBehavior
 
     function it_throws_exception_when_trying_to_sort_by_a_non_sortable_field(
         Grid $gridDefinition,
-        Field $nameField
+        Field $nameField,
     ): void {
         $gridDefinition->hasField('code')->willReturn(true);
 

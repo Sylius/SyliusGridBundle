@@ -48,7 +48,7 @@ final class DataSource implements DataSourceInterface
             default:
                 throw new \RuntimeException(sprintf(
                     'Unknown restrict condition "%s"',
-                    $condition
+                    $condition,
                 ));
         }
 

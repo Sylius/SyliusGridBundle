@@ -42,7 +42,7 @@ final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAw
                 Filter::create('author', 'entity')
                 ->setFormOptions([
                     'class' => Nationality::class,
-                ])
+                ]),
             )
             ->addFilter(
                 Filter::create('nationality', 'entity')
@@ -51,25 +51,25 @@ final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAw
                 ])
                 ->setFormOptions([
                     'class' => Nationality::class,
-                ])
+                ]),
             )
             ->orderBy('title', 'asc')
             ->addField(
                 StringField::create('title')
                 ->setLabel('Title')
-                ->setSortable(true)
+                ->setSortable(true),
             )
             ->addField(
                 StringField::create('author')
                 ->setLabel('Author')
                 ->setPath('author.name')
-                ->setSortable(true, 'author.name')
+                ->setSortable(true, 'author.name'),
             )
             ->addField(
                 StringField::create('nationality')
                 ->setLabel('Nationality')
                 ->setPath('na.name')
-                ->setSortable(true, 'na.name')
+                ->setSortable(true, 'na.name'),
             )
             ->setLimits([10, 5, 15])
         ;

@@ -39,7 +39,7 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
         $this->registerService($filterRegistryServiceId = 'sylius.registry.grid_filter', ServiceRegistry::class);
         $this->registerService(
             $filterFormTypeRegistryServiceId = 'sylius.form_registry.grid_filter',
-            ServiceRegistry::class
+            ServiceRegistry::class,
         );
 
         $this->compile();
@@ -52,7 +52,7 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
                 [
                     $tag['type'],
                     new Reference($filterServiceId),
-                ]
+                ],
             );
 
             // Form Type
@@ -63,7 +63,7 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
                     $tag['type'],
                     'default',
                     $tag['form_type'],
-                ]
+                ],
             );
         }
     }

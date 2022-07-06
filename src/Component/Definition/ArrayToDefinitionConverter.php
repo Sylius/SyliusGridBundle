@@ -32,7 +32,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $grid = Grid::fromCodeAndDriverConfiguration(
             $code,
             $configuration['driver']['name'],
-            $configuration['driver']['options']
+            $configuration['driver']['options'],
         );
 
         if (array_key_exists('sorting', $configuration)) {

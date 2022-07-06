@@ -22,7 +22,7 @@ return static function (GridConfig $grid) {
         ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
         ->addField(
             StringField::create('book')
-            ->setSortable(true, 'book.title')
-        )
+            ->setSortable(true, 'book.title'),
+        ),
     );
 };

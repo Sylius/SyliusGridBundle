@@ -31,7 +31,7 @@ final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
             function (Filter $filter) {
                 return $filter->getCriteria();
             },
-            $this->getFiltersDefaultCriteria($grid->getFilters())
+            $this->getFiltersDefaultCriteria($grid->getFilters()),
         );
 
         return $parameters->get('criteria', $defaultCriteria);

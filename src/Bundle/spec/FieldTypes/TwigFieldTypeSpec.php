@@ -34,7 +34,7 @@ final class TwigFieldTypeSpec extends ObjectBehavior
     function it_uses_data_extractor_to_obtain_data_and_renders_it_via_twig(
         DataExtractorInterface $dataExtractor,
         Environment $twig,
-        Field $field
+        Field $field,
     ): void {
         $field->getPath()->willReturn('foo');
 
@@ -48,7 +48,7 @@ final class TwigFieldTypeSpec extends ObjectBehavior
 
     function it_uses_data_directly_if_dot_is_configured_as_path(
         Environment $twig,
-        Field $field
+        Field $field,
     ): void {
         $field->getPath()->willReturn('.');
         $twig->render('foo.html.twig', ['data' => 'bar', 'options' => ['template' => 'foo.html.twig']])->willReturn('<html>Bar</html>');

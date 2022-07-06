@@ -131,7 +131,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
         return $this->queryBuilder->expr()->like(
             (string) $this->queryBuilder->expr()->lower($this->resolveFieldByAddingJoins($field)),
-            $this->queryBuilder->expr()->literal(strtolower($pattern))
+            $this->queryBuilder->expr()->literal(strtolower($pattern)),
         );
     }
 
@@ -141,7 +141,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
 
         return $this->queryBuilder->expr()->notLike(
             (string) $this->queryBuilder->expr()->lower($this->resolveFieldByAddingJoins($field)),
-            $this->queryBuilder->expr()->literal(strtolower($pattern))
+            $this->queryBuilder->expr()->literal(strtolower($pattern)),
         );
     }
 
@@ -199,7 +199,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
             }
 
             $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata(
-                $metadata->getAssociationMapping($associationField)['targetEntity']
+                $metadata->getAssociationMapping($associationField)['targetEntity'],
             );
             $rootAndAssociationField = sprintf('%s.%s', $rootField, $associationField);
 
@@ -218,7 +218,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
             $associationAlias = str_replace(
                 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'],
                 ['g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'],
-                md5($rootAndAssociationField)
+                md5($rootAndAssociationField),
             );
 
             $this->queryBuilder->innerJoin($rootAndAssociationField, $associationAlias);

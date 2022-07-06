@@ -35,20 +35,20 @@ return static function (GridConfig $grid) {
         ->addField(
             StringField::create('title')
             ->setLabel('Title')
-            ->setSortable(true)
+            ->setSortable(true),
         )
         ->addField(
             StringField::create('author')
             ->setLabel('Author')
             ->setPath('author.name')
-            ->setSortable(true, 'author.name')
+            ->setSortable(true, 'author.name'),
         )
         ->addField(
             StringField::create('nationality')
             ->setLabel('Nationality')
             ->setPath('na.name')
-            ->setSortable(true, 'na.name')
+            ->setSortable(true, 'na.name'),
         )
-        ->setLimits([10, 5, 15])
+        ->setLimits([10, 5, 15]),
     );
 };
