@@ -82,6 +82,7 @@
 
         <UndefinedClass>
             <errorLevel type="suppress">
+                <file name="src/Bundle/DependencyInjection/Compiler/RegisterStubCommandsPass.php" />
                 <referencedClass name="Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass" />
                 <referencedClass name="Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass" />
                 <referencedClass name="Sylius\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType" />
