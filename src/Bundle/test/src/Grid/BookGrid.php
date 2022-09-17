@@ -16,6 +16,12 @@ namespace App\Grid;
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Nationality;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
@@ -88,6 +94,27 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                     ->setLabel('Nationality')
                     ->setPath('author.nationality.name')
                     ->setSortable(true, 'author.nationality.name'),
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    ShowAction::create([
+                        'link' => [
+                            'route' => 'app_admin_book_show',
+                        ],
+                    ]),
+                ),
+            )
+            ->addActionGroup(
+                MainActionGroup::create(
+                    CreateAction::create(),
+                ),
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    ShowAction::create(),
+                    UpdateAction::create(),
+                    DeleteAction::create(),
+                ),
             )
             ->setLimits([10, 5, 15])
         ;

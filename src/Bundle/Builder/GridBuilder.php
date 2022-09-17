@@ -43,6 +43,8 @@ final class GridBuilder implements GridBuilderInterface
 
     private ?string $extends = null;
 
+    private array $removals = [];
+
     private function __construct(string $name, ?string $resourceClass = null)
     {
         $this->name = $name;
@@ -98,6 +100,7 @@ final class GridBuilder implements GridBuilderInterface
     public function removeField(string $name): GridBuilderInterface
     {
         unset($this->fields[$name]);
+        $this->removals['fields'][] = $name;
 
         return $this;
     }
@@ -126,6 +129,7 @@ final class GridBuilder implements GridBuilderInterface
     public function removeFilter(string $name): GridBuilderInterface
     {
         unset($this->filters[$name]);
+        $this->removals['filters'][] = $name;
 
         return $this;
     }
@@ -144,6 +148,7 @@ final class GridBuilder implements GridBuilderInterface
     public function removeActionGroup(string $name): self
     {
         unset($this->actionGroups[$name]);
+        $this->removals['actions'][] = $name;
 
         return $this;
     }
@@ -159,7 +164,12 @@ final class GridBuilder implements GridBuilderInterface
 
     public function removeAction(string $name, string $group): self
     {
-        $this->actionGroups[$group]->removeAction($name);
+        $actionGroup = $this->actionGroups[$group] ?? null;
+        if ($actionGroup !== null) {
+            $actionGroup->removeAction($name);
+        }
+
+        $this->removals['actions'][$group][] = $name;
 
         return $this;
     }
@@ -183,10 +193,13 @@ final class GridBuilder implements GridBuilderInterface
      */
     public function toArray(): array
     {
-        $output = ['driver' => [
+        $output = [
+            'driver' => [
             'name' => $this->driver,
             'options' => $this->driverConfiguration,
-        ]];
+            ],
+            'removals' => $this->removals,
+        ];
 
         if (count($this->fields) > 0) {
             $output['fields'] = array_map(function (FieldInterface $field) { return $field->toArray(); }, $this->fields);

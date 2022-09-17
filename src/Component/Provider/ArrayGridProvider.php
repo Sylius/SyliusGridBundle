@@ -15,6 +15,7 @@ namespace Sylius\Component\Grid\Provider;
 
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -26,6 +27,8 @@ final class ArrayGridProvider implements GridProviderInterface
 
     private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
+    private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
+
     /** @var array[] */
     private array $gridConfigurations;
 
@@ -33,10 +36,12 @@ final class ArrayGridProvider implements GridProviderInterface
         ArrayToDefinitionConverterInterface $converter,
         array $gridConfigurations,
         ?GridConfigurationExtenderInterface $gridConfigurationExtender = null,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
     ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;
         $this->gridConfigurationExtender = $gridConfigurationExtender ?? new GridConfigurationExtender();
+        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler;
     }
 
     public function get(string $code): Grid
@@ -54,6 +59,8 @@ final class ArrayGridProvider implements GridProviderInterface
             Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $gridConfiguration['extends']));
             $gridConfiguration = $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
         }
+
+        $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
 
         return $this->converter->convert($code, $gridConfiguration);
     }
