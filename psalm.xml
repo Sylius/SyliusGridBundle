@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <psalm
-    totallyTyped="false"
+    errorLevel="2"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
@@ -82,6 +82,7 @@
 
         <UndefinedClass>
             <errorLevel type="suppress">
+                <file name="src/Bundle/DependencyInjection/Compiler/RegisterStubCommandsPass.php" />
                 <referencedClass name="Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass" />
                 <referencedClass name="Doctrine\Bundle\PHPCRBundle\DependencyInjection\Compiler\DoctrinePhpcrMappingsPass" />
                 <referencedClass name="Sylius\Bundle\CurrencyBundle\Form\Type\CurrencyChoiceType" />
