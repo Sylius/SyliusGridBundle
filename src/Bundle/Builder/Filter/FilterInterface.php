@@ -19,9 +19,9 @@ interface FilterInterface
 
     public function getName(): string;
 
-    public function getLabel(): ?string;
+    public function getLabel(): string|bool|null;
 
-    public function setLabel(?string $label): self;
+    public function setLabel(string|bool|null $label): self;
 
     public function isEnabled(): bool;
 

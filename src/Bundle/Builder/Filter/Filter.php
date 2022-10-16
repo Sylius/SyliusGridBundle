@@ -19,7 +19,7 @@ final class Filter implements FilterInterface
 
     private string $type;
 
-    private ?string $label = null;
+    private string|bool|null $label = null;
 
     private ?bool $enabled = null;
 
@@ -47,12 +47,12 @@ final class Filter implements FilterInterface
         return $this->name;
     }
 
-    public function getLabel(): ?string
+    public function getLabel(): string|bool|null
     {
         return $this->label;
     }
 
-    public function setLabel(?string $label): FilterInterface
+    public function setLabel(string|bool|null $label): FilterInterface
     {
         $this->label = $label;
 

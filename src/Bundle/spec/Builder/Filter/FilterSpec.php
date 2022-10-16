@@ -40,11 +40,25 @@ final class FilterSpec extends ObjectBehavior
         $this->getLabel()->shouldReturn(null);
     }
 
-    function it_sets_label(): void
+    function it_sets_string_label(): void
     {
         $this->setLabel('Search');
 
         $this->getLabel()->shouldReturn('Search');
+    }
+
+    function it_sets_boolean_label(): void
+    {
+        $this->setLabel(false);
+
+        $this->getLabel()->shouldReturn(false);
+    }
+
+    function it_sets_null_label(): void
+    {
+        $this->setLabel(null);
+
+        $this->getLabel()->shouldReturn(null);
     }
 
     function it_is_enabled_by_default(): void
