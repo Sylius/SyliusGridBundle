@@ -145,7 +145,18 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
     public function it_builds_grid_with_filters(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
-            ->addFilter(Filter::create('search', 'string'))
+            ->addFilter(
+                Filter::create('search', 'string')
+                ->setLabel('Search'),
+            )
+            ->addFilter(
+                Filter::create('name', 'string')
+                ->setLabel(false),
+            )
+            ->addFilter(
+                Filter::create('language', 'string')
+                ->setLabel(null),
+            )
         ;
 
         $this->load([
@@ -167,6 +178,22 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 'fields' => [],
                 'filters' => [
                     'search' => [
+                        'type' => 'string',
+                        'label' => 'Search',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'name' => [
+                        'type' => 'string',
+                        'label' => false,
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'language' => [
                         'type' => 'string',
                         'enabled' => true,
                         'position' => 100,
