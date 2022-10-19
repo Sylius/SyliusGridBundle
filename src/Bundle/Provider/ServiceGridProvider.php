@@ -15,6 +15,7 @@ namespace Sylius\Bundle\GridBundle\Provider;
 
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
@@ -36,12 +37,12 @@ final class ServiceGridProvider implements GridProviderInterface
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationExtenderInterface $gridConfigurationExtender,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
         $this->gridConfigurationExtender = $gridConfigurationExtender;
-        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler;
+        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
     }
 
     public function get(string $code): Grid
