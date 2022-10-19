@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.12.0-BETA.1 (2022-10-19)
+
+#### Details
+
+- [#253](https://github.com/Sylius/SyliusGridBundle/issues/253) [Docs]: fix the correct enabled grid field template ([@Louzet](https://github.com/Louzet), [@lchrusciel](https://github.com/lchrusciel))
+- [#258](https://github.com/Sylius/SyliusGridBundle/issues/258) [Maintenance] Allow flex plugin during plugin installation ([@lchrusciel](https://github.com/lchrusciel))
+- [#262](https://github.com/Sylius/SyliusGridBundle/issues/262) Fix the build ([@loic425](https://github.com/loic425))
+- [#264](https://github.com/Sylius/SyliusGridBundle/issues/264) feat: Allow to remove fields, filters and action from extended grid ([@Florian-Merle](https://github.com/Florian-Merle), [@Zales0123](https://github.com/Zales0123))
+- [#266](https://github.com/Sylius/SyliusGridBundle/issues/266) Change filter label type ([@Florian-Merle](https://github.com/Florian-Merle))
+
 ## v1.12.0-ALPHA.1 (2022-05-16)
 
 #### Details
