@@ -1,0 +1,58 @@
+---------------------------------------------------------------------------
+
+by vvasiloi at 2022-09-18T12:09:27Z
+
+What's wrong with just disabling them?
+
+---------------------------------------------------------------------------
+
+by Florian-Merle at 2022-09-19T06:01:29Z
+
+@vvasiloi disabling things when configuring a grid with yaml is not that bad I guess. The thing is, when configuring a grid in php with the `GridBuilder`, the `removeField(...)` and the other methods are misleading because they just don't work for things from the extended grid.
+
+I mean, if we take a look at how Symfony form component works, we can remove forms from extended types with a dedicated method. IMO this should work in the same way and as I see it, disabling things is kind of a hack.
+
+---------------------------------------------------------------------------
+
+by loic425 at 2022-09-21T07:20:11Z
+
+That's really awesome. I think a PHPUnit test with an extended grid and a removed field is missing.
+
+---------------------------------------------------------------------------
+
+by loic425 at 2022-09-22T10:27:13Z
+
+@Florian-Merle Dors that work with no grid inheritance, just updating an existing grid configuration
+
+In a first file configuration
+
+```YAML
+sylius_admin_grid:
+    fields:
+        name:
+            type: string
+```
+In a second file configuration
+
+```YAML
+sylius_admin_grid:
+    fields:
+        removals:
+            fields: ['name']
+```
+
+---------------------------------------------------------------------------
+
+by Zales0123 at 2022-10-19T14:19:14Z
+
+I had also mixed feelings about it, but [this comment](https://github.com/Sylius/SyliusGridBundle/pull/264#issuecomment-1250600647) convinced me it's a good way to go. I believe we can deprecate the `disable` option (as it indeed does the same as removals, at least in yaml) and remove it in potential 2.0. But still, this feature seems valuable.
+
+One more thing, we do not have the documentation for that :dancer: So it's another thing that can be done in a separated PR 🖖
+
+Btw, I've allowed myself to fix the comment I left above, I will merge it when it's green 🚀
+
+---------------------------------------------------------------------------
+
+by Zales0123 at 2022-10-19T14:27:00Z
+
+Thanks, Florian! :1st_place_medal:
