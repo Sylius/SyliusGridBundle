@@ -18,6 +18,7 @@ use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -28,8 +29,14 @@ class ServiceGridProviderSpec extends ObjectBehavior
     function let(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
     ): void {
-        $this->beConstructedWith($converter, $gridRegistry, new GridConfigurationExtender());
+        $this->beConstructedWith(
+            $converter,
+            $gridRegistry,
+            new GridConfigurationExtender(),
+            $gridConfigurationRemovalsHandler,
+        );
     }
 
     function it_is_initializable(): void
@@ -44,6 +51,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
 
     function it_gets_grids_definitions_by_code(
         ArrayToDefinitionConverterInterface $converter,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
         GridRegistryInterface $gridRegistry,
         GridInterface $bookGrid,
         Grid $gridDefinition,
@@ -52,12 +60,14 @@ class ServiceGridProviderSpec extends ObjectBehavior
         $bookGrid->toArray()->willReturn([]);
 
         $converter->convert('app_book', [])->willReturn($gridDefinition);
+        $gridConfigurationRemovalsHandler->handle([])->willReturn([]);
 
         $this->get('app_book')->shouldReturn($gridDefinition);
     }
 
     function it_supports_grid_inheritance(
         ArrayToDefinitionConverterInterface $converter,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
         GridRegistryInterface $gridRegistry,
         GridInterface $fooGrid,
         GridInterface $fooFightersGrid,
@@ -72,6 +82,8 @@ class ServiceGridProviderSpec extends ObjectBehavior
 
         $converter->convert('app_foo', ['configuration_foo' => 'foo'])->willReturn($fooGridDefinition);
         $converter->convert('app_foo_fighters', ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn($fooFightersGridDefinition);
+
+        $gridConfigurationRemovalsHandler->handle(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters']);
 
         $this->get('app_foo_fighters')->shouldReturn($fooFightersGridDefinition);
     }
@@ -94,5 +106,37 @@ class ServiceGridProviderSpec extends ObjectBehavior
         $grid->toArray()->willReturn(['extends' => 'app_foo']);
 
         $this->shouldThrow(\InvalidArgumentException::class)->during('get', ['app_foo_fighters']);
+    }
+
+    function it_supports_grid_removals(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridInterface $fooGrid,
+        Grid $fooGridDefinition,
+    ): void {
+        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
+
+        $fooGrid->toArray()->willReturn([
+            'fields' => ['customer' => []],
+            'removals' => [
+                'fields' => ['customer'],
+            ],
+        ]);
+
+        $gridConfigurationRemovalsHandler->handle([
+            'fields' => ['customer' => []],
+            'removals' => [
+                'fields' => ['customer'],
+            ],
+        ])->willReturn([
+            'fields' => [],
+        ]);
+
+        $converter->convert('app_foo', [
+            'fields' => [],
+        ])->willReturn($fooGridDefinition);
+
+        $this->get('app_foo')->shouldReturn($fooGridDefinition);
     }
 }

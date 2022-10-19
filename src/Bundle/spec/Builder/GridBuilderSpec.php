@@ -98,6 +98,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->removeField('title');
 
         $this->toArray()->shouldNotHaveKey('fields');
+        $this->toArray()['removals']['fields']->shouldContain('title');
     }
 
     function it_sets_orders(): void
@@ -130,6 +131,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->removeFilter('search');
 
         $this->toArray()->shouldNotHaveKey('filters');
+        $this->toArray()['removals']['filters']->shouldContain('search');
     }
 
     function it_adds_actions_groups(ActionGroupInterface $actionGroup): void
@@ -152,6 +154,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->removeActionGroup('main');
 
         $this->toArray()['actions']->shouldNotHaveKey('main');
+        $this->toArray()['removals']['actions']->shouldContain('main');
     }
 
     function it_adds_create_actions(): void
@@ -244,6 +247,7 @@ final class GridBuilderSpec extends ObjectBehavior
         $this->removeAction('delete', 'item');
 
         $this->toArray()['actions']['item']->shouldNotHaveKey('delete');
+        $this->toArray()['removals']['actions']['item']->shouldContain('delete');
     }
 
     function it_can_build_extended_grids(): void

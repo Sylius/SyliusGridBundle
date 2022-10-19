@@ -15,6 +15,8 @@ namespace Sylius\Bundle\GridBundle\Provider;
 
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -29,14 +31,18 @@ final class ServiceGridProvider implements GridProviderInterface
 
     private GridConfigurationExtenderInterface $gridConfigurationExtender;
 
+    private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
+
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationExtenderInterface $gridConfigurationExtender,
+        ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
         $this->gridConfigurationExtender = $gridConfigurationExtender;
+        $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
     }
 
     public function get(string $code): Grid
@@ -52,6 +58,8 @@ final class ServiceGridProvider implements GridProviderInterface
         if (isset($gridConfiguration['extends'])) {
             $gridConfiguration = $this->extend($gridConfiguration, $gridConfiguration['extends']);
         }
+
+        $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
 
         return $this->converter->convert($code, $gridConfiguration);
     }

@@ -36,16 +36,21 @@
         <service id="sylius.grid.configuration_extender" class="Sylius\Component\Grid\Configuration\GridConfigurationExtender"/>
         <service id="Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface" alias="sylius.grid.configuration_extender" />
 
+        <service id="sylius.grid.configuration_removals_handler" class="Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler"/>
+        <service id="Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface" alias="sylius.grid.configuration_removals_handler" />
+
         <service id="sylius.grid.array_grid_provider" class="Sylius\Component\Grid\Provider\ArrayGridProvider">
             <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument>%sylius.grids_definitions%</argument>
             <argument type="service" id="sylius.grid.configuration_extender" />
+            <argument type="service" id="sylius.grid.configuration_removals_handler" />
             <tag name="sylius.grid_provider" key="array" priority="-200"/>
         </service>
         <service id="sylius.grid.service_grid_provider" class="Sylius\Bundle\GridBundle\Provider\ServiceGridProvider">
             <argument type="service" id="sylius.grid.array_to_definition_converter" />
             <argument type="service" id="sylius.grid.grid_registry" />
             <argument type="service" id="sylius.grid.configuration_extender" />
+            <argument type="service" id="sylius.grid.configuration_removals_handler" />
             <tag name="sylius.grid_provider" key="service" priority="-100"/>
         </service>
 
