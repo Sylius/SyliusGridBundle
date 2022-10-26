@@ -81,9 +81,9 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
                     ->setLabel('app.ui.email') // # each filed type can have a label, we suggest using translation keys instead of messages
                     ->setPath('contactDetails.email')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
         return User::class;
@@ -170,9 +170,9 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
                 DateTimeField::create('birthday', 'Y:m:d H:i:s') // this format is the default value, but you can modify it
                     ->setLabel('app.ui.birthday')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
         return User::class;
@@ -181,6 +181,20 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
 ```
 
 </details>
+
+### *Warning*
+
+You have to pass the `'format'` again if you want to call the `setOptions` function. Otherwise it will be unset:
+
+Example:
+
+```php
+$field->setOptions([
+    'format' => 'Y-m-d H:i:s',
+
+    // Your options here
+]);
+```
 
 Twig (*twig*)
 -------------
@@ -258,9 +272,9 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
                 TwigField::create('name', ':Grid/Column:_prettyName.html.twig')
                     ->setLabel('app.ui.name')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
         return User::class;
@@ -284,4 +298,17 @@ attributes of the object instance:
 ```twig
 <strong>{{ data.name }}</strong>
 <p>{{ data.description|markdown }}</p>
+```
+
+### *Warning*
+
+You have to pass the `'template'` option again if you want to call the `setOptions` function. Otherwise it will be unset:
+
+Example:
+```php
+$field->setOptions([
+    'template' => ':Grid/Column:_prettyName.html.twig',
+
+    // Your options here
+]);
 ```
