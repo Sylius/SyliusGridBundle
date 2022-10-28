@@ -29,7 +29,7 @@ final class Filter implements FilterInterface
 
     private array $formOptions = [];
 
-    private array $criteria = [];
+    private mixed $criteria = [];
 
     private function __construct(string $name, string $type)
     {
@@ -141,12 +141,12 @@ final class Filter implements FilterInterface
         return $this;
     }
 
-    public function getCriteria(): array
+    public function getCriteria(): mixed
     {
         return $this->criteria;
     }
 
-    public function setCriteria(array $criteria): FilterInterface
+    public function setCriteria(mixed $criteria): FilterInterface
     {
         $this->criteria = $criteria;
 
@@ -177,7 +177,7 @@ final class Filter implements FilterInterface
             $output['form_options'] = $this->formOptions;
         }
 
-        if (count($this->criteria) > 0) {
+        if ($this->criteria !== []) {
             $output['criteria'] = $this->criteria;
         }
 

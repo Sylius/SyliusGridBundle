@@ -118,8 +118,8 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         if (array_key_exists('form_options', $configuration)) {
             $filter->setFormOptions($configuration['form_options']);
         }
-        if (array_key_exists('default_value', $configuration)) {
-            $filter->setCriteria($configuration['default_value']);
+        if (array_key_exists('criteria', $configuration)) {
+            $filter->setCriteria($configuration['criteria']);
         }
 
         return $filter;

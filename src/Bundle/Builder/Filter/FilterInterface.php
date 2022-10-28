@@ -53,7 +53,7 @@ interface FilterInterface
 
     public function removeFormOption(string $option): self;
 
-    public function setCriteria(array $criteria): self;
+    public function setCriteria(mixed $criteria): self;
 
     public function toArray(): array;
 }

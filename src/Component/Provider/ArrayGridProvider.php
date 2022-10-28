@@ -63,6 +63,24 @@ final class ArrayGridProvider implements GridProviderInterface
 
         $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
 
+        if (isset($gridConfiguration['filters'])) {
+            $gridConfiguration['filters'] = $this->handleFiltersDefaultValue($gridConfiguration['filters']);
+        }
+
         return $this->converter->convert($code, $gridConfiguration);
+    }
+
+    private function handleFiltersDefaultValue(array $filters): array
+    {
+        foreach ($filters as &$filter) {
+            if (false === isset($filter['default_value'])) {
+                continue;
+            }
+
+            $filter['criteria'] = $filter['default_value'];
+            unset($filter['default_value']);
+        }
+
+        return $filters;
     }
 }
