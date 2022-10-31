@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v1.12.0 (2022-10-31)
+
+#### Details
+
+- [#241](https://github.com/Sylius/SyliusGridBundle/issues/241) Adding conflicts with pagerfanta 2 ([@loic425](https://github.com/loic425))
+- [#268](https://github.com/Sylius/SyliusGridBundle/issues/268) Documenting pitfalls of some fields ([@mamazu](https://github.com/mamazu))
+- [#269](https://github.com/Sylius/SyliusGridBundle/issues/269) Add support for deprecation contracts ^3.1 ([@loic425](https://github.com/loic425))
+- [#271](https://github.com/Sylius/SyliusGridBundle/issues/271) Change to stable SyliusResourceBundle 1.10 ([@Zales0123](https://github.com/Zales0123))
+
 ## v1.12.0-BETA.1 (2022-10-19)
 
 #### Details
