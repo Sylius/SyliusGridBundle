@@ -1,0 +1,12 @@
+sylius_grid:
+    grids:
+        foo_with_namespace:
+            driver:
+                name: 'doctrine/orm'
+                options:
+                    class: "%sylius.model.order.class%"
+                    pagination:
+                        fetch_join_collection: false
+                        use_output_walkers: false
+            removals: []
+

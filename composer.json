@@ -79,7 +79,8 @@
         "twig/extensions": "^1.5",
         "twig/twig": "^2.12 || ^3.0",
         "vimeo/psalm": "^4.26",
-        "rector/rector": "^0.13"
+        "rector/rector": "^0.13",
+        "symplify/php-config-printer": "^9.4.70"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
