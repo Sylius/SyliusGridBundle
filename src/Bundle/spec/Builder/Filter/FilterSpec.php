@@ -164,4 +164,16 @@ final class FilterSpec extends ObjectBehavior
 
         $this->getCriteria()->shouldReturn(['name' => 'test']);
     }
+
+    function it_has_no_default_value_by_default(): void
+    {
+        $this->getDefaultValue()->shouldReturn(null);
+    }
+
+    function its_default_value_is_mutable(): void
+    {
+        $this->setDefaultValue(false);
+
+        $this->getDefaultValue()->shouldReturn(false);
+    }
 }

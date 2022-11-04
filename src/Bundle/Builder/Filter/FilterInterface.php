@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
+/**
+ * @method mixed getDefaultValue()
+ * @method self setDefaultValue(mixed $defaultValue)
+ */
 interface FilterInterface
 {
     public static function create(string $name, string $type): self;
