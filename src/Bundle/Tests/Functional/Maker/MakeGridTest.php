@@ -198,7 +198,7 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
 }
 
 EOF
-            ;
+        ;
     }
 
     private static function getPriceGridExpectedContent(): string
@@ -271,7 +271,7 @@ final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
 }
 
 EOF
-   ;
+        ;
     }
 
     private static function getAdminUserGridExpectedContent(): string
@@ -344,6 +344,6 @@ final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInter
 }
 
 EOF
-            ;
+        ;
     }
 }

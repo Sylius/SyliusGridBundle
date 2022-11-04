@@ -162,8 +162,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
             )
             ->addFilter(
                 Filter::create('language', 'string')
-                    ->setLabel(null)
-
+                    ->setLabel(null),
             )
             ->addFilter(
                 Filter::create('archival', 'exists')
