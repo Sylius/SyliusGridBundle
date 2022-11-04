@@ -1,0 +1,5 @@
+# These files are part of the test output. We should not version them as the test might not pick up when those aren't properly regenerated
+
+/Foo.php
+/FooWithNamespace.php
+/SyliusAdminOrder.php

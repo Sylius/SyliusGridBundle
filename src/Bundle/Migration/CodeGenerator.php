@@ -50,6 +50,22 @@ class CodeGenerator
         $this->classesToUse[] = $classToUse;
     }
 
+    /**
+     * If you want to use a reference to a class but don't want to use the FQN everywhere you
+     * need an import.
+     * This function adds an import for the class and returns the imported name back
+     *
+     * @param class-string $className
+     */
+    public function getRelativeClassName(string $className): Name
+    {
+        $this->addUseStatement($className);
+
+        $namespaceParts = explode('\\', $className);
+
+        return new Name(end($namespaceParts));
+    }
+
     public function addClass(string $className, ?string $extends, ?array $implements, array $body): void
     {
         $classConfiguration = ['stmts' => $body];
@@ -115,6 +131,20 @@ class CodeGenerator
         );
     }
 
+    /**
+     * @return array<Use_>
+     */
+    private function getUseStatementNodes(): array
+    {
+        $uniqueClasses = array_unique($this->classesToUse);
+
+        // Converting the string versions of the FQN to a PHP use statement
+        return array_map(
+            static fn (string $classToUse) => new Use_([new UseUse(new Name($classToUse))]),
+            $uniqueClasses,
+        );
+    }
+
     public function build(): string
     {
         $nodes = [];
@@ -122,10 +152,7 @@ class CodeGenerator
             $nodes[] = $this->namespace;
         }
 
-        foreach (array_map(
-            static fn (string $classToUse) => new Use_([new UseUse(new Name($classToUse))]),
-            $this->classesToUse,
-        ) as $useStatements) {
+        foreach ($this->getUseStatementNodes() as $useStatements) {
             $nodes[] = $useStatements;
         }
 
@@ -133,7 +160,7 @@ class CodeGenerator
             $nodes[] = $classNode;
         }
 
-        $generatedCode = $this->codeOutputter->printCode($nodes);
+        $generatedCode = "<?php \n" . $this->codeOutputter->prettyPrint($nodes);
 
         $this->classNodes = [];
         $this->namespace = null;

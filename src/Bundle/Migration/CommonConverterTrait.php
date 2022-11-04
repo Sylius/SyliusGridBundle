@@ -39,7 +39,7 @@ trait CommonConverterTrait
         if (null === $value) {
             return new ConstFetch(new Name('null'));
         }
-        
+
         if (is_int($value)) {
             return new ConstFetch(new Name((string) $value));
         }

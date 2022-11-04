@@ -24,5 +24,14 @@
             <argument type="service" id"Sylius\Bundle\GridBundle\Migration\GridBodyGenerator" />
             <argument type="service" id="container" />
         </service>
+
+        <service id="Sylius\Bundle\GridBundle\Migration\GridBodyGenerator">
+            <argument type="service" id="Sylius\Bundle\GridBundle\Migration\ActionMethodGenerator">
+            <argument type="service" id="Sylius\Bundle\GridBundle\Migration\CodeGenerator" />
+        </service>
+
+        <service id="Sylius\Bundle\GridBundle\Migration\ActionMethodGenerator">
+            <argument type="service" id="Sylius\Bundle\GridBundle\Migration\CodeGenerator" />
+        </service>
     </service>
 </services>

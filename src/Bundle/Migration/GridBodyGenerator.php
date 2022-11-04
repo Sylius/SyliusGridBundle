@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Migration;
 
-use PhpParser\Node;
 use PhpParser\Node\Arg;
 use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\ConstFetch;
@@ -21,10 +20,20 @@ use PhpParser\Node\Expr\MethodCall;
 use PhpParser\Node\Expr\StaticCall;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Name;
+use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
+use Sylius\Bundle\GridBundle\Builder\Field\Field;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 
 class GridBodyGenerator
 {
     use CommonConverterTrait;
+
+    public function __construct(
+        private ActionMethodGenerator $actionMethodGenerator,
+        private CodeGenerator $codeGenerator,
+    ) {
+    }
 
     public function getGridBuilderBody(Variable $gridBuilder, array $gridConfiguration): ?MethodCall
     {
@@ -78,26 +87,7 @@ class GridBodyGenerator
 
         // Handle actions
         if (array_key_exists('actions', $gridConfiguration)) {
-            foreach ($gridConfiguration['actions'] as $type => $configuredTypes) {
-                $mappings = [
-                    'main' => 'MainActionGroup',
-                    'item' => 'ItemActionGroup',
-                    'subitem' => 'SubItemActionGroup',
-                    'bulk' => 'BulkActionGroup',
-                ];
-
-                $gridBuilder = new MethodCall(
-                    $gridBuilder,
-                    'addActionGroup',
-                    [
-                        new Arg(new Node\Expr\StaticCall(
-                            new Name($mappings[$type]),
-                            'create',
-                            $this->convertActionsToFunctionParameters($configuredTypes),
-                        )),
-                    ],
-                );
-            }
+            $gridBuilder = $this->actionMethodGenerator->convertActions($gridBuilder, $gridConfiguration['actions']);
             unset($gridConfiguration['actions']);
         }
 
@@ -108,50 +98,6 @@ class GridBodyGenerator
         }
 
         return $gridBuilder;
-    }
-
-    /** * @return array<Node\Expr> */
-    public function convertActionsToFunctionParameters(array $actions): array
-    {
-        $handleCustomGrid = function (string $actionName, array $configuration): Node {
-            $field = new Node\Expr\StaticCall(new Name('Action'), 'create', [
-                $this->convertValue($actionName),
-                $this->convertValue($configuration['type']),
-            ]);
-            $this->convertToFunctionCall($field, $configuration, 'label');
-            $this->convertToFunctionCall($field, $configuration, 'icon');
-            $this->convertToFunctionCall($field, $configuration, 'enabled');
-            $this->convertToFunctionCall($field, $configuration, 'position');
-            $this->convertToFunctionCall($field, $configuration, 'options');
-
-            return $field;
-        };
-
-        $field = [];
-        foreach ($actions as $actionName => $actionConfiguration) {
-            switch ($actionConfiguration['type']) {
-                case 'create':
-                    $field[] = new Node\Expr\StaticCall(new Name('CreateAction'), 'create');
-
-                    break;
-                case 'show':
-                    $field[] = new Node\Expr\StaticCall(new Name('ShowAction'), 'create');
-
-                    break;
-                case 'delete':
-                    $field[] = new Node\Expr\StaticCall(new Name('DeleteAction'), 'create');
-
-                    break;
-                case 'update':
-                    $field[] = new Node\Expr\StaticCall(new Name('UpdateAction'), 'create');
-
-                    break;
-                default:
-                    $field[] = $handleCustomGrid($actionName, $actionConfiguration);
-            }
-        }
-
-        return $field;
     }
 
     private function handleDriver(Expr $gridBuilder, array $driverConfiguration): Expr
@@ -270,29 +216,41 @@ class GridBodyGenerator
     {
         switch ($fieldConfig['type']) {
             case 'datetime':
-                $field = new StaticCall(new Name('DateTimeField'), 'create', [
-                    $this->convertValue($fieldName),
-                ]);
+                $field = new StaticCall(
+                    $this->codeGenerator->getRelativeClassName(DateTimeField::class),
+                    'create',
+                    [$this->convertValue($fieldName)],
+                );
 
                 break;
             case 'string':
-                $field = new StaticCall(new Name('StringField'), 'create', [
-                    $this->convertValue($fieldName),
-                ]);
+                $field = new StaticCall(
+                    $this->codeGenerator->getRelativeClassName(StringField::class),
+                    'create',
+                    [$this->convertValue($fieldName)],
+                );
 
                 break;
             case 'twig':
-                $field = new StaticCall(new Name('TwigField'), 'create', [
-                    $this->convertValue($fieldName),
-                    $this->convertValue($fieldConfig['options']['template']),
-                ]);
+                $field = new StaticCall(
+                    $this->codeGenerator->getRelativeClassName(TwigField::class),
+                    'create',
+                    [
+                        $this->convertValue($fieldName),
+                        $this->convertValue($fieldConfig['options']['template']),
+                    ],
+                );
 
                 break;
             default:
-                $field = new StaticCall(new Name('Field'), 'create', [
-                    $this->convertValue($fieldName),
-                    $this->convertValue($fieldConfig['type']),
-                ]);
+                $field = new StaticCall(
+                    $this->codeGenerator->getRelativeClassName(Field::class),
+                    'create',
+                    [
+                        $this->convertValue($fieldName),
+                        $this->convertValue($fieldConfig['type']),
+                    ],
+                );
         }
 
         return $field;

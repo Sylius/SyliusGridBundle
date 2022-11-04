@@ -16,23 +16,8 @@ namespace Sylius\Bundle\GridBundle\Migration;
 use InvalidArgumentException;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Stmt\Expression;
-use Sylius\Bundle\GridBundle\Builder\Action\Action;
-use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
-use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
-use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
-use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\SubItemActionGroup;
-use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
-use Sylius\Bundle\GridBundle\Builder\Field\Field;
-use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Config\GridConfig;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -78,22 +63,7 @@ class ConfigMigration
             AbstractGrid::class,
             ResourceAwareGridInterface::class,
             Filter::class,
-            Field::class,
             GridBuilderInterface::class,
-            MainActionGroup::class,
-            ItemActionGroup::class,
-            SubItemActionGroup::class,
-            BulkActionGroup::class,
-            GridConfig::class,
-            GridBuilder::class,
-            Action::class,
-            ShowAction::class,
-            CreateAction::class,
-            UpdateAction::class,
-            DeleteAction::class,
-            DateTimeField::class,
-            StringField::class,
-            TwigField::class,
         ] as $class) {
             $this->codeGenerator->addUseStatement($class);
         }
@@ -145,7 +115,7 @@ class ConfigMigration
     {
         $resourceClass = $gridConfiguration['driver']['options']['class'] ?? 'To be replaced with the correct class.';
 
-        if (strpos($resourceClass, '%') !== false) {
+        if (str_contains($resourceClass, '%')) {
             return $this->container->getParameter(substr($resourceClass, 1, strlen($resourceClass) - 2));
         }
 

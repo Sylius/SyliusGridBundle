@@ -15,6 +15,7 @@ namespace App\Migration;
 
 use DirectoryIterator;
 use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Migration\ActionMethodGenerator;
 use Sylius\Bundle\GridBundle\Migration\CodeGenerator;
 use Sylius\Bundle\GridBundle\Migration\CodeOutputter;
 use Sylius\Bundle\GridBundle\Migration\ConfigMigration;
@@ -37,10 +38,11 @@ class MigrationTest extends TestCase
             ->method('getParameter')->with('sylius.model.order.class')
             ->willReturn('Sylius\\Model\\Order')
         ;
+        $codeGenerator = new CodeGenerator(new CodeOutputter());
 
         return new ConfigMigration(
-            new CodeGenerator(new CodeOutputter()),
-            new GridBodyGenerator(),
+            $codeGenerator,
+            new GridBodyGenerator(new ActionMethodGenerator($codeGenerator), $codeGenerator),
             $container,
         );
     }
