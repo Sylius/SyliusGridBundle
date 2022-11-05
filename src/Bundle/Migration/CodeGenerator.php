@@ -28,11 +28,6 @@ use PhpParser\Node\Stmt\UseUse;
 
 final class CodeGenerator
 {
-    public function __construct(
-        private CodeOutputter $codeOutputter,
-    ) {
-    }
-
     /** @var array<string> */
     private array $classesToUse = [];
 
@@ -40,6 +35,11 @@ final class CodeGenerator
     private array $classNodes = [];
 
     private ?Node $namespace = null;
+    
+    public function __construct(
+        private CodeOutputter $codeOutputter,
+    ) {
+    }
 
     public function setNamespace(string $namespace): void
     {
