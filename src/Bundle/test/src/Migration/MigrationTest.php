@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Migration;
 
-use DirectoryIterator;
+use App\Entity\Book;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Migration\ActionMethodGenerator;
 use Sylius\Bundle\GridBundle\Migration\CodeGenerator;
@@ -25,75 +25,82 @@ use Symfony\Component\Yaml\Yaml;
 
 class MigrationTest extends TestCase
 {
+    private ConfigMigration $configMigrator;
+
     public function setup(): void
     {
         chdir(__DIR__);
-    }
-
-    private function createConfigMirator(): ConfigMigration
-    {
         $container = $this->createMock(ContainerInterface::class);
         $container
-            ->expects($this->atLeast(1))
             ->method('getParameter')->with('sylius.model.order.class')
             ->willReturn('Sylius\\Model\\Order')
         ;
+
         $codeGenerator = new CodeGenerator(new CodeOutputter());
 
-        return new ConfigMigration(
+        $this->configMigrator = new ConfigMigration(
             $codeGenerator,
             new GridBodyGenerator(new ActionMethodGenerator($codeGenerator), $codeGenerator),
             $container,
         );
     }
 
-    private function compileFile(ConfigMigration $builder): void
-    {
-        foreach (new DirectoryIterator('.') as $file) {
-            /** @var DirectoryIterator $file */
-            if (in_array($file->getExtension(), ['yaml', 'yml'])) {
-                $fileName = $file->getFilename();
-                $builder->convertGrids(file_get_contents($fileName));
-            }
-        }
-    }
-
     public function testConfigurationForOrder(): void
     {
-        $yaml = Yaml::parse(file_get_contents('order.yml'))['sylius_grid']['grids']['sylius_admin_order'];
+        $fileContent = file_get_contents('order.yml');
+        $yaml = Yaml::parse($fileContent)['sylius_grid']['grids']['sylius_admin_order'];
 
-        $this->compileFile($this->createConfigMirator());
+        $this->configMigrator->convertGrids($fileContent);
+
         include 'SyliusAdminOrder.php';
         $orderGrid = new \SyliusAdminOrder();
+        $generatedConfig = $orderGrid->toArray();
 
-        $this->assertEquals($yaml, $orderGrid->toArray());
+        // Removing expected path to be unequal and adding manual check
+        unset($generatedConfig['driver']['options']['class'], $yaml['driver']['options']['class']);
+
         $this->assertEquals('Sylius\\Model\\Order', $orderGrid->getResourceClass());
+
+        // If a field is not sortable in yaml you have to have it set to false in php it doesn't render so
+        $this->assertArrayNotHasKey('sortable', $generatedConfig['fields']['state']);
+        unset($yaml['fields']['state']['sortable']);
+
+        // Checking that the rest of the config is equals
+        $this->assertEquals($yaml, $generatedConfig);
     }
 
     public function testConfigurationForAdvancedConfig(): void
     {
-        $yaml = Yaml::parse(file_get_contents('advanced_configuration.yml'))['sylius_grid']['grids']['foo'];
+        $fileContent = file_get_contents('advanced_configuration.yml');
+        $yaml = Yaml::parse($fileContent)['sylius_grid']['grids']['foo'];
 
-        $this->compileFile($this->createConfigMirator());
+        $this->configMigrator->convertGrids($fileContent);
+
         include 'Foo.php';
         $orderGrid = new \Foo();
 
         $this->assertEquals($yaml, $orderGrid->toArray());
-        $this->assertEquals('Sylius\\Model\\Order', $orderGrid->getResourceClass());
+        $this->assertEquals(Book::class, $orderGrid->getResourceClass());
     }
 
     public function testConfigurationWithNamespace(): void
     {
-        $yaml = Yaml::parse(file_get_contents('advanced_configuration.yml'))['sylius_grid']['grids']['foo'];
+        $fileContent = file_get_contents('namespace_grid.yaml');
+        $yaml = Yaml::parse($fileContent)['sylius_grid']['grids']['foo_with_namespace'];
 
-        $migrator = $this->createConfigMirator();
-        $migrator->namespace = 'SomeNameSpace';
+        $this->configMigrator->namespace = 'SomeNameSpace';
+        $this->configMigrator->convertGrids($fileContent);
 
-        $this->compileFile($migrator);
         include 'FooWithNamespace.php';
         $orderGrid = new \SomeNameSpace\FooWithNamespace();
+        $generatedConfig = $orderGrid->toArray();
 
-        $this->assertEquals($yaml, $orderGrid->toArray());
+        // Removing expected path
+        unset($generatedConfig['driver']['options']['class'], $yaml['driver']['options']['class']);
+
         $this->assertEquals('Sylius\\Model\\Order', $orderGrid->getResourceClass());
+
+        // Checking that the rest of the config is equals
+        $this->assertEquals($yaml, $generatedConfig);
     }
 }

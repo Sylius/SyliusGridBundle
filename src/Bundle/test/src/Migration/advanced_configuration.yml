@@ -4,7 +4,7 @@ sylius_grid:
             driver:
                 name: 'doctrine/orm'
                 options:
-                    class: "%sylius.model.order.class%"
+                    class: "App\\Entity\\Book"
                     pagination:
                         fetch_join_collection: false
                         use_output_walkers: false

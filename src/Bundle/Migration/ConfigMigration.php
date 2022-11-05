@@ -85,7 +85,7 @@ class ConfigMigration
             ['ResourceAwareGridInterface'],
             [
                 CodeGenerator::createStaticFunction('getName', $gridName),
-                CodeGenerator::createNonStaticFunction('getResourceClass', $resourceClass),
+                $this->codeGenerator->generateGetResourceClassFunction($resourceClass),
                 CodeGenerator::createFunction(
                     'buildGrid',
                     [['GridBuilderInterface', 'gridBuilder']],

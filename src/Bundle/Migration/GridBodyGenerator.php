@@ -114,6 +114,9 @@ class GridBodyGenerator
 
         if (array_key_exists('options', $driverConfiguration)) {
             foreach ($driverConfiguration['options'] as $option => $optionValue) {
+                if ($option === 'class') {
+                    continue;
+                }
                 $gridBuilder = new MethodCall($gridBuilder, 'setDriverOption', [
                     $this->convertValue($option),
                     $this->convertValue($optionValue),

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Migration;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\ClassConstFetch;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
@@ -84,15 +85,26 @@ class CodeGenerator
         $this->classNodes[] = new Class_(new Identifier($className), $classConfiguration);
     }
 
-    public static function createNonStaticFunction(string $functionName, string $returnValue): Node
+    public function generateGetResourceClassFunction(string $resourceNameOrString): Node
     {
+        // If it's a class generate something like: Order::class
+        if (class_exists($resourceNameOrString)) {
+            $returnStatement = new ClassConstFetch(
+                $this->getRelativeClassName($resourceNameOrString),
+                'class',
+            );
+        } else {
+            // Otherwise just return the string as is
+            $returnStatement = new String_($resourceNameOrString);
+        }
+
         return new ClassMethod(
-            new Identifier($functionName),
+            new Identifier('getResourceClass'),
             [
                 'flags' => Class_::MODIFIER_PUBLIC,
                 'returnType' => 'string',
                 'stmts' => [
-                    new Return_(new String_($returnValue)),
+                    new Return_($returnStatement),
                 ],
             ],
         );
