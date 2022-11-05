@@ -23,7 +23,7 @@ use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Yaml\Yaml;
 
-class ConfigMigration
+final class ConfigMigration
 {
     public ?string $namespace = null;
 

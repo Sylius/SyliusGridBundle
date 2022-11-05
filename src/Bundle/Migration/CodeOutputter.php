@@ -18,7 +18,7 @@ use PhpParser\Node\Expr;
 use PhpParser\Node\Stmt;
 use PhpParser\PrettyPrinter\Standard;
 
-class CodeOutputter extends Standard
+final class CodeOutputter extends Standard
 {
     protected function pExpr_MethodCall(Expr\MethodCall $node): string
     {

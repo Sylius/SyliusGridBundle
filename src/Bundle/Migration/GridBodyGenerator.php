@@ -25,7 +25,7 @@ use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 
-class GridBodyGenerator
+final class GridBodyGenerator
 {
     use CommonConverterTrait;
 

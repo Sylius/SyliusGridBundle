@@ -26,7 +26,7 @@ use PhpParser\Node\Stmt\Return_;
 use PhpParser\Node\Stmt\Use_;
 use PhpParser\Node\Stmt\UseUse;
 
-class CodeGenerator
+final class CodeGenerator
 {
     public function __construct(
         private CodeOutputter $codeOutputter,
@@ -87,7 +87,7 @@ class CodeGenerator
 
     public function generateGetResourceClassFunction(string $resourceNameOrString): Node
     {
-        // If it's a class generate something like: Order::class
+        // If it's a class, it generates something like: Order::class
         if (class_exists($resourceNameOrString)) {
             $returnStatement = new ClassConstFetch(
                 $this->getRelativeClassName($resourceNameOrString),
