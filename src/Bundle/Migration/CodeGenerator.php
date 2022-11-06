@@ -67,7 +67,7 @@ final class CodeGenerator
         return new Name(end($namespaceParts));
     }
 
-    public function addClass(string $className, ?string $extends, ?array $implements, array $body): void
+    public function addClass(string $className, ?string $extends, array $implements = [], array $body = []): void
     {
         $classConfiguration = ['stmts' => $body];
 
@@ -75,7 +75,7 @@ final class CodeGenerator
             $classConfiguration['extends'] = new Identifier($extends);
         }
 
-        if (count($implements ?? []) > 0) {
+        if (count($implements) > 0) {
             $classConfiguration['implements'] = array_map(
                 static fn (string $interfaceName) => new Identifier($interfaceName),
                 $implements,
