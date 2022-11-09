@@ -14,11 +14,9 @@ sylius_grid:
                         class: App\Entity\Author
                         multiple: true
                 nationality:
-                    type: entity
+                    type: nationality
                     options:
                         fields: [author.nationality]
-                    form_options:
-                        class: App\Entity\Nationality
                 currencyCode:
                     type: string
                     options:
@@ -92,11 +90,9 @@ sylius_grid:
                     form_options:
                         class: App\Entity\Author
                 nationality:
-                    type: entity
+                    type: nationality
                     options:
                         fields: [author.nationality]
-                    form_options:
-                        class: App\Entity\Nationality
             sorting:
                 title: asc
             fields:
@@ -110,7 +106,7 @@ sylius_grid:
                     path: author.name
                     sortable: author.name
                 nationality:
-                    type: string
+                    type: nationality
                     label: Nationality
                     path: na.name
                     sortable: na.name
@@ -131,11 +127,9 @@ sylius_grid:
                     form_options:
                         class: App\Entity\Author
                 nationality:
-                    type: entity
+                    type: nationality
                     options:
                         fields: [author.nationality]
-                    form_options:
-                        class: App\Entity\Nationality
             sorting:
                 title: asc
             fields:

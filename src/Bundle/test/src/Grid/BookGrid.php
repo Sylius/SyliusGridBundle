@@ -15,7 +15,7 @@ namespace App\Grid;
 
 use App\Entity\Author;
 use App\Entity\Book;
-use App\Entity\Nationality;
+use App\Grid\Builder\NationalityFilter;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
@@ -52,13 +52,7 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                 ]),
             )
             ->addFilter(
-                Filter::create('nationality', 'entity')
-                ->setOptions([
-                    'fields' => ['author.nationality'],
-                ])
-                ->setFormOptions([
-                    'class' => Nationality::class,
-                ]),
+                NationalityFilter::create('nationality', null, ['author.nationality']),
             )
             ->addFilter(
                 Filter::create('currencyCode', 'string')

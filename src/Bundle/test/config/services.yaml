@@ -7,6 +7,10 @@ parameters:
     database_url: "sqlite:///%kernel.project_dir%/config/db.sql"
 
 services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     app.english_books_query_builder:
         class: App\QueryBuilder\EnglishBooksQueryBuilder
         arguments:
@@ -18,3 +22,5 @@ services:
         arguments:
             - '@app.repository.author'
         public: true
+
+    App\Filter\NationalityFilter: null

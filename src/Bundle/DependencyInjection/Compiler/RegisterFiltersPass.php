@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
 
 use InvalidArgumentException;
+use Sylius\Component\Grid\Filtering\WithFormTypeInterface;
+use Sylius\Component\Grid\Filtering\WithTypeInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -30,13 +32,28 @@ final class RegisterFiltersPass implements CompilerPassInterface
         $formTypeRegistry = $container->getDefinition('sylius.form_registry.grid_filter');
 
         foreach ($container->findTaggedServiceIds('sylius.grid_filter') as $id => $attributes) {
+            $type = null;
+            $formType = null;
+
+            if (is_a($id, WithTypeInterface::class, true)) {
+                $type = $id::getType();
+            }
+
+            if (is_a($id, WithFormTypeInterface::class, true)) {
+                $formType = $id::getFormType();
+            }
+
             foreach ($attributes as $attribute) {
-                if (!isset($attribute['type'], $attribute['form_type'])) {
-                    throw new InvalidArgumentException('Tagged grid filters needs to have `type` and `form_type` attributes.');
+                if (null === $type && null === ($attribute['type'] ?? null)) {
+                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attributes or implements "%s".', WithTypeInterface::class));
                 }
 
-                $registry->addMethodCall('register', [$attribute['type'], new Reference($id)]);
-                $formTypeRegistry->addMethodCall('add', [$attribute['type'], 'default', $attribute['form_type']]);
+                if (null === $formType && null === ($attribute['form_type']) ?? null) {
+                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attributes or implements %s.', WithFormTypeInterface::class));
+                }
+
+                $registry->addMethodCall('register', [$type ?? $attribute['type'], new Reference($id)]);
+                $formTypeRegistry->addMethodCall('add', [$type ?? $attribute['type'], 'default', $formType ?? $attribute['form_type']]);
             }
         }
     }
