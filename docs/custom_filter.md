@@ -10,10 +10,11 @@ To add a new filter, we need to create an appropriate class and form type.
 
 namespace App\Grid\Filter;
 
+use App\Form\Type\Filter\SuppliersStatisticsFilterType;
 use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
-use Sylius\Component\Grid\Filtering\FilterInterface;
+use Sylius\Component\Grid\Filtering\ConfiguragurableFilterInterface;
 
-class SuppliersStatisticsFilter implements FilterInterface
+class SuppliersStatisticsFilter implements ConfiguragurableFilterInterface
 {
     public function apply(DataSourceInterface $dataSource, $name, $data, array $options = []): void
     {
@@ -30,6 +31,16 @@ class SuppliersStatisticsFilter implements FilterInterface
         // $data['stats'] contains the submitted value!
         // here is an example
         $dataSource->restrict($dataSource->getExpressionBuilder()->equals('stats', $data['stats']));
+    }
+    
+    public static function getType() : string
+    {
+        return 'suppliers_statistics';
+    }
+    
+    public static function getFormType() : string
+    {
+        return SuppliersStatisticsFilterType::class;
     }
 }
 ```
@@ -78,19 +89,17 @@ Create a template for the filter, similar to the existing ones:
 {{ form_row(form) }}
 ```
 
-That is all. Now let's register your new filter type as service.
+
+If you use Autoconfiguration, the filter is automatically registered as a grid filter.
+
+But if you don't use autoconfiguration, let's register your new filter type as service.
 
 ```yaml
 # config/services.yaml
 
 services:
-    app.grid.filter.suppliers_statistics:
-        class: App\Grid\Filter\SuppliersStatisticsFilter
-        tags:
-            -
-                name: sylius.grid_filter
-                type: suppliers_statistics
-                form_type: App\Form\Type\Filter\SuppliersStatisticsFilterType
+    App\Grid\Filter\SuppliersStatisticsFilter:
+        tags: ['sylius.grid_filter']
 ```
 
 Now you can use your new filter type in the grid configuration!
