@@ -68,8 +68,6 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
                 ],
             );
         }
-
-        $this->assertContainerBuilderHasService(NationalityFilter::class, NationalityFilter::class);
     }
 
     /**
