@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
 
 use InvalidArgumentException;
-use Sylius\Component\Grid\Filtering\WithFormTypeInterface;
-use Sylius\Component\Grid\Filtering\WithTypeInterface;
+use Sylius\Component\Grid\Filtering\FormTypeAwareFilterInterface;
+use Sylius\Component\Grid\Filtering\TypeAwareFilterInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -35,21 +35,21 @@ final class RegisterFiltersPass implements CompilerPassInterface
             $type = null;
             $formType = null;
 
-            if (is_a($id, WithTypeInterface::class, true)) {
+            if (is_a($id, TypeAwareFilterInterface::class, true)) {
                 $type = $id::getType();
             }
 
-            if (is_a($id, WithFormTypeInterface::class, true)) {
+            if (is_a($id, FormTypeAwareFilterInterface::class, true)) {
                 $formType = $id::getFormType();
             }
 
             foreach ($attributes as $attribute) {
                 if (null === $type && null === ($attribute['type'] ?? null)) {
-                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attributes or implements "%s".', WithTypeInterface::class));
+                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attributes or implements "%s".', TypeAwareFilterInterface::class));
                 }
 
-                if (null === $formType && null === ($attribute['form_type']) ?? null) {
-                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attributes or implements %s.', WithFormTypeInterface::class));
+                if (null === $formType && null === ($attribute['form_type'] ?? null)) {
+                    throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attributes or implements %s.', FormTypeAwareFilterInterface::class));
                 }
 
                 $registry->addMethodCall('register', [$type ?? $attribute['type'], new Reference($id)]);

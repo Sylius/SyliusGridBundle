@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Filtering;
 
-abstract class AbstractFilter implements FilterInterface, WithTypeInterface, WithFormTypeInterface
+abstract class AbstractFilter implements FilterInterface, TypeAwareFilterInterface, FormTypeAwareFilterInterface
 {
 }

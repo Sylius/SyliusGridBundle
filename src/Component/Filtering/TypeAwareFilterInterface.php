@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Filtering;
 
-interface WithFormTypeInterface
+interface TypeAwareFilterInterface
 {
-    public static function getFormType(): string;
+    public static function getType(): string;
 }
