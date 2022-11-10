@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Pagerfanta\Doctrine\PHPCRODM\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Component\Grid\Data\DataSourceInterface;
+use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Parameters;
 
@@ -54,6 +54,11 @@ final class DataSource implements DataSourceInterface
 
         $visitor = new ExpressionVisitor($this->queryBuilder);
         $visitor->dispatch($expression, $parentNode);
+    }
+
+    public function getQueryBuilder(): QueryBuilder
+    {
+        return $this->queryBuilder;
     }
 
     public function getExpressionBuilder(): ExpressionBuilderInterface
