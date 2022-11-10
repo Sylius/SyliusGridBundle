@@ -165,7 +165,7 @@ final class GridBuilder implements GridBuilderInterface
     public function removeAction(string $name, string $group): self
     {
         $actionGroup = $this->actionGroups[$group] ?? null;
-        if ($actionGroup !== null) {
+        if (null !== $actionGroup) {
             $actionGroup->removeAction($name);
         }
 

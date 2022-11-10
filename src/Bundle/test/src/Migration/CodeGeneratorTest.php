@@ -21,7 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Migration\CodeGenerator;
 use Sylius\Bundle\GridBundle\Migration\CodeOutputter;
 
-class CodeGenatorTest extends TestCase
+final class CodeGeneratorTest extends TestCase
 {
     private CodeGenerator $codeGenerator;
 

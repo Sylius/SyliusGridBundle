@@ -46,6 +46,7 @@ final class CodeGenerator
         $this->namespace = new Node\Stmt\Namespace_(new Name($namespace));
     }
 
+    /** @param class-string $classToUse */
     public function addUseStatement(string $classToUse): void
     {
         $this->classesToUse[] = $classToUse;
@@ -67,11 +68,12 @@ final class CodeGenerator
         return new Name(end($namespaceParts));
     }
 
+    /** @param class-string $className */
     public function addClass(string $className, ?string $extends, array $implements = [], array $body = []): void
     {
         $classConfiguration = ['stmts' => $body];
 
-        if ($extends !== null) {
+        if (null !== $extends) {
             $classConfiguration['extends'] = new Identifier($extends);
         }
 
@@ -146,7 +148,7 @@ final class CodeGenerator
     public function build(): string
     {
         $nodes = [];
-        if ($this->namespace !== null) {
+        if (null !== $this->namespace) {
             $nodes[] = $this->namespace;
         }
 
