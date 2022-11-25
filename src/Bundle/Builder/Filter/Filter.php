@@ -31,6 +31,8 @@ final class Filter implements FilterInterface
 
     private array $criteria = [];
 
+    private mixed $defaultValue = null;
+
     private function __construct(string $name, string $type)
     {
         $this->name = $name;
@@ -153,6 +155,18 @@ final class Filter implements FilterInterface
         return $this;
     }
 
+    public function getDefaultValue(): mixed
+    {
+        return $this->defaultValue;
+    }
+
+    public function setDefaultValue(mixed $defaultValue): FilterInterface
+    {
+        $this->defaultValue = $defaultValue;
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         $output = ['type' => $this->type];
@@ -179,6 +193,10 @@ final class Filter implements FilterInterface
 
         if (count($this->criteria) > 0) {
             $output['criteria'] = $this->criteria;
+        }
+
+        if (null !== $this->defaultValue) {
+            $output['default_value'] = $this->defaultValue;
         }
 
         return $output;

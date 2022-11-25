@@ -160,6 +160,15 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                 Filter::create('language', 'string')
                 ->setLabel(null),
             )
+            ->addFilter(
+                Filter::create('language', 'string')
+                    ->setLabel(null),
+            )
+            ->addFilter(
+                Filter::create('archival', 'exists')
+                    ->setLabel(null)
+                    ->setDefaultValue(false),
+            )
         ;
 
         $this->load([
@@ -199,6 +208,14 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                     ],
                     'language' => [
                         'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                        'form_options' => [],
+                    ],
+                    'archival' => [
+                        'type' => 'exists',
+                        'default_value' => false,
                         'enabled' => true,
                         'position' => 100,
                         'options' => [],

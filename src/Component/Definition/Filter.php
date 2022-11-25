@@ -139,7 +139,6 @@ class Filter
     /**
      * @param mixed $criteria
      *
-     *
      * @psalm-suppress MissingReturnType
      */
     public function setCriteria($criteria)
