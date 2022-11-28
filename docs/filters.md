@@ -176,16 +176,15 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
     public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->addFilter(Filter::create('username', 'string'))
-            ->addFilter(Filter::create('email', 'string'))
-            ->addFilter(Filter::create('firstName', 'string'))
-            ->addFilter(Filter::create('lastName', 'string'))
+            ->addFilter(
+                Filter::create('username', 'string')
+                    ->setOptions(['fields' => ['username', 'email', 'firstName', 'lastName']])
+            )
             
             // can be simplified using StringFilter
-            ->addFilter(StringFilter::create('username'))
-            ->addFilter(StringFilter::create('email'))
-            ->addFilter(StringFilter::create('firstName'))
-            ->addFilter(StringFilter::create('lastName'))
+            ->addFilter(
+                StringFilter::create('username', ['username', 'email', 'firstName', 'lastName'])
+            )
         ;    
     }
     
