@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Doctrine\DBAL\QueryAdapter;
 use Pagerfanta\Pagerfanta;
-use Sylius\Component\Grid\Data\DataSourceInterface;
+use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Parameters;
 
@@ -44,6 +44,11 @@ final class DataSource implements DataSourceInterface
 
                 break;
         }
+    }
+
+    public function getQueryBuilder(): QueryBuilder
+    {
+        return $this->queryBuilder;
     }
 
     public function getExpressionBuilder(): ExpressionBuilderInterface

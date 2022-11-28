@@ -10,14 +10,23 @@ To add a new filter, we need to create an appropriate class and form type.
 
 namespace App\Grid\Filter;
 
-use Sylius\Component\Grid\Data\DataSourceInterface;
+use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
 class SuppliersStatisticsFilter implements FilterInterface
 {
     public function apply(DataSourceInterface $dataSource, $name, $data, array $options = []): void
     {
-        // Your filtering logic. DataSource is kind of query builder.
+        // Your filtering logic.
+        // $data['stats'] contains the submitted value!
+        // here is an example
+        $queryBuilder = $dataSource->getQueryBuilder();
+        $queryBuilder
+            ->andWhere('stats = :stats')
+            ->setParameter(':stats', $data['stats'])
+        ;
+    
+        // For driver abstraction you can use the expression builder. ExpressionBuilder is kind of query builder.
         // $data['stats'] contains the submitted value!
         // here is an example
         $dataSource->restrict($dataSource->getExpressionBuilder()->equals('stats', $data['stats']));
