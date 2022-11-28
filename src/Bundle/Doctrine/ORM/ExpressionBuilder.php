@@ -97,6 +97,13 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->gte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
 
+    public function memberOf($value, string $field)
+    {
+        $field = $this->adjustField($field);
+
+        return $this->queryBuilder->expr()->isMemberOf($value, $this->resolveFieldByAddingJoins($field));
+    }
+
     public function in(string $field, array $values)
     {
         $field = $this->adjustField($field);

@@ -146,6 +146,18 @@ final class StringFilterSpec extends ObjectBehavior
         $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_IN, 'value' => 'John, Paul,Rick'], []);
     }
 
+    function it_filters_data_containing_value_being_member_of_field(
+        DataSourceInterface $dataSource,
+        ExpressionBuilderInterface $expressionBuilder,
+    ): void {
+        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+
+        $expressionBuilder->memberOf('Rick', 'firstName')->willReturn('EXPR');
+        $dataSource->restrict('EXPR')->shouldBeCalled();
+
+        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_MEMBER_OF, 'value' => 'Rick'], []);
+    }
+
     function it_filters_data_containing_none_of_strings(
         DataSourceInterface $dataSource,
         ExpressionBuilderInterface $expressionBuilder,
