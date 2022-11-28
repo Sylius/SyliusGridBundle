@@ -27,18 +27,18 @@
         </service>
         <service id="sylius.grid.data_extractor.property_access" alias="Sylius\Component\Grid\DataExtractor\PropertyAccessDataExtractor" />
 
-        <service id="sylius.grid.array_to_definition_converter" class="Sylius\Component\Grid\Definition\ArrayToDefinitionConverter">
+        <service id="Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface" class="Sylius\Component\Grid\Definition\ArrayToDefinitionConverter">
             <argument type="service" id="event_dispatcher" />
         </service>
-        <service id="Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface" alias="sylius.grid.array_to_definition_converter" />
+        <service id="sylius.grid.array_to_definition_converter" alias="Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface" />
 
         <service id="sylius.grid.grid_registry" class="Sylius\Bundle\GridBundle\Registry\GridRegistry">
             <argument type="tagged_locator" tag="sylius.grid" index-by="name" default-index-method="getName"/>
         </service>
         <service id="Sylius\Bundle\GridBundle\Registry\GridRegistryInterface" alias="sylius.grid.grid_registry" />
 
-        <service id="sylius.grid.configuration_extender" class="Sylius\Component\Grid\Configuration\GridConfigurationExtender"/>
-        <service id="Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface" alias="sylius.grid.configuration_extender" />
+        <service id="Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface" class="Sylius\Component\Grid\Configuration\GridConfigurationExtender"/>
+        <service id="sylius.grid.configuration_extender" alias="Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface" />
 
         <service id="sylius.grid.configuration_removals_handler" class="Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler"/>
         <service id="Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface" alias="sylius.grid.configuration_removals_handler" />
@@ -67,43 +67,43 @@
         <service id="sylius.grid.chain_provider" alias="Sylius\Component\Grid\Provider\ChainProvider"/>
         <service id="sylius.grid.provider" alias="Sylius\Component\Grid\Provider\ChainProvider"/>
 
-        <service id="sylius.grid.view_factory" class="Sylius\Component\Grid\View\GridViewFactory">
+        <service id="Sylius\Component\Grid\View\GridViewFactoryInterface" class="Sylius\Component\Grid\View\GridViewFactory">
             <argument type="service" id="sylius.grid.data_provider" />
         </service>
-        <service id="Sylius\Component\Grid\View\GridViewFactoryInterface" alias="sylius.grid.view_factory" />
+        <service id="sylius.grid.view_factory" alias="Sylius\Component\Grid\View\GridViewFactoryInterface" />
 
-        <service id="sylius.grid.data_provider" class="Sylius\Component\Grid\Data\DataProvider">
+        <service id="Sylius\Component\Grid\Data\DataProviderInterface" class="Sylius\Component\Grid\Data\DataProvider">
             <argument type="service" id="sylius.grid.data_source_provider" />
             <argument type="service" id="sylius.grid.filters_applicator" />
             <argument type="service" id="sylius.grid.sorter" />
         </service>
-        <service id="Sylius\Component\Grid\Data\DataProviderInterface" alias="sylius.grid.data_provider" />
+        <service id="sylius.grid.data_provider" alias="Sylius\Component\Grid\Data\DataProviderInterface" />
 
-        <service id="sylius.grid.filters_criteria_resolver" class="Sylius\Component\Grid\Filtering\FiltersCriteriaResolver" />
-        <service id="Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface" alias="sylius.grid.filters_criteria_resolver" />
+        <service id="Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface" class="Sylius\Component\Grid\Filtering\FiltersCriteriaResolver" />
+        <service id="sylius.grid.filters_criteria_resolver" alias="Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface" />
 
-        <service id="sylius.grid.filters_applicator" class="Sylius\Component\Grid\Filtering\FiltersApplicator">
+        <service id="Sylius\Component\Grid\Filtering\FiltersApplicatorInterface" class="Sylius\Component\Grid\Filtering\FiltersApplicator">
             <argument type="service" id="sylius.registry.grid_filter" />
             <argument type="service" id="sylius.grid.filters_criteria_resolver" />
         </service>
-        <service id="Sylius\Component\Grid\Filtering\FiltersApplicatorInterface" alias="sylius.grid.filters_applicator" />
+        <service id="sylius.grid.filters_applicator" alias="Sylius\Component\Grid\Filtering\FiltersApplicatorInterface" />
 
         <service id="sylius.grid.sorter.validator" class="Sylius\Component\Grid\Validation\SortingParametersValidator" />
         <service id="Sylius\Component\Grid\Validation\SortingParametersValidatorInterface" alias="sylius.grid.sorter.validator" />
 
-        <service id="sylius.grid.field.validator" class="Sylius\Component\Grid\Validation\FieldValidator" />
-        <service id="Sylius\Component\Grid\Validation\FieldValidatorInterface" alias="sylius.grid.field.validator" />
+        <service id="Sylius\Component\Grid\Validation\FieldValidatorInterface" class="Sylius\Component\Grid\Validation\FieldValidator" />
+        <service id="sylius.grid.field.validator" alias="Sylius\Component\Grid\Validation\FieldValidatorInterface" />
 
-        <service id="sylius.grid.sorter" class="Sylius\Component\Grid\Sorting\Sorter">
+        <service id="Sylius\Component\Grid\Sorting\SorterInterface" class="Sylius\Component\Grid\Sorting\Sorter">
             <argument type="service" id="sylius.grid.sorter.validator" />
             <argument type="service" id="sylius.grid.field.validator" />
         </service>
-        <service id="Sylius\Component\Grid\Sorting\SorterInterface" alias="sylius.grid.sorter" />
+        <service id="sylius.grid.sorter" alias="Sylius\Component\Grid\Sorting\SorterInterface" />
 
-        <service id="sylius.grid.data_source_provider" class="Sylius\Component\Grid\Data\DataSourceProvider">
+        <service id="Sylius\Component\Grid\Data\DataSourceProviderInterface" class="Sylius\Component\Grid\Data\DataSourceProvider">
             <argument type="service" id="sylius.registry.grid_driver" />
         </service>
-        <service id="Sylius\Component\Grid\Data\DataSourceProviderInterface" alias="sylius.grid.data_source_provider" />
+        <service id="sylius.grid.data_source_provider" alias="Sylius\Component\Grid\Data\DataSourceProviderInterface" />
 
         <service id="sylius.registry.grid_driver" class="Sylius\Component\Registry\ServiceRegistry">
             <argument>Sylius\Component\Grid\Data\DriverInterface</argument>
