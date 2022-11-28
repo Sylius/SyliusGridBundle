@@ -11,6 +11,8 @@ String
 
 Simplest filter type. It can filter by one or multiple fields.
 
+**Filter by one field**
+
 <details open><summary>Yaml</summary>
 
 ```yaml
@@ -104,6 +106,98 @@ final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
 ```
 
 </details>
+
+**Filter by multiple fields**
+
+<details open><summary>Yaml</summary>
+
+```yaml
+sylius_grid:
+    grids:
+        app_user:
+            filters:
+                search:
+                    type: string
+                    options:
+                        fields: [username, email, firstName, lastName]
+```
+
+</details>
+
+<details open><summary>PHP</summary>
+
+```php
+<?php
+
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Config\GridConfig;
+
+return static function (GridConfig $grid): void {
+    $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
+        ->addFilter(
+            Filter::create('username', 'string')
+                ->setOptions(['fields' => ['username', 'email', 'firstName', 'lastName']])
+        )
+    
+        // can be simplified using StringFilter
+        ->addFilter(
+            StringFilter::create('username', ['username', 'email', 'firstName', 'lastName'])
+        )
+    )
+};
+```
+
+OR
+
+```php
+<?php
+# src/Grid/UserGrid.php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\User;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
+use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class UserGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public static function getName(): string
+    {
+           return 'app_user';
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
+        $gridBuilder
+            ->addFilter(
+                Filter::create('username', 'string')
+                    ->setOptions(['fields' => ['username', 'email', 'firstName', 'lastName']])
+            )
+            
+            // can be simplified using StringFilter
+            ->addFilter(
+                StringFilter::create('username', ['username', 'email', 'firstName', 'lastName'])
+            )
+        ;    
+    }
+    
+    public function getResourceClass(): string
+    {
+        return User::class;
+    }
+}
+```
+
+</details>
+
+**Search options**
 
 The filter allows the user to select following search options:
 
