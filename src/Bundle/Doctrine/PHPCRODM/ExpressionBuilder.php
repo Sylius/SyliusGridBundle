@@ -79,6 +79,11 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->expressionBuilder->gte($field, $value);
     }
 
+    public function memberOf($value, string $field)
+    {
+        return $this->expressionBuilder->memberOf($value, $field);
+    }
+
     public function in(string $field, array $values)
     {
         return $this->expressionBuilder->in($field, $values);

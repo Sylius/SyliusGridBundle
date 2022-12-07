@@ -37,6 +37,8 @@ final class StringFilter implements FilterInterface
 
     public const TYPE_ENDS_WITH = 'ends_with';
 
+    public const TYPE_MEMBER_OF = 'member_of';
+
     public const TYPE_IN = 'in';
 
     public const TYPE_NOT_IN = 'not_in';
@@ -107,6 +109,8 @@ final class StringFilter implements FilterInterface
                 return $expressionBuilder->in($field, array_map('trim', explode(',', $value)));
             case self::TYPE_NOT_IN:
                 return $expressionBuilder->notIn($field, array_map('trim', explode(',', $value)));
+            case self::TYPE_MEMBER_OF:
+                return $expressionBuilder->memberOf($value, $field);
             default:
                 throw new \InvalidArgumentException(sprintf('Could not get an expression for type "%s"!', $type));
         }
