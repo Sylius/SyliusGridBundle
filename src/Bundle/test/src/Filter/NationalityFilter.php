@@ -16,7 +16,6 @@ namespace App\Filter;
 use App\Grid\Type\NationalityFilterType;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Filter\EntityFilter;
-use Sylius\Component\Grid\Filtering\AbstractFilter;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
 
 final class NationalityFilter implements ConfigurableFilterInterface
