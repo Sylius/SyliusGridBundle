@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
+use Sylius\Component\Grid\Filtering\FilterInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
@@ -56,6 +57,10 @@ final class SyliusGridExtension extends Extension
 
         $container->registerForAutoconfiguration(GridInterface::class)
             ->addTag('sylius.grid')
+        ;
+
+        $container->registerForAutoconfiguration(FilterInterface::class)
+            ->addTag('sylius.grid_filter')
         ;
     }
 

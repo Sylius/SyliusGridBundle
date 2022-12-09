@@ -15,6 +15,7 @@ namespace App\Grid;
 
 use App\Entity\Book;
 use App\Entity\Nationality;
+use App\Grid\Builder\NationalityFilter;
 use App\QueryBuilder\EnglishBooksQueryBuilder;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
@@ -53,13 +54,7 @@ final class BookByEnglishAuthorsGrid extends AbstractGrid implements ResourceAwa
                 ]),
             )
             ->addFilter(
-                Filter::create('nationality', 'entity')
-                ->setOptions([
-                    'fields' => ['author.nationality'],
-                ])
-                ->setFormOptions([
-                    'class' => Nationality::class,
-                ]),
+                NationalityFilter::create('nationality', null, ['author.nationality']),
             )
             ->orderBy('title', 'asc')
             ->addField(
