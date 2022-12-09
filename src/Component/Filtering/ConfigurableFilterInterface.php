@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Filtering;
 
-interface ConfigurableFilterInterface implements FilterInterface, TypeAwareFilterInterface, FormTypeAwareFilterInterface
+interface ConfigurableFilterInterface extends FilterInterface, TypeAwareFilterInterface, FormTypeAwareFilterInterface
 {
 }
