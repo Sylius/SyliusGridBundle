@@ -117,6 +117,7 @@ The filter allows the user to select following search options:
 -   not empty
 -   in
 -   not in
+-   member of
 
 If you don't want display all theses matching possibilities, you can
 choose just one of them. Then only the input field will be displayed.
