@@ -15,7 +15,6 @@ namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
-use Sylius\Component\Resource\Exception\UnsupportedMethodException;
 
 final class ExpressionBuilder implements ExpressionBuilderInterface
 {
@@ -81,14 +80,6 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         $this->queryBuilder->setParameter($field, $value);
 
         return $this->queryBuilder->expr()->gte($field, ':' . $field);
-    }
-
-    /**
-     * Method not supported by Doctrine\DBAL\Query\Expression\ExpressionBuilder
-     */
-    public function memberOf($value, string $field)
-    {
-        throw new UnsupportedMethodException('memberOf');
     }
 
     public function in(string $field, array $values)

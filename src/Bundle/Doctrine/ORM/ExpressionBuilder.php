@@ -17,9 +17,9 @@ use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\From;
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 
-final class ExpressionBuilder implements ExpressionBuilderInterface
+final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
 {
     private QueryBuilder $queryBuilder;
 

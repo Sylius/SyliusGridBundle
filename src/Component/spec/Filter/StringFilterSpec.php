@@ -16,6 +16,7 @@ namespace spec\Sylius\Component\Grid\Filter;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 use Sylius\Component\Grid\Filter\StringFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
@@ -148,7 +149,7 @@ final class StringFilterSpec extends ObjectBehavior
 
     function it_filters_data_containing_value_being_member_of_field(
         DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
+        MemberOfAwareExpressionBuilderInterface $expressionBuilder,
     ): void {
         $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
 
