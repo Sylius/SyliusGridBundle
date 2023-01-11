@@ -15,6 +15,7 @@ namespace Sylius\Component\Grid\Filter;
 
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
 final class StringFilter implements FilterInterface
@@ -83,7 +84,7 @@ final class StringFilter implements FilterInterface
      * @throws \InvalidArgumentException
      */
     private function getExpression(
-        ExpressionBuilderInterface $expressionBuilder,
+        ExpressionBuilderInterface|MemberOfAwareExpressionBuilderInterface $expressionBuilder,
         string $type,
         string $field,
         $value,
@@ -110,7 +111,11 @@ final class StringFilter implements FilterInterface
             case self::TYPE_NOT_IN:
                 return $expressionBuilder->notIn($field, array_map('trim', explode(',', $value)));
             case self::TYPE_MEMBER_OF:
-                return $expressionBuilder->memberOf($value, $field);
+                if (method_exists($expressionBuilder, 'memberOf')) {
+                    return $expressionBuilder->memberOf($value, $field);
+                }
+
+                throw new \InvalidArgumentException(sprintf('The memberOf method is not supported by %s', get_class($expressionBuilder)));
             default:
                 throw new \InvalidArgumentException(sprintf('Could not get an expression for type "%s"!', $type));
         }
