@@ -25,12 +25,14 @@ class Author implements ResourceInterface
 {
     /**
      * @Serializer\Expose
+     *
      * @Serializer\Type("integer")
      */
     private ?int $id = null;
 
     /**
      * @Serializer\Expose
+     *
      * @Serializer\Type("string")
      */
     private ?string $name = null;

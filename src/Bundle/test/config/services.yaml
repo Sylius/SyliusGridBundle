@@ -24,3 +24,9 @@ services:
         public: true
 
     App\Filter\NationalityFilter: null
+
+    App\Shared\:
+        resource: '../src/Shared'
+
+    App\BoardGameBlog\:
+        resource: '../src/BoardGameBlog'
