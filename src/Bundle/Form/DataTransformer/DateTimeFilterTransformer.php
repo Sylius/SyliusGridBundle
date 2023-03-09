@@ -34,14 +34,16 @@ final class DateTimeFilterTransformer implements DataTransformerInterface
         $this->type = $type;
     }
 
-    public function transform($value): array
+    /** @param mixed|array $value */
+    public function transform(mixed $value): array
     {
         return $value;
     }
 
-    public function reverseTransform($value): array
+    /** @param mixed|array $value */
+    public function reverseTransform(mixed $value): array
     {
-        if (!$value['date']['year']) {
+        if (!($value['date']['year'] ?? false)) {
             return $value;
         }
 
