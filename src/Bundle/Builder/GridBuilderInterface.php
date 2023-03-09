@@ -19,10 +19,10 @@ use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
 /**
- * @method string|callable|null getProvider
+ * @method string|callable|null getProvider()
  * @method GridBuilderInterface setProvider(string|callable|null $provider)
  *
- * @psalm-method string|callable|null getProvider
+ * @psalm-method string|callable|null getProvider()
  * @psalm-method GridBuilderInterface setProvider(string|callable|null $provider)
  */
 interface GridBuilderInterface
