@@ -29,6 +29,9 @@ final class GridBuilder implements GridBuilderInterface
 
     private array $driverConfiguration = [];
 
+    /** @var string|callable|null */
+    private $provider;
+
     /** @var FieldInterface[] */
     private array $fields = [];
 
@@ -88,6 +91,18 @@ final class GridBuilder implements GridBuilderInterface
             'method' => $method,
             'arguments' => $arguments,
         ]);
+    }
+
+    public function getProvider(): callable|string|null
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(callable|string|null $provider): GridBuilderInterface
+    {
+        $this->provider = $provider;
+
+        return $this;
     }
 
     public function addField(FieldInterface $field): self
@@ -200,6 +215,10 @@ final class GridBuilder implements GridBuilderInterface
             ],
             'removals' => $this->removals,
         ];
+
+        if (null !== $this->provider) {
+            $output['provider'] = $this->provider;
+        }
 
         if (count($this->fields) > 0) {
             $output['fields'] = array_map(function (FieldInterface $field) { return $field->toArray(); }, $this->fields);
