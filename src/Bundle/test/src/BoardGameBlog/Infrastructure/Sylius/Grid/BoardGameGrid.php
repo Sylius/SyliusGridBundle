@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\BoardGameBlog\Infrastructure\Sylius\Grid;
 
 use App\BoardGameBlog\Domain\Model\BoardGame;
+use App\BoardGameBlog\Infrastructure\Sylius\Grid\Provider\BoardGameGridProvider;
+use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
@@ -35,12 +37,12 @@ final class BoardGameGrid extends AbstractGrid implements ResourceAwareGridInter
     public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
+            ->setProvider(BoardGameGridProvider::class)
             ->orderBy('name', 'asc')
             ->addField(
                 StringField::create('name')
-                    ->setPath('name.value')
                     ->setLabel('Name')
-                    ->setSortable(true, 'name.value'),
+                    ->setSortable(true),
             )
             ->addActionGroup(
                 MainActionGroup::create(
@@ -59,6 +61,6 @@ final class BoardGameGrid extends AbstractGrid implements ResourceAwareGridInter
 
     public function getResourceClass(): string
     {
-        return BoardGame::class;
+        return BoardGameResource::class;
     }
 }

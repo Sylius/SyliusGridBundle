@@ -24,6 +24,9 @@ class Grid
     /** @var array */
     private $driverConfiguration;
 
+    /** @var string|callable|null */
+    private $provider;
+
     /** @var array */
     private $sorting = [];
 
@@ -69,6 +72,16 @@ class Grid
     public function setDriverConfiguration(array $driverConfiguration): void
     {
         $this->driverConfiguration = $driverConfiguration;
+    }
+
+    public function getProvider(): string|callable|null
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(string|callable|null $provider): void
+    {
+        $this->provider = $provider;
     }
 
     public function getSorting(): array

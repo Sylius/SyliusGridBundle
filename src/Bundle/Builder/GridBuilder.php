@@ -29,6 +29,9 @@ final class GridBuilder implements GridBuilderInterface
 
     private array $driverConfiguration = [];
 
+    /** @var string|callable|null */
+    private $provider;
+
     /** @var FieldInterface[] */
     private array $fields = [];
 
@@ -68,6 +71,18 @@ final class GridBuilder implements GridBuilderInterface
     public function setDriver(string $driver): GridBuilderInterface
     {
         $this->driver = $driver;
+
+        return $this;
+    }
+
+    public function getProvider(): callable|string|null
+    {
+        return $this->provider;
+    }
+
+    public function setProvider(callable|string|null $provider): GridBuilderInterface
+    {
+        $this->provider = $provider;
 
         return $this;
     }
@@ -224,6 +239,8 @@ final class GridBuilder implements GridBuilderInterface
         if (null !== $this->extends) {
             $output['extends'] = $this->extends;
         }
+
+        $output['provider'] = $this->provider ?? 'sylius.grid.data_provider.default';
 
         return $output;
     }
