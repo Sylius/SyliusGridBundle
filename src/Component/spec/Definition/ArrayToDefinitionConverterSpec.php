@@ -48,6 +48,8 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
 
         $grid->setLimits([9, 18]);
 
+        $grid->setProvider('App\Provider');
+
         $codeField = Field::fromNameAndType('code', 'string');
         $codeField->setLabel('System Code');
         $codeField->setPath('method.code');
@@ -103,6 +105,7 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
                 'name' => 'doctrine/orm',
                 'options' => ['resource' => 'sylius.tax_category'],
             ],
+            'provider' => 'App\Provider',
             'sorting' => [
                 'code' => 'desc',
             ],
