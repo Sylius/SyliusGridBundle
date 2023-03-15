@@ -47,11 +47,11 @@
     },
     "conflict": {
         "twig/twig": "<2.12",
-        "pagerfanta/core": "<3.0",
-        "pagerfanta/doctrine-phpcr-odm-adapter": "<3.0",
-        "pagerfanta/doctrine-dbal-adapter": "<3.0",
-        "pagerfanta/doctrine-orm-adapter": "<3.0",
-        "pagerfanta/pagefanta": "<3.0"
+        "pagerfanta/core": "<3.7",
+        "pagerfanta/doctrine-phpcr-odm-adapter": "<3.7",
+        "pagerfanta/doctrine-dbal-adapter": "<3.7",
+        "pagerfanta/doctrine-orm-adapter": "<3.7",
+        "pagerfanta/pagerfanta": "<3.7"
     },
     "require-dev": {
         "doctrine/doctrine-bundle": "^1.12 || ^2.0",
@@ -62,7 +62,7 @@
         "lchrusciel/api-test-case": "^5.0",
         "matthiasnoback/symfony-config-test": "^4.2.1",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2.1",
-        "pagerfanta/pagerfanta": "^3.0",
+        "pagerfanta/pagerfanta": "^3.7 || ^4.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpspec/phpspec": "^7.2",
         "phpstan/phpstan": "^1.7",
