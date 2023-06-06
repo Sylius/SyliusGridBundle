@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
@@ -47,6 +48,10 @@ final class ServiceGridProvider implements GridProviderInterface
 
     public function get(string $code): Grid
     {
+        if (is_a($code, GridInterface::class, true)) {
+            $code = $code::getName();
+        }
+
         $grid = $this->gridRegistry->getGrid($code);
 
         if (null === $grid) {

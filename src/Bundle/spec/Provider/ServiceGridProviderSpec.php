@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace spec\Sylius\Bundle\GridBundle\Provider;
 
+use App\Grid\BookGrid;
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
@@ -63,6 +64,21 @@ class ServiceGridProviderSpec extends ObjectBehavior
         $gridConfigurationRemovalsHandler->handle([])->willReturn([]);
 
         $this->get('app_book')->shouldReturn($gridDefinition);
+    }
+
+    function it_gets_grids_definitions_by_fully_qualified_class_name(
+        ArrayToDefinitionConverterInterface $converter,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridRegistryInterface $gridRegistry,
+        Grid $gridDefinition,
+    ): void {
+        $bookGrid = new BookGrid();
+        $gridRegistry->getGrid('app_book')->willReturn($bookGrid);
+
+        $converter->convert('app_book', [])->willReturn($gridDefinition);
+        $gridConfigurationRemovalsHandler->handle($bookGrid->toArray())->willReturn([]);
+
+        $this->get(BookGrid::class)->shouldReturn($gridDefinition);
     }
 
     function it_supports_grid_inheritance(
