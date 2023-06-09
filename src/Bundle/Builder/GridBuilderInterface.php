@@ -18,6 +18,13 @@ use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
+/**
+ * @method string|callable|null getProvider
+ * @method GridBuilderInterface setProvider(string|callable|null $provider)
+ *
+ * @psalm-method string|callable|null getProvider
+ * @psalm-method GridBuilderInterface setProvider(string|callable|null $provider)
+ */
 interface GridBuilderInterface
 {
     public static function create(string $name, ?string $resourceClass = null): self;
