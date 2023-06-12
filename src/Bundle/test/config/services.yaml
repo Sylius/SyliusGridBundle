@@ -10,6 +10,8 @@ services:
     _defaults:
         autowire: true
         autoconfigure: true
+        bind:
+            $dataDir: '%kernel.project_dir%/config/data'
 
     app.english_books_query_builder:
         class: App\QueryBuilder\EnglishBooksQueryBuilder
@@ -24,3 +26,6 @@ services:
         public: true
 
     App\Filter\NationalityFilter: null
+
+    App\BoardGameBlog\:
+        resource: '../src/BoardGameBlog'

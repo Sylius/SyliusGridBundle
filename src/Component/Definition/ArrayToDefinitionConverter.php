@@ -35,6 +35,8 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $configuration['driver']['options'],
         );
 
+        $grid->setProvider($configuration['provider'] ?? null);
+
         if (array_key_exists('sorting', $configuration)) {
             $grid->setSorting($configuration['sorting']);
         }

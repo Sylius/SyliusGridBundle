@@ -2,6 +2,7 @@
 
 use PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer;
 use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
+use PhpCsFixer\Fixer\FunctionNotation\MethodArgumentSpaceFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use SlevomatCodingStandard\Sniffs\Commenting\InlineDocCommentDeclarationSniff;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -29,6 +30,7 @@ file that was distributed with this source code.',
     $containerConfigurator->parameters()->set(Option::SKIP, [
         InlineDocCommentDeclarationSniff::class . '.MissingVariable',
         VisibilityRequiredFixer::class => ['*Spec.php'],
+        MethodArgumentSpaceFixer::class => ['*/BoardGameBlog/*'],
         '**/var/*',
     ]);
 };

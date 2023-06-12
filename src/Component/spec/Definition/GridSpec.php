@@ -55,6 +55,23 @@ final class GridSpec extends ObjectBehavior
         $this->getDriverConfiguration()->shouldReturn(['foo' => 'bar']);
     }
 
+    function it_has_no_provider_by_default(): void
+    {
+        $this->getProvider()->shouldReturn(null);
+    }
+
+    function its_provider_is_mutable(): void
+    {
+        $this->setProvider('App\Provider');
+        $this->getProvider()->shouldReturn('App\Provider');
+    }
+
+    function its_provider_could_be_a_callable(): void
+    {
+        $this->setProvider([GridProviderCallable::class, 'getData']);
+        $this->getProvider()->shouldReturn([GridProviderCallable::class, 'getData']);
+    }
+
     function it_has_empty_sorting_configuration_by_default(): void
     {
         $this->getSorting()->shouldReturn([]);
@@ -324,5 +341,13 @@ final class GridSpec extends ObjectBehavior
         $this->addFilter($secondFilter);
 
         $this->getEnabledFilters()->shouldHaveCount(1);
+    }
+}
+
+final class GridProviderCallable
+{
+    public static function getData(): array
+    {
+        return ['callable' => true];
     }
 }

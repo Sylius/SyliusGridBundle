@@ -72,12 +72,17 @@
         </service>
         <service id="sylius.grid.view_factory" alias="Sylius\Component\Grid\View\GridViewFactoryInterface" />
 
-        <service id="Sylius\Component\Grid\Data\DataProviderInterface" class="Sylius\Component\Grid\Data\DataProvider">
+        <service id="sylius.grid.data_provider" class="Sylius\Component\Grid\Data\DataProvider">
             <argument type="service" id="sylius.grid.data_source_provider" />
             <argument type="service" id="sylius.grid.filters_applicator" />
             <argument type="service" id="sylius.grid.sorter" />
         </service>
-        <service id="sylius.grid.data_provider" alias="Sylius\Component\Grid\Data\DataProviderInterface" />
+        <service id="Sylius\Component\Grid\Data\DataProviderInterface" alias="sylius.grid.data_provider" />
+
+        <service id="Sylius\Component\Grid\Data\Provider" decorates="sylius.grid.data_provider">
+            <argument type="tagged_locator" tag="sylius.grid_data_provider" />
+            <argument type="service" id=".inner" />
+        </service>
 
         <service id="Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface" class="Sylius\Component\Grid\Filtering\FiltersCriteriaResolver" />
         <service id="sylius.grid.filters_criteria_resolver" alias="Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface" />

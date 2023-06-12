@@ -83,6 +83,20 @@ final class GridBuilderSpec extends ObjectBehavior
         ]);
     }
 
+    function it_sets_provider_with_a_string(): void
+    {
+        $this->setProvider('App/Driver');
+
+        $this->toArray()['provider']->shouldReturn('App/Driver');
+    }
+
+    function it_sets_provider_with_a_callable(): void
+    {
+        $this->setProvider([CallableProvider::class, 'getData']);
+
+        $this->toArray()['provider']->shouldBeCallable();
+    }
+
     function it_adds_fields(): void
     {
         $field = Field::create('title', 'string');
@@ -255,5 +269,13 @@ final class GridBuilderSpec extends ObjectBehavior
         $gridBuilder = $this->extends('app_author');
 
         $gridBuilder->toArray()['extends']->shouldReturn('app_author');
+    }
+}
+
+final class CallableProvider
+{
+    public static function getData(): array
+    {
+        return [];
     }
 }
