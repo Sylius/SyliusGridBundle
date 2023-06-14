@@ -11,3 +11,4 @@ framework:
     http_method_override: true
     test: ~
     annotations: true
+    validation: true
