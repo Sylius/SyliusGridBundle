@@ -121,8 +121,8 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
@@ -150,10 +150,10 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                     ->setLabel('State')
                     ->setSortable(true)
             )
-            //->addField(
+            // ->addField(
             //    TwigField::create('enabled', 'path/to/field/template.html.twig')
             //        ->setLabel('Enabled')
-            //)
+            // )
             ->addField(
                 DateTimeField::create('createdAt')
                     ->setLabel('CreatedAt')
@@ -216,12 +216,10 @@ use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
-use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
@@ -289,12 +287,10 @@ use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
-use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
 final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInterface
 {
