@@ -72,9 +72,9 @@ jobs:
             -
                 name: Prepare test application
                 run: |
-                    (cd src/Bundle/test && bin/console doctrine:database:drop --force -n)
-                    (cd src/Bundle/test && bin/console doctrine:database:create)
-                    (cd src/Bundle/test && bin/console doctrine:schema:create)
+                    (cd tests/Application && bin/console doctrine:database:drop --force -n)
+                    (cd tests/Application && bin/console doctrine:database:create)
+                    (cd tests/Application && bin/console doctrine:schema:create)
 
             -
                 name: Run analysis
@@ -92,32 +92,32 @@ jobs:
 
             -
                 name: Run lint container
-                run: (cd src/Bundle/test && bin/console lint:container)
+                run: (cd tests/Application && bin/console lint:container)
 
             -
                 name: Run tests for grids with php config
                 if: matrix.symfony == '^5.3'
                 run: |
-                    (cd src/Bundle/test && bin/console cache:clear --env=test_grids_with_php_config)
+                    (cd tests/Application && bin/console cache:clear --env=test_grids_with_php_config)
                     composer test-php-config
 
             -
                 name: Run tests with grids as services
                 run: |
-                    (cd src/Bundle/test && bin/console cache:clear --env=test_grids_as_service)
+                    (cd tests/Application && bin/console cache:clear --env=test_grids_as_service)
                     composer test-with-grids-as-service
 
             -
                 name: Run tests with PostgresSQL
                 if: matrix.postgres != ''
                 run: |
-                    (cd src/Bundle/test && bin/console cache:clear --env=test_with_postgres)
-                    (cd src/Bundle/test && bin/console doctrine:database:create --env=test_with_postgres)
-                    (cd src/Bundle/test && bin/console doctrine:schema:create --env=test_with_postgres)
+                    (cd tests/Application && bin/console cache:clear --env=test_with_postgres)
+                    (cd tests/Application && bin/console doctrine:database:create --env=test_with_postgres)
+                    (cd tests/Application && bin/console doctrine:schema:create --env=test_with_postgres)
                     composer test-with-postgres
 
             -
                 name: Run lint container without maker bundle
                 run: |
                     APP_ENV=test_without_maker composer remove --dev symfony/maker-bundle
-                    (cd src/Bundle/test && bin/console lint:container --env=test_without_maker)
+                    (cd tests/Application && bin/console lint:container --env=test_without_maker)
