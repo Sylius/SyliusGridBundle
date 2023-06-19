@@ -12,7 +12,6 @@
             <directory name="src/Bundle/Doctrine/PHPCRODM" />
             <directory name="src/Bundle/Resources" />
             <directory name="src/Bundle/spec" />
-            <directory name="src/Bundle/test" />
             <directory name="src/Bundle/Tests" />
             <directory name="src/Component/spec" />
             <directory name="src/Component/vendor" />
