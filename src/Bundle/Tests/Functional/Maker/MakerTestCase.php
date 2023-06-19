@@ -28,7 +28,7 @@ abstract class MakerTestCase extends KernelTestCase
 
     protected static function tempDir(): string
     {
-        return __DIR__ . '/../../../test/tmp';
+        return dirname(__DIR__, 5) . '/tests/Application/tmp';
     }
 
     protected static function tempFile(string $path): string
