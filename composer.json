@@ -99,9 +99,9 @@
         "psr-4": {
             "Sylius\\Bundle\\GridBundle\\spec\\": "src/Bundle/spec/",
             "Sylius\\Component\\Grid\\spec\\": "src/Component/spec/",
-            "App\\": "src/Bundle/test/src/",
+            "App\\": "tests/Application/src/",
             "AppBundle\\": "src/Bundle/test/src/AppBundle/",
-            "App\\Tests\\Tmp\\": "src/Bundle/test/tmp"
+            "App\\Tests\\Tmp\\": "tests/Application/tmp/"
         }
     },
     "config": {
@@ -113,12 +113,12 @@
     "scripts": {
         "analyse": [
             "@composer validate --strict",
-            "vendor/bin/ecs check src",
+            "vendor/bin/ecs check",
             "vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max src",
             "vendor/bin/psalm"
         ],
         "fix": [
-            "vendor/bin/ecs check src --fix"
+            "vendor/bin/ecs check --fix"
         ],
         "test": [
             "vendor/bin/phpspec run --ansi --no-interaction",

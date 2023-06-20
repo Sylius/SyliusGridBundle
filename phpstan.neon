@@ -20,7 +20,6 @@ parameters:
         - %currentWorkingDirectory%/src/Bundle/Renderer/TwigGridRenderer.php
         - %currentWorkingDirectory%/src/Bundle/Resources/*
         - %currentWorkingDirectory%/src/Bundle/spec/*
-        - %currentWorkingDirectory%/src/Bundle/test/*
         - %currentWorkingDirectory%/src/Bundle/Tests/*
         - %currentWorkingDirectory%/src/Component/DataExtractor/PropertyAccessDataExtractor.php
         - %currentWorkingDirectory%/src/Component/Definition/Filter.php
