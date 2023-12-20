@@ -503,6 +503,9 @@ sylius_grid:
                     type: entity
                     form_options:
                         class: "%app.model.channel.class%"
+                        # You can pass any form options available in Entity Type
+                        # See https://symfony.com/doc/current/reference/forms/types/entity.html
+                        multiple: true 
                 customer:
                     type: entity
                     form_options:
@@ -525,7 +528,12 @@ return static function (GridConfig $grid): void {
     $grid->addGrid(GridBuilder::create('app_user', '%app.model.user.class%')
         ->addFilter(
             Filter::create('channel', 'entity')
-                ->setFormOptions(['class' => '%app.model.channel.class%'])
+                ->setFormOptions([
+                    'class' => '%app.model.channel.class%'
+                    // You can pass any form options available in Entity Type
+                    // See https://symfony.com/doc/current/reference/forms/types/entity.html
+                    'multiple' => true,
+                ])
         )
         ->addFilter(
             Filter::create('customer', 'entity')
@@ -535,6 +543,7 @@ return static function (GridConfig $grid): void {
         // can be simplified using EntityFilter
         ->addFilter(
             EntityFilter::create('channel', '%app.model.channel.class%')
+                ->addFormOption('multiple', true)
         )
         ->addFilter(
             EntityFilter::create('customer', '%app.model.customer.class%')
