@@ -196,10 +196,13 @@ final class GridBuilder implements GridBuilderInterface
         $output = [
             'driver' => [
                 'name' => $this->driver,
-                'options' => $this->driverConfiguration,
             ],
             'removals' => $this->removals,
         ];
+
+        if (count($this->driverConfiguration) > 0) {
+            $output['driver']['options'] = $this->driverConfiguration;
+        }
 
         if (count($this->fields) > 0) {
             $output['fields'] = array_map(function (FieldInterface $field) { return $field->toArray(); }, $this->fields);
