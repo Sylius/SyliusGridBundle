@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v1.12.1 (2024-01-05)
+
+#### Details
+
+- [#277](https://github.com/Sylius/SyliusGridBundle/issues/277) Fix the build ([@loic425](https://github.com/loic425))
+- [#281](https://github.com/Sylius/SyliusGridBundle/issues/281) Init .gitattributes to preserve the planet ([@loic425](https://github.com/loic425))
+- [#280](https://github.com/Sylius/SyliusGridBundle/issues/280) [docs] Add missing fields options on string filter ([@loic425](https://github.com/loic425))
+- [#298](https://github.com/Sylius/SyliusGridBundle/issues/298) Fix CI ([@loic425](https://github.com/loic425))
+- [#317](https://github.com/Sylius/SyliusGridBundle/issues/317) Fix coding standard ([@loic425](https://github.com/loic425))
+- [#315](https://github.com/Sylius/SyliusGridBundle/issues/315) [Docs] Add info about available form options ([@loic425](https://github.com/loic425))
+- [#316](https://github.com/Sylius/SyliusGridBundle/issues/316) Don't remove driver options when extending a grid configuration ([@loic425](https://github.com/loic425))
+
 ## v1.12.0 (2022-10-31)
 
 #### Details
