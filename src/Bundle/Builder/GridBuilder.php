@@ -210,14 +210,17 @@ final class GridBuilder implements GridBuilderInterface
     {
         $output = [
             'driver' => [
-            'name' => $this->driver,
-            'options' => $this->driverConfiguration,
+                'name' => $this->driver,
             ],
             'removals' => $this->removals,
         ];
 
         if (null !== $this->provider) {
             $output['provider'] = $this->provider;
+        }
+
+        if (count($this->driverConfiguration) > 0) {
+            $output['driver']['options'] = $this->driverConfiguration;
         }
 
         if (count($this->fields) > 0) {
