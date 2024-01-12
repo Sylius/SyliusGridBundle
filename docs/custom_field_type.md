@@ -77,7 +77,7 @@ sylius_grid:
 ```php
 <?php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
@@ -85,7 +85,7 @@ use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addField(
             Field::create('name', 'custom')
                 ->setLabel('sylius.ui.name')
@@ -104,7 +104,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
@@ -124,12 +124,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                 Field::create('name', 'custom')
                     ->setLabel('sylius.ui.name')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
