@@ -21,7 +21,7 @@ sylius_resource:
 ```
 
 That's it! Your class is now a resource. In order to learn what does it
-mean, please refer to the 
+mean, please refer to the
 [SyliusResourceBundle](https://github.com/Sylius/SyliusResourceBundle/blob/master/docs/index.md)
 documentation.
 
@@ -40,7 +40,7 @@ Grid Definition
 Now we can configure our first grid:
 
  ### **Note**
- 
+
 Remember that a grid is *the way objects of a desired entity are
 displayed on its index view*. Therefore only fields that are useful
 for identification of objects are available - only `string` and `twig`
@@ -76,14 +76,14 @@ sylius_grid:
 ```php
 <?php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addField(
             StringField::create('name')
                 ->setLabel('sylius.ui.name')
@@ -106,7 +106,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
@@ -131,12 +131,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                 TwigField::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
                     ->setLabel('sylius.ui.enabled')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -179,7 +179,7 @@ This will generate the following paths:
 
 ### *Tip*
 
-[In the Semantic UI documentation](http://semantic-ui.com/elements/icon.html) 
+[In the Semantic UI documentation](http://semantic-ui.com/elements/icon.html)
 you can find all possible icons you can choose for your grid.
 
 ### *Tip*
@@ -244,14 +244,14 @@ sylius_grid:
 ```php
 <?php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addFilter(
             StringFilter::create('name')
         )
@@ -272,7 +272,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
@@ -295,12 +295,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
             ->addFilter(
                 BooleanFilter::create('enabled')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -342,14 +342,14 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->setRepositoryMethod('mySupplierGridQuery')
     )
 };
@@ -365,7 +365,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
@@ -383,12 +383,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
     {
         $gridBuilder
             ->setRepositoryMethod('mySupplierGridQuery')
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -432,13 +432,13 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addFilter(
             StringFilter::create('country', ['address.country'], 'contains')
                 ->setLabel('origin')
@@ -457,7 +457,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
@@ -477,12 +477,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                 StringFilter::create('country', ['address.country'], 'contains')
                     ->setLabel('origin')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -515,12 +515,12 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->orderBy('name', 'asc')
     )
 };
@@ -536,7 +536,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
@@ -552,12 +552,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
     {
         $gridBuilder
             ->orderBy('name', 'asc')
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -590,13 +590,13 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addField(
             StringField::create('name')
                 ->setLabel('sylius.ui.name')
@@ -616,7 +616,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
@@ -637,12 +637,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                     ->setLabel('sylius.ui.name')
                     ->setSortable(true)
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -680,13 +680,13 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addField(
             TwigField::create('name', '@App/Grid/Fields/myCountryFlags.html.twig')
                 ->setPath('address.country')
@@ -707,7 +707,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
@@ -729,12 +729,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                     ->setLabel('app.ui.country')
                     ->setSortable(true, 'address.country')
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -768,12 +768,12 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->setLimits([30, 12, 48])
     )
 };
@@ -789,7 +789,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
@@ -806,12 +806,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
     {
         $gridBuilder
             ->setLimits([30, 12, 48])
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
@@ -865,7 +865,7 @@ sylius_grid:
 <?php
 // config/packages/sylius_grid.php
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
@@ -875,7 +875,7 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
-    $grid->addGrid(GridBuilder::create('app_admin_supplier', Suplier::class)
+    $grid->addGrid(GridBuilder::create('app_admin_supplier', Supplier::class)
         ->addActionGroup(
             MainActionGroup::create(
                 CreateAction::create()
@@ -901,7 +901,7 @@ declare(strict_types=1);
 
 namespace App\Grid;
 
-use App\Entity\Suplier;
+use App\Entity\Supplier;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
@@ -932,12 +932,12 @@ final class AdminSupplierGrid extends AbstractGrid implements ResourceAwareGridI
                     DeleteAction::create()
                 )
             )
-        ;    
+        ;
     }
-    
+
     public function getResourceClass(): string
     {
-        return Suplier::class;
+        return Supplier::class;
     }
 }
 ```
