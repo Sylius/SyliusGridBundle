@@ -12,11 +12,12 @@ namespace App\Grid\Filter;
 
 use App\Form\Type\Filter\SuppliersStatisticsFilterType;
 use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface;
+use Sylius\Bundle\GridBundle\Doctrine\DataSourceInterface as DoctrineDataSourceIntrface;
 use Sylius\Component\Grid\Filtering\ConfiguragurableFilterInterface;
 
 class SuppliersStatisticsFilter implements ConfiguragurableFilterInterface
 {
-    public function apply(DataSourceInterface $dataSource, $name, $data, array $options = []): void
+    public function apply(DataSourceInterface|DoctrineDataSourceIntrface $dataSource, $name, $data, array $options = []): void
     {
         // Your filtering logic.
         // $data['stats'] contains the submitted value!
