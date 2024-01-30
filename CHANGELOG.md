@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v1.13.0-ALPHA.1 (2024-01-30)
+
+#### Details
+
+- [#274](https://github.com/Sylius/SyliusGridBundle/issues/274) [GridBuilder] Add missing default value on filter ([@loic425](https://github.com/loic425))
+- [#276](https://github.com/Sylius/SyliusGridBundle/issues/276) Autoconfigure grid filters ([@loic425](https://github.com/loic425))
+- [#278](https://github.com/Sylius/SyliusGridBundle/issues/278) Add QueryBuilder access to custom filters ([@loic425](https://github.com/loic425))
+- [#279](https://github.com/Sylius/SyliusGridBundle/issues/279) Add services aliases to improve autowiring ([@loic425](https://github.com/loic425), [@lchrusciel](https://github.com/lchrusciel))
+- [#282](https://github.com/Sylius/SyliusGridBundle/issues/282) Add memberOf() method ([@TheMilek](https://github.com/TheMilek))
+- [#287](https://github.com/Sylius/SyliusGridBundle/issues/287) Add missing filter to docs ([@TheMilek](https://github.com/TheMilek))
+- [#291](https://github.com/Sylius/SyliusGridBundle/issues/291) Fix memberOf definition ([@TheMilek](https://github.com/TheMilek))
+- [#299](https://github.com/Sylius/SyliusGridBundle/issues/299) Custom data provider (needs new resource metadata to detach the resource from Doctrine) ([@loic425](https://github.com/loic425))
+- [#301](https://github.com/Sylius/SyliusGridBundle/issues/301) Get Grid by FQCN ([@loic425](https://github.com/loic425))
+- [#305](https://github.com/Sylius/SyliusGridBundle/issues/305) [GridBuilder] Apply transition action ([@loic425](https://github.com/loic425))
+- [#306](https://github.com/Sylius/SyliusGridBundle/issues/306) Fix build ([@loic425](https://github.com/loic425))
+- [#307](https://github.com/Sylius/SyliusGridBundle/issues/307) Move tests app ([@loic425](https://github.com/loic425))
+- [#308](https://github.com/Sylius/SyliusGridBundle/issues/308) [Maintenance] Launch of `Sylius Sp. z o.o.` copyright owner across project files ([@Rafikooo](https://github.com/Rafikooo))
 ## v1.12.1 (2024-01-05)
 
 #### Details
