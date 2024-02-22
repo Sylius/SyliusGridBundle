@@ -25,6 +25,7 @@ parameters:
         - %currentWorkingDirectory%/src/Component/Definition/Filter.php
         - %currentWorkingDirectory%/src/Component/Filter/DateFilter.php
         - %currentWorkingDirectory%/src/Component/Filter/MoneyFilter.php
+        - %currentWorkingDirectory%/src/Component/Filter/NumericRangeFilter.php
         - %currentWorkingDirectory%/src/Component/Filter/StringFilter.php
         - %currentWorkingDirectory%/src/Component/Filtering/FiltersCriteriaResolver.php
         - %currentWorkingDirectory%/src/Component/Sorting/Sorter.php

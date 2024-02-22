@@ -67,6 +67,16 @@
         </service>
         <service id="sylius.form.type.grid_filter.exists" alias="Sylius\Bundle\GridBundle\Form\Type\Filter\ExistsFilterType" />
 
+        <service id="Sylius\Component\Grid\Filter\NumericRangeFilter">
+            <tag name="sylius.grid_filter" type="numeric_range" form-type="Sylius\Bundle\GridBundle\Form\Type\Filter\NumericRangeFilterType" />
+        </service>
+        <service id="sylius.grid_filter.numeric_range" alias="Sylius\Component\Grid\Filter\NumericRangeFilter" />
+
+        <service id="Sylius\Bundle\GridBundle\Form\Type\Filter\NumericRangeFilterType">
+            <tag name="form.type" />
+        </service>
+        <service id="sylius.form.type.grid_filter.numeric_range" alias="Sylius\Bundle\GridBundle\Form\Type\Filter\NumericRangeFilterType" />
+
         <service id="Sylius\Component\Grid\Filter\SelectFilter">
             <tag name="sylius.grid_filter" type="select" form-type="Sylius\Bundle\GridBundle\Form\Type\Filter\SelectFilterType" />
         </service>
