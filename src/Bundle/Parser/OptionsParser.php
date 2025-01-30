@@ -35,7 +35,7 @@ final class OptionsParser implements OptionsParserInterface
             return $parameter;
         }
 
-        if (0 === strpos($parameter, 'callable:')) {
+        if (str_starts_with($parameter, 'callable:')) {
             return $this->parseOptionCallable(substr($parameter, 9));
         }
 
