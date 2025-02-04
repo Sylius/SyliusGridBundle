@@ -15,6 +15,7 @@ namespace Sylius\Component\Grid\FieldTypes;
 
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
+use Sylius\Component\Grid\Exception\UnexpectedValueException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CallableFieldType implements FieldTypeInterface
@@ -30,8 +31,12 @@ final class CallableFieldType implements FieldTypeInterface
 
         try {
             $value = (string) $value;
-        } catch (\Throwable) {
-            throw new \RuntimeException(\sprintf('The callback for field "%s" returned a value that could not be converted to string.', $field->getName()));
+        } catch (\Throwable $e) {
+            throw new UnexpectedValueException(\sprintf(
+                'Callable field (name "%s") returned value could not be converted to string: "%s".',
+                $field->getName(),
+                $e->getMessage(),
+            ));
         }
 
         if ($options['htmlspecialchars']) {

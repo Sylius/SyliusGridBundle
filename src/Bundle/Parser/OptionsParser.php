@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Parser;
 
+use Sylius\Component\Grid\Exception\InvalidArgumentException;
+
 final class OptionsParser implements OptionsParserInterface
 {
     public function parseOptions(array $parameters): array
@@ -45,7 +47,7 @@ final class OptionsParser implements OptionsParserInterface
     private function parseOptionCallable(string $callable): \Closure
     {
         if (!is_callable($callable)) {
-            throw new \RuntimeException(\sprintf('%s is not a callable.', $callable));
+            throw new InvalidArgumentException(\sprintf('%s is not a callable.', $callable));
         }
 
         return $callable(...);

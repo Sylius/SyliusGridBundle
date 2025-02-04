@@ -16,6 +16,7 @@ namespace spec\Sylius\Component\Grid\FieldTypes;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
+use Sylius\Component\Grid\Exception\UnexpectedValueException;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 
 final class CallableFieldTypeSpec extends ObjectBehavior
@@ -70,9 +71,9 @@ final class CallableFieldTypeSpec extends ObjectBehavior
         DataExtractorInterface $dataExtractor,
         Field $field,
     ): void {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('BAR');
+        $dataExtractor->get($field, ['foo' => 'BAR'])->willReturn('BAR');
 
-        $this->render($field, ['foo' => 'bar'], [
+        $this->render($field, ['foo' => 'BAR'], [
             'callable' => [self::class, 'callable'],
             'htmlspecialchars' => true,
         ])->shouldReturn('bar');
@@ -86,7 +87,7 @@ final class CallableFieldTypeSpec extends ObjectBehavior
         $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('BAR');
 
         $this
-            ->shouldThrow(\RuntimeException::class)
+            ->shouldThrow(UnexpectedValueException::class)
             ->during('render', [
                 $field,
                 ['foo' => 'bar'],

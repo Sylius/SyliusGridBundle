@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Parser;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Parser\OptionsParser;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
+use Sylius\Component\Grid\Exception\InvalidArgumentException;
 
 final class OptionsParserTest extends TestCase
 {
@@ -24,7 +25,7 @@ final class OptionsParserTest extends TestCase
         $this->assertInstanceOf(OptionsParserInterface::class, new OptionsParser());
     }
 
-    public function testItParserOptionsWithCallable(): void
+    public function testItParsesOptionsWithCallable(): void
     {
         $options = (new OptionsParser())->parseOptions([
             'type' => 'callable',
@@ -43,7 +44,7 @@ final class OptionsParserTest extends TestCase
 
     public function testItFailsWhileParsingOptionsWithInvalidCallable(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(InvalidArgumentException::class);
 
         $options = (new OptionsParser())->parseOptions([
             'type' => 'callable',
