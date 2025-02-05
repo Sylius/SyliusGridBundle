@@ -18,7 +18,7 @@ use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Data\DataProviderInterface;
-use Sylius\Component\Grid\Filtering\FilterInterface;
+use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -77,7 +77,7 @@ final class SyliusGridExtension extends Extension
             },
         );
 
-        $container->registerForAutoconfiguration(FilterInterface::class)
+        $container->registerForAutoconfiguration(ConfigurableFilterInterface::class)
             ->addTag('sylius.legacy_grid_filter')
         ;
 

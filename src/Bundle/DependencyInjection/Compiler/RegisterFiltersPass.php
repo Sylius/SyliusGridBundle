@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
 
-use InvalidArgumentException;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Filtering\FormTypeAwareFilterInterface;
 use Sylius\Component\Grid\Filtering\TypeAwareFilterInterface;
@@ -30,11 +29,11 @@ final class RegisterFiltersPass implements CompilerPassInterface
             return;
         }
 
-        $filterRegistry = $container->getDefinition('sylius.registry.grid_filter');
+        $registry = $container->getDefinition('sylius.registry.grid_filter');
         $formTypeRegistry = $container->getDefinition('sylius.form_registry.grid_filter');
 
         foreach ($container->findTaggedServiceIds(AsFilter::SERVICE_TAG) as $id => $attributes) {
-            $this->registerFilter($filterRegistry, $formTypeRegistry, $id, $attributes);
+            $this->registerFilter($registry, $formTypeRegistry, $id, $attributes);
         }
 
         foreach ($container->findTaggedServiceIds('sylius.legacy_grid_filter') as $id => $attributes) {
@@ -59,7 +58,7 @@ final class RegisterFiltersPass implements CompilerPassInterface
                 $formType = $class::getFormType();
             }
 
-            $this->registerFilter($filterRegistry, $formTypeRegistry, $id, $attributes, $type, $formType);
+            $this->registerFilter($registry, $formTypeRegistry, $id, $attributes, $type, $formType);
         }
     }
 
@@ -73,11 +72,11 @@ final class RegisterFiltersPass implements CompilerPassInterface
     ): void {
         foreach ($attributes as $attribute) {
             if (null === $type && null === ($attribute['type'] ?? null)) {
-                throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attribute or implements "%s".', TypeAwareFilterInterface::class));
+                throw new \InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attribute or implements "%s".', TypeAwareFilterInterface::class));
             }
 
             if (null === $formType && null === ($attribute['form_type'] ?? null)) {
-                throw new InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attribute or implements "%s".', FormTypeAwareFilterInterface::class));
+                throw new \InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attribute or implements "%s".', FormTypeAwareFilterInterface::class));
             }
 
             $filterRegistry->addMethodCall('register', [$type ?? $attribute['type'], new Reference($id)]);
