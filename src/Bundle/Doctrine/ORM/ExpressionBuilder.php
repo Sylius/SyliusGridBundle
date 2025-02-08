@@ -47,7 +47,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->eq($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -56,7 +56,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->neq($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -65,7 +65,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->lt($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -74,7 +74,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->lte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -83,7 +83,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->gt($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -92,7 +92,7 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
     {
         $field = $this->adjustField($field);
         $parameterName = $this->getParameterName($field);
-        $this->queryBuilder->setParameter($parameterName, $value);
+        $this->queryBuilder->setParameter($parameterName, $value, $this->getType($field));
 
         return $this->queryBuilder->expr()->gte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
@@ -292,5 +292,24 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
         }
 
         throw new \RuntimeException(sprintf('Could not get metadata for "%s".', $rootField));
+    }
+
+    private function getType(string $field): string|null
+    {
+        [$_, $className] = $this->getFieldDetails($field);
+        $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata($className);
+
+        if ($metadata->hasField($field)) {
+            return $metadata->getTypeOfField($field);
+        }
+
+        if ($metadata->hasAssociation($field)) {
+            $mapping = $metadata->getAssociationMapping($field);
+            $mappingMetadata = $this->queryBuilder->getEntityManager()->getClassMetadata($mapping['targetEntity']);
+
+            return $mappingMetadata->getTypeOfField($mappingMetadata->getSingleIdentifierFieldName());
+        }
+
+        return null;
     }
 }
