@@ -33,7 +33,7 @@ interface FieldInterface
 
     public function isSortable(): bool;
 
-    public function setSortable(bool $sortable, string $path = null): self;
+    public function setSortable(bool $sortable, ?string $path = null): self;
 
     public function getPosition(): ?int;
 
