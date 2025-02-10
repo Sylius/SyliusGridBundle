@@ -89,7 +89,7 @@ final class Field implements FieldInterface
         return null !== $this->sortable;
     }
 
-    public function setSortable(bool $sortable, string $path = null): FieldInterface
+    public function setSortable(bool $sortable, ?string $path = null): FieldInterface
     {
         if ($sortable) {
             $this->sortable = $path ?: true;
