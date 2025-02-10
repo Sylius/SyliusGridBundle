@@ -128,5 +128,8 @@
             <tag name="maker.command" />
         </service>
         <service id="Sylius\Bundle\GridBundle\Maker\MakeGrid" alias="sylius.grid.maker" />
+
+        <service id="sylius.grid.options_parser" class="Sylius\Bundle\GridBundle\Parser\OptionsParser" public="false" />
+        <service id="Sylius\Bundle\GridBundle\Parser\OptionsParserInterface" alias="sylius.grid.options_parser" public="false" />
     </services>
 </container>

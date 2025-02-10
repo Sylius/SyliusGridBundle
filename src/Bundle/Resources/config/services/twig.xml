@@ -23,6 +23,7 @@
             <argument>@SyliusGrid/_grid.html.twig</argument>
             <argument>%sylius.grid.templates.action%</argument>
             <argument>%sylius.grid.templates.filter%</argument>
+            <argument type="service" id="sylius.grid.options_parser" />
         </service>
         <service id="Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer" alias="sylius.grid.renderer.twig" />
 

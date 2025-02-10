@@ -16,6 +16,7 @@ namespace spec\Sylius\Bundle\GridBundle\Renderer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistryInterface;
+use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
@@ -35,6 +36,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
         ServiceRegistryInterface $fieldsRegistry,
         FormFactoryInterface $formFactory,
         FormTypeRegistryInterface $formTypeRegistry,
+        OptionsParserInterface $optionsParser,
     ): void {
         $actionTemplates = [
             'link' => '@SyliusGrid/Action/_link.html.twig',
@@ -52,6 +54,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
             '"@SyliusGrid/default"',
             $actionTemplates,
             $filterTemplates,
+            $optionsParser,
         );
     }
 
@@ -94,7 +97,53 @@ final class TwigGridRendererSpec extends ObjectBehavior
         Field $field,
         ServiceRegistryInterface $fieldsRegistry,
         FieldTypeInterface $fieldType,
+        OptionsParserInterface $optionsParser,
     ): void {
+        $field->getType()->willReturn('string');
+        $fieldsRegistry->get('string')->willReturn($fieldType);
+        $fieldType->configureOptions(Argument::type(OptionsResolver::class))
+            ->will(function ($args) {
+                $args[0]->setRequired('foo');
+            })
+        ;
+
+        $field->getOptions()->willReturn([
+            'foo' => 'bar',
+        ]);
+        $optionsParser->parseOptions(['foo' => 'bar'])->willReturn(['foo' => 'bar']);
+        $fieldType->render($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
+
+        $this->renderField($gridView, $field, 'Value')->shouldReturn('<strong>Value</strong>');
+    }
+
+    function it_renders_a_field_with_data_via_appropriate_field_type_when_no_option_parser_is_provided(
+        Environment $twig,
+        ServiceRegistryInterface $fieldsRegistry,
+        FormFactoryInterface $formFactory,
+        FormTypeRegistryInterface $formTypeRegistry,
+        GridViewInterface $gridView,
+        Field $field,
+        FieldTypeInterface $fieldType,
+    ): void {
+        $actionTemplates = [
+            'link' => '@SyliusGrid/Action/_link.html.twig',
+            'form' => '@SyliusGrid/Action/_form.html.twig',
+        ];
+        $filterTemplates = [
+            StringFilter::NAME => '@SyliusGrid/Filter/_string.html.twig',
+        ];
+
+        $this->beConstructedWith(
+            $twig,
+            $fieldsRegistry,
+            $formFactory,
+            $formTypeRegistry,
+            '"@SyliusGrid/default"',
+            $actionTemplates,
+            $filterTemplates,
+            null,
+        );
+
         $field->getType()->willReturn('string');
         $fieldsRegistry->get('string')->willReturn($fieldType);
         $fieldType->configureOptions(Argument::type(OptionsResolver::class))

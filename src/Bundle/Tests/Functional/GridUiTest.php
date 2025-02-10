@@ -42,6 +42,20 @@ final class GridUiTest extends ApiTestCase
     }
 
     /** @test */
+    public function it_shows_authors_ids(): void
+    {
+        $this->client->request('GET', '/authors/?limit=100');
+
+        $ids = $this->getAuthorIdsFromResponse();
+
+        $this->assertNotEmpty($ids);
+        $this->assertSame(
+            array_filter($ids, fn (string $id) => str_starts_with($id, '#')),
+            $ids,
+        );
+    }
+
+    /** @test */
     public function it_sorts_authors_by_name_ascending_by_default(): void
     {
         $this->client->request('GET', '/authors/?limit=100');
@@ -98,7 +112,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(1, $titles);
-        $this->assertSame('Book 5', $titles[0]);
+        $this->assertSame('BOOK 5', $titles[0]);
     }
 
     /** @test */
@@ -112,7 +126,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(1, $titles);
-        $this->assertSame('Jurassic Park', $titles[0]);
+        $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
     /** @test */
@@ -125,7 +139,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(2, $titles);
-        $this->assertSame('Jurassic Park', $titles[0]);
+        $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
     /** @test */
@@ -139,7 +153,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(3, $titles);
-        $this->assertSame('A Study in Scarlet', $titles[0]);
+        $this->assertSame('A STUDY IN SCARLET', $titles[0]);
     }
 
     /** @test */
@@ -152,7 +166,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(2, $titles);
-        $this->assertSame('Jurassic Park', $titles[0]);
+        $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
     /** @test */
@@ -165,7 +179,7 @@ final class GridUiTest extends ApiTestCase
         $titles = $this->getBookTitlesFromResponse();
 
         $this->assertCount(1, $titles);
-        $this->assertSame('Jurassic Park', $titles[0]);
+        $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
     /** @test */
@@ -269,6 +283,16 @@ final class GridUiTest extends ApiTestCase
     {
         return $this->getCrawler()
             ->filter('[data-test-nationality]')
+            ->each(
+                fn (Crawler $node): string => $node->text(),
+            );
+    }
+
+    /** @return string[] */
+    private function getAuthorIdsFromResponse(): array
+    {
+        return $this->getCrawler()
+            ->filter('[data-test-id]')
             ->each(
                 fn (Crawler $node): string => $node->text(),
             );
