@@ -298,6 +298,73 @@ final class ConfigurationTest extends TestCase
         ]]);
     }
 
+    /**
+     * @test
+     */
+    public function it_throws_exception_when_field_template_is_used_with_non_twig_type(): void
+    {
+        $this->assertConfigurationIsInvalid([[
+            'grids' => [
+                'test_grid' => [
+                    'fields' => [
+                        'some_field' => [
+                            'type' => 'string',
+                            'label' => 'Some Label',
+                            'path' => 'somePath',
+                            'options' => [
+                                'template' => 'some_template.html.twig',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_field_template_when_field_type_is_twig(): void
+    {
+        $this->assertConfigurationIsValid([[
+            'grids' => [
+                'test_grid' => [
+                    'fields' => [
+                        'some_field' => [
+                            'type' => 'twig',
+                            'label' => 'Some Label',
+                            'path' => 'somePath',
+                            'options' => [
+                                'template' => 'some_template.html.twig',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+    }
+
+    /**
+     * @test
+     */
+    public function it_allows_field_without_template_option_even_if_type_is_not_twig(): void
+    {
+        $this->assertConfigurationIsValid([[
+            'grids' => [
+                'test_grid' => [
+                    'fields' => [
+                        'some_field' => [
+                            'type' => 'string',
+                            'label' => 'Some Label',
+                            'path' => 'somePath',
+                            'options' => [],
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+    }
+
     protected function getConfiguration(): Configuration
     {
         return new Configuration();
