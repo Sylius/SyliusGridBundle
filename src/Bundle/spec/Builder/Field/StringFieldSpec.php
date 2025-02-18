@@ -31,4 +31,13 @@ final class StringFieldSpec extends ObjectBehavior
         $field->shouldHaveType(FieldInterface::class);
         $field->getName()->shouldReturn('firstName');
     }
+
+    function it_defines_var_options(): void
+    {
+        $field = $this::create('firstName');
+        $field->setOption('vars', ['foo' => 'bar']);
+
+        $field->shouldHaveType(FieldInterface::class);
+        $field->getOptions()->shouldReturn(['vars' => ['foo' => 'bar']]);
+    }
 }

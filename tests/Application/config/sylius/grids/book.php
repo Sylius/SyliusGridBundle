@@ -64,6 +64,13 @@ return static function (GridConfig $grid) {
                 ->setPath('author.nationality.name')
                 ->setSortable(true, 'author.nationality.name'),
         )
+        ->addField(
+            StringField::create('currency')
+                ->setLabel('Currency')
+                ->setPath('price.currencyCode')
+                ->setSortable(true, 'price.currencyCode')
+                ->setOption('vars', ['th_class' => 'text-end']),
+        )
         ->setLimits([10, 5, 15]),
     );
 };

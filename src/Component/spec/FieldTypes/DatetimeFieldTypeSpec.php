@@ -84,6 +84,8 @@ final class DatetimeFieldTypeSpec extends ObjectBehavior
         $resolver->setAllowedTypes('format', 'string')->willReturn($resolver)->shouldBeCalled();
         $resolver->setDefault('timezone', 'Europe/Warsaw')->willReturn($resolver)->shouldBeCalled();
         $resolver->setAllowedTypes('timezone', ['null', 'string'])->willReturn($resolver)->shouldBeCalled();
+        $resolver->setDefined('vars')->willReturn($resolver)->shouldBeCalled();
+        $resolver->setAllowedTypes('vars', 'array')->willReturn($resolver)->shouldBeCalled();
 
         $this->configureOptions($resolver);
     }

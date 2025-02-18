@@ -89,6 +89,13 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
                     ->setPath('author.nationality.name')
                     ->setSortable(true, 'author.nationality.name'),
             )
+            ->addField(
+                StringField::create('currency')
+                    ->setLabel('Currency')
+                    ->setPath('price.currencyCode')
+                    ->setSortable(true, 'price.currencyCode')
+                    ->setOption('vars', ['th_class' => 'text-end']),
+            )
             ->addActionGroup(
                 ItemActionGroup::create(
                     ShowAction::create([

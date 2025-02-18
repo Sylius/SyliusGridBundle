@@ -35,5 +35,7 @@ final class StringFieldType implements FieldTypeInterface
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+        $resolver->setDefined('vars');
+        $resolver->setAllowedTypes('vars', 'array');
     }
 }
