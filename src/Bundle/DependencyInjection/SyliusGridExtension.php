@@ -78,7 +78,7 @@ final class SyliusGridExtension extends Extension
         );
 
         $container->registerForAutoconfiguration(ConfigurableFilterInterface::class)
-            ->addTag('sylius.legacy_grid_filter')
+            ->addTag(AsFilter::SERVICE_TAG)
         ;
 
         $container->registerForAutoconfiguration(DataProviderInterface::class)

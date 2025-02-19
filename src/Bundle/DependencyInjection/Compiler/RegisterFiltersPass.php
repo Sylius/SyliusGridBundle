@@ -29,26 +29,15 @@ final class RegisterFiltersPass implements CompilerPassInterface
             return;
         }
 
-        $registry = $container->getDefinition('sylius.registry.grid_filter');
+        $filterRegistry = $container->getDefinition('sylius.registry.grid_filter');
         $formTypeRegistry = $container->getDefinition('sylius.form_registry.grid_filter');
 
         foreach ($container->findTaggedServiceIds(AsFilter::SERVICE_TAG) as $id => $attributes) {
-            $this->registerFilter($registry, $formTypeRegistry, $id, $attributes);
-        }
-
-        foreach ($container->findTaggedServiceIds('sylius.legacy_grid_filter') as $id => $attributes) {
-            $definition = $container->findDefinition($id);
-
-            // Already configured with "sylius.grid_filter" tag.
-            if ($definition->hasTag(AsFilter::SERVICE_TAG)) {
-                continue;
-            }
+            $definition = $container->getDefinition($id);
+            $class = $definition->getClass();
 
             $type = null;
             $formType = null;
-
-            $definition = $container->getDefinition($id);
-            $class = $definition->getClass();
 
             if ($class !== null && is_a($class, TypeAwareFilterInterface::class, true)) {
                 $type = $class::getType();
@@ -58,7 +47,7 @@ final class RegisterFiltersPass implements CompilerPassInterface
                 $formType = $class::getFormType();
             }
 
-            $this->registerFilter($registry, $formTypeRegistry, $id, $attributes, $type, $formType);
+            $this->registerFilter($filterRegistry, $formTypeRegistry, $id, $attributes, $type, $formType);
         }
     }
 
