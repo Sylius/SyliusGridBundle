@@ -17,6 +17,8 @@ use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -30,6 +32,8 @@ final class ArrayGridProvider implements GridProviderInterface
 
     private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
 
+    private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
+
     /** @var array[] */
     private array $gridConfigurations;
 
@@ -38,11 +42,13 @@ final class ArrayGridProvider implements GridProviderInterface
         array $gridConfigurations,
         ?GridConfigurationExtenderInterface $gridConfigurationExtender = null,
         ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
+        ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
     ) {
         $this->converter = $converter;
         $this->gridConfigurations = $gridConfigurations;
         $this->gridConfigurationExtender = $gridConfigurationExtender ?? new GridConfigurationExtender();
         $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
+        $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
     }
 
     public function get(string $code): Grid
@@ -62,6 +68,7 @@ final class ArrayGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
+        $gridConfiguration = $this->gridConfigurationSortingHandler->handle($gridConfiguration);
 
         return $this->converter->convert($code, $gridConfiguration);
     }

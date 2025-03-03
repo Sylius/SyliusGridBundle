@@ -50,8 +50,7 @@ return static function (GridConfig $grid) {
         ->orderBy('title', 'asc')
         ->addField(
             CallableField::create('title', 'strtoupper')
-                ->setLabel('Title')
-                ->setSortable(true),
+                ->setLabel('Title'),
         )
         ->addField(
             StringField::create('author')
