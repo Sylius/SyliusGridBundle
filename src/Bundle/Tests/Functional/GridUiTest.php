@@ -56,6 +56,19 @@ final class GridUiTest extends ApiTestCase
     }
 
     /** @test */
+    public function it_shows_authors_nationalities(): void
+    {
+        $this->client->request('GET', '/authors/?limit=100');
+
+        $nationalities = $this->getAuthorNationalitiesFromResponse();
+
+        $this->assertCount(3, array_unique($nationalities));
+        $this->assertContains('US', $nationalities);
+        $this->assertContains('EN', $nationalities);
+        $this->assertContains('', $nationalities);
+    }
+
+    /** @test */
     public function it_sorts_authors_by_name_ascending_by_default(): void
     {
         $this->client->request('GET', '/authors/?limit=100');
@@ -308,6 +321,16 @@ final class GridUiTest extends ApiTestCase
     {
         return $this->getCrawler()
             ->filter('[data-test-id]')
+            ->each(
+                fn (Crawler $node): string => $node->text(),
+            );
+    }
+
+    /** @return string[] */
+    private function getAuthorNationalitiesFromResponse(): array
+    {
+        return $this->getCrawler()
+            ->filter('[data-test-nationality]')
             ->each(
                 fn (Crawler $node): string => $node->text(),
             );

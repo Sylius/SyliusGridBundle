@@ -22,4 +22,18 @@ final class CallableField
             ->setOption('htmlspecialchars', $htmlspecialchars)
         ;
     }
+
+    public static function createForService(string $name, string $service, ?string $method = null, bool $htmlspecialchars = true): FieldInterface
+    {
+        $field = Field::create($name, 'callable')
+            ->setOption('service', $service)
+            ->setOption('htmlspecialchars', $htmlspecialchars)
+        ;
+
+        if ($method !== null) {
+            $field->setOption('method', $method);
+        }
+
+        return $field;
+    }
 }
