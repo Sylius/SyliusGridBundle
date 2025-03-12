@@ -16,6 +16,7 @@ namespace spec\Sylius\Component\Grid\Provider;
 use PhpSpec\ObjectBehavior;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -26,12 +27,14 @@ final class ArrayGridProviderSpec extends ObjectBehavior
     function let(
         ArrayToDefinitionConverterInterface $converter,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
         Grid $firstGrid,
         Grid $secondGrid,
         Grid $thirdGrid,
         Grid $fourthGrid,
         Grid $fifthGrid,
         Grid $sixthGrid,
+        Grid $seventhGrid,
     ): void {
         $converter->convert('sylius_admin_tax_category', ['configuration1'])->willReturn($firstGrid);
         $converter->convert('sylius_admin_product', ['configuration2' => 'foo'])->willReturn($secondGrid);
@@ -39,12 +42,24 @@ final class ArrayGridProviderSpec extends ObjectBehavior
         $converter->convert('sylius_admin_product_from_taxon', ['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn($fourthGrid);
         $converter->convert('sylius_admin_book', ['extends' => '404'])->willReturn($fifthGrid);
         $converter->convert('sylius_admin_customer', ['fields' => []])->willReturn($sixthGrid);
+        $converter->convert('sylius_admin_book_per_author', [
+        'fields' => [
+            'title' => ['sortable' => true],
+        ],
+        'sorting' => [
+            'title' => 'asc',
+        ]])->willReturn($seventhGrid);
 
         $gridConfigurationRemovalsHandler->handle(['configuration1'])->willReturn(['configuration1']);
+        $gridConfigurationSortingHandler->handle(['configuration1'])->willReturn(['configuration1']);
         $gridConfigurationRemovalsHandler->handle(['configuration2' => 'foo'])->willReturn(['configuration2' => 'foo']);
+        $gridConfigurationSortingHandler->handle(['configuration2' => 'foo'])->willReturn(['configuration2' => 'foo']);
         $gridConfigurationRemovalsHandler->handle(['configuration3'])->willReturn(['configuration3']);
+        $gridConfigurationSortingHandler->handle(['configuration3'])->willReturn(['configuration3']);
         $gridConfigurationRemovalsHandler->handle(['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn(['configuration4' => 'bar', 'configuration2' => 'foo']);
+        $gridConfigurationSortingHandler->handle(['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn(['configuration4' => 'bar', 'configuration2' => 'foo']);
         $gridConfigurationRemovalsHandler->handle(['extends' => '404'])->willReturn(['extends' => '404']);
+        $gridConfigurationSortingHandler->handle(['extends' => '404'])->willReturn(['extends' => '404']);
         $gridConfigurationRemovalsHandler->handle([
             'fields' => ['customer' => []],
             'removals' => [
@@ -52,6 +67,37 @@ final class ArrayGridProviderSpec extends ObjectBehavior
             ],
         ])->willReturn([
             'fields' => [],
+        ]);
+        $gridConfigurationSortingHandler->handle(['fields' => []])->willReturn(['fields' => []]);
+        $gridConfigurationRemovalsHandler->handle([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ])->willReturn([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ]);
+        $gridConfigurationSortingHandler->handle([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ])->willReturn([
+            'fields' => [
+                'title' => ['sortable' => true],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
         ]);
 
         $this->beConstructedWith(
@@ -63,9 +109,18 @@ final class ArrayGridProviderSpec extends ObjectBehavior
                 'sylius_admin_product_from_taxon' => ['extends' => 'sylius_admin_product', 'configuration4' => 'bar'],
                 'sylius_admin_book' => ['extends' => '404'],
                 'sylius_admin_customer' => ['fields' => ['customer' => []], 'removals' => ['fields' => ['customer']]],
+                'sylius_admin_book_per_author' => [
+                    'fields' => [
+                        'title' => [],
+                    ],
+                    'sorting' => [
+                        'title' => 'asc',
+                    ],
+                ],
             ],
             new GridConfigurationExtender(),
             $gridConfigurationRemovalsHandler,
+            $gridConfigurationSortingHandler,
         );
     }
 
@@ -104,5 +159,12 @@ final class ArrayGridProviderSpec extends ObjectBehavior
         Grid $sixthGrid,
     ): void {
         $this->get('sylius_admin_customer')->shouldReturn($sixthGrid);
+    }
+
+    function it_makes_fields_sortable_if_sorting_is_enabled_for_it(
+        ArrayToDefinitionConverterInterface $converter,
+        Grid $seventhGrid,
+    ): void {
+        $this->get('sylius_admin_book_per_author')->shouldReturn($seventhGrid);
     }
 }

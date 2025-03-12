@@ -20,6 +20,7 @@ use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -31,12 +32,14 @@ class ServiceGridProviderSpec extends ObjectBehavior
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
     ): void {
         $this->beConstructedWith(
             $converter,
             $gridRegistry,
             new GridConfigurationExtender(),
             $gridConfigurationRemovalsHandler,
+            $gridConfigurationSortingHandler,
         );
     }
 
@@ -53,6 +56,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
     function it_gets_grids_definitions_by_code(
         ArrayToDefinitionConverterInterface $converter,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
         GridRegistryInterface $gridRegistry,
         GridInterface $bookGrid,
         Grid $gridDefinition,
@@ -62,6 +66,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
 
         $converter->convert('app_book', [])->willReturn($gridDefinition);
         $gridConfigurationRemovalsHandler->handle([])->willReturn([]);
+        $gridConfigurationSortingHandler->handle([])->willReturn([]);
 
         $this->get('app_book')->shouldReturn($gridDefinition);
     }
@@ -69,6 +74,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
     function it_gets_grids_definitions_by_fully_qualified_class_name(
         ArrayToDefinitionConverterInterface $converter,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
         GridRegistryInterface $gridRegistry,
         Grid $gridDefinition,
     ): void {
@@ -77,6 +83,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
 
         $converter->convert('app_book', [])->willReturn($gridDefinition);
         $gridConfigurationRemovalsHandler->handle($bookGrid->toArray())->willReturn([]);
+        $gridConfigurationSortingHandler->handle([])->willReturn([]);
 
         $this->get(BookGrid::class)->shouldReturn($gridDefinition);
     }
@@ -84,6 +91,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
     function it_supports_grid_inheritance(
         ArrayToDefinitionConverterInterface $converter,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
         GridRegistryInterface $gridRegistry,
         GridInterface $fooGrid,
         GridInterface $fooFightersGrid,
@@ -100,6 +108,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
         $converter->convert('app_foo_fighters', ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn($fooFightersGridDefinition);
 
         $gridConfigurationRemovalsHandler->handle(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters']);
+        $gridConfigurationSortingHandler->handle(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters']);
 
         $this->get('app_foo_fighters')->shouldReturn($fooFightersGridDefinition);
     }
@@ -128,6 +137,7 @@ class ServiceGridProviderSpec extends ObjectBehavior
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
         GridInterface $fooGrid,
         Grid $fooGridDefinition,
     ): void {
@@ -149,8 +159,77 @@ class ServiceGridProviderSpec extends ObjectBehavior
             'fields' => [],
         ]);
 
+        $gridConfigurationSortingHandler->handle([
+            'fields' => [],
+        ])->willReturn([
+            'fields' => [],
+        ]);
+
         $converter->convert('app_foo', [
             'fields' => [],
+        ])->willReturn($fooGridDefinition);
+
+        $this->get('app_foo')->shouldReturn($fooGridDefinition);
+    }
+
+    function it_makes_fields_sortable_if_sorting_is_enabled_for_it(
+        ArrayToDefinitionConverterInterface $converter,
+        GridRegistryInterface $gridRegistry,
+        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
+        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
+        GridInterface $fooGrid,
+        Grid $fooGridDefinition,
+    ): void {
+        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
+
+        $fooGrid->toArray()->willReturn([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ]);
+
+        $gridConfigurationRemovalsHandler->handle([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ])->willReturn([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ]);
+
+        $gridConfigurationSortingHandler->handle([
+            'fields' => [
+                'title' => [],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ])->willReturn([
+            'fields' => [
+                'title' => ['sortable' => true],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ]);
+
+        $converter->convert('app_foo', [
+            'fields' => [
+                'title' => ['sortable' => true],
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
         ])->willReturn($fooGridDefinition);
 
         $this->get('app_foo')->shouldReturn($fooGridDefinition);

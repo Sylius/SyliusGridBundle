@@ -37,7 +37,6 @@ sylius_grid:
                     options:
                         callable: "callable:strtoupper"
                     label: Title
-                    sortable: ~
                 author:
                     type: string
                     label: Author

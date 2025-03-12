@@ -18,6 +18,8 @@ use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
@@ -34,16 +36,20 @@ final class ServiceGridProvider implements GridProviderInterface
 
     private GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler;
 
+    private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
+
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationExtenderInterface $gridConfigurationExtender,
         ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
+        ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
         $this->gridConfigurationExtender = $gridConfigurationExtender;
         $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
+        $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
     }
 
     public function get(string $code): Grid
@@ -65,6 +71,7 @@ final class ServiceGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);
+        $gridConfiguration = $this->gridConfigurationSortingHandler->handle($gridConfiguration);
 
         return $this->converter->convert($code, $gridConfiguration);
     }
