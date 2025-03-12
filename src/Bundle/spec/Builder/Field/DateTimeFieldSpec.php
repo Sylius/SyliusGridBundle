@@ -31,4 +31,13 @@ final class DateTimeFieldSpec extends ObjectBehavior
         $field->shouldHaveType(FieldInterface::class);
         $field->getName()->shouldReturn('createdAt');
     }
+
+    function it_defines_var_options(): void
+    {
+        $field = $this::create('createdAt');
+        $field->setOption('vars', ['foo' => 'bar']);
+
+        $field->shouldHaveType(FieldInterface::class);
+        $field->getOptions()['vars']->shouldReturn(['foo' => 'bar']);
+    }
 }

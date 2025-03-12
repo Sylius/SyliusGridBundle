@@ -10,12 +10,12 @@
     <tr>
         {% for field in definition.fields %}
             {% if field.enabled %}
-                <th class="sylius-table-column-{{ field.name }}">{{ field.label|trans }}</th>
-            {% endif %}
-            {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
-                <th class="sylius-table-column-actions">Actions</th>
+                <th class="sylius-table-column-{{ field.name }} {{ field.options.vars.th_class|default('') }}">{{ field.label|trans }}</th>
             {% endif %}
         {% endfor %}
+        {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
+            <th class="sylius-table-column-actions">Actions</th>
+        {% endif %}
     </tr>
     </thead>
     <tbody>
@@ -23,14 +23,14 @@
         <tr>
             {% for field in definition.enabledFields %}
                 <td data-test-{{ field.name }}>{{ sylius_grid_render_field(grid, field, resource) }}</td>
-                <td>
-                    {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
-                        {% for action in definition.getEnabledActions('item') %}
-                            {{ sylius_grid_render_action(grid, action, resource) }}
-                        {% endfor %}
-                    {% endif %}
-                </td>
             {% endfor %}
+            {% if definition.actionGroups.item is defined and definition.getEnabledActions('item')|length > 0 %}
+            <td>
+                {% for action in definition.getEnabledActions('item') %}
+                    {{ sylius_grid_render_action(grid, action, resource) }}
+                {% endfor %}
+            </td>
+            {% endif %}
         </tr>
     {% endfor %}
     </tbody>

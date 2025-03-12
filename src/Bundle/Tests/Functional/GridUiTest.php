@@ -246,6 +246,21 @@ final class GridUiTest extends ApiTestCase
     }
 
     /** @test */
+    public function it_renders_option_vars(): void
+    {
+        $this->client->request('GET', '/books/');
+
+        $data = $this->getCrawler()
+            ->filter('th.text-end')
+            ->each(
+                fn (Crawler $node): string => $node->text(),
+            )
+        ;
+
+        $this->assertSame('Currency', $data[0] ?? null);
+    }
+
+    /** @test */
     public function it_includes_all_rows_even_when_sorting_by_a_nullable_path(): void
     {
         $this->client->request('GET', '/authors/');

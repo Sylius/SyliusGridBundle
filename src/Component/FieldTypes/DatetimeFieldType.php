@@ -55,5 +55,7 @@ final class DatetimeFieldType implements FieldTypeInterface
         $resolver->setAllowedTypes('format', 'string');
         $resolver->setDefault('timezone', $this->timezone);
         $resolver->setAllowedTypes('timezone', ['null', 'string']);
+        $resolver->setDefined('vars');
+        $resolver->setAllowedTypes('vars', 'array');
     }
 }

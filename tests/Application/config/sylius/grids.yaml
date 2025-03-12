@@ -48,6 +48,14 @@ sylius_grid:
                     label: Nationality
                     path: author.nationality.name
                     sortable: author.nationality.name
+                currency:
+                    type: string
+                    label: Currency
+                    path: price.currencyCode
+                    sortable: price.currencyCode
+                    options:
+                        vars:
+                            th_class: "text-end"
             limits: [10, 5, 15]
 
         app_author:
