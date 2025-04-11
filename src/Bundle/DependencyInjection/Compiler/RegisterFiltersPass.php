@@ -47,11 +47,12 @@ final class RegisterFiltersPass implements CompilerPassInterface
                 $formType = $class::getFormType();
             }
 
-            $this->registerFilter($filterRegistry, $formTypeRegistry, $id, $attributes, $type, $formType);
+            $this->registerFilter($container, $filterRegistry, $formTypeRegistry, $id, $attributes, $type, $formType);
         }
     }
 
     private function registerFilter(
+        ContainerBuilder $container,
         Definition $filterRegistry,
         Definition $formTypeRegistry,
         string $id,
@@ -60,16 +61,34 @@ final class RegisterFiltersPass implements CompilerPassInterface
         ?string $formType = null,
     ): void {
         foreach ($attributes as $attribute) {
-            if (null === $type && null === ($attribute['type'] ?? null)) {
+            $template = $attribute['template'] ?? null;
+
+            $filterType = $type ?? $attribute['type'] ?? null;
+            $filterFormType = $formType ?? $attribute['form_type'] ?? null;
+
+            if (null === $filterType) {
                 throw new \InvalidArgumentException(sprintf('Tagged grid filters needs to have "type" attribute or implements "%s".', TypeAwareFilterInterface::class));
             }
 
-            if (null === $formType && null === ($attribute['form_type'] ?? null)) {
+            if (null === $filterFormType) {
                 throw new \InvalidArgumentException(sprintf('Tagged grid filters needs to have "form_type" attribute or implements "%s".', FormTypeAwareFilterInterface::class));
             }
 
-            $filterRegistry->addMethodCall('register', [$type ?? $attribute['type'], new Reference($id)]);
-            $formTypeRegistry->addMethodCall('add', [$type ?? $attribute['type'], 'default', $formType ?? $attribute['form_type']]);
+            $filterRegistry->addMethodCall('register', [$filterType, new Reference($id)]);
+            $formTypeRegistry->addMethodCall('add', [$filterType, 'default', $filterFormType]);
+
+            if (null !== $template) {
+                $this->registerFilterTemplate($container, $filterType, $template);
+            }
         }
+    }
+
+    private function registerFilterTemplate(ContainerBuilder $container, string $filterType, string $template): void
+    {
+        /** @var array<string, string> $filtersConfig */
+        $filtersConfig = $container->hasParameter('sylius.grid.templates.filter') ? $container->getParameter('sylius.grid.templates.filter') : [];
+
+        $filtersConfig[$filterType] = $template;
+        $container->setParameter('sylius.grid.templates.filter', $filtersConfig);
     }
 }

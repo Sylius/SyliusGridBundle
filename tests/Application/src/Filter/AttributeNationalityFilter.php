@@ -21,6 +21,7 @@ use Sylius\Component\Grid\Filtering\FilterInterface;
 
 #[AsFilter(
     formType: NationalityFilterType::class,
+    template: 'grid/filter/entity.html.twig',
 )]
 final class AttributeNationalityFilter implements FilterInterface
 {

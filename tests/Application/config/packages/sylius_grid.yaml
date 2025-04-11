@@ -8,3 +8,8 @@ sylius_grid:
         bulk_action:
             apply_transition: 'grid/bulk_action/apply_transition.html.twig'
             delete: 'grid/bulk_action/delete.html.twig'
+        filter:
+            entity: 'grid/filter/entity.html.twig'
+            select: 'grid/filter/select.html.twig'
+            string: 'grid/filter/string.html.twig'
+            nationality: 'grid/filter/entity.html.twig'

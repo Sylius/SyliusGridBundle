@@ -34,7 +34,7 @@ return static function (GridConfig $grid) {
             ['author.nationality'],
         ))
         ->addFilter(AttributeNationalityFilter::create(
-            AttributeNationalityFilter::class,
+            'attribute_nationality',
             null,
             ['author.nationality'],
         ))

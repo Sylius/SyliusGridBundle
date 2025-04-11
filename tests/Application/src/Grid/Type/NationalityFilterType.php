@@ -28,7 +28,7 @@ final class NationalityFilterType extends FormType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Nationality::class,
+            'class' => Nationality::class,
         ]);
     }
 }

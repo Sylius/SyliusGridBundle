@@ -5,6 +5,22 @@
 {% set grid = resources %}
 {% set definition = grid.definition %}
 
+{% if definition.enabledFilters is not empty %}
+    <div>
+        {% set content %}
+            <form method="get" novalidate>
+                <div class="sylius-filters">
+                    {% for filter in resources.definition.enabledFilters|filter(filter => filter.enabled) %}
+                        <div class="sylius-filters__item">
+                            {{ sylius_grid_render_filter(resources, filter) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </form>
+        {% endset %}
+    </div>
+{% endif %}
+
 <table>
     <thead>
     <tr>
