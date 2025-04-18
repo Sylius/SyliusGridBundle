@@ -17,8 +17,8 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
-#[AsGrid(resourceClass: Foo::class)]
-final class AttributeFooGrid extends AbstractGrid
+#[AsGrid]
+final class AttributeGrid extends AbstractGrid
 {
     public function buildGrid(GridBuilderInterface $gridBuilder): void
     {

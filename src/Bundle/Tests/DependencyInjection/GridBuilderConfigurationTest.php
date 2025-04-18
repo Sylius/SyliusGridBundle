@@ -39,7 +39,8 @@ use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
-use Sylius\Component\Grid\Tests\Dummy\AttributeFooGrid;
+use Sylius\Component\Grid\Tests\Dummy\AttributeGrid;
+use Sylius\Component\Grid\Tests\Dummy\AttributeWithResourceClassGrid;
 use Sylius\Component\Grid\Tests\Dummy\ClassAsParameterGrid;
 use Sylius\Component\Grid\Tests\Dummy\Foo;
 use Sylius\Component\Grid\Tests\Dummy\FooFightersGrid;
@@ -865,9 +866,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_builds_extended_grids_with_grids_as_service(): void
     {
         $grid = new FooFightersGrid();
@@ -904,21 +903,46 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    /** @test */
     public function it_builds_grid_with_a_grid_attribute(): void
     {
-        $grid = new AttributeFooGrid();
+        $grid = new AttributeGrid();
 
         $this->load([
             'grids' => [
-                AttributeFooGrid::class => $grid->toArray(),
+                AttributeGrid::class => $grid->toArray(),
             ],
         ]);
 
         $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
-            AttributeFooGrid::class => [
+            AttributeGrid::class => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [],
+                ],
+                'removals' => [],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_builds_grid_with_a_grid_attribute_with_defined_resource_class(): void
+    {
+        $grid = new AttributeWithResourceClassGrid();
+
+        $this->load([
+            'grids' => [
+                AttributeWithResourceClassGrid::class => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            AttributeWithResourceClassGrid::class => [
                 'driver' => [
                     'name' => Driver::NAME,
                     'options' => [

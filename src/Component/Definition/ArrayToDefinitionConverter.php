@@ -32,7 +32,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $grid = Grid::fromCodeAndDriverConfiguration(
             $code,
             $configuration['driver']['name'],
-            $configuration['driver']['options'],
+            $configuration['driver']['options'] ?? [],
         );
 
         $grid->setProvider($configuration['provider'] ?? null);

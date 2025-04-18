@@ -17,7 +17,7 @@ namespace Sylius\Component\Grid\Attribute;
 final class AsGrid
 {
     public function __construct(
-        public readonly string $resourceClass,
+        public readonly ?string $resourceClass = null,
         public readonly ?string $name = null,
     ) {
     }

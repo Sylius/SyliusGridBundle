@@ -21,24 +21,7 @@ abstract class AbstractGrid implements GridInterface
 {
     public static function getName(): string
     {
-        if ($attribute = self::getAttributes()) {
-            return $attribute[0]?->newInstance()->name ?? static::class;
-        }
-
-        return static::class;
-    }
-
-    public function getResourceClass(): string
-    {
-        if ($attribute = self::getAttributes()) {
-            return $attribute[0]->newInstance()->resourceClass;
-        }
-
-        throw new \LogicException(sprintf(
-            'You have to implement %s method or use %s attribute.',
-            __METHOD__,
-            AsGrid::class,
-        ));
+        return self::getAsGridAttribute()?->name ?? static::class;
     }
 
     public function toArray(): array
@@ -52,18 +35,19 @@ abstract class AbstractGrid implements GridInterface
 
     private function createGridBuilder(): GridBuilderInterface
     {
-        if ($this instanceof ResourceAwareGridInterface || $this::getAttributes() !== []) {
-            return GridBuilder::create($this::getName(), $this->getResourceClass());
+        $resourceClass = self::getAsGridAttribute()?->resourceClass ?? null;
+
+        if (null === $resourceClass && $this instanceof ResourceAwareGridInterface) {
+            $resourceClass = $this->getResourceClass();
         }
 
-        return GridBuilder::create($this::getName());
+        return GridBuilder::create($this::getName(), $resourceClass);
     }
 
-    /**
-     * @return \ReflectionAttribute<AsGrid>[]
-     */
-    private static function getAttributes(): array
+    private static function getAsGridAttribute(): ?AsGrid
     {
-        return (new \ReflectionClass(static::class))->getAttributes(AsGrid::class);
+        $reflection = (new \ReflectionClass(static::class))->getAttributes(AsGrid::class)[0] ?? null;
+
+        return $reflection?->newInstance();
     }
 }
