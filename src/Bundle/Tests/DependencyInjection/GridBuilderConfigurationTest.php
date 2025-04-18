@@ -39,9 +39,13 @@ use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\DependencyInjection\SyliusGridExtension;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
-use Sylius\Component\Grid\Tests\Dummy\AttributeGrid;
+use Sylius\Component\Grid\Exception\LogicException;
+use Sylius\Component\Grid\Tests\Dummy\AttributeGridWithCustomBuildMethod;
+use Sylius\Component\Grid\Tests\Dummy\AttributeGridWithCustomBuildMethodThatDoesNotExist;
+use Sylius\Component\Grid\Tests\Dummy\AttributeGridWithProvider;
 use Sylius\Component\Grid\Tests\Dummy\AttributeWithResourceClassGrid;
 use Sylius\Component\Grid\Tests\Dummy\ClassAsParameterGrid;
+use Sylius\Component\Grid\Tests\Dummy\DummyGridProvider;
 use Sylius\Component\Grid\Tests\Dummy\Foo;
 use Sylius\Component\Grid\Tests\Dummy\FooFightersGrid;
 use Sylius\Component\Grid\Tests\Dummy\FooGrid;
@@ -54,7 +58,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
      */
     public function it_builds_grid_with_only_a_name(): void
     {
-        $gridBuilder = GridBuilder::create('app_admin_book');
+        $gridBuilder = GridBuilder::create('app_admin_book', 'DummyResource');
 
         $this->load([
             'grids' => [
@@ -66,7 +70,9 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
             'app_admin_book' => [
                 'driver' => [
                     'name' => Driver::NAME,
-                    'options' => [],
+                    'options' => [
+                        'class' => 'DummyResource',
+                    ],
                 ],
                 'removals' => [],
                 'sorting' => [],
@@ -790,6 +796,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
             'app_no_resource' => [
+                'provider' => DummyGridProvider::class,
                 'driver' => [
                     'name' => Driver::NAME,
                     'options' => [],
@@ -904,33 +911,6 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
     }
 
     /** @test */
-    public function it_builds_grid_with_a_grid_attribute(): void
-    {
-        $grid = new AttributeGrid();
-
-        $this->load([
-            'grids' => [
-                AttributeGrid::class => $grid->toArray(),
-            ],
-        ]);
-
-        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
-            AttributeGrid::class => [
-                'driver' => [
-                    'name' => Driver::NAME,
-                    'options' => [],
-                ],
-                'removals' => [],
-                'sorting' => [],
-                'limits' => [10, 25, 50],
-                'fields' => [],
-                'filters' => [],
-                'actions' => [],
-            ],
-        ]);
-    }
-
-    /** @test */
     public function it_builds_grid_with_a_grid_attribute_with_defined_resource_class(): void
     {
         $grid = new AttributeWithResourceClassGrid();
@@ -943,6 +923,87 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 
         $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
             AttributeWithResourceClassGrid::class => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Foo::class,
+                    ],
+                ],
+                'removals' => [],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_builds_grid_with_a_grid_attribute_with_custom_build_method(): void
+    {
+        $grid = new AttributeGridWithCustomBuildMethod();
+
+        $this->load([
+            'grids' => [
+                AttributeGridWithCustomBuildMethod::class => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            AttributeGridWithCustomBuildMethod::class => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Foo::class,
+                    ],
+                ],
+                'removals' => [],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [
+                    'foo' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                    ],
+                ],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_throw_an_exception_when_the_custom_build_method_does_not_exist(): void
+    {
+        $grid = new AttributeGridWithCustomBuildMethodThatDoesNotExist();
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('The build method "nonExistingMethod" you configured does not exist.');
+
+        $this->load([
+            'grids' => [
+                AttributeGridWithCustomBuildMethodThatDoesNotExist::class => $grid->toArray(),
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function it_builds_grid_with_a_grid_attribute_with_defined_provider(): void
+    {
+        $grid = new AttributeGridWithProvider();
+
+        $this->load([
+            'grids' => [
+                AttributeGridWithProvider::class => $grid->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            AttributeGridWithProvider::class => [
+                'provider' => DummyGridProvider::class,
                 'driver' => [
                     'name' => Driver::NAME,
                     'options' => [

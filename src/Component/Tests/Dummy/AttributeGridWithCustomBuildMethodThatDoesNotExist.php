@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Dummy;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
-#[AsGrid]
-final class AttributeGrid extends AbstractGrid
+#[AsGrid(resourceClass: Foo::class, buildMethod: 'nonExistingMethod')]
+final class AttributeGridWithCustomBuildMethodThatDoesNotExist extends AbstractGrid
 {
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
-    {
-    }
 }

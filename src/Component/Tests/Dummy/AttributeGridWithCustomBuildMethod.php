@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Dummy;
 
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class NoResourceGrid extends AbstractGrid
+#[AsGrid(resourceClass: Foo::class, buildMethod: 'customBuild')]
+final class AttributeGridWithCustomBuildMethod extends AbstractGrid
 {
-    public static function getName(): string
+    public function customBuild(GridBuilderInterface $gridBuilder): void
     {
-        return 'app_no_resource';
-    }
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
-    {
-        $gridBuilder->setProvider(DummyGridProvider::class);
+        $gridBuilder->addField(StringField::create('foo'));
     }
 }
