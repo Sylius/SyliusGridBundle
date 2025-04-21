@@ -26,6 +26,10 @@ final class GridConfigurationSortingHandler implements GridConfigurationSortingH
         foreach ($gridConfiguration['sorting'] as $sorting => $order) {
             Assert::keyExists($gridConfiguration['fields'] ?? [], $sorting);
 
+            if (isset($gridConfiguration['fields'][$sorting]['sortable'])) {
+                continue;
+            }
+
             $gridConfiguration['fields'][$sorting]['sortable'] = true;
         }
 

@@ -25,24 +25,28 @@ final class GridConfigurationSortingHandlerTest extends TestCase
                 'title' => [],
                 'author' => ['sortable' => false],
                 'price' => ['sortable' => true],
+                'name' => ['sortable' => 'translation.name'],
             ],
             'sorting' => [
                 'title' => 'asc',
                 'author' => 'asc',
                 'price' => 'asc',
+                'name' => 'asc',
             ],
         ];
 
-        $this->assertEquals([
+        $this->assertSame([
             'fields' => [
                 'title' => ['sortable' => true],
-                'author' => ['sortable' => true],
+                'author' => ['sortable' => false],
                 'price' => ['sortable' => true],
+                'name' => ['sortable' => 'translation.name'],
             ],
             'sorting' => [
                 'title' => 'asc',
                 'author' => 'asc',
                 'price' => 'asc',
+                'name' => 'asc',
             ],
         ], (new GridConfigurationSortingHandler())->handle($gridConfiguration));
     }
