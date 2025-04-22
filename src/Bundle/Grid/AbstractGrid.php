@@ -15,9 +15,15 @@ namespace Sylius\Bundle\GridBundle\Grid;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
 abstract class AbstractGrid implements GridInterface
 {
+    public static function getName(): string
+    {
+        return self::getAsGridAttribute()?->name ?? static::class;
+    }
+
     public function toArray(): array
     {
         $gridBuilder = $this->createGridBuilder();
@@ -29,10 +35,19 @@ abstract class AbstractGrid implements GridInterface
 
     private function createGridBuilder(): GridBuilderInterface
     {
-        if ($this instanceof ResourceAwareGridInterface) {
-            return GridBuilder::create($this::getName(), $this->getResourceClass());
+        $resourceClass = self::getAsGridAttribute()?->resourceClass ?? null;
+
+        if (null === $resourceClass && $this instanceof ResourceAwareGridInterface) {
+            $resourceClass = $this->getResourceClass();
         }
 
-        return GridBuilder::create($this::getName());
+        return GridBuilder::create($this::getName(), $resourceClass);
+    }
+
+    private static function getAsGridAttribute(): ?AsGrid
+    {
+        $reflection = (new \ReflectionClass(static::class))->getAttributes(AsGrid::class)[0] ?? null;
+
+        return $reflection?->newInstance();
     }
 }
