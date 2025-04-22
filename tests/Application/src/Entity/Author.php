@@ -85,4 +85,9 @@ class Author implements ResourceInterface
     {
         return $this->books;
     }
+
+    public function __toString(): string
+    {
+        return $this->name ?? '';
+    }
 }

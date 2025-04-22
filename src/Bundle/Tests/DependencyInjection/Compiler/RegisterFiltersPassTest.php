@@ -70,6 +70,34 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
         }
     }
 
+    /** @test */
+    public function it_registers_filter_templates(): void
+    {
+        $tags = [
+            ['type' => 'foo', 'form_type' => 'foo_type'],
+            ['type' => 'bar', 'form_type' => 'bar_type', 'template' => 'bar.html.twig'],
+            ['type' => 'baz', 'form_type' => 'baz_type', 'template' => 'baz.html.twig'],
+        ];
+        $filterService = $this->registerService('app.grid_filter.foo', Foo::class);
+        $this->container->setParameter('sylius.grid.templates.filter', []);
+
+        foreach ($tags as $tag) {
+            $filterService->addTag('sylius.grid_filter', $tag);
+        }
+        $this->registerService('sylius.registry.grid_filter', ServiceRegistry::class);
+        $this->registerService(
+            'sylius.form_registry.grid_filter',
+            ServiceRegistry::class,
+        );
+
+        $this->compile();
+
+        $this->assertContainerBuilderHasParameter('sylius.grid.templates.filter', [
+            'bar' => 'bar.html.twig',
+            'baz' => 'baz.html.twig',
+        ]);
+    }
+
     /**
      * @test
      */

@@ -24,6 +24,7 @@ final class AsFilter
     public function __construct(
         public readonly string $formType,
         public readonly ?string $type = null,
+        public readonly ?string $template = null,
     ) {
     }
 }
