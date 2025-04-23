@@ -44,7 +44,7 @@ abstract class AbstractGrid implements GridInterface
         $buildMethod ??= 'buildGrid';
 
         if (!method_exists($this, $buildMethod)) {
-            throw new LogicException(sprintf('The build method "%s" you configured does not exist.', $buildMethod));
+            throw new LogicException(sprintf('The configured build method "%s" does not exist.', $buildMethod));
         }
 
         $this->$buildMethod($gridBuilder);

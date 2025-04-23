@@ -981,7 +981,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         $grid = new AttributeGridWithCustomBuildMethodThatDoesNotExist();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('The build method "nonExistingMethod" you configured does not exist.');
+        $this->expectExceptionMessage('The configured build method "nonExistingMethod" does not exist.');
 
         $this->load([
             'grids' => [

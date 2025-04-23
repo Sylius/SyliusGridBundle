@@ -17,8 +17,8 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
+use Sylius\Component\Grid\Exception\RuntimeException;
 use Sylius\Component\Grid\Parameters;
-use Sylius\Resource\Exception\RuntimeException;
 
 final class Driver implements DriverInterface
 {
@@ -40,7 +40,7 @@ final class Driver implements DriverInterface
         $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
 
         if (null === $manager) {
-            throw new RuntimeException('Manager for class "' . $configuration['class'] . '" not found.');
+            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $configuration['class']));
         }
 
         /** @var EntityRepository $repository */
