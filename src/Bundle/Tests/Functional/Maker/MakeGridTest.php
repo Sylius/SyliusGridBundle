@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
+use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
 use App\Entity\AdminUser;
 use App\Entity\Book;
 use App\Entity\Price;
@@ -30,6 +31,8 @@ final class MakeGridTest extends MakerTestCase
 
     private const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
 
+    private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameResourceGrid.php';
+
     /** @test */
     public function it_can_create_grids(): void
     {
@@ -41,6 +44,19 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileExists(self::tempFile(self::PRICE_GRID_PATH));
         $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile(self::PRICE_GRID_PATH)));
+    }
+
+    /** @test */
+    public function it_can_create_grids_without_doctrine(): void
+    {
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+
+        $this->assertFileDoesNotExist(self::tempFile(self::BOARD_GAME_GRID_PATH));
+
+        $tester->execute(['entity' => BoardGameResource::class, '--namespace' => 'Tests\Tmp\Grid']);
+
+        $this->assertFileExists(self::tempFile(self::BOARD_GAME_GRID_PATH));
+        $this->assertSame(self::getBoardGameGridExpectedContent(), \file_get_contents(self::tempFile(self::BOARD_GAME_GRID_PATH)));
     }
 
     /** @test */
@@ -80,7 +96,7 @@ final class MakeGridTest extends MakerTestCase
         $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::PRICE_GRID_PATH));
-        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile('Grid/PriceGrid.php')));
+        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile(self::PRICE_GRID_PATH)));
     }
 
     /** @test */
@@ -336,6 +352,71 @@ final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInter
     public function getResourceClass(): string
     {
         return AdminUser::class;
+    }
+}
+
+EOF
+        ;
+    }
+
+    private static function getBoardGameGridExpectedContent(): string
+    {
+        return <<<EOF
+<?php
+
+namespace App\Tests\Tmp\Grid;
+
+use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+
+final class BoardGameResourceGrid extends AbstractGrid implements ResourceAwareGridInterface
+{
+    public function __construct()
+    {
+        // TODO inject services if required
+    }
+
+    public static function getName(): string
+    {
+        return 'app_board_game_resource';
+    }
+
+    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    {
+        \$gridBuilder
+            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
+            ->addActionGroup(
+                MainActionGroup::create(
+                    CreateAction::create(),
+                )
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    // ShowAction::create(),
+                    UpdateAction::create(),
+                    DeleteAction::create()
+                )
+            )
+            ->addActionGroup(
+                BulkActionGroup::create(
+                    DeleteAction::create()
+                )
+            )
+        ;
+    }
+
+    public function getResourceClass(): string
+    {
+        return BoardGameResource::class;
     }
 }
 
