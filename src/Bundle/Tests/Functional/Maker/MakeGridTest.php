@@ -34,7 +34,7 @@ final class MakeGridTest extends MakerTestCase
     private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameResourceGrid.php';
 
     /** @test */
-    public function it_can_create_grids(): void
+    public function it_can_create_grids_with_a_doctrine_entity(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
