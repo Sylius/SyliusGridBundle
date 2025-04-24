@@ -4,7 +4,7 @@
 /composer.lock
 
 /.phpunit.result.cache
-src/Bundle/test/tmp
+tests/Application/tmp
 
 src/Bundle/test/vendor/
 src/Bundle/test/composer.lock
