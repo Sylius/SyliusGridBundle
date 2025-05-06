@@ -12,6 +12,10 @@
 -->
 
 <container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <imports>
+        <import resource="twig/**" />
+    </imports>
+
     <services>
         <defaults public="true" />
 
@@ -44,5 +48,12 @@
             <tag name="twig.extension" />
         </service>
         <service id="Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension" alias="sylius.twig.extension.bulk_action_grid" public="false" />
+
+        <service id="sylius.grid_field.twig" class="Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType">
+            <argument type="service" id="sylius.grid.data_extractor" />
+            <argument type="service" id="twig" />
+            <tag name="sylius.grid_field" type="twig" />
+        </service>
+        <service id="Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType" alias="sylius.grid_field.twig" />
     </services>
 </container>
