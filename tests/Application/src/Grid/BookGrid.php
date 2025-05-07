@@ -19,6 +19,7 @@ use App\Grid\Builder\NationalityFilter;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Builder\Action\TwigAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
@@ -98,7 +99,7 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
             )
             ->addActionGroup(
                 ItemActionGroup::create(
-                    ShowAction::create([
+                    TwigAction::create(name: 'custom_show', template: 'grid/action/show.html.twig', options: [
                         'link' => [
                             'route' => 'app_book_show',
                         ],

@@ -15,6 +15,8 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Grid\Builder\AttributeNationalityFilter;
 use App\Grid\Builder\NationalityFilter;
+use Sylius\Bundle\GridBundle\Builder\Action\TwigAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
@@ -76,6 +78,11 @@ return static function (GridConfig $grid) {
                 ->setPath('price.currencyCode')
                 ->setSortable(true, 'price.currencyCode')
                 ->setOption('vars', ['th_class' => 'text-end']),
+        )
+        ->addActionGroup(
+            ItemActionGroup::create(
+                TwigAction::create('custom_show', 'grid/action/show.html.twig'),
+            ),
         )
         ->setLimits([10, 5, 15]),
     );
