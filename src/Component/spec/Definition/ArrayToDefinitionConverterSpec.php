@@ -84,6 +84,7 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
 
         $viewAction = Action::fromNameAndType('view', 'link');
         $viewAction->setLabel('Display Tax Category');
+        $viewAction->setTemplate('path/to/action/template');
         $viewAction->setOptions(['foo' => 'bar']);
         $defaultActionGroup = ActionGroup::named('default');
         $defaultActionGroup->addAction($viewAction);
@@ -159,6 +160,7 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
                         'options' => [
                             'foo' => 'bar',
                         ],
+                        'template' => 'path/to/action/template',
                     ],
                 ],
             ],

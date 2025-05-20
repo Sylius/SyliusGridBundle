@@ -145,6 +145,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         if (array_key_exists('label', $configuration)) {
             $action->setLabel($configuration['label']);
         }
+        if (array_key_exists('template', $configuration)) {
+            $action->setTemplate($configuration['template']);
+        }
         if (array_key_exists('icon', $configuration)) {
             $action->setIcon($configuration['icon']);
         }

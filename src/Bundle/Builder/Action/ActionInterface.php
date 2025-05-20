@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Action;
 
+/**
+ * @method string getTemplate()
+ * @method self setTemplate(string $template)
+ */
 interface ActionInterface
 {
     public static function create(string $name, string $type): self;

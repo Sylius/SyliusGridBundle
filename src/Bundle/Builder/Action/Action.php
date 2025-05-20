@@ -23,6 +23,8 @@ final class Action implements ActionInterface
 
     private ?bool $enabled = null;
 
+    private ?string $template = null;
+
     private ?string $icon = null;
 
     private array $options = [];
@@ -59,6 +61,18 @@ final class Action implements ActionInterface
         return $this;
     }
 
+    public function getTemplate(): ?string
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(string $template): ActionInterface
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
     public function setIcon(string $icon): ActionInterface
     {
         $this->icon = $icon;
@@ -90,6 +104,10 @@ final class Action implements ActionInterface
 
         if (null !== $this->enabled) {
             $output['enabled'] = $this->enabled;
+        }
+
+        if (null !== $this->template) {
+            $output['template'] = $this->template;
         }
 
         if (null !== $this->icon) {

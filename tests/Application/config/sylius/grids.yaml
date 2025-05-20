@@ -55,6 +55,10 @@ sylius_grid:
                     options:
                         vars:
                             th_class: "text-end"
+            actions:
+                item:
+                    show:
+                        type: show
             limits: [10, 5, 15]
 
         app_author:
