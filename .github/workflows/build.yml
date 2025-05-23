@@ -120,6 +120,12 @@ jobs:
                     composer test-with-postgres
 
             -
+                name: Run lint container without Doctrine
+                run: |
+                    composer remove --dev doctrine/*
+                    (cd tests/Application && bin/console lint:container)    
+
+            -
                 name: Run lint container without maker bundle
                 run: |
                     APP_ENV=test_without_maker composer remove --dev symfony/maker-bundle

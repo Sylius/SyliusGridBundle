@@ -28,11 +28,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 final class MakeGrid extends AbstractMaker
 {
-    private ManagerRegistry $managerRegistry;
-
-    public function __construct(ManagerRegistry $managerRegistry)
+    public function __construct(private readonly ?ManagerRegistry $managerRegistry = null)
     {
-        $this->managerRegistry = $managerRegistry;
     }
 
     public static function getCommandName(): string
@@ -92,22 +89,12 @@ final class MakeGrid extends AbstractMaker
         $entity = new \ReflectionClass($class);
         $grid = $generator->createClassNameDetails($entity->getShortName(), $namespace, 'Grid');
 
-        $repository = new \ReflectionClass($this->managerRegistry->getRepository($entity->getName()));
-
-        if (0 !== \mb_strpos($repository->getName(), $generator->getRootNamespace())) {
-            // not using a custom repository
-            $repository = null;
-        }
-
-        $this->defaultFieldsFor($entity->getName());
-
         $generator->generateClass(
             $grid->getFullName(),
             __DIR__ . '/../Resources/config/skeleton/Grid.tpl.php',
             [
                 'entity' => $entity,
                 'defaultFields' => $this->defaultFieldsFor($entity->getName()),
-                'repository' => $repository,
             ],
         );
 
@@ -125,7 +112,7 @@ final class MakeGrid extends AbstractMaker
     {
         $choices = [];
 
-        foreach ($this->managerRegistry->getManagers() as $manager) {
+        foreach ($this->managerRegistry?->getManagers() ?? [] as $manager) {
             foreach ($manager->getMetadataFactory()->getAllMetadata() as $metadata) {
                 $choices[] = $metadata->getName();
             }
@@ -143,7 +130,7 @@ final class MakeGrid extends AbstractMaker
     /** @param class-string $class */
     private function defaultFieldsFor(string $class): iterable
     {
-        $entityManager = $this->managerRegistry->getManagerForClass($class);
+        $entityManager = $this->managerRegistry?->getManagerForClass($class);
 
         if (!$entityManager instanceof EntityManagerInterface) {
             return [];
