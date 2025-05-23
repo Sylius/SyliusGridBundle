@@ -78,6 +78,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
     function it_uses_twig_to_render_the_action(Environment $twig, GridViewInterface $gridView, Action $action): void
     {
         $action->getType()->willReturn('link');
+        $action->getTemplate()->willReturn(null)->shouldBeCalled();
         $action->getOptions()->willReturn([]);
 
         $twig
@@ -90,6 +91,40 @@ final class TwigGridRendererSpec extends ObjectBehavior
         ;
 
         $this->renderAction($gridView, $action)->shouldReturn('<a href="#">Action!</a>');
+    }
+
+    function it_uses_custom_action_template_if_specified(
+        GridViewInterface $gridView,
+        Action $action,
+        Environment $twig,
+    ): void {
+        $action->getType()->willReturn('foo')->shouldBeCalled();
+        $action->getTemplate()->willReturn('path/to/template')->shouldBeCalled();
+
+        $twig
+            ->render('path/to/template', [
+                'grid' => $gridView,
+                'action' => $action,
+                'data' => null,
+            ])
+            ->willReturn('<a href="#">Action!</a>')
+            ->shouldBeCalled()
+        ;
+
+        $this->renderAction($gridView, $action, null);
+    }
+
+    function it_throws_an_exception_if_template_is_not_configured_for_given_action_type(
+        GridViewInterface $gridView,
+        Action $action,
+    ): void {
+        $action->getType()->willReturn('foo')->shouldBeCalled();
+        $action->getTemplate()->willReturn(null)->shouldBeCalled();
+
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Missing template for action type "foo".'))
+            ->during('renderAction', [$gridView, $action])
+        ;
     }
 
     function it_renders_a_field_with_data_via_appropriate_field_type(
@@ -158,17 +193,5 @@ final class TwigGridRendererSpec extends ObjectBehavior
         $fieldType->render($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
 
         $this->renderField($gridView, $field, 'Value')->shouldReturn('<strong>Value</strong>');
-    }
-
-    function it_throws_an_exception_if_template_is_not_configured_for_given_action_type(
-        GridViewInterface $gridView,
-        Action $action,
-    ): void {
-        $action->getType()->willReturn('foo');
-
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Missing template for action type "foo".'))
-            ->during('renderAction', [$gridView, $action])
-        ;
     }
 }

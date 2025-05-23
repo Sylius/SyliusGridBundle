@@ -149,6 +149,7 @@ final class Configuration implements ConfigurationInterface
                                             ->scalarNode('type')->isRequired()->end()
                                             ->scalarNode('label')->end()
                                             ->scalarNode('enabled')->defaultTrue()->end()
+                                            ->scalarNode('template')->end()
                                             ->scalarNode('icon')->end()
                                             ->scalarNode('position')->defaultValue(100)->end()
                                             ->arrayNode('options')

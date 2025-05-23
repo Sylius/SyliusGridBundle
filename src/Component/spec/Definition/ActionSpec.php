@@ -53,6 +53,17 @@ final class ActionSpec extends ObjectBehavior
         $this->isEnabled()->shouldReturn(true);
     }
 
+    function it_has_no_template_by_default(): void
+    {
+        $this->getTemplate()->shouldReturn(null);
+    }
+
+    function its_template_is_mutable(): void
+    {
+        $this->setTemplate('path/to/action/template');
+        $this->getTemplate()->shouldReturn('path/to/action/template');
+    }
+
     function it_has_no_icon_by_default(): void
     {
         $this->getIcon()->shouldReturn(null);

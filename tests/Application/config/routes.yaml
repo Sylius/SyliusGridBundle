@@ -7,10 +7,12 @@ app_books:
     type: sylius.resource
 
 app_book_show:
-    path: /books/{id}}
+    path: /books/{id}
     methods: [ GET ]
     defaults:
         _controller: app.controller.book::showAction
+        _sylius:
+            template: 'book/show.html.twig'
 
 app_author:
     resource: |

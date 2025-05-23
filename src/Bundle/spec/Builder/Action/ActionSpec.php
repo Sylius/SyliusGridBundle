@@ -55,6 +55,18 @@ final class ActionSpec extends ObjectBehavior
         $action->toArray()['enabled']->shouldReturn(false);
     }
 
+    function it_has_no_template_by_default(): void
+    {
+        $this->getTemplate()->shouldReturn(null);
+    }
+
+    function it_sets_template(): void
+    {
+        $this->setTemplate('/path/to/template');
+
+        $this->getTemplate()->shouldReturn('/path/to/template');
+    }
+
     function it_sets_icon(): void
     {
         $action = $this->setIcon('cogs');

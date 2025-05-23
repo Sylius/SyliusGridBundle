@@ -23,6 +23,8 @@ class Action
 
     private bool $enabled = true;
 
+    private ?string $template = null;
+
     private ?string $icon = null;
 
     /** @var array */
@@ -73,6 +75,16 @@ class Action
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getTemplate(): ?string
+    {
+        return $this->template;
+    }
+
+    public function setTemplate(string $template): void
+    {
+        $this->template = $template;
     }
 
     public function getIcon(): ?string

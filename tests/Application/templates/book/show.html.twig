@@ -1,0 +1,6 @@
+<h2>{{ book.title }}</h2>
+
+<ul>
+    <li><strong>Author:</strong> {{ book.author|default('-') }}</li>
+    <li><strong>Price:</strong> {{ book.price.amount|default('-') }}</li>
+</ul>

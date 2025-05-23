@@ -99,11 +99,13 @@ final class TwigGridRenderer implements GridRendererInterface
     public function renderAction(GridViewInterface $gridView, Action $action, $data = null)
     {
         $type = $action->getType();
-        if (!isset($this->actionTemplates[$type])) {
+        $template = $action->getTemplate() ?? $this->actionTemplates[$type] ?? null;
+
+        if (null === $template) {
             throw new \InvalidArgumentException(sprintf('Missing template for action type "%s".', $type));
         }
 
-        return $this->twig->render($this->actionTemplates[$type], [
+        return $this->twig->render($template, [
             'grid' => $gridView,
             'action' => $action,
             'data' => $data,
