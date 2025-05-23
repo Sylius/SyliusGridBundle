@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Grid;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Exception\LogicException;
 
 abstract class AbstractGrid implements GridInterface
 {
@@ -28,9 +29,31 @@ abstract class AbstractGrid implements GridInterface
     {
         $gridBuilder = $this->createGridBuilder();
 
-        $this->buildGrid($gridBuilder);
+        $provider = self::getAsGridAttribute()?->provider ?? null;
+
+        if (null !== $provider) {
+            $gridBuilder->setProvider($provider);
+        }
+
+        $buildMethod = self::getAsGridAttribute()?->buildMethod;
+
+        if (null === $buildMethod && method_exists($this, '__invoke')) {
+            $buildMethod = '__invoke';
+        }
+
+        $buildMethod ??= 'buildGrid';
+
+        if (!method_exists($this, $buildMethod)) {
+            throw new LogicException(sprintf('The configured build method "%s" does not exist.', $buildMethod));
+        }
+
+        $this->$buildMethod($gridBuilder);
 
         return $gridBuilder->toArray();
+    }
+
+    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    {
     }
 
     private function createGridBuilder(): GridBuilderInterface

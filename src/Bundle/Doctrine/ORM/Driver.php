@@ -15,9 +15,9 @@ namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\Persistence\ObjectManager;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
+use Sylius\Component\Grid\Exception\RuntimeException;
 use Sylius\Component\Grid\Parameters;
 
 final class Driver implements DriverInterface
@@ -34,11 +34,14 @@ final class Driver implements DriverInterface
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('class', $configuration)) {
-            throw new \InvalidArgumentException('"class" must be configured.');
+            throw new \InvalidArgumentException('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.');
         }
 
-        /** @var ObjectManager $manager */
         $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
+
+        if (null === $manager) {
+            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $configuration['class']));
+        }
 
         /** @var EntityRepository $repository */
         $repository = $manager->getRepository($configuration['class']);

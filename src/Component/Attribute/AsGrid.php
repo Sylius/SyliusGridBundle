@@ -19,6 +19,8 @@ final class AsGrid
     public function __construct(
         public readonly ?string $resourceClass = null,
         public readonly ?string $name = null,
+        public readonly ?string $buildMethod = null,
+        public readonly ?string $provider = null,
     ) {
     }
 }

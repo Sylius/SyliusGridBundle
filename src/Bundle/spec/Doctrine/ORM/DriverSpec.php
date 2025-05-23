@@ -37,7 +37,7 @@ final class DriverSpec extends ObjectBehavior
     function it_throws_exception_if_class_is_undefined(): void
     {
         $this
-            ->shouldThrow(\InvalidArgumentException::class)
+            ->shouldThrow(new \InvalidArgumentException('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.'))
             ->during('getDataSource', [[], new Parameters()])
         ;
     }

@@ -15,16 +15,12 @@ namespace Sylius\Component\Grid\Tests\Dummy;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class NoResourceGrid extends AbstractGrid
+#[AsGrid(resourceClass: Foo::class, provider: DummyGridProvider::class)]
+final class AttributeGridWithProvider extends AbstractGrid
 {
-    public static function getName(): string
-    {
-        return 'app_no_resource';
-    }
-
     public function buildGrid(GridBuilderInterface $gridBuilder): void
     {
-        $gridBuilder->setProvider(DummyGridProvider::class);
     }
 }

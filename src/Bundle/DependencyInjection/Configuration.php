@@ -81,6 +81,7 @@ final class Configuration implements ConfigurationInterface
                     ->arrayPrototype()
                         ->children()
                             ->scalarNode('extends')->cannotBeEmpty()->end()
+                            ->scalarNode('provider')->cannotBeEmpty()->end()
                             ->arrayNode('driver')
                                 ->addDefaultsIfNotSet()
                                 ->children()
