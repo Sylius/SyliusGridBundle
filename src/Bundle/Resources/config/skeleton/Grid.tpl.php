@@ -55,7 +55,7 @@ foreach ($defaultFields as $fieldname => $type) {
         echo "            )\n";
     }
 
-    if ('BOOLEAN' === $type) {
+    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
         echo "            //->addField(\n";
         echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
         echo "            //        ->setLabel('" . ucfirst($fieldname) . "')\n";

@@ -16,7 +16,7 @@ App\Entity\Book:
             length: 255
         state:
             type: string
-            lenght: 20
+            length: 20
             nullable: false
         enabled:
             type: boolean

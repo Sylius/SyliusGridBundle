@@ -25,6 +25,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Webmozart\Assert\Assert;
 
 final class MakeGrid extends AbstractMaker
 {
@@ -39,7 +40,7 @@ final class MakeGrid extends AbstractMaker
 
     public static function getCommandDescription(): string
     {
-        return 'Creates a Grid for a Doctrine entity class';
+        return 'Creates a Sylius Grid configuration for a given resource class or Doctrine entity.';
     }
 
     public function configureCommand(Command $command, InputConfiguration $inputConfig): void
@@ -133,7 +134,25 @@ final class MakeGrid extends AbstractMaker
         $entityManager = $this->managerRegistry?->getManagerForClass($class);
 
         if (!$entityManager instanceof EntityManagerInterface) {
-            return [];
+            $metadata = new \ReflectionClass($class);
+            $fieldMappings = $metadata->getProperties();
+
+            foreach ($fieldMappings as $property) {
+                // ignore identifier
+                if ('id' === $property->getName()) {
+                    continue;
+                }
+
+                Assert::isInstanceOf($property->getType(), \ReflectionNamedType::class);
+
+                $propertyType = $property->getType()->getName();
+
+                $type = $propertyType ? \mb_strtoupper($propertyType) : null;
+
+                yield $property->getName() => $type;
+            }
+
+            return;
         }
 
         $metadata = $entityManager->getClassMetadata($class);
@@ -149,7 +168,5 @@ final class MakeGrid extends AbstractMaker
 
             yield $property['fieldName'] => $type;
         }
-
-        return [];
     }
 }
