@@ -101,9 +101,9 @@ final class SyliusGridExtension extends Extension
         // Enable all available drivers if there is no configured drivers
         $drivers = [] !== $drivers ? $drivers : $availableDrivers;
 
-        $gridDrivers = $this->getGridDrivers($grids);
+        $gridDrivers = $this->resolveDriversUsedInGrids($grids);
 
-        $this->checkConfiguredDrivers($drivers, $availableDrivers, $gridDrivers);
+        $this->assertDriversValid($drivers, $availableDrivers, $gridDrivers);
 
         foreach ($drivers as $enabledDriver) {
             if ($enabledDriver === SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM) {
@@ -118,15 +118,15 @@ final class SyliusGridExtension extends Extension
     }
 
     /**
-     * @param array<string, array{driver?: array{name: string}}> $drivers
+     * @param array<string, array{driver?: array{name: string}}> $grids
      *
      * @return array<string, string>
      */
-    private function getGridDrivers(array $drivers): array
+    private function resolveDriversUsedInGrids(array $grids): array
     {
         $gridDrivers = array_map(function (array $grid): string|false {
             return $grid['driver']['name'] ?? false;
-        }, $drivers);
+        }, $grids);
 
         // Remove grid with disabled driver
         return array_filter($gridDrivers, function (string|false $driver): bool {
@@ -154,7 +154,7 @@ final class SyliusGridExtension extends Extension
      * @param string[] $availableDrivers
      * @param array<string, string> $gridDrivers
      */
-    private function checkConfiguredDrivers(array $configuredDrivers, array $availableDrivers, array $gridDrivers): void
+    private function assertDriversValid(array $configuredDrivers, array $availableDrivers, array $gridDrivers): void
     {
         foreach ($configuredDrivers as $driver) {
             if (!in_array($driver, $availableDrivers, true)) {

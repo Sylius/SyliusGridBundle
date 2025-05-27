@@ -55,7 +55,7 @@ final class ConfigurationTest extends TestCase
     /**
      * @test
      */
-    public function it_configured_no_default_drivers(): void
+    public function it_configures_no_default_drivers(): void
     {
         $this->assertProcessedConfigurationEquals(
             [[]],
