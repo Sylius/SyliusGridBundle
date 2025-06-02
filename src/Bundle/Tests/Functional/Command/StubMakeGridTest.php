@@ -26,6 +26,6 @@ final class StubMakeGridTest extends KernelTestCase
 
         $tester->execute([]);
 
-        $this->assertStringContainsString('To run "make:grid" you need the "MakerBundle"', $tester->getDisplay());
+        $this->assertStringContainsString('To run command you need the "MakerBundle"', $tester->getDisplay());
     }
 }
