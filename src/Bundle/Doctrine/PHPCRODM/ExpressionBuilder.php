@@ -29,7 +29,7 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
     /** @var array */
     private $orderBys = [];
 
-    public function __construct(CollectionsExpressionBuilder $expressionBuilder = null)
+    public function __construct(?CollectionsExpressionBuilder $expressionBuilder = null)
     {
         $this->expressionBuilder = $expressionBuilder ?: new CollectionsExpressionBuilder();
     }
