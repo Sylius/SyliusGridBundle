@@ -15,12 +15,15 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
  */
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'app_author')]
 class Author implements ResourceInterface
 {
     /**
@@ -28,6 +31,9 @@ class Author implements ResourceInterface
      *
      * @Serializer\Type("integer")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
 
     /**
@@ -35,12 +41,16 @@ class Author implements ResourceInterface
      *
      * @Serializer\Type("string")
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $name = null;
 
     /** @Serializer\Expose */
+    #[ORM\ManyToOne(targetEntity: Nationality::class, cascade: ['all'])]
+    #[ORM\JoinColumn(name: 'nationality_id', referencedColumnName: 'id', nullable: true)]
     private ?Nationality $nationality = null;
 
     /** @var Collection|Book[] */
+    #[ORM\OneToMany(mappedBy: 'author', targetEntity: Book::class, cascade: ['all'])]
     private Collection $books;
 
     public function __construct()

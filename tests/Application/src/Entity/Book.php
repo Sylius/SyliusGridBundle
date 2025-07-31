@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 use Sylius\Component\Resource\Model\ResourceInterface;
-use Sylius\Component\Resource\Model\TimestampableTrait;
+use Sylius\Resource\Model\TimestampableInterface;
 
 /**
  * @Serializer\ExclusionPolicy("all")
  */
-class Book implements ResourceInterface
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'app_book')]
+class Book implements ResourceInterface, TimestampableInterface
 {
-    use TimestampableTrait;
-
     public const STATE_INITIAL = 'initial';
 
     public const STATE_PUBLISHED = 'published';
@@ -35,6 +36,9 @@ class Book implements ResourceInterface
      *
      * @Serializer\Type("integer")
      */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
 
     /**
@@ -42,18 +46,31 @@ class Book implements ResourceInterface
      *
      * @Serializer\Type("string")
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $title = null;
 
     /** @Serializer\Expose */
+    #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
+    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
     private ?Author $author = null;
 
     /** @Serializer\Expose */
+    #[ORM\Embedded(class: Price::class)]
     private ?Price $price = null;
 
+    #[ORM\Column(type: 'string', length: 20, nullable: false)]
     private string $state;
 
+    #[ORM\Column(type: 'boolean')]
     private bool $enabled = true;
 
+    #[ORM\Column(type: 'datetime')]
+    private $createdAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private $updatedAt;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private ?\DateTimeInterface $publishedAt = null;
 
     public function __construct()
@@ -116,5 +133,25 @@ class Book implements ResourceInterface
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(?\DateTimeInterface $createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
     }
 }
