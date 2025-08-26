@@ -90,13 +90,13 @@ final class MakeGridTest extends MakerTestCase
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
-        $this->assertFileDoesNotExist(self::tempFile(self::PRICE_GRID_PATH));
+        $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
-        $tester->setInputs([Price::class]);
+        $tester->setInputs([AdminUser::class]);
         $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
 
-        $this->assertFileExists(self::tempFile(self::PRICE_GRID_PATH));
-        $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile(self::PRICE_GRID_PATH)));
+        $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
+        $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
     }
 
     /** @test */

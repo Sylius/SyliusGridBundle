@@ -13,12 +13,19 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
+#[ORM\MappedSuperclass]
+#[ORM\Table(name: 'app_admin_user')]
 class AdminUser implements ResourceInterface
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
 
+    #[ORM\Column(type: 'string', length: 255)]
     private ?string $username = null;
 
     public function getId(): ?int
