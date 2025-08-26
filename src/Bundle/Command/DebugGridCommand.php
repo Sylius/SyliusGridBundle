@@ -23,7 +23,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
-#[AsCommand(name: 'sylius:debug:grid')]
+#[AsCommand(name: 'sylius:debug:grid', description: 'Debug grid configuration')]
 final class DebugGridCommand extends Command
 {
     public function __construct(
@@ -35,8 +35,20 @@ final class DebugGridCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument(name: 'grid', mode: InputArgument::REQUIRED, description: 'The grid name or FQCN')
-            ->setHelp("The <info>%command.name% 'App\Grid\DummyGrid'</info> command dumps the definition for the dummy grid.")
+            ->addArgument(name: 'grid', mode: InputArgument::REQUIRED, description: 'The name or fully-qualified class name (FQCN) of the grid to debug')
+            ->setHelp(
+                <<<'EOF'
+The <info>%command.name%</info> command displays all configured grids:
+
+  <info>php %command.full_name%</info>
+  
+To get specific grid, specify its name (or FQCN):
+
+  <info>php %command.full_name% sylius_product</info>
+  
+  <info>php %command.full_name% App\Grid\SupplierGrid</info>
+EOF
+            )
         ;
     }
 
