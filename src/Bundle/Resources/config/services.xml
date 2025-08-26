@@ -136,6 +136,8 @@
 
         <service id="sylius.grid.console.command.grid_debug" class="Sylius\Bundle\GridBundle\Command\DebugGridCommand">
             <argument type="service" id="sylius.grid.provider" />
+            <argument type="tagged_locator" tag="sylius.grid" />
+            <argument>%sylius.grids_definitions%</argument>
             <tag name="console.command" />
         </service>
 
