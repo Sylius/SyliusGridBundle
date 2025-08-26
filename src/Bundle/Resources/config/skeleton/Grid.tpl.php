@@ -19,22 +19,21 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class <?= $class_name ?> extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(
+    resourceClass: <?= $entity->getShortName() ?>::class,
+    name: 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>',
+)]
+final class <?= $class_name ?> extends AbstractGrid
 {
     public function __construct()
     {
         // TODO inject services if required
     }
 
-    public static function getName(): string
-    {
-        return 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>';
-    }
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
             // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
@@ -81,10 +80,5 @@ foreach ($defaultFields as $fieldname => $type) {
                 )
             )
         ;
-    }
-
-    public function getResourceClass(): string
-    {
-        return <?= $entity->getShortName() ?>::class;
     }
 }
