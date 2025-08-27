@@ -22,12 +22,15 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 
 #[AsCommand(name: 'sylius:debug:grid', description: 'Debug grid configuration')]
 final class DebugGridCommand extends Command
 {
     public function __construct(
         private readonly GridProviderInterface $gridProvider,
+        private readonly ServiceProviderInterface $taggedGrids,
+        private readonly array $gridConfigurations,
     ) {
         parent::__construct();
     }
@@ -35,7 +38,7 @@ final class DebugGridCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument(name: 'grid', mode: InputArgument::REQUIRED, description: 'The name or fully-qualified class name (FQCN) of the grid to debug')
+            ->addArgument(name: 'grid', mode: InputArgument::OPTIONAL, description: 'The name or fully-qualified class name (FQCN) of the grid to debug')
             ->setHelp(
                 <<<'EOF'
 The <info>%command.name%</info> command displays all configured grids:
@@ -50,6 +53,19 @@ To get specific grid, specify its name (or FQCN):
 EOF
             )
         ;
+    }
+
+    public function interact(InputInterface $input, OutputInterface $output): void
+    {
+        if ($input->getArgument('grid')) {
+            return;
+        }
+
+        $io = new SymfonyStyle($input, $output);
+
+        $entity = $io->choice('Which grid do you want to debug?', $this->getGridChoices());
+
+        $input->setArgument('grid', $entity);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -90,5 +106,17 @@ EOF
         }
 
         return $values;
+    }
+
+    private function getGridChoices(): array
+    {
+        $grids = array_merge(
+            $this->taggedGrids->getProvidedServices(),
+            array_keys($this->gridConfigurations),
+        );
+
+        \sort($grids);
+
+        return $grids;
     }
 }

@@ -13,12 +13,27 @@ declare(strict_types=1);
 
 namespace Functional\Command;
 
+use App\BoardGameBlog\Infrastructure\Sylius\Grid\BoardGameGrid;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
 final class DebugGridCommandTest extends KernelTestCase
 {
+    public function testListGridDefinitions(): void
+    {
+        $tester = new CommandTester((new Application(self::bootKernel(['environment' => 'test_grids_with_php_config'])))->find('sylius:debug:grid'));
+
+        $tester->setInputs(['app_author']);
+        $tester->execute([]);
+
+        $display = $tester->getDisplay();
+
+        $this->assertStringContainsString('Which grid do you want to debug?', $display);
+        $this->assertStringContainsString(BoardGameGrid::class, $display);
+        $this->assertStringContainsString('app_author', $display);
+    }
+
     public function testDebugGridDefinition(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel(['environment' => 'test_grids_with_php_config'])))->find('sylius:debug:grid'));
