@@ -116,7 +116,7 @@ final class TwigGridRenderer implements GridRendererInterface
     {
         $template = $this->getFilterTemplate($filter);
 
-        $form = $this->formFactory->createNamed('criteria', FormType::class, [], [
+        $form = $this->formFactory->createNamed('criteria', FormType::class, $this->getDefaultFormData($filter), [
             'allow_extra_fields' => true,
             'csrf_protection' => false,
             'required' => false,
@@ -127,8 +127,10 @@ final class TwigGridRenderer implements GridRendererInterface
             $filter->getFormOptions(),
         );
 
-        $criteria = $gridView->getParameters()->get('criteria', []);
-        $form->submit($criteria);
+        if ($gridView->getParameters()->has('criteria')) {
+            $criteria = $gridView->getParameters()->get('criteria', []);
+            $form->submit($criteria);
+        }
 
         return $this->twig->render($template, [
             'grid' => $gridView,
@@ -153,5 +155,14 @@ final class TwigGridRenderer implements GridRendererInterface
         }
 
         return $this->filterTemplates[$type];
+    }
+
+    private function getDefaultFormData(Filter $filter): array
+    {
+        if (in_array($filter->getCriteria(), [null, '', []], true)) {
+            return [];
+        }
+
+        return [$filter->getName() => $filter->getCriteria()];
     }
 }
