@@ -138,21 +138,20 @@ use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(
+    resourceClass: Book::class,
+    name: 'app_book',
+)]
+final class BookGrid extends AbstractGrid
 {
     public function __construct()
     {
         // TODO inject services if required
     }
 
-    public static function getName(): string
-    {
-        return 'app_book';
-    }
-
-    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
             // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
@@ -206,11 +205,6 @@ final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
             )
         ;
     }
-
-    public function getResourceClass(): string
-    {
-        return Book::class;
-    }
 }
 
 EOF
@@ -235,21 +229,20 @@ use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(
+    resourceClass: Price::class,
+    name: 'app_price',
+)]
+final class PriceGrid extends AbstractGrid
 {
     public function __construct()
     {
         // TODO inject services if required
     }
 
-    public static function getName(): string
-    {
-        return 'app_price';
-    }
-
-    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
             // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
@@ -277,11 +270,6 @@ final class PriceGrid extends AbstractGrid implements ResourceAwareGridInterface
             )
         ;
     }
-
-    public function getResourceClass(): string
-    {
-        return Price::class;
-    }
 }
 
 EOF
@@ -306,21 +294,20 @@ use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(
+    resourceClass: AdminUser::class,
+    name: 'app_admin_user',
+)]
+final class AdminUserGrid extends AbstractGrid
 {
     public function __construct()
     {
         // TODO inject services if required
     }
 
-    public static function getName(): string
-    {
-        return 'app_admin_user';
-    }
-
-    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
             // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
@@ -348,11 +335,6 @@ final class AdminUserGrid extends AbstractGrid implements ResourceAwareGridInter
             )
         ;
     }
-
-    public function getResourceClass(): string
-    {
-        return AdminUser::class;
-    }
 }
 
 EOF
@@ -377,21 +359,20 @@ use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class BoardGameResourceGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(
+    resourceClass: BoardGameResource::class,
+    name: 'app_board_game_resource',
+)]
+final class BoardGameResourceGrid extends AbstractGrid
 {
     public function __construct()
     {
         // TODO inject services if required
     }
 
-    public static function getName(): string
-    {
-        return 'app_board_game_resource';
-    }
-
-    public function buildGrid(GridBuilderInterface \$gridBuilder): void
+    public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
             // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
@@ -423,11 +404,6 @@ final class BoardGameResourceGrid extends AbstractGrid implements ResourceAwareG
                 )
             )
         ;
-    }
-
-    public function getResourceClass(): string
-    {
-        return BoardGameResource::class;
     }
 }
 
