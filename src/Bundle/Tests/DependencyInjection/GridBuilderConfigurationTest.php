@@ -440,10 +440,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
             ->addField(Field::create('name', 'string'))
-            ->addField(
-                Field::create('author', 'twig')
-                ->setOptions(['template' => 'admin/book/grid/field/author.html.twig']),
-            )
+            ->addField(TwigField::create('author', 'admin/book/grid/field/author.html.twig'))
         ;
 
         $this->load([

@@ -41,6 +41,7 @@ interface FieldInterface
 
     public function getOptions(): array;
 
+    /** @deprecated use self::addOptions instead */
     public function setOptions(array $options): self;
 
     public function addOptions(array $options): self;
