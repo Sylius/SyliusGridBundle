@@ -15,8 +15,6 @@
     <imports>
         <import resource="services/field_types.xml" />
         <import resource="services/filters.xml" />
-        <import resource="services/templating.xml" />
-        <import resource="services/twig.xml" />
     </imports>
 
     <services>
