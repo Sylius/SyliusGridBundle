@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v1.13.2 (2025-09-05)
+
+#### Details
+
+- [#360](https://github.com/Sylius/SyliusGridBundle/pull/360) ci : update checkout action to upgrade node ([@vasilvestre](https://github.com/vasilvestre))
+- [#373](https://github.com/Sylius/SyliusGridBundle/pull/373) fix: [make:grid Command] - make Doctrine ORM requirement optional ([@stlgaits](https://github.com/stlgaits))
+- [#380](https://github.com/Sylius/SyliusGridBundle/pull/380) Fix implicit nullable parameter + add ECS rule ([@GSadee](https://github.com/GSadee))
+
 ## v1.13.1 (2024-11-29)
 
 #### Details
