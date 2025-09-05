@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v1.14.0-ALPHA.2 (2025-09-05)
+
+#### Details
+
+- [#348](https://github.com/Sylius/SyliusGridBundle/pull/348) Introduce AsFilter attribute to define filter type and form type ([@vasilvestre](https://github.com/vasilvestre))
+- [#349](https://github.com/Sylius/SyliusGridBundle/pull/349) Introduce AsGrid attribute for streamlined grid configuration ([@vasilvestre](https://github.com/vasilvestre))
+- [#370](https://github.com/Sylius/SyliusGridBundle/pull/370) Configure template via the AsFilter attribute ([@loic425](https://github.com/loic425))
+- [#377](https://github.com/Sylius/SyliusGridBundle/pull/377) Allow to define a template in action definition ([@loic425](https://github.com/loic425))
+- [#371](https://github.com/Sylius/SyliusGridBundle/pull/371) Add custom build method and grid provider ([@loic425](https://github.com/loic425))
+- [#373](https://github.com/Sylius/SyliusGridBundle/pull/373) fix: [make:grid Command] - make Doctrine ORM requirement optional ([@stlgaits](https://github.com/stlgaits))
+- [#374](https://github.com/Sylius/SyliusGridBundle/pull/374) Improve make grid command to be run with Doctrine Entities or any other Object resource class ([@stlgaits](https://github.com/stlgaits))
+- [#372](https://github.com/Sylius/SyliusGridBundle/pull/372) Fix grid sorting bc break ([@Florian-Merle](https://github.com/Florian-Merle))
+- [#380](https://github.com/Sylius/SyliusGridBundle/pull/380) Fix implicit nullable parameter + add ECS rule ([@GSadee](https://github.com/GSadee))
+- [#385](https://github.com/Sylius/SyliusGridBundle/pull/385) Moving the doctrine mappings from yaml to php attributes ([@mamazu](https://github.com/mamazu))
+- [#382](https://github.com/Sylius/SyliusGridBundle/pull/382) Add a de grid command ([@loic425](https://github.com/loic425))
+
 ## v1.14.0-ALPHA.1 (2025-03-12)
 
 #### Details
