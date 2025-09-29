@@ -11,44 +11,46 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Configuration;
+namespace Sylius\Component\Grid\Tests\Unit\Configuration;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 
-final class GridConfigurationExtenderSpec extends ObjectBehavior
+final class GridConfigurationExtenderTest extends TestCase
 {
-    function it_is_initializable(): void
+    private GridConfigurationExtender $gridConfigurationExtender;
+
+    protected function setUp(): void
     {
-        $this->shouldHaveType(GridConfigurationExtender::class);
+        $this->gridConfigurationExtender = new GridConfigurationExtender();
     }
 
-    function it_extends_grid_configuration_from_another_grid(): void
+    public function testExtendsGridConfigurationFromAnotherGrid(): void
     {
         $gridConfiguration = ['foo' => 'fighters'];
         $parentGridConfiguration = ['configuration1' => 'value1', 'foo' => 'bar'];
 
-        $this->extends($gridConfiguration, $parentGridConfiguration)->shouldReturn([
+        $this->assertSame([
             'configuration1' => 'value1',
             'foo' => 'fighters',
-        ]);
+        ], $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration));
     }
 
-    function it_does_not_extend_sorting_configuration(): void
+    public function testDoesNotExtendSortingConfiguration(): void
     {
         $gridConfiguration = ['foo' => 'fighters'];
         $parentGridConfiguration = ['sorting' => ['name' => 'asc']];
 
-        $this->extends($gridConfiguration, $parentGridConfiguration)->shouldReturn([
+        $this->assertSame([
             'foo' => 'fighters',
-        ]);
+        ], $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration));
     }
 
-    function it_removes_extends_key(): void
+    public function testRemovesExtendsKey(): void
     {
         $gridConfiguration = ['extends' => 'Artist'];
         $parentGridConfiguration = [];
 
-        $this->extends($gridConfiguration, $parentGridConfiguration)->shouldReturn([]);
+        $this->assertSame([], $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration));
     }
 }
