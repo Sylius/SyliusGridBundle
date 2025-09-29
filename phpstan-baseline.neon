@@ -1,6 +1,1651 @@
 parameters:
 	ignoreErrors:
 		-
-			message: "#^Dead catch \\- Throwable is never thrown in the try block\\.$#"
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\Action\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/Action.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\Action\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/Action.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Action\\Action\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/Action.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\ActionInterface\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/ActionInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\ActionInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/ActionInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\ApplyTransitionAction\:\:create\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/ApplyTransitionAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\ApplyTransitionAction\:\:create\(\) has parameter \$routeParameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/ApplyTransitionAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\CreateAction\:\:create\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/CreateAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\DeleteAction\:\:create\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/DeleteAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\ShowAction\:\:create\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/ShowAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Action\\UpdateAction\:\:create\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Action/UpdateAction.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\ActionGroup\\ActionGroup\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/ActionGroup/ActionGroup.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(Sylius\\Bundle\\GridBundle\\Builder\\Action\\ActionInterface\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Builder/ActionGroup/ActionGroup.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\ActionGroup\\ActionGroup\:\:\$actions type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/ActionGroup/ActionGroup.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\ActionGroup\\ActionGroupInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/ActionGroup/ActionGroupInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\Field\:\:addOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/Field.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\Field\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/Field.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\Field\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/Field.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\Field\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/Field.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Field\\Field\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/Field.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\FieldInterface\:\:addOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/FieldInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\FieldInterface\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/FieldInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\FieldInterface\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/FieldInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Field\\FieldInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Field/FieldInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\EntityFilter\:\:create\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/EntityFilter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:getCriteria\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:getFormOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:setCriteria\(\) has parameter \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:setFormOptions\(\) has parameter \$formOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:\$criteria type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:\$formOptions type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Filter\\Filter\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/Filter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:getFormOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:setCriteria\(\) has parameter \$criteria with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:setFormOptions\(\) has parameter \$formOptions with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\SelectFilter\:\:create\(\) has parameter \$choices with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/SelectFilter.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\StringFilter\:\:create\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/Filter/StringFilter.php
+
+		-
+			message: '#^Cannot access an offset on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 4
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:setLimits\(\) has parameter \$limits with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:setRepositoryMethod\(\) has parameter \$arguments with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:setRepositoryMethod\(\) has parameter \$method with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(Sylius\\Bundle\\GridBundle\\Builder\\Filter\\FilterInterface\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:\$driverConfiguration type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:\$filters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:\$limits type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:\$removals type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\GridBuilder\:\:\$sorting type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilderInterface\:\:setLimits\(\) has parameter \$limits with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilderInterface\:\:setRepositoryMethod\(\) has parameter \$arguments with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilderInterface\:\:setRepositoryMethod\(\) has parameter \$method with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\GridBuilderInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Builder/GridBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:__construct\(\) has parameter \$gridConfigurations with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Command/DebugGridCommand.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:__construct\(\) has parameter \$taggedGrids with generic interface Symfony\\Contracts\\Service\\ServiceProviderInterface but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Bundle/Command/DebugGridCommand.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:getGridChoices\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Command/DebugGridCommand.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:objectToArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Command/DebugGridCommand.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Config\\GridConfig\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Config/GridConfig.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(Sylius\\Bundle\\GridBundle\\Builder\\GridBuilderInterface\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Config/GridConfig.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Config\\GridConfig\:\:\$grids type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Config/GridConfig.php
+
+		-
+			message: '#^Cannot access offset ''alias'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterDriversPass.php
+
+		-
+			message: '#^Cannot access offset ''type'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFieldTypesPass.php
+
+		-
+			message: '#^Cannot access offset ''form_type'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^Cannot access offset ''template'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^Cannot access offset ''type'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilter\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^Parameter \#2 \$filterType of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilterTemplate\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^Parameter \#3 \$template of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilterTemplate\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$bundles has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/Compiler/RegisterStubCommandsPass.php
+
+		-
+			message: '#^Cannot access offset ''action'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Cannot access offset ''bulk_action'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Cannot access offset ''filter'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:getAvailableDrivers\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:getConfiguration\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) has parameter \$drivers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) has parameter \$grids with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#1 \$configuredDrivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:assertDriversValid\(\) expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#1 \$drivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#1 \$grids of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:resolveDriversUsedInGrids\(\) expects array\<string, array\{driver\?\: array\{name\: string\}\}\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#2 \$availableDrivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:assertDriversValid\(\) expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#2 \$grids of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\DBAL\\Driver\:\:getDataSource\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Parameter \#1 \$from of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:from\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\DBAL\\ExpressionBuilder\:\:in\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\DBAL\\ExpressionBuilder\:\:notIn\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$y of method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:in\(\) expects array\<string\>\|string, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Parameter \#2 \$y of method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:notIn\(\) expects array\<string\>\|string, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Cannot access offset ''arguments'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Cannot access offset ''fetch_join_collection'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Cannot access offset ''method'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Cannot access offset ''use_output_walkers'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\Driver\:\:getDataSource\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^PHPDoc tag @var for variable \$repository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#1 \$class of method Doctrine\\Persistence\\ManagerRegistry\:\:getManagerForClass\(\) expects class\-string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#1 \$className of method Doctrine\\Persistence\\ObjectManager\:\:getRepository\(\) expects class\-string\<object\>, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#1 \$queryBuilder of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects Doctrine\\ORM\\QueryBuilder, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#2 \$fetchJoinCollection of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Parameter \#3 \$useOutputWalkers of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Bundle/Doctrine/ORM/Driver.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\FieldTypes\\TwigFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/FieldTypes/TwigFieldType.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/FieldTypes/TwigFieldType.php
+
+		-
+			message: '#^Cannot access offset string on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 3
+			path: src/Bundle/Form/Registry/FormTypeRegistry.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:get\(\) should return string\|null but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Bundle/Form/Registry/FormTypeRegistry.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:\$formTypes type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Form/Registry/FormTypeRegistry.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Grid\\AbstractGrid\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Grid/AbstractGrid.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>name" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Bundle/Grid/AbstractGrid.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>provider" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Bundle/Grid/AbstractGrid.php
+
+		-
+			message: '#^Using nullsafe property access "\?\-\>resourceClass" on left side of \?\? is unnecessary\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Bundle/Grid/AbstractGrid.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Grid\\GridInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Grid/GridInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Parser\\OptionsParser\:\:parseOptions\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Parser/OptionsParser.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Parser\\OptionsParser\:\:parseOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Parser/OptionsParser.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Parser\\OptionsParserInterface\:\:parseOptions\(\) has parameter \$parameters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Parser/OptionsParserInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Parser\\OptionsParserInterface\:\:parseOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Parser/OptionsParserInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Provider\\ServiceGridProvider\:\:extend\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Provider/ServiceGridProvider.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Provider\\ServiceGridProvider\:\:extend\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Provider/ServiceGridProvider.php
+
+		-
+			message: '#^Parameter \#2 \$parentGridCode of method Sylius\\Bundle\\GridBundle\\Provider\\ServiceGridProvider\:\:extend\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Provider/ServiceGridProvider.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Renderer\\TwigBulkActionGridRenderer\:\:__construct\(\) has parameter \$bulkActionTemplates with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
+
+		-
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Renderer\\TwigBulkActionGridRenderer\:\:\$bulkActionTemplates type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Storage\\FilterStorageInterface\:\:all\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Storage/FilterStorageInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Storage\\FilterStorageInterface\:\:set\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Storage/FilterStorageInterface.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Storage\\SessionFilterStorage\:\:all\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Storage/SessionFilterStorage.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Storage\\SessionFilterStorage\:\:all\(\) should return array but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Bundle/Storage/SessionFilterStorage.php
+
+		-
+			message: '#^Method Sylius\\Bundle\\GridBundle\\Storage\\SessionFilterStorage\:\:set\(\) has parameter \$filters with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Bundle/Storage/SessionFilterStorage.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtender\:\:extends\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtender.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtender\:\:extends\(\) has parameter \$parentGridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtender.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtender\:\:extends\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtender.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtenderInterface\:\:extends\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtenderInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtenderInterface\:\:extends\(\) has parameter \$parentGridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtenderInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationExtenderInterface\:\:extends\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationExtenderInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handle\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) has parameter \$removals with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Parameter \#1 \$gridConfiguration of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandlerInterface\:\:handle\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandlerInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandlerInterface\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandlerInterface.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Cannot access offset ''sortable'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Cannot access offset mixed on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationSortingHandler\:\:handle\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationSortingHandler\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Parameter \#1 \$array of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Parameter \#2 \$key of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationSortingHandlerInterface\:\:handle\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandlerInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationSortingHandlerInterface\:\:handle\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandlerInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Data\\DriverInterface\:\:getDataSource\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Data/DriverInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:in\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Data/ExpressionBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:notIn\(\) has parameter \$values with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Data/ExpressionBuilderInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Action\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Action.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Action\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Action.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Action\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Action.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ActionGroup\:\:getActions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ActionGroup.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 3
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Cannot access offset ''name'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Cannot access offset ''options'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convert\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertAction\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$enabled of method Sylius\\Component\\Grid\\Definition\\Action\:\:setEnabled\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$enabled of method Sylius\\Component\\Grid\\Definition\\Field\:\:setEnabled\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$enabled of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setEnabled\(\) expects bool, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$formOptions of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setFormOptions\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$icon of method Sylius\\Component\\Grid\\Definition\\Action\:\:setIcon\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$label of method Sylius\\Component\\Grid\\Definition\\Action\:\:setLabel\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$label of method Sylius\\Component\\Grid\\Definition\\Field\:\:setLabel\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$label of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setLabel\(\) expects bool\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$limits of method Sylius\\Component\\Grid\\Definition\\Grid\:\:setLimits\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$name of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$options of method Sylius\\Component\\Grid\\Definition\\Action\:\:setOptions\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$options of method Sylius\\Component\\Grid\\Definition\\Field\:\:setOptions\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$options of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setOptions\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$path of method Sylius\\Component\\Grid\\Definition\\Field\:\:setPath\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$position of method Sylius\\Component\\Grid\\Definition\\Action\:\:setPosition\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$position of method Sylius\\Component\\Grid\\Definition\\Field\:\:setPosition\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$position of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setPosition\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$provider of method Sylius\\Component\\Grid\\Definition\\Grid\:\:setProvider\(\) expects \(callable\(\)\: mixed\)\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$sortable of method Sylius\\Component\\Grid\\Definition\\Field\:\:setSortable\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$sorting of method Sylius\\Component\\Grid\\Definition\\Grid\:\:setSorting\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$template of method Sylius\\Component\\Grid\\Definition\\Action\:\:setTemplate\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#1 \$template of method Sylius\\Component\\Grid\\Definition\\Filter\:\:setTemplate\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertAction\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$driver of static method Sylius\\Component\\Grid\\Definition\\Grid\:\:fromCodeAndDriverConfiguration\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$type of static method Sylius\\Component\\Grid\\Definition\\Action\:\:fromNameAndType\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$type of static method Sylius\\Component\\Grid\\Definition\\Field\:\:fromNameAndType\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#2 \$type of static method Sylius\\Component\\Grid\\Definition\\Filter\:\:fromNameAndType\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Parameter \#3 \$driverConfiguration of static method Sylius\\Component\\Grid\\Definition\\Grid\:\:fromCodeAndDriverConfiguration\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverterInterface\:\:convert\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/ArrayToDefinitionConverterInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Field\:\:getOptions\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Field.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Field\:\:setOptions\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Field.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Field\:\:\$options type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Field.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:__construct\(\) has parameter \$driverConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:fromCodeAndDriverConfiguration\(\) has parameter \$driverConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getActionGroup\(\) should return Sylius\\Component\\Grid\\Definition\\ActionGroup but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getActionGroups\(\) should return array\<Sylius\\Component\\Grid\\Definition\\ActionGroup\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getActions\(\) should return array\<Sylius\\Component\\Grid\\Definition\\Action\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getDriverConfiguration\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getField\(\) should return Sylius\\Component\\Grid\\Definition\\Field but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getFields\(\) should return array\<Sylius\\Component\\Grid\\Definition\\Field\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getFilter\(\) should return Sylius\\Component\\Grid\\Definition\\Filter but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getFilters\(\) should return array\<Sylius\\Component\\Grid\\Definition\\Filter\> but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getLimits\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getSorting\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:setDriverConfiguration\(\) has parameter \$driverConfiguration with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:setLimits\(\) has parameter \$limits with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:setSorting\(\) has parameter \$sorting with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$actionGroups type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$driverConfiguration type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$fields type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$filters type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$limits type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Definition\\Grid\:\:\$sorting type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Definition/Grid.php
+
+		-
+			message: '#^Dead catch \- Throwable is never thrown in the try block\.$#'
+			identifier: catch.neverThrown
 			count: 1
 			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function call_user_func expects callable\(\)\: mixed, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\DatetimeFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/FieldTypes/DatetimeFieldType.php
+
+		-
+			message: '#^Parameter \#1 \$format of method DateTime\:\:format\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/FieldTypes/DatetimeFieldType.php
+
+		-
+			message: '#^Parameter \#1 \$timezone of class DateTimeZone constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/FieldTypes/DatetimeFieldType.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\FieldTypeInterface\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/FieldTypes/FieldTypeInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\StringFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/FieldTypes/StringFieldType.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filter\\BooleanFilter\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filter/BooleanFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/BooleanFilter.php
+
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Component/Filter/EntityFilter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filter\\EntityFilter\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filter/EntityFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/EntityFilter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filter\\ExistsFilter\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filter/ExistsFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:isNotNull\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/ExistsFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:isNull\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/ExistsFilter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filter\\SelectFilter\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filter/SelectFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/SelectFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:in\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/SelectFilter.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filtering\\FilterInterface\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filtering/FilterInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Filtering\\FiltersCriteriaResolverInterface\:\:getCriteria\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Filtering/FiltersCriteriaResolverInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Parameters\:\:all\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Parameters.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Parameters\:\:keys\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Parameters.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Provider\\ArrayGridProvider\:\:__construct\(\) has parameter \$gridConfigurations with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Provider/ArrayGridProvider.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Provider/ArrayGridProvider.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Component/Provider/ArrayGridProvider.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Provider\\ArrayGridProvider\:\:\$gridConfigurations \(array\<array\>\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Component/Provider/ArrayGridProvider.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Provider\\ArrayGridProvider\:\:\$gridConfigurations type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Provider/ArrayGridProvider.php
+
+		-
+			message: '#^Cannot call method get\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/Component/Provider/ChainProvider.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:__construct\(\) has parameter \$providers with no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Provider/ChainProvider.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:get\(\) should return Sylius\\Component\\Grid\\Definition\\Grid but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/Provider/ChainProvider.php
+
+		-
+			message: '#^Property Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:\$providers type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Provider/ChainProvider.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\Bar\:\:getId\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Component/Tests/Dummy/Bar.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\DummyGridProvider\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Tests/Dummy/DummyGridProvider.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\Foo\:\:getId\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Component/Tests/Dummy/Foo.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\FieldValidator\:\:validateFieldName\(\) has parameter \$enabledFields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/FieldValidator.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\FieldValidatorInterface\:\:validateFieldName\(\) has parameter \$enabledFields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/FieldValidatorInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\SortingParametersValidator\:\:validateSortingParameters\(\) has parameter \$enabledFields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/SortingParametersValidator.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\SortingParametersValidator\:\:validateSortingParameters\(\) has parameter \$sorting with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/SortingParametersValidator.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Validation/SortingParametersValidator.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\SortingParametersValidatorInterface\:\:validateSortingParameters\(\) has parameter \$enabledFields with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/SortingParametersValidatorInterface.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Validation\\SortingParametersValidatorInterface\:\:validateSortingParameters\(\) has parameter \$sorting with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/Validation/SortingParametersValidatorInterface.php
