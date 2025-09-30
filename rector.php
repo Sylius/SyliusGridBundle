@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-use Rector\Core\Configuration\Option;
-use Rector\Php74\Rector\Property\TypedPropertyRector;
-use Rector\Set\ValueObject\SetList;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Rector\Config\RectorConfig;
+use Rector\TypeDeclaration\Rector\Property\TypedPropertyFromAssignsRector;
 
-return static function (ContainerConfigurator $containerConfigurator): void
-{
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::AUTO_IMPORT_NAMES, true);
-    $parameters->set(Option::IMPORT_SHORT_CLASSES, false);
+return static function (RectorConfig $rectorConfig): void {
+    $rectorConfig->importNames();
+    $rectorConfig->importShortClasses(false);
 
-    $services = $containerConfigurator->services();
-    $services->set(TypedPropertyRector::class);
+    $rectorConfig->ruleWithConfiguration(TypedPropertyFromAssignsRector::class, [
+        'inline_public' => false,
+    ]);
 };
