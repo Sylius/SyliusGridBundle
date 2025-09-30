@@ -34,17 +34,17 @@ final class GridTest extends TestCase
         ]);
     }
 
-    function testHasCode(): void
+    public function testHasCode(): void
     {
         $this->assertSame('sylius_admin_tax_category', $this->grid->getCode());
     }
 
-    function testHasDriver(): void
+    public function testHasDriver(): void
     {
         $this->assertSame('doctrine/orm', $this->grid->getDriver());
     }
 
-    function testHasDriverConfiguration(): void
+    public function testHasDriverConfiguration(): void
     {
         $this->assertSame([
             'resource' => 'sylius.tax_category',
@@ -53,57 +53,57 @@ final class GridTest extends TestCase
         ], $this->grid->getDriverConfiguration());
     }
 
-    function testItsDriverConfigurationIsMutable(): void
+    public function testItsDriverConfigurationIsMutable(): void
     {
         $this->grid->setDriverConfiguration(['foo' => 'bar']);
         $this->assertSame(['foo' => 'bar'], $this->grid->getDriverConfiguration());
     }
 
-    function testHasNoProviderByDefault(): void
+    public function testHasNoProviderByDefault(): void
     {
         $this->assertNull($this->grid->getProvider());
     }
 
-    function testItsProviderIsMutable(): void
+    public function testItsProviderIsMutable(): void
     {
         $this->grid->setProvider('App\Provider');
         $this->assertSame('App\Provider', $this->grid->getProvider());
     }
 
-    function testItsProviderCouldBeACallable(): void
+    public function testItsProviderCouldBeACallable(): void
     {
         $this->grid->setProvider([GridProviderCallable::class, 'getData']);
         $this->assertSame([GridProviderCallable::class, 'getData'], $this->grid->getProvider());
     }
 
-    function testHasEmptySortingConfigurationByDefault(): void
+    public function testHasEmptySortingConfigurationByDefault(): void
     {
         $this->assertSame([], $this->grid->getSorting());
     }
 
-    function testCanHaveSortingConfiguration(): void
+    public function testCanHaveSortingConfiguration(): void
     {
         $this->grid->setSorting(['name' => 'asc']);
         $this->assertSame(['name' => 'asc'], $this->grid->getSorting());
     }
 
-    function testHasNoPaginationLimitsByDefault(): void
+    public function testHasNoPaginationLimitsByDefault(): void
     {
         $this->assertSame([], $this->grid->getLimits());
     }
 
-    function testItsPaginationLimitsCanBeConfigured(): void
+    public function testItsPaginationLimitsCanBeConfigured(): void
     {
         $this->grid->setLimits([20, 50, 100]);
         $this->assertSame([20, 50, 100], $this->grid->getLimits());
     }
 
-    function testDoesNotHaveAnyFieldsByDefault(): void
+    public function testDoesNotHaveAnyFieldsByDefault(): void
     {
         $this->assertSame([], $this->grid->getFields());
     }
 
-    function testCanHaveFieldDefinitions(): void
+    public function testCanHaveFieldDefinitions(): void
     {
         /** @var Field|MockObject $fieldMock */
         $fieldMock = $this->createMock(Field::class);
@@ -114,7 +114,7 @@ final class GridTest extends TestCase
         $this->assertSame($fieldMock, $this->grid->getField('description'));
     }
 
-    function testCannotHaveTwoFieldsWithTheSameName(): void
+    public function testCannotHaveTwoFieldsWithTheSameName(): void
     {
         /** @var Field|MockObject $firstFieldMock */
         $firstFieldMock = $this->createMock(Field::class);
@@ -132,7 +132,7 @@ final class GridTest extends TestCase
         $this->grid->addField($secondFieldMock);
     }
 
-    function testKnowsIfFieldWithGivenNameAlreadyExists(): void
+    public function testKnowsIfFieldWithGivenNameAlreadyExists(): void
     {
         /** @var Field|MockObject $fieldMock */
         $fieldMock = $this->createMock(Field::class);
@@ -145,7 +145,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasField('parent'));
     }
 
-    function testCanRemoveField(): void
+    public function testCanRemoveField(): void
     {
         /** @var Field|MockObject $fieldMock */
         $fieldMock = $this->createMock(Field::class);
@@ -158,7 +158,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasField('enabled'));
     }
 
-    function testCanReplaceField(): void
+    public function testCanReplaceField(): void
     {
         /** @var Field|MockObject $firstFieldMock */
         $firstFieldMock = $this->createMock(Field::class);
@@ -175,7 +175,7 @@ final class GridTest extends TestCase
         $this->assertSame($secondFieldMock, $this->grid->getField('enabled'));
     }
 
-    function testCanReturnFields(): void
+    public function testCanReturnFields(): void
     {
         /** @var Field|MockObject $firstFieldMock */
         $firstFieldMock = $this->createMock(Field::class);
@@ -192,7 +192,7 @@ final class GridTest extends TestCase
         $this->assertCount(2, $this->grid->getFields());
     }
 
-    function testCanReturnOnlyEnabledFields(): void
+    public function testCanReturnOnlyEnabledFields(): void
     {
         /** @var Field|MockObject $firstFieldMock */
         $firstFieldMock = $this->createMock(Field::class);
@@ -211,12 +211,12 @@ final class GridTest extends TestCase
         $this->assertCount(1, $this->grid->getEnabledFields());
     }
 
-    function testDoesNotHaveAnyActionGroupsByDefault(): void
+    public function testDoesNotHaveAnyActionGroupsByDefault(): void
     {
         $this->assertSame([], $this->grid->getActionGroups());
     }
 
-    function testCanHaveActionGroupDefinitions(): void
+    public function testCanHaveActionGroupDefinitions(): void
     {
         /** @var ActionGroup|MockObject $actionGroupMock */
         $actionGroupMock = $this->createMock(ActionGroup::class);
@@ -228,7 +228,7 @@ final class GridTest extends TestCase
         $this->assertSame($actionGroupMock, $this->grid->getActionGroup('default'));
     }
 
-    function testCannotHaveTwoActionGroupsWithTheSameName(): void
+    public function testCannotHaveTwoActionGroupsWithTheSameName(): void
     {
         /** @var ActionGroup|MockObject $firstActionGroupMock */
         $firstActionGroupMock = $this->createMock(ActionGroup::class);
@@ -246,7 +246,7 @@ final class GridTest extends TestCase
         $this->grid->addActionGroup($secondActionGroupMock);
     }
 
-    function testKnowsIfActionGroupWithGivenNameAlreadyExists(): void
+    public function testKnowsIfActionGroupWithGivenNameAlreadyExists(): void
     {
         /** @var ActionGroup|MockObject $actionGroupMock */
         $actionGroupMock = $this->createMock(ActionGroup::class);
@@ -259,7 +259,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasActionGroup('default'));
     }
 
-    function testCanRemoveActionGroup(): void
+    public function testCanRemoveActionGroup(): void
     {
         /** @var ActionGroup|MockObject $actionGroupMock */
         $actionGroupMock = $this->createMock(ActionGroup::class);
@@ -272,7 +272,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasActionGroup('row'));
     }
 
-    function testCanReplaceActionGroup(): void
+    public function testCanReplaceActionGroup(): void
     {
         /** @var ActionGroup|MockObject $firstActionGroupMock */
         $firstActionGroupMock = $this->createMock(ActionGroup::class);
@@ -289,7 +289,7 @@ final class GridTest extends TestCase
         $this->assertSame($secondActionGroupMock, $this->grid->getActionGroup('row'));
     }
 
-    function testCanReturnActionGroups(): void
+    public function testCanReturnActionGroups(): void
     {
         /** @var ActionGroup|MockObject $firstActionGroupMock */
         $firstActionGroupMock = $this->createMock(ActionGroup::class);
@@ -306,7 +306,7 @@ final class GridTest extends TestCase
         $this->assertCount(2, $this->grid->getActionGroups());
     }
 
-    function testCanReturnOnlyEnabledActionGroups(): void
+    public function testCanReturnOnlyEnabledActionGroups(): void
     {
         /** @var ActionGroup|MockObject $firstActionGroupMock */
         $firstActionGroupMock = $this->createMock(ActionGroup::class);
@@ -323,7 +323,7 @@ final class GridTest extends TestCase
         $this->assertCount(2, $this->grid->getEnabledActionGroups());
     }
 
-    function testReturnsActionsForGivenGroup(): void
+    public function testReturnsActionsForGivenGroup(): void
     {
         /** @var ActionGroup|MockObject $actionGroupMock */
         $actionGroupMock = $this->createMock(ActionGroup::class);
@@ -339,7 +339,7 @@ final class GridTest extends TestCase
         $this->assertSame([$actionMock], $this->grid->getActions('row'));
     }
 
-    function testReturnsOnlyEnabledActionsForGivenGroup(): void
+    public function testReturnsOnlyEnabledActionsForGivenGroup(): void
     {
         /** @var ActionGroup|MockObject $actionGroupMock */
         $actionGroupMock = $this->createMock(ActionGroup::class);
@@ -360,12 +360,12 @@ final class GridTest extends TestCase
         $this->assertSame([$firstActionMock], $this->grid->getEnabledActions('row'));
     }
 
-    function testDoesNotHaveAnyFiltersByDefault(): void
+    public function testDoesNotHaveAnyFiltersByDefault(): void
     {
         $this->assertSame([], $this->grid->getFilters());
     }
 
-    function testCanHaveFilterDefinitions(): void
+    public function testCanHaveFilterDefinitions(): void
     {
         /** @var Filter|MockObject $filterMock */
         $filterMock = $this->createMock(Filter::class);
@@ -377,7 +377,7 @@ final class GridTest extends TestCase
         $this->assertSame($filterMock, $this->grid->getFilter('enabled'));
     }
 
-    function testCannotHaveTwoFiltersWithTheSameName(): void
+    public function testCannotHaveTwoFiltersWithTheSameName(): void
     {
         /** @var Filter|MockObject $firstFilterMock */
         $firstFilterMock = $this->createMock(Filter::class);
@@ -395,7 +395,7 @@ final class GridTest extends TestCase
         $this->grid->addFilter($secondFilterMock);
     }
 
-    function testKnowsIfFilterWithGivenNameAlreadyExists(): void
+    public function testKnowsIfFilterWithGivenNameAlreadyExists(): void
     {
         /** @var Filter|MockObject $filterMock */
         $filterMock = $this->createMock(Filter::class);
@@ -408,7 +408,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasFilter('created_at'));
     }
 
-    function testCanRemoveFilter(): void
+    public function testCanRemoveFilter(): void
     {
         /** @var Filter|MockObject $filterMock */
         $filterMock = $this->createMock(Filter::class);
@@ -421,7 +421,7 @@ final class GridTest extends TestCase
         $this->assertFalse($this->grid->hasFilter('enabled'));
     }
 
-    function testCanReplaceFilter(): void
+    public function testCanReplaceFilter(): void
     {
         /** @var Filter|MockObject $firstFilterMock */
         $firstFilterMock = $this->createMock(Filter::class);
@@ -438,7 +438,7 @@ final class GridTest extends TestCase
         $this->assertSame($secondFilterMock, $this->grid->getFilter('enabled'));
     }
 
-    function testCanReturnFilters(): void
+    public function testCanReturnFilters(): void
     {
         /** @var Filter|MockObject $firstFilterMock */
         $firstFilterMock = $this->createMock(Filter::class);
@@ -455,7 +455,7 @@ final class GridTest extends TestCase
         $this->assertCount(2, $this->grid->getFilters());
     }
 
-    function testCanReturnOnlyEnabledFilters(): void
+    public function testCanReturnOnlyEnabledFilters(): void
     {
         /** @var Filter|MockObject $firstFilterMock */
         $firstFilterMock = $this->createMock(Filter::class);
