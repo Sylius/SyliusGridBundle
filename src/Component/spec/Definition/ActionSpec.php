@@ -11,89 +11,92 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Component\Grid\Definition\Action;
 
-final class ActionSpec extends ObjectBehavior
+final class ActionTest extends TestCase
 {
-    function let(): void
+    private Action $action;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('fromNameAndType', ['view', 'link']);
+        $this->action = Action::fromNameAndType('view', 'link');
     }
 
-    function it_has_name(): void
+    public function testHasName(): void
     {
-        $this->getName()->shouldReturn('view');
+        $this->assertSame('view', $this->action->getName());
     }
 
-    function it_has_type(): void
+    public function testHasType(): void
     {
-        $this->getType()->shouldReturn('link');
+        $this->assertSame('link', $this->action->getType());
     }
 
-    function it_has_no_label_by_default(): void
+    public function testHasNoLabelByDefault(): void
     {
-        $this->getLabel()->shouldReturn(null);
+        $this->assertNull($this->action->getLabel());
     }
 
-    function its_label_is_mutable(): void
+    public function testItsLabelIsMutable(): void
     {
-        $this->setLabel('Read book');
-        $this->getLabel()->shouldReturn('Read book');
+        $this->action->setLabel('Read book');
+        $this->assertSame('Read book', $this->action->getLabel());
     }
 
-    function it_is_toggleable(): void
+    public function testToggleable(): void
     {
-        $this->isEnabled()->shouldReturn(true);
+        $this->assertTrue($this->action->isEnabled());
 
-        $this->setEnabled(false);
-        $this->isEnabled()->shouldReturn(false);
-        $this->setEnabled(true);
-        $this->isEnabled()->shouldReturn(true);
+        $this->action->setEnabled(false);
+        $this->assertFalse($this->action->isEnabled());
+        $this->action->setEnabled(true);
+        $this->assertTrue($this->action->isEnabled());
     }
 
-    function it_has_no_template_by_default(): void
+    public function testHasNoTemplateByDefault(): void
     {
-        $this->getTemplate()->shouldReturn(null);
+        $this->assertNull($this->action->getTemplate());
     }
 
-    function its_template_is_mutable(): void
+    public function testItsTemplateIsMutable(): void
     {
-        $this->setTemplate('path/to/action/template');
-        $this->getTemplate()->shouldReturn('path/to/action/template');
+        $this->action->setTemplate('path/to/action/template');
+        $this->assertSame('path/to/action/template', $this->action->getTemplate());
     }
 
-    function it_has_no_icon_by_default(): void
+    public function testHasNoIconByDefault(): void
     {
-        $this->getIcon()->shouldReturn(null);
+        $this->assertNull($this->action->getIcon());
     }
 
-    function its_icon_is_mutable(): void
+    public function testItsIconIsMutable(): void
     {
-        $this->setIcon('checkmark');
-        $this->getIcon()->shouldReturn('checkmark');
+        $this->action->setIcon('checkmark');
+        $this->assertSame('checkmark', $this->action->getIcon());
     }
 
-    function it_has_no_options_by_default(): void
+    public function testHasNoOptionsByDefault(): void
     {
-        $this->getOptions()->shouldReturn([]);
+        $this->assertSame([], $this->action->getOptions());
     }
 
-    function it_can_have_options(): void
+    public function testCanHaveOptions(): void
     {
-        $this->setOptions(['route' => 'sylius_admin_product_update']);
-        $this->getOptions()->shouldReturn(['route' => 'sylius_admin_product_update']);
+        $this->action->setOptions(['route' => 'sylius_admin_product_update']);
+        $this->assertSame(['route' => 'sylius_admin_product_update'], $this->action->getOptions());
     }
 
-    function it_has_last_position_by_default(): void
+    public function testHasLastPositionByDefault(): void
     {
-        $this->getPosition()->shouldReturn(100);
+        $this->assertSame(100, $this->action->getPosition());
     }
 
-    function its_position_is_mutable(): void
+    public function testItsPositionIsMutable(): void
     {
-        $this->setPosition(1);
-        $this->getPosition()->shouldReturn(1);
+        $this->action->setPosition(1);
+        $this->assertSame(1, $this->action->getPosition());
     }
 }

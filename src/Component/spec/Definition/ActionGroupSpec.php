@@ -11,56 +11,70 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Action;
+use Sylius\Component\Grid\Definition\ActionGroup;
 
-final class ActionGroupSpec extends ObjectBehavior
+final class ActionGroupTest extends TestCase
 {
-    function let(): void
+    private ActionGroup $actionGroup;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('named', ['row']);
+        $this->actionGroup = ActionGroup::named('row');
     }
 
-    function it_has_code(): void
+    public function testHasCode(): void
     {
-        $this->getName()->shouldReturn('row');
+        $this->assertSame('row', $this->actionGroup->getName());
     }
 
-    function it_does_not_have_any_actions_by_default(): void
+    public function testDoesNotHaveAnyActionsByDefault(): void
     {
-        $this->getActions()->shouldReturn([]);
+        $this->assertSame([], $this->actionGroup->getActions());
     }
 
-    function it_can_have_action_definitions(Action $action): void
+    public function testCanHaveActionDefinitions(): void
     {
-        $action->getName()->willReturn('display_summary');
+        /** @var Action|MockObject $actionMock */
+        $actionMock = $this->createMock(Action::class);
+        $actionMock->expects($this->once())->method('getName')->willReturn('display_summary');
 
-        $this->addAction($action);
-        $this->getAction('display_summary')->shouldReturn($action);
-        $this->getActions()->shouldReturn(['display_summary' => $action]);
+        $this->actionGroup->addAction($actionMock);
+
+        $this->assertSame($actionMock, $this->actionGroup->getAction('display_summary'));
+        $this->assertSame(['display_summary' => $actionMock], $this->actionGroup->getActions());
     }
 
-    function it_cannot_have_two_actions_with_the_same_name(Action $firstAction, Action $secondAction): void
+    public function testCannotHaveTwoActionsWithTheSameName(): void
     {
-        $firstAction->getName()->willReturn('read_book');
-        $secondAction->getName()->willReturn('read_book');
+        /** @var Action|MockObject $firstActionMock */
+        $firstActionMock = $this->createMock(Action::class);
 
-        $this->addAction($firstAction);
+        /** @var Action|MockObject $secondActionMock */
+        $secondActionMock = $this->createMock(Action::class);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('addAction', [$secondAction])
-        ;
+        $firstActionMock->expects($this->once())->method('getName')->willReturn('read_book');
+        $secondActionMock->expects($this->once())->method('getName')->willReturn('read_book');
+
+        $this->actionGroup->addAction($firstActionMock);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->actionGroup->addAction($secondActionMock);
     }
 
-    function it_knows_if_action_with_given_name_already_exists(Action $action): void
+    public function testKnowsIfActionWithGivenNameAlreadyExists(): void
     {
-        $action->getName()->willReturn('read_book');
-        $this->addAction($action);
+        /** @var Action|MockObject $actionMock */
+        $actionMock = $this->createMock(Action::class);
+        $actionMock->expects($this->once())->method('getName')->willReturn('read_book');
 
-        $this->hasAction('read_book')->shouldReturn(true);
-        $this->hasAction('delete_book')->shouldReturn(false);
+        $this->actionGroup->addAction($actionMock);
+
+        $this->assertTrue($this->actionGroup->hasAction('read_book'));
+        $this->assertFalse($this->actionGroup->hasAction('delete_book'));
     }
 }

@@ -11,79 +11,82 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Component\Grid\Definition\Filter;
 
-final class FilterSpec extends ObjectBehavior
+final class FilterTest extends TestCase
 {
-    function let(): void
+    private Filter $filter;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('fromNameAndType', ['keywords', 'string']);
+        $this->filter = Filter::fromNameAndType('keywords', 'string');
     }
 
-    function it_has_name(): void
+    public function testHasName(): void
     {
-        $this->getName()->shouldReturn('keywords');
+        $this->assertSame('keywords', $this->filter->getName());
     }
 
-    function it_has_type(): void
+    public function testHasType(): void
     {
-        $this->getType()->shouldReturn('string');
+        $this->assertSame('string', $this->filter->getType());
     }
 
-    function it_has_label_which_defaults_to_name(): void
+    public function testHasLabelWhichDefaultsToName(): void
     {
-        $this->getLabel()->shouldReturn('keywords');
+        $this->assertSame('keywords', $this->filter->getLabel());
 
-        $this->setLabel('Search by keyword');
-        $this->getLabel()->shouldReturn('Search by keyword');
+        $this->filter->setLabel('Search by keyword');
+        $this->assertSame('Search by keyword', $this->filter->getLabel());
     }
 
-    function it_has_no_template_by_default(): void
+    public function testHasNoTemplateByDefault(): void
     {
-        $this->getTemplate()->shouldReturn(null);
+        $this->assertNull($this->filter->getTemplate());
     }
 
-    function its_template_is_mutable(): void
+    public function testItsTemplateIsMutable(): void
     {
-        $this->setTemplate('@SyliusGrid/Filter/template.html.twig');
-        $this->getTemplate()->shouldReturn('@SyliusGrid/Filter/template.html.twig');
+        $this->filter->setTemplate('@SyliusGrid/Filter/template.html.twig');
+        $this->assertSame('@SyliusGrid/Filter/template.html.twig', $this->filter->getTemplate());
     }
 
-    function it_has_no_options_by_default(): void
+    public function testHasNoOptionsByDefault(): void
     {
-        $this->getOptions()->shouldReturn([]);
+        $this->assertSame([], $this->filter->getOptions());
     }
 
-    function it_can_have_options(): void
+    public function testCanHaveOptions(): void
     {
-        $this->setOptions(['fields' => ['firstName', 'lastName', 'email']]);
-        $this->getOptions()->shouldReturn(['fields' => ['firstName', 'lastName', 'email']]);
+        $this->filter->setOptions(['fields' => ['firstName', 'lastName', 'email']]);
+        $this->assertSame(['fields' => ['firstName', 'lastName', 'email']], $this->filter->getOptions());
     }
 
-    function it_has_last_position_by_default(): void
+    public function testHasLastPositionByDefault(): void
     {
-        $this->getPosition()->shouldReturn(100);
+        $this->assertSame(100, $this->filter->getPosition());
     }
 
-    function its_position_is_mutable(): void
+    public function testItsPositionIsMutable(): void
     {
-        $this->setPosition(1);
-        $this->getPosition()->shouldReturn(1);
+        $this->filter->setPosition(1);
+        $this->assertSame(1, $this->filter->getPosition());
     }
 
-    function it_has_no_criteria_by_default(): void
+    public function testHasNoCriteriaByDefault(): void
     {
-        $this->getCriteria()->shouldReturn(null);
+        $this->assertNull($this->filter->getCriteria());
     }
 
-    function its_criteria_is_mutable(): void
+    public function testItsCriteriaIsMutable(): void
     {
-        $this->setCriteria('false');
-        $this->getCriteria()->shouldReturn('false');
+        $this->filter->setCriteria('false');
+        $this->assertSame('false', $this->filter->getCriteria());
 
-        $this->setCriteria(['type' => 'contains']);
-        $this->getCriteria()->shouldReturn(['type' => 'contains']);
+        $this->filter->setCriteria(['type' => 'contains']);
+        $this->assertSame(['type' => 'contains'], $this->filter->getCriteria());
     }
 }

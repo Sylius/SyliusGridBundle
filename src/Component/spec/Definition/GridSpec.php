@@ -11,336 +11,467 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\ActionGroup;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Filter;
+use Sylius\Component\Grid\Definition\Grid;
 
-final class GridSpec extends ObjectBehavior
+final class GridTest extends TestCase
 {
-    function let(): void
-    {
-        $this->beConstructedThrough('fromCodeAndDriverConfiguration', ['sylius_admin_tax_category', 'doctrine/orm', [
-            'resource' => 'sylius.tax_category',
-            'method' => 'createByCodeQueryBuilder',
-            'arguments' => ['$code'],
-        ]]);
-    }
+    private Grid $grid;
 
-    function it_has_code(): void
+    protected function setUp(): void
     {
-        $this->getCode()->shouldReturn('sylius_admin_tax_category');
-    }
-
-    function it_has_driver(): void
-    {
-        $this->getDriver()->shouldReturn('doctrine/orm');
-    }
-
-    function it_has_driver_configuration(): void
-    {
-        $this->getDriverConfiguration()->shouldReturn([
+        $this->grid = Grid::fromCodeAndDriverConfiguration('sylius_admin_tax_category', 'doctrine/orm', [
             'resource' => 'sylius.tax_category',
             'method' => 'createByCodeQueryBuilder',
             'arguments' => ['$code'],
         ]);
     }
 
-    function its_driver_configuration_is_mutable(): void
+    function testHasCode(): void
     {
-        $this->setDriverConfiguration(['foo' => 'bar']);
-        $this->getDriverConfiguration()->shouldReturn(['foo' => 'bar']);
+        $this->assertSame('sylius_admin_tax_category', $this->grid->getCode());
     }
 
-    function it_has_no_provider_by_default(): void
+    function testHasDriver(): void
     {
-        $this->getProvider()->shouldReturn(null);
+        $this->assertSame('doctrine/orm', $this->grid->getDriver());
     }
 
-    function its_provider_is_mutable(): void
+    function testHasDriverConfiguration(): void
     {
-        $this->setProvider('App\Provider');
-        $this->getProvider()->shouldReturn('App\Provider');
+        $this->assertSame([
+            'resource' => 'sylius.tax_category',
+            'method' => 'createByCodeQueryBuilder',
+            'arguments' => ['$code'],
+        ], $this->grid->getDriverConfiguration());
     }
 
-    function its_provider_could_be_a_callable(): void
+    function testItsDriverConfigurationIsMutable(): void
     {
-        $this->setProvider([GridProviderCallable::class, 'getData']);
-        $this->getProvider()->shouldReturn([GridProviderCallable::class, 'getData']);
+        $this->grid->setDriverConfiguration(['foo' => 'bar']);
+        $this->assertSame(['foo' => 'bar'], $this->grid->getDriverConfiguration());
     }
 
-    function it_has_empty_sorting_configuration_by_default(): void
+    function testHasNoProviderByDefault(): void
     {
-        $this->getSorting()->shouldReturn([]);
+        $this->assertNull($this->grid->getProvider());
     }
 
-    function it_can_have_sorting_configuration(): void
+    function testItsProviderIsMutable(): void
     {
-        $this->setSorting(['name' => 'asc']);
-        $this->getSorting()->shouldReturn(['name' => 'asc']);
+        $this->grid->setProvider('App\Provider');
+        $this->assertSame('App\Provider', $this->grid->getProvider());
     }
 
-    function it_has_no_pagination_limits_by_default(): void
+    function testItsProviderCouldBeACallable(): void
     {
-        $this->getLimits()->shouldReturn([]);
+        $this->grid->setProvider([GridProviderCallable::class, 'getData']);
+        $this->assertSame([GridProviderCallable::class, 'getData'], $this->grid->getProvider());
     }
 
-    function its_pagination_limits_can_be_configured(): void
+    function testHasEmptySortingConfigurationByDefault(): void
     {
-        $this->setLimits([20, 50, 100]);
-        $this->getLimits()->shouldReturn([20, 50, 100]);
+        $this->assertSame([], $this->grid->getSorting());
     }
 
-    function it_does_not_have_any_fields_by_default(): void
+    function testCanHaveSortingConfiguration(): void
     {
-        $this->getFields()->shouldReturn([]);
+        $this->grid->setSorting(['name' => 'asc']);
+        $this->assertSame(['name' => 'asc'], $this->grid->getSorting());
     }
 
-    function it_can_have_field_definitions(Field $field): void
+    function testHasNoPaginationLimitsByDefault(): void
     {
-        $field->getName()->willReturn('description');
-
-        $this->addField($field);
-        $this->getField('description')->shouldReturn($field);
+        $this->assertSame([], $this->grid->getLimits());
     }
 
-    function it_cannot_have_two_fields_with_the_same_name(Field $firstField, Field $secondField): void
+    function testItsPaginationLimitsCanBeConfigured(): void
     {
-        $firstField->getName()->willReturn('created_at');
-        $secondField->getName()->willReturn('created_at');
-
-        $this->addField($firstField);
-
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('addField', [$secondField])
-        ;
+        $this->grid->setLimits([20, 50, 100]);
+        $this->assertSame([20, 50, 100], $this->grid->getLimits());
     }
 
-    function it_knows_if_field_with_given_name_already_exists(Field $field): void
+    function testDoesNotHaveAnyFieldsByDefault(): void
     {
-        $field->getName()->willReturn('enabled');
-        $this->addField($field);
-
-        $this->hasField('enabled')->shouldReturn(true);
-        $this->hasField('parent')->shouldReturn(false);
+        $this->assertSame([], $this->grid->getFields());
     }
 
-    function it_can_remove_field(Field $field): void
+    function testCanHaveFieldDefinitions(): void
     {
-        $field->getName()->willReturn('enabled');
-        $this->addField($field);
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+        $fieldMock->expects($this->once())->method('getName')->willReturn('description');
 
-        $this->removeField('enabled');
-        $this->hasField('enabled')->shouldReturn(false);
+        $this->grid->addField($fieldMock);
+
+        $this->assertSame($fieldMock, $this->grid->getField('description'));
     }
 
-    function it_can_replace_field(Field $firstField, Field $secondField): void
+    function testCannotHaveTwoFieldsWithTheSameName(): void
     {
-        $firstField->getName()->willReturn('enabled');
-        $secondField->getName()->willReturn('enabled');
-        $this->addField($firstField);
+        /** @var Field|MockObject $firstFieldMock */
+        $firstFieldMock = $this->createMock(Field::class);
 
-        $this->setField($secondField);
-        $this->getField('enabled')->shouldReturn($secondField);
+        /** @var Field|MockObject $secondFieldMock */
+        $secondFieldMock = $this->createMock(Field::class);
+
+        $firstFieldMock->expects($this->once())->method('getName')->willReturn('created_at');
+        $secondFieldMock->expects($this->once())->method('getName')->willReturn('created_at');
+
+        $this->grid->addField($firstFieldMock);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->grid->addField($secondFieldMock);
     }
 
-    function it_can_return_fields(Field $firstField, Field $secondField): void
+    function testKnowsIfFieldWithGivenNameAlreadyExists(): void
     {
-        $firstField->getName()->willReturn('first');
-        $secondField->getName()->willReturn('second');
-        $this->addField($firstField);
-        $this->addField($secondField);
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
 
-        $this->getFields()->shouldHaveCount(2);
+        $fieldMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addField($fieldMock);
+
+        $this->assertTrue($this->grid->hasField('enabled'));
+        $this->assertFalse($this->grid->hasField('parent'));
     }
 
-    function it_can_return_only_enabled_fields(Field $firstField, Field $secondField): void
+    function testCanRemoveField(): void
     {
-        $firstField->getName()->willReturn('first');
-        $firstField->isEnabled()->willReturn(true);
-        $secondField->getName()->willReturn('second');
-        $secondField->isEnabled()->willReturn(false);
-        $this->addField($firstField);
-        $this->addField($secondField);
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
 
-        $this->getEnabledFields()->shouldHaveCount(1);
+        $fieldMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addField($fieldMock);
+        $this->grid->removeField('enabled');
+
+        $this->assertFalse($this->grid->hasField('enabled'));
     }
 
-    function it_does_not_have_any_action_groups_by_default(): void
+    function testCanReplaceField(): void
     {
-        $this->getActionGroups()->shouldReturn([]);
+        /** @var Field|MockObject $firstFieldMock */
+        $firstFieldMock = $this->createMock(Field::class);
+
+        /** @var Field|MockObject $secondFieldMock */
+        $secondFieldMock = $this->createMock(Field::class);
+
+        $firstFieldMock->expects($this->once())->method('getName')->willReturn('enabled');
+        $secondFieldMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addField($firstFieldMock);
+        $this->grid->setField($secondFieldMock);
+
+        $this->assertSame($secondFieldMock, $this->grid->getField('enabled'));
     }
 
-    function it_can_have_action_group_definitions(ActionGroup $actionGroup): void
+    function testCanReturnFields(): void
     {
-        $actionGroup->getName()->willReturn('default');
+        /** @var Field|MockObject $firstFieldMock */
+        $firstFieldMock = $this->createMock(Field::class);
 
-        $this->addActionGroup($actionGroup);
-        $this->getActionGroup('default')->shouldReturn($actionGroup);
+        /** @var Field|MockObject $secondFieldMock */
+        $secondFieldMock = $this->createMock(Field::class);
+
+        $firstFieldMock->expects($this->once())->method('getName')->willReturn('first');
+        $secondFieldMock->expects($this->once())->method('getName')->willReturn('second');
+
+        $this->grid->addField($firstFieldMock);
+        $this->grid->addField($secondFieldMock);
+
+        $this->assertCount(2, $this->grid->getFields());
     }
 
-    function it_cannot_have_two_action_groups_with_the_same_name(ActionGroup $firstActionGroup, ActionGroup $secondActionGroup): void
+    function testCanReturnOnlyEnabledFields(): void
     {
-        $firstActionGroup->getName()->willReturn('row');
-        $secondActionGroup->getName()->willReturn('row');
+        /** @var Field|MockObject $firstFieldMock */
+        $firstFieldMock = $this->createMock(Field::class);
 
-        $this->addActionGroup($firstActionGroup);
+        /** @var Field|MockObject $secondFieldMock */
+        $secondFieldMock = $this->createMock(Field::class);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('addActionGroup', [$secondActionGroup])
-        ;
+        $firstFieldMock->expects($this->once())->method('getName')->willReturn('first');
+        $firstFieldMock->expects($this->once())->method('isEnabled')->willReturn(true);
+        $secondFieldMock->expects($this->once())->method('getName')->willReturn('second');
+        $secondFieldMock->expects($this->once())->method('isEnabled')->willReturn(false);
+
+        $this->grid->addField($firstFieldMock);
+        $this->grid->addField($secondFieldMock);
+
+        $this->assertCount(1, $this->grid->getEnabledFields());
     }
 
-    function it_knows_if_action_group_with_given_name_already_exists(ActionGroup $actionGroup): void
+    function testDoesNotHaveAnyActionGroupsByDefault(): void
     {
-        $actionGroup->getName()->willReturn('row');
-        $this->addActionGroup($actionGroup);
-
-        $this->hasActionGroup('row')->shouldReturn(true);
-        $this->hasActionGroup('default')->shouldReturn(false);
+        $this->assertSame([], $this->grid->getActionGroups());
     }
 
-    function it_can_remove_action_group(ActionGroup $actionGroup): void
+    function testCanHaveActionGroupDefinitions(): void
     {
-        $actionGroup->getName()->willReturn('row');
-        $this->addActionGroup($actionGroup);
+        /** @var ActionGroup|MockObject $actionGroupMock */
+        $actionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->removeActionGroup('row');
-        $this->hasActionGroup('row')->shouldReturn(false);
+        $actionGroupMock->expects($this->once())->method('getName')->willReturn('default');
+
+        $this->grid->addActionGroup($actionGroupMock);
+
+        $this->assertSame($actionGroupMock, $this->grid->getActionGroup('default'));
     }
 
-    function it_can_replace_action_group(ActionGroup $firstActionGroup, ActionGroup $secondActionGroup): void
+    function testCannotHaveTwoActionGroupsWithTheSameName(): void
     {
-        $firstActionGroup->getName()->willReturn('row');
-        $secondActionGroup->getName()->willReturn('row');
-        $this->addActionGroup($firstActionGroup);
+        /** @var ActionGroup|MockObject $firstActionGroupMock */
+        $firstActionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->setActionGroup($secondActionGroup);
-        $this->getActionGroup('row')->shouldReturn($secondActionGroup);
+        /** @var ActionGroup|MockObject $secondActionGroupMock */
+        $secondActionGroupMock = $this->createMock(ActionGroup::class);
+
+        $firstActionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+        $secondActionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+
+        $this->grid->addActionGroup($firstActionGroupMock);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->grid->addActionGroup($secondActionGroupMock);
     }
 
-    function it_can_return_action_groups(ActionGroup $firstActionGroup, ActionGroup $secondActionGroup): void
+    function testKnowsIfActionGroupWithGivenNameAlreadyExists(): void
     {
-        $firstActionGroup->getName()->willReturn('first');
-        $secondActionGroup->getName()->willReturn('second');
-        $this->addActionGroup($firstActionGroup);
-        $this->addActionGroup($secondActionGroup);
+        /** @var ActionGroup|MockObject $actionGroupMock */
+        $actionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->getActionGroups()->shouldHaveCount(2);
+        $actionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+
+        $this->grid->addActionGroup($actionGroupMock);
+
+        $this->assertTrue($this->grid->hasActionGroup('row'));
+        $this->assertFalse($this->grid->hasActionGroup('default'));
     }
 
-    function it_can_return_only_enabled_action_groups(ActionGroup $firstActionGroup, ActionGroup $secondActionGroup): void
+    function testCanRemoveActionGroup(): void
     {
-        $firstActionGroup->getName()->willReturn('first');
-        $secondActionGroup->getName()->willReturn('second');
-        $this->addActionGroup($firstActionGroup);
-        $this->addActionGroup($secondActionGroup);
+        /** @var ActionGroup|MockObject $actionGroupMock */
+        $actionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->getEnabledActionGroups()->shouldHaveCount(2);
+        $actionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+
+        $this->grid->addActionGroup($actionGroupMock);
+        $this->grid->removeActionGroup('row');
+
+        $this->assertFalse($this->grid->hasActionGroup('row'));
     }
 
-    function it_returns_actions_for_given_group(ActionGroup $actionGroup, Action $action): void
+    function testCanReplaceActionGroup(): void
     {
-        $actionGroup->getName()->willReturn('row');
-        $actionGroup->getActions()->willReturn([$action]);
-        $this->addActionGroup($actionGroup);
+        /** @var ActionGroup|MockObject $firstActionGroupMock */
+        $firstActionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->getActions('row')->shouldReturn([$action]);
+        /** @var ActionGroup|MockObject $secondActionGroupMock */
+        $secondActionGroupMock = $this->createMock(ActionGroup::class);
+
+        $firstActionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+        $secondActionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+
+        $this->grid->addActionGroup($firstActionGroupMock);
+        $this->grid->setActionGroup($secondActionGroupMock);
+
+        $this->assertSame($secondActionGroupMock, $this->grid->getActionGroup('row'));
     }
 
-    function it_returns_only_enabled_actions_for_given_group(
-        ActionGroup $actionGroup,
-        Action $firstAction,
-        Action $secondAction,
-    ): void {
-        $firstAction->isEnabled()->willReturn(true);
-        $secondAction->isEnabled()->willReturn(false);
-        $actionGroup->getName()->willReturn('row');
-        $actionGroup->getActions()->willReturn([$firstAction, $secondAction]);
-        $this->addActionGroup($actionGroup);
+    function testCanReturnActionGroups(): void
+    {
+        /** @var ActionGroup|MockObject $firstActionGroupMock */
+        $firstActionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->getEnabledActions('row')->shouldReturn([$firstAction]);
+        /** @var ActionGroup|MockObject $secondActionGroupMock */
+        $secondActionGroupMock = $this->createMock(ActionGroup::class);
+
+        $firstActionGroupMock->expects($this->once())->method('getName')->willReturn('first');
+        $secondActionGroupMock->expects($this->once())->method('getName')->willReturn('second');
+
+        $this->grid->addActionGroup($firstActionGroupMock);
+        $this->grid->addActionGroup($secondActionGroupMock);
+
+        $this->assertCount(2, $this->grid->getActionGroups());
     }
 
-    function it_does_not_have_any_filters_by_default(): void
+    function testCanReturnOnlyEnabledActionGroups(): void
     {
-        $this->getFilters()->shouldReturn([]);
+        /** @var ActionGroup|MockObject $firstActionGroupMock */
+        $firstActionGroupMock = $this->createMock(ActionGroup::class);
+
+        /** @var ActionGroup|MockObject $secondActionGroupMock */
+        $secondActionGroupMock = $this->createMock(ActionGroup::class);
+
+        $firstActionGroupMock->expects($this->once())->method('getName')->willReturn('first');
+        $secondActionGroupMock->expects($this->once())->method('getName')->willReturn('second');
+
+        $this->grid->addActionGroup($firstActionGroupMock);
+        $this->grid->addActionGroup($secondActionGroupMock);
+
+        $this->assertCount(2, $this->grid->getEnabledActionGroups());
     }
 
-    function it_can_have_filter_definitions(Filter $filter): void
+    function testReturnsActionsForGivenGroup(): void
     {
-        $filter->getName()->willReturn('enabled');
+        /** @var ActionGroup|MockObject $actionGroupMock */
+        $actionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->addFilter($filter);
-        $this->getFilter('enabled')->shouldReturn($filter);
+        /** @var Action|MockObject $actionMock */
+        $actionMock = $this->createMock(Action::class);
+
+        $actionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+        $actionGroupMock->expects($this->once())->method('getActions')->willReturn([$actionMock]);
+
+        $this->grid->addActionGroup($actionGroupMock);
+
+        $this->assertSame([$actionMock], $this->grid->getActions('row'));
     }
 
-    function it_cannot_have_two_filters_with_the_same_name(Filter $firstFilter, Filter $secondFilter): void
+    function testReturnsOnlyEnabledActionsForGivenGroup(): void
     {
-        $firstFilter->getName()->willReturn('created_at');
-        $secondFilter->getName()->willReturn('created_at');
+        /** @var ActionGroup|MockObject $actionGroupMock */
+        $actionGroupMock = $this->createMock(ActionGroup::class);
 
-        $this->addFilter($firstFilter);
+        /** @var Action|MockObject $firstActionMock */
+        $firstActionMock = $this->createMock(Action::class);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('addFilter', [$secondFilter])
-        ;
+        /** @var Action|MockObject $secondActionMock */
+        $secondActionMock = $this->createMock(Action::class);
+
+        $firstActionMock->expects($this->once())->method('isEnabled')->willReturn(true);
+        $secondActionMock->expects($this->once())->method('isEnabled')->willReturn(false);
+        $actionGroupMock->expects($this->once())->method('getName')->willReturn('row');
+        $actionGroupMock->expects($this->once())->method('getActions')->willReturn([$firstActionMock, $secondActionMock]);
+
+        $this->grid->addActionGroup($actionGroupMock);
+
+        $this->assertSame([$firstActionMock], $this->grid->getEnabledActions('row'));
     }
 
-    function it_knows_if_filter_with_given_name_already_exists(Filter $filter): void
+    function testDoesNotHaveAnyFiltersByDefault(): void
     {
-        $filter->getName()->willReturn('enabled');
-        $this->addFilter($filter);
-
-        $this->hasFilter('enabled')->shouldReturn(true);
-        $this->hasFilter('created_at')->shouldReturn(false);
+        $this->assertSame([], $this->grid->getFilters());
     }
 
-    function it_can_remove_filter(Filter $filter): void
+    function testCanHaveFilterDefinitions(): void
     {
-        $filter->getName()->willReturn('enabled');
-        $this->addFilter($filter);
+        /** @var Filter|MockObject $filterMock */
+        $filterMock = $this->createMock(Filter::class);
 
-        $this->removeFilter('enabled');
-        $this->hasFilter('enabled')->shouldReturn(false);
+        $filterMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addFilter($filterMock);
+
+        $this->assertSame($filterMock, $this->grid->getFilter('enabled'));
     }
 
-    function it_can_replace_filter(Filter $firstFilter, Filter $secondFilter): void
+    function testCannotHaveTwoFiltersWithTheSameName(): void
     {
-        $firstFilter->getName()->willReturn('enabled');
-        $secondFilter->getName()->willReturn('enabled');
-        $this->addFilter($firstFilter);
+        /** @var Filter|MockObject $firstFilterMock */
+        $firstFilterMock = $this->createMock(Filter::class);
 
-        $this->setFilter($secondFilter);
-        $this->getFilter('enabled')->shouldReturn($secondFilter);
+        /** @var Filter|MockObject $secondFilterMock */
+        $secondFilterMock = $this->createMock(Filter::class);
+
+        $firstFilterMock->expects($this->once())->method('getName')->willReturn('created_at');
+        $secondFilterMock->expects($this->once())->method('getName')->willReturn('created_at');
+
+        $this->grid->addFilter($firstFilterMock);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->grid->addFilter($secondFilterMock);
     }
 
-    function it_can_return_filters(Filter $firstFilter, Filter $secondFilter): void
+    function testKnowsIfFilterWithGivenNameAlreadyExists(): void
     {
-        $firstFilter->getName()->willReturn('first');
-        $secondFilter->getName()->willReturn('second');
-        $this->addFilter($firstFilter);
-        $this->addFilter($secondFilter);
+        /** @var Filter|MockObject $filterMock */
+        $filterMock = $this->createMock(Filter::class);
 
-        $this->getFilters()->shouldHaveCount(2);
+        $filterMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addFilter($filterMock);
+
+        $this->assertTrue($this->grid->hasFilter('enabled'));
+        $this->assertFalse($this->grid->hasFilter('created_at'));
     }
 
-    function it_can_return_only_enabled_filters(Filter $firstFilter, Filter $secondFilter): void
+    function testCanRemoveFilter(): void
     {
-        $firstFilter->getName()->willReturn('first');
-        $firstFilter->isEnabled()->willReturn(true);
-        $secondFilter->getName()->willReturn('second');
-        $secondFilter->isEnabled()->willReturn(false);
-        $this->addFilter($firstFilter);
-        $this->addFilter($secondFilter);
+        /** @var Filter|MockObject $filterMock */
+        $filterMock = $this->createMock(Filter::class);
 
-        $this->getEnabledFilters()->shouldHaveCount(1);
+        $filterMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addFilter($filterMock);
+        $this->grid->removeFilter('enabled');
+
+        $this->assertFalse($this->grid->hasFilter('enabled'));
+    }
+
+    function testCanReplaceFilter(): void
+    {
+        /** @var Filter|MockObject $firstFilterMock */
+        $firstFilterMock = $this->createMock(Filter::class);
+
+        /** @var Filter|MockObject $secondFilterMock */
+        $secondFilterMock = $this->createMock(Filter::class);
+
+        $firstFilterMock->expects($this->once())->method('getName')->willReturn('enabled');
+        $secondFilterMock->expects($this->once())->method('getName')->willReturn('enabled');
+
+        $this->grid->addFilter($firstFilterMock);
+        $this->grid->setFilter($secondFilterMock);
+
+        $this->assertSame($secondFilterMock, $this->grid->getFilter('enabled'));
+    }
+
+    function testCanReturnFilters(): void
+    {
+        /** @var Filter|MockObject $firstFilterMock */
+        $firstFilterMock = $this->createMock(Filter::class);
+
+        /** @var Filter|MockObject $secondFilterMock */
+        $secondFilterMock = $this->createMock(Filter::class);
+
+        $firstFilterMock->expects($this->once())->method('getName')->willReturn('first');
+        $secondFilterMock->expects($this->once())->method('getName')->willReturn('second');
+
+        $this->grid->addFilter($firstFilterMock);
+        $this->grid->addFilter($secondFilterMock);
+
+        $this->assertCount(2, $this->grid->getFilters());
+    }
+
+    function testCanReturnOnlyEnabledFilters(): void
+    {
+        /** @var Filter|MockObject $firstFilterMock */
+        $firstFilterMock = $this->createMock(Filter::class);
+
+        /** @var Filter|MockObject $secondFilterMock */
+        $secondFilterMock = $this->createMock(Filter::class);
+
+        $firstFilterMock->expects($this->once())->method('getName')->willReturn('first');
+        $firstFilterMock->expects($this->once())->method('isEnabled')->willReturn(true);
+        $secondFilterMock->expects($this->once())->method('getName')->willReturn('second');
+        $secondFilterMock->expects($this->once())->method('isEnabled')->willReturn(false);
+
+        $this->grid->addFilter($firstFilterMock);
+        $this->grid->addFilter($secondFilterMock);
+
+        $this->assertCount(1, $this->grid->getEnabledFilters());
     }
 }
 

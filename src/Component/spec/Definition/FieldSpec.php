@@ -11,88 +11,91 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Component\Grid\Definition\Field;
 
-final class FieldSpec extends ObjectBehavior
+final class FieldTest extends TestCase
 {
-    function let(): void
+    private Field $field;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('fromNameAndType', ['enabled', 'boolean']);
+        $this->field = Field::fromNameAndType('enabled', 'boolean');
     }
 
-    function it_has_name(): void
+    public function testHasName(): void
     {
-        $this->getName()->shouldReturn('enabled');
+        $this->assertSame('enabled', $this->field->getName());
     }
 
-    function it_has_type(): void
+    public function testHasType(): void
     {
-        $this->getType()->shouldReturn('boolean');
+        $this->assertSame('boolean', $this->field->getType());
     }
 
-    function it_has_path_which_defaults_to_name(): void
+    public function testHasPathWhichDefaultsToName(): void
     {
-        $this->getPath()->shouldReturn('enabled');
+        $this->assertSame('enabled', $this->field->getPath());
 
-        $this->setPath('method.enabled');
-        $this->getPath()->shouldReturn('method.enabled');
+        $this->field->setPath('method.enabled');
+        $this->assertSame('method.enabled', $this->field->getPath());
     }
 
-    function it_has_label_which_defaults_to_name(): void
+    public function testHasLabelWhichDefaultsToName(): void
     {
-        $this->getLabel()->shouldReturn('enabled');
+        $this->assertSame('enabled', $this->field->getLabel());
 
-        $this->setLabel('Is enabled?');
-        $this->getLabel()->shouldReturn('Is enabled?');
+        $this->field->setLabel('Is enabled?');
+        $this->assertSame('Is enabled?', $this->field->getLabel());
     }
 
-    function it_is_toggleable(): void
+    public function testToggleable(): void
     {
-        $this->isEnabled()->shouldReturn(true);
+        $this->assertTrue($this->field->isEnabled());
 
-        $this->setEnabled(false);
-        $this->isEnabled()->shouldReturn(false);
-        $this->setEnabled(true);
-        $this->isEnabled()->shouldReturn(true);
+        $this->field->setEnabled(false);
+        $this->assertFalse($this->field->isEnabled());
+        $this->field->setEnabled(true);
+        $this->assertTrue($this->field->isEnabled());
     }
 
-    function it_knows_by_which_property_it_can_be_sorted(): void
+    public function testKnowsByWhichPropertyItCanBeSorted(): void
     {
-        $this->getSortable()->shouldReturn(null);
+        $this->assertNull($this->field->getSortable());
 
-        $this->setSortable('method.enabled');
-        $this->getSortable()->shouldReturn('method.enabled');
+        $this->field->setSortable('method.enabled');
+        $this->assertSame('method.enabled', $this->field->getSortable());
     }
 
-    function its_sorted_by_name_when_sortable_is_not_set(): void
+    public function testItsSortedByNameWhenSortableIsNotSet(): void
     {
-        $this->getSortable()->shouldReturn(null);
+        $this->assertNull($this->field->getSortable());
 
-        $this->setSortable('enabled');
-        $this->getSortable()->shouldReturn('enabled');
+        $this->field->setSortable('enabled');
+        $this->assertSame('enabled', $this->field->getSortable());
     }
 
-    function it_has_no_options_by_default(): void
+    public function testHasNoOptionsByDefault(): void
     {
-        $this->getOptions()->shouldReturn([]);
+        $this->assertSame([], $this->field->getOptions());
     }
 
-    function it_can_have_options(): void
+    public function testCanHaveOptions(): void
     {
-        $this->setOptions(['template' => '@SyliusUi/Grid/Field/_status.html.twig']);
-        $this->getOptions()->shouldReturn(['template' => '@SyliusUi/Grid/Field/_status.html.twig']);
+        $this->field->setOptions(['template' => '@SyliusUi/Grid/Field/_status.html.twig']);
+        $this->assertSame(['template' => '@SyliusUi/Grid/Field/_status.html.twig'], $this->field->getOptions());
     }
 
-    function it_has_last_position_by_default(): void
+    public function testHasLastPositionByDefault(): void
     {
-        $this->getPosition()->shouldReturn(100);
+        $this->assertSame(100, $this->field->getPosition());
     }
 
-    function its_position_is_mutable(): void
+    public function testItsPositionIsMutable(): void
     {
-        $this->setPosition(1);
-        $this->getPosition()->shouldReturn(1);
+        $this->field->setPosition(1);
+        $this->assertSame(1, $this->field->getPosition());
     }
 }
