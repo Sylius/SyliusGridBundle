@@ -80,7 +80,8 @@
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "twig/twig": "^2.12 || ^3.0",
         "vimeo/psalm": "^5.23",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "rector/custom-phpspec-to-phpunit": "^0.6.2"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"

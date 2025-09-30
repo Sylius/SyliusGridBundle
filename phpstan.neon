@@ -30,6 +30,7 @@ parameters:
         - %currentWorkingDirectory%/src/Component/Sorting/Sorter.php
         - %currentWorkingDirectory%/src/Component/View/GridView.php
         - %currentWorkingDirectory%/src/Component/spec/*
+        - %currentWorkingDirectory%/src/Component/Tests/*
         - %currentWorkingDirectory%/src/Component/vendor/*
 
     ignoreErrors:

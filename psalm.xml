@@ -14,6 +14,7 @@
             <directory name="src/Bundle/spec" />
             <directory name="src/Bundle/Tests" />
             <directory name="src/Component/spec" />
+            <directory name="src/Component/Tests" />
             <directory name="src/Component/vendor" />
         </ignoreFiles>
     </projectFiles>
