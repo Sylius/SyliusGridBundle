@@ -11,30 +11,39 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\DataExtractor;
+namespace Sylius\Component\Grid\Tests\Unit\DataExtractor;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
+use Sylius\Component\Grid\DataExtractor\PropertyAccessDataExtractor;
 use Sylius\Component\Grid\Definition\Field;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
-final class PropertyAccessDataExtractorSpec extends ObjectBehavior
+final class PropertyAccessDataExtractorTest extends TestCase
 {
-    function let(PropertyAccessorInterface $propertyAccessor): void
+    private PropertyAccessorInterface|MockObject $propertyAccessorMock;
+
+    private PropertyAccessDataExtractor $propertyAccessDataExtractor;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($propertyAccessor);
+        $this->propertyAccessorMock = $this->createMock(PropertyAccessorInterface::class);
+        $this->propertyAccessDataExtractor = new PropertyAccessDataExtractor($this->propertyAccessorMock);
     }
 
-    function it_is_a_data_extractor(): void
+    public function testADataExtractor(): void
     {
-        $this->shouldImplement(DataExtractorInterface::class);
+        $this->assertInstanceOf(DataExtractorInterface::class, $this->propertyAccessDataExtractor);
     }
 
-    function it_uses_property_accessor_to_extract_the_data(PropertyAccessorInterface $propertyAccessor, Field $field): void
+    public function testUsesPropertyAccessorToExtractTheData(): void
     {
-        $field->getPath()->willReturn('foo');
-        $propertyAccessor->getValue(['foo' => 'bar'], 'foo')->willReturn('Value');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+        $fieldMock->expects($this->once())->method('getPath')->willReturn('foo');
+        $this->propertyAccessorMock->expects($this->once())->method('getValue')->with(['foo' => 'bar'], 'foo')->willReturn('Value');
 
-        $this->get($field, ['foo' => 'bar'])->shouldReturn('Value');
+        $this->assertSame('Value', $this->propertyAccessDataExtractor->get($fieldMock, ['foo' => 'bar']));
     }
 }
