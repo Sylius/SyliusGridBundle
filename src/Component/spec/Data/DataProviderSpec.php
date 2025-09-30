@@ -11,9 +11,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Data;
+namespace Sylius\Component\Grid\Tests\Unit\Data;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Sylius\Component\Grid\Data\DataProvider;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DataSourceProviderInterface;
@@ -22,37 +24,44 @@ use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 
-final class DataProviderSpec extends ObjectBehavior
+final class DataProviderTest extends TestCase
 {
-    function let(
-        DataSourceProviderInterface $dataSourceProvider,
-        FiltersApplicatorInterface $filtersApplicator,
-        SorterInterface $sorter,
-    ): void {
-        $this->beConstructedWith($dataSourceProvider, $filtersApplicator, $sorter);
-    }
+    private DataSourceProviderInterface|MockObject $dataSourceProviderMock;
 
-    function it_implements_grid_data_provider_interface(): void
+    private FiltersApplicatorInterface|MockObject $filtersApplicatorMock;
+
+    private SorterInterface|MockObject $sorterMock;
+
+    private DataProvider $dataProvider;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(DataProviderInterface::class);
+        $this->dataSourceProviderMock = $this->createMock(DataSourceProviderInterface::class);
+        $this->filtersApplicatorMock = $this->createMock(FiltersApplicatorInterface::class);
+        $this->sorterMock = $this->createMock(SorterInterface::class);
+        $this->dataProvider = new DataProvider($this->dataSourceProviderMock, $this->filtersApplicatorMock, $this->sorterMock);
     }
 
-    function it_gets_data_from_the_data_source(
-        DataSourceProviderInterface $dataSourceProvider,
-        DataSourceInterface $dataSource,
-        FiltersApplicatorInterface $filtersApplicator,
-        SorterInterface $sorter,
-        Grid $grid,
-    ): void {
+    public function testImplementsGridDataProviderInterface(): void
+    {
+        $this->assertInstanceOf(DataProviderInterface::class, $this->dataProvider);
+    }
+
+    public function testGetsDataFromTheDataSource(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
         $parameters = new Parameters();
 
-        $dataSourceProvider->getDataSource($grid, $parameters)->willReturn($dataSource);
+        $this->dataSourceProviderMock->expects($this->once())->method('getDataSource')->with($gridMock, $parameters)->willReturn($dataSourceMock);
+        $this->filtersApplicatorMock->expects($this->once())->method('apply')->with($dataSourceMock, $gridMock, $parameters);
+        $this->sorterMock->expects($this->once())->method('sort')->with($dataSourceMock, $gridMock, $parameters);
+        $dataSourceMock->expects($this->once())->method('getData')->with($parameters)->willReturn(['foo', 'bar']);
 
-        $filtersApplicator->apply($dataSource, $grid, $parameters)->shouldBeCalled();
-        $sorter->sort($dataSource, $grid, $parameters)->shouldBeCalled();
-
-        $dataSource->getData($parameters)->willReturn(['foo', 'bar']);
-
-        $this->getData($grid, $parameters)->shouldReturn(['foo', 'bar']);
+        $this->assertSame(['foo', 'bar'], $this->dataProvider->getData($gridMock, $parameters));
     }
 }

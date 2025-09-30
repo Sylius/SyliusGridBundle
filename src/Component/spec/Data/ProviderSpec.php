@@ -11,106 +11,119 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Data;
+namespace Sylius\Component\Grid\Tests\Unit\Data;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Data\Provider;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 
-final class ProviderSpec extends ObjectBehavior
+final class ProviderTest extends TestCase
 {
-    function let(
-        ContainerInterface $locator,
-        DataProviderInterface $decorated,
-    ): void {
-        $this->beConstructedWith($locator, $decorated);
-    }
+    private ContainerInterface|MockObject $locatorMock;
 
-    function it_is_initializable(): void
+    private DataProviderInterface|MockObject $decoratedMock;
+
+    private Provider $provider;
+
+    protected function setUp(): void
     {
-        $this->shouldHaveType(Provider::class);
+        $this->locatorMock = $this->createMock(ContainerInterface::class);
+        $this->decoratedMock = $this->createMock(DataProviderInterface::class);
+        $this->provider = new Provider($this->locatorMock, $this->decoratedMock);
     }
 
-    function it_calls_provider_from_decorated_service_when_grid_has_no_provider(
-        Grid $grid,
-        DataProviderInterface $decorated,
-        \ArrayObject $data,
-    ): void {
+    public function testCallsProviderFromDecoratedServiceWhenGridHasNoProvider(): void
+    {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
+        /** @var \ArrayObject|MockObject $dataMock */
+        $dataMock = $this->createMock(\ArrayObject::class);
+
         $parameters = new Parameters();
 
-        $grid->getProvider()->willReturn(null);
+        $gridMock->expects($this->once())->method('getProvider')->willReturn(null);
+        $this->decoratedMock->expects($this->once())->method('getData')->with($gridMock, $parameters)->willReturn($dataMock);
 
-        $decorated->getData($grid, $parameters)->willReturn($data)->shouldBeCalled();
-
-        $this->getData($grid, $parameters)->shouldReturn($data);
+        $this->assertSame($dataMock, $this->provider->getData($gridMock, $parameters));
     }
 
-    function it_calls_provider_from_grid_configuration_if_this_is_a_callable(
-        Grid $grid,
-    ): void {
+    public function testCallsProviderFromGridConfigurationIfThisIsACallable(): void
+    {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
         $parameters = new Parameters();
 
-        $grid->getProvider()->willReturn([GridProviderCallable::class, 'getData']);
+        $gridMock->expects($this->once())->method('getProvider')->willReturn([GridProviderCallable::class, 'getData']);
 
-        $this->getData($grid, $parameters)->shouldReturn(['callable' => true]);
+        $this->assertSame(['callable' => true], $this->provider->getData($gridMock, $parameters));
     }
 
-    function it_calls_provider_from_grid_configuration_if_this_is_a_service_stored_in_the_locator(
-        Grid $grid,
-        ContainerInterface $locator,
-        DataProviderInterface $provider,
-        \ArrayObject $data,
-    ): void {
+    public function testCallsProviderFromGridConfigurationIfThisIsAServiceStoredInTheLocator(): void
+    {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
+        /** @var DataProviderInterface|MockObject $providerMock */
+        $providerMock = $this->createMock(DataProviderInterface::class);
+
+        /** @var \ArrayObject|MockObject $dataMock */
+        $dataMock = $this->createMock(\ArrayObject::class);
+
         $parameters = new Parameters();
 
-        $grid->getProvider()->willReturn('App\Provider');
+        $gridMock->expects($this->once())->method('getProvider')->willReturn('App\Provider');
+        $this->locatorMock->expects($this->once())->method('has')->with('App\Provider')->willReturn(true);
+        $this->locatorMock->expects($this->once())->method('get')->with('App\Provider')->willReturn($providerMock);
+        $providerMock->expects($this->once())->method('getData')->with($gridMock, $parameters)->willReturn($dataMock);
 
-        $locator->has('App\Provider')->willReturn(true);
-        $locator->get('App\Provider')->willReturn($provider);
-
-        $provider->getData($grid, $parameters)->willReturn($data)->shouldBeCalled();
-
-        $this->getData($grid, $parameters)->shouldReturn($data);
+        $this->assertSame($dataMock, $this->provider->getData($gridMock, $parameters));
     }
 
-    function it_should_throw_an_exception_when_grid_provider_is_not_stored_in_the_locator(
-        Grid $grid,
-        ContainerInterface $locator,
-        DataProviderInterface $provider,
-        \ArrayObject $data,
-    ): void {
+    public function testThrowAnExceptionWhenGridProviderIsNotStoredInTheLocator(): void
+    {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
+        /** @var DataProviderInterface|MockObject $providerMock */
+        $providerMock = $this->createMock(DataProviderInterface::class);
+
+        /** @var \ArrayObject|MockObject $dataMock */
+        $dataMock = $this->createMock(\ArrayObject::class);
         $parameters = new Parameters();
 
-        $grid->getCode()->willReturn('app_dummy');
-        $grid->getProvider()->willReturn('App\Provider');
+        $gridMock->expects($this->once())->method('getCode')->willReturn('app_dummy');
+        $gridMock->expects($this->once())->method('getProvider')->willReturn('App\Provider');
+        $this->locatorMock->expects($this->once())->method('has')->with('App\Provider')->willReturn(false);
 
-        $locator->has('App\Provider')->willReturn(false);
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Provider "App\Provider" not found on grid "app_dummy"');
 
-        $this->shouldThrow(
-            new \RuntimeException('Provider "App\Provider" not found on grid "app_dummy"'),
-        )->during('getData', [$grid, $parameters]);
+        $this->provider->getData($gridMock, $parameters);
     }
 
-    function it_should_throw_an_exception_when_grid_provider_does_not_implement_the_data_provider_interface(
-        Grid $grid,
-        ContainerInterface $locator,
-        \stdClass $provider,
-        \ArrayObject $data,
-    ): void {
+    public function testThrowAnExceptionWhenGridProviderDoesNotImplementTheDataProviderInterface(): void
+    {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
+        /** @var \stdClass|MockObject $providerMock */
+        $providerMock = $this->createMock(\stdClass::class);
+
         $parameters = new Parameters();
 
-        $grid->getCode()->willReturn('app_dummy');
-        $grid->getProvider()->willReturn('App\Provider');
+        $gridMock->expects($this->once())->method('getProvider')->willReturn('App\Provider');
+        $this->locatorMock->expects($this->once())->method('has')->with('App\Provider')->willReturn(true);
+        $this->locatorMock->expects($this->once())->method('get')->with('App\Provider')->willReturn($providerMock);
 
-        $locator->has('App\Provider')->willReturn(true);
-        $locator->get('App\Provider')->willReturn($provider);
+        $this->expectException(\InvalidArgumentException::class);
 
-        $this->shouldThrow(
-            \InvalidArgumentException::class,
-        )->during('getData', [$grid, $parameters]);
+        $this->provider->getData($gridMock, $parameters);
     }
 }
 

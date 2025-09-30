@@ -11,10 +11,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Data;
+namespace Sylius\Component\Grid\Tests\Unit\Data;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
+use Sylius\Component\Grid\Data\DataSourceProvider;
 use Sylius\Component\Grid\Data\DataSourceProviderInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Data\UnsupportedDriverException;
@@ -22,46 +24,58 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 
-final class DataSourceProviderSpec extends ObjectBehavior
+final class DataSourceProviderTest extends TestCase
 {
-    function let(ServiceRegistryInterface $driversRegistry): void
+    private ServiceRegistryInterface|MockObject $driversRegistryMock;
+
+    private DataSourceProvider $dataSourceProvider;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($driversRegistry);
+        $this->driversRegistryMock = $this->createMock(ServiceRegistryInterface::class);
+        $this->dataSourceProvider = new DataSourceProvider($this->driversRegistryMock);
     }
 
-    function it_implements_grid_data_provider_interface(): void
+    public function testImplementsGridDataProviderInterface(): void
     {
-        $this->shouldImplement(DataSourceProviderInterface::class);
+        $this->assertInstanceOf(DataSourceProviderInterface::class, $this->dataSourceProvider);
     }
 
-    function it_uses_a_correct_driver_to_get_the_data_for_a_grid(
-        ServiceRegistryInterface $driversRegistry,
-        DataSourceInterface $dataSource,
-        DriverInterface $driver,
-        Grid $grid,
-    ): void {
+    public function testUsesACorrectDriverToGetTheDataForAGrid(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+
+        /** @var DriverInterface|MockObject $driverMock */
+        $driverMock = $this->createMock(DriverInterface::class);
+
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
         $parameters = new Parameters();
 
-        $grid->getDriver()->willReturn('doctrine/orm');
-        $grid->getDriverConfiguration()->willReturn(['resource' => 'sylius.tax_category']);
+        $gridMock->expects($this->once())->method('getDriver')->willReturn('doctrine/orm');
+        $gridMock->expects($this->once())->method('getDriverConfiguration')->willReturn(['resource' => 'sylius.tax_category']);
+        $this->driversRegistryMock->expects($this->once())->method('has')->with('doctrine/orm')->willReturn(true);
+        $this->driversRegistryMock->expects($this->once())->method('get')->with('doctrine/orm')->willReturn($driverMock);
+        $driverMock->expects($this->once())->method('getDataSource')->with(['resource' => 'sylius.tax_category'], $parameters)->willReturn($dataSourceMock);
 
-        $driversRegistry->has('doctrine/orm')->willReturn(true);
-        $driversRegistry->get('doctrine/orm')->willReturn($driver);
-        $driver->getDataSource(['resource' => 'sylius.tax_category'], $parameters)->willReturn($dataSource);
-
-        $this->getDataSource($grid, $parameters)->shouldReturn($dataSource);
+        $this->assertSame($dataSourceMock, $this->dataSourceProvider->getDataSource($gridMock, $parameters));
     }
 
-    function it_throws_an_exception_if_driver_is_not_supported(Grid $grid, ServiceRegistryInterface $driversRegistry): void
+    public function testThrowsAnExceptionIfDriverIsNotSupported(): void
     {
+        /** @var Grid|MockObject $gridMock */
+        $gridMock = $this->createMock(Grid::class);
+
         $parameters = new Parameters();
 
-        $grid->getDriver()->willReturn('doctrine/banana');
-        $driversRegistry->has('doctrine/banana')->willReturn(false);
+        $gridMock->expects($this->once())->method('getDriver')->willReturn('doctrine/banana');
+        $this->driversRegistryMock->expects($this->once())->method('has')->with('doctrine/banana')->willReturn(false);
 
-        $this
-            ->shouldThrow(new UnsupportedDriverException('doctrine/banana'))
-            ->during('getDataSource', [$grid, $parameters])
-        ;
+        $this->expectException(UnsupportedDriverException::class);
+        $this->expectExceptionMessage('doctrine/banana');
+
+        $this->dataSourceProvider->getDataSource($gridMock, $parameters);
     }
 }
