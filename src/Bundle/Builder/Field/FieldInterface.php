@@ -41,10 +41,16 @@ interface FieldInterface
 
     public function getOptions(): array;
 
-    /** @deprecated use self::addOptions instead */
+    /** @deprecated use self::withOptions instead */
     public function setOptions(array $options): self;
 
+    /** @deprecated use self::withOptions instead */
     public function addOptions(array $options): self;
+
+    /**
+     * @param array<mixed> $options
+     */
+    public function withOptions(array $options): self;
 
     /**
      * @param mixed $value

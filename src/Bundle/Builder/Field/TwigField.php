@@ -18,7 +18,7 @@ final class TwigField
     public static function create(string $name, string $template): FieldInterface
     {
         return Field::create($name, 'twig')
-            ->addOptions(['template' => $template])
+            ->withOptions(['template' => $template])
         ;
     }
 }
