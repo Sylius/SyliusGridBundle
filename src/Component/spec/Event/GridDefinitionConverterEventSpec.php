@@ -11,20 +11,27 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Event;
+namespace Sylius\Component\Grid\Tests\Unit\Event;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
 
-final class GridDefinitionConverterEventSpec extends ObjectBehavior
+final class GridDefinitionConverterEventTest extends TestCase
 {
-    function let(Grid $grid): void
+    private Grid|MockObject $gridMock;
+
+    private GridDefinitionConverterEvent $gridDefinitionConverterEvent;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($grid);
+        $this->gridMock = $this->createMock(Grid::class);
+        $this->gridDefinitionConverterEvent = new GridDefinitionConverterEvent($this->gridMock);
     }
 
-    function it_has_a_grid(Grid $grid): void
+    public function testHasAGrid(): void
     {
-        $this->getGrid()->shouldReturn($grid);
+        $this->assertSame($this->gridMock, $this->gridDefinitionConverterEvent->getGrid());
     }
 }
