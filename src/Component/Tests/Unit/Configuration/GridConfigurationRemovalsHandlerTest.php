@@ -11,19 +11,21 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Configuration;
+namespace Sylius\Component\Grid\Tests\Unit\Configuration;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 
-final class GridConfigurationRemovalsHandlerSpec extends ObjectBehavior
+final class GridConfigurationRemovalsHandlerTest extends TestCase
 {
-    function it_is_initializable(): void
+    private GridConfigurationRemovalsHandler $gridConfigurationRemovalsHandler;
+
+    protected function setUp(): void
     {
-        $this->shouldHaveType(GridConfigurationRemovalsHandler::class);
+        $this->gridConfigurationRemovalsHandler = new GridConfigurationRemovalsHandler();
     }
 
-    function it_removes_values(): void
+    public function testRemovesValues(): void
     {
         $gridConfiguration = [
             'fields' => ['customer' => []],
@@ -49,11 +51,11 @@ final class GridConfigurationRemovalsHandlerSpec extends ObjectBehavior
             ],
         ];
 
-        $this->handle($gridConfiguration)->shouldReturn([
+        $this->assertSame([
             'fields' => [],
             'actions' => [
                 'subitem' => [],
             ],
-        ]);
+        ], $this->gridConfigurationRemovalsHandler->handle($gridConfiguration));
     }
 }
