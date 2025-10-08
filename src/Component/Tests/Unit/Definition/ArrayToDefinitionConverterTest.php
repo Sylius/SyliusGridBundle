@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Definition;
+namespace Sylius\Component\Grid\Tests\Unit\Definition;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\ActionGroup;
+use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Filter;
@@ -24,19 +25,24 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
-final class ArrayToDefinitionConverterSpec extends ObjectBehavior
+final class ArrayToDefinitionConverterTest extends TestCase
 {
-    function let(EventDispatcherInterface $eventDispatcher): void
+    private EventDispatcherInterface|MockObject $eventDispatcherMock;
+
+    private ArrayToDefinitionConverter $arrayToDefinitionConverter;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($eventDispatcher);
+        $this->eventDispatcherMock = $this->createMock(EventDispatcherInterface::class);
+        $this->arrayToDefinitionConverter = new ArrayToDefinitionConverter($this->eventDispatcherMock);
     }
 
-    function it_implements_array_to_definition_converter(): void
+    public function testImplementsArrayToDefinitionConverter(): void
     {
-        $this->shouldImplement(ArrayToDefinitionConverterInterface::class);
+        $this->assertInstanceOf(ArrayToDefinitionConverterInterface::class, $this->arrayToDefinitionConverter);
     }
 
-    function it_converts_an_array_to_grid_definition(EventDispatcherInterface $eventDispatcher): void
+    public function testConvertsAnArrayToGridDefinition(): void
     {
         $grid = Grid::fromCodeAndDriverConfiguration(
             'sylius_admin_tax_category',
@@ -96,10 +102,10 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
         $filter->setCriteria('true');
         $grid->addFilter($filter);
 
-        $eventDispatcher
-            ->dispatch(Argument::type(GridDefinitionConverterEvent::class), 'sylius.grid.admin_tax_category')
-            ->shouldBeCalled()
-        ;
+        $this->eventDispatcherMock
+            ->expects($this->once())
+            ->method('dispatch')
+            ->with($this->isInstanceOf(GridDefinitionConverterEvent::class), 'sylius.grid.admin_tax_category');
 
         $definitionArray = [
             'driver' => [
@@ -166,6 +172,8 @@ final class ArrayToDefinitionConverterSpec extends ObjectBehavior
             ],
         ];
 
-        $this->convert('sylius_admin_tax_category', $definitionArray)->shouldBeLike($grid);
+        $gridDefinition = $this->arrayToDefinitionConverter->convert('sylius_admin_tax_category', $definitionArray);
+
+        $this->assertEquals($grid, $gridDefinition);
     }
 }
