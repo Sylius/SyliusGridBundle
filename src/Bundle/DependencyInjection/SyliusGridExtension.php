@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
+use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
@@ -83,6 +84,13 @@ final class SyliusGridExtension extends Extension
         $container->registerForAutoconfiguration(DataProviderInterface::class)
             ->addTag('sylius.grid_data_provider')
         ;
+
+        $container->registerAttributeForAutoconfiguration(
+            AsGridFieldCallableService::class,
+            static function (ChildDefinition $definition, AsGridFieldCallableService $attribute, \Reflector $reflector): void {
+                $definition->addTag('sylius.grid_field_callable_service');
+            },
+        );
     }
 
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration

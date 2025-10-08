@@ -83,11 +83,14 @@ sylius_grid:
                     label: Name
                     sortable: ~
                 nationality:
-                    type: string
+                    type: callable
+                    options:
+                        service: 'App\Helper\GridHelper'
+                        method: 'formatNationality'
                     label: Name
                     sortable: nationality.name
                     path: nationality
-            limits: [10, 5, 15]
+            limits: [10, 5, 15, 100]
 
         app_book_by_american_authors:
             driver:

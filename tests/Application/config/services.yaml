@@ -30,3 +30,5 @@ services:
 
     App\BoardGameBlog\:
         resource: '../src/BoardGameBlog'
+
+    App\Helper\GridHelper: ~

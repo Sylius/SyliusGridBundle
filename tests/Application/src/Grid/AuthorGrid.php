@@ -55,12 +55,12 @@ final class AuthorGrid extends AbstractGrid implements ResourceAwareGridInterfac
                     ->setSortable(true),
             )
             ->addField(
-                StringField::create('nationality')
+                CallableField::createForService('nationality', \App\Helper\GridHelper::class, 'formatNationality')
                     ->setLabel('Name')
                     ->setPath('nationality')
                     ->setSortable(true, 'nationality.name'),
             )
-            ->setLimits([10, 5, 15])
+            ->setLimits([10, 5, 15, 100])
         ;
     }
 }

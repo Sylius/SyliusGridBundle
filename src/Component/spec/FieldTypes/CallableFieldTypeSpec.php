@@ -18,12 +18,30 @@ use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Exception\UnexpectedValueException;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
+use Symfony\Contracts\Service\ServiceLocatorTrait;
+use Symfony\Contracts\Service\ServiceProviderInterface;
 
 final class CallableFieldTypeSpec extends ObjectBehavior
 {
     function let(DataExtractorInterface $dataExtractor): void
     {
-        $this->beConstructedWith($dataExtractor);
+        $this->beConstructedWith(
+            $dataExtractor,
+            new class(['my_service' => fn () => new class() {
+                public function __invoke(string $value): string
+                {
+                    return strtoupper($value);
+                }
+
+                public function concatenate(array $value): string
+                {
+                    return implode(', ', $value);
+                }
+            },
+            ]) implements ServiceProviderInterface {
+                use ServiceLocatorTrait;
+            },
+        );
     }
 
     function it_is_a_grid_field_type(): void
@@ -79,6 +97,31 @@ final class CallableFieldTypeSpec extends ObjectBehavior
         ])->shouldReturn('bar');
     }
 
+    function it_uses_data_extractor_to_obtain_data_and_passes_it_to_a_service(
+        DataExtractorInterface $dataExtractor,
+        Field $field,
+    ): void {
+        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('bar');
+
+        $this->render($field, ['foo' => 'bar'], [
+            'service' => 'my_service',
+            'htmlspecialchars' => true,
+        ])->shouldReturn('BAR');
+    }
+
+    function it_uses_data_extractor_to_obtain_data_and_passes_it_to_a_service_and_method(
+        DataExtractorInterface $dataExtractor,
+        Field $field,
+    ): void {
+        $dataExtractor->get($field, ['foo' => ['foo', 'bar', 'foobar']])->willReturn(['foo', 'bar', 'foobar']);
+
+        $this->render($field, ['foo' => ['foo', 'bar', 'foobar']], [
+            'service' => 'my_service',
+            'method' => 'concatenate',
+            'htmlspecialchars' => true,
+        ])->shouldReturn('foo, bar, foobar');
+    }
+
     function it_throws_an_exception_when_a_callable_return_value_cannot_be_casted_to_string(
         DataExtractorInterface $dataExtractor,
         Field $field,
@@ -94,6 +137,35 @@ final class CallableFieldTypeSpec extends ObjectBehavior
                 [
                     'callable' => fn () => new \stdclass(),
                     'htmlspecialchars' => true,
+                ],
+            ]);
+    }
+
+    function it_throws_an_exception_when_neither_callable_nor_service_options_are_defined(
+        DataExtractorInterface $dataExtractor,
+        Field $field,
+    ): void {
+        $this
+            ->shouldThrow(\RuntimeException::class)
+            ->during('render', [
+                $field,
+                ['foo' => 'bar'],
+                [],
+            ]);
+    }
+
+    function it_throws_an_exception_when_both_callable_and_service_options_are_defined(
+        DataExtractorInterface $dataExtractor,
+        Field $field,
+    ): void {
+        $this
+            ->shouldThrow(\RuntimeException::class)
+            ->during('render', [
+                $field,
+                ['foo' => 'bar'],
+                [
+                    'callable' => fn () => new \stdclass(),
+                    'service' => 'my_service',
                 ],
             ]);
     }

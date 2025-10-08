@@ -13,8 +13,25 @@ declare(strict_types=1);
 
 namespace App\Helper;
 
+use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
+
+#[AsGridFieldCallableService]
 final class GridHelper
 {
+    public function __invoke(?string $value): string
+    {
+        return $this->formatNationality($value);
+    }
+
+    public function formatNationality(?string $value): string
+    {
+        return match ($value) {
+            'English' => 'EN',
+            'American' => 'US',
+            null => '',
+        };
+    }
+
     public static function addHashPrefix(string $value): string
     {
         return '#' . $value;

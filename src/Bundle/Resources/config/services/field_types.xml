@@ -17,6 +17,7 @@
 
         <service id="sylius.grid_field.callable" class="Sylius\Component\Grid\FieldTypes\CallableFieldType">
             <argument type="service" id="sylius.grid.data_extractor" />
+            <argument type="tagged_locator" tag="sylius.grid_field_callable_service" />
             <tag name="sylius.grid_field" type="callable" />
         </service>
         <service id="Sylius\Component\Grid\FieldTypes\CallableFieldType" alias="sylius.grid_field.callable" />
