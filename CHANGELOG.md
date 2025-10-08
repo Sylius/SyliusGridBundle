@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## v1.14.0 (2025-10-08)
+
+#### Details
+
+- [#392](https://github.com/Sylius/SyliusGridBundle/pull/392) Bump package versions ([@loic425](https://github.com/loic425))
+- [#368](https://github.com/Sylius/SyliusGridBundle/pull/368) update CallableFieldType to work with services ([@Florian-Merle](https://github.com/Florian-Merle))
+- [#390](https://github.com/Sylius/SyliusGridBundle/pull/390) Deprecating setOptions and replacing it with addOptions ([@mamazu](https://github.com/mamazu))
+- [#393](https://github.com/Sylius/SyliusGridBundle/pull/393) Convert phpspec 2 phpunit on component configuration ([@loic425](https://github.com/loic425))
+- [#394](https://github.com/Sylius/SyliusGridBundle/pull/394) Convert phpspec 2 phpunit on component data ([@loic425](https://github.com/loic425))
+- [#395](https://github.com/Sylius/SyliusGridBundle/pull/395) Convert phpspec 2 phpunit on component data extractor ([@loic425](https://github.com/loic425))
+- [#397](https://github.com/Sylius/SyliusGridBundle/pull/397) Convert phpspec 2 phpunit on component event ([@loic425](https://github.com/loic425))
+- [#396](https://github.com/Sylius/SyliusGridBundle/pull/396) Convert phpspec 2 phpunit on component data definition ([@loic425](https://github.com/loic425))
+
 ## v1.14.0-ALPHA.2 (2025-09-05)
 
 #### Details
