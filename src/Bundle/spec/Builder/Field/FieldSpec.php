@@ -121,6 +121,17 @@ final class FieldSpec extends ObjectBehavior
         ]);
     }
 
+    function it_creates_with_options(): void
+    {
+        $this->setOptions(['template' => '/path/to/template']);
+        $this->withOptions(['vars' => ['labels' => '/path/to/label']]);
+
+        $this->getOptions()->shouldReturn([
+            'template' => '/path/to/template',
+            'vars' => ['labels' => '/path/to/label'],
+        ]);
+    }
+
     function it_adds_options(): void
     {
         $this->setOptions(['template' => '/path/to/template']);

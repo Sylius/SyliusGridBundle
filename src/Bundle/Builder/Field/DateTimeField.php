@@ -18,7 +18,7 @@ final class DateTimeField
     public static function create(string $name, string $format = 'Y-m-d H:i:s', ?string $timezone = null): FieldInterface
     {
         return Field::create($name, 'datetime')
-            ->setOptions(['format' => $format, 'timezone' => $timezone])
+            ->withOptions(['format' => $format, 'timezone' => $timezone])
         ;
     }
 }

@@ -141,6 +141,13 @@ final class Field implements FieldInterface
         return $this;
     }
 
+    public function withOptions(array $options): self
+    {
+        $this->options = [...$this->options, ...$options];
+
+        return $this;
+    }
+
     public function removeOption(string $option): FieldInterface
     {
         unset($this->options[$option]);
