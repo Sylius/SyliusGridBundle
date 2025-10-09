@@ -11,185 +11,242 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Filter\NumericRangeFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class NumericRangeFilterSpec extends ObjectBehavior
+final class NumericRangeFilterTest extends TestCase
 {
-    function it_implements_a_filter_interface(): void
+    private NumericRangeFilter $filter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->filter = new NumericRangeFilter();
     }
 
-    function it_does_nothing_when_there_is_no_data(DataSourceInterface $dataSource): void
+    public function testImplementsFilterInterface(): void
     {
-        $dataSource->restrict(Argument::any())->shouldNotBeCalled();
+        $this->assertInstanceOf(FilterInterface::class, $this->filter);
+    }
 
-        $this->apply(
+    public function testDoesNothingWhenThereIsNoData(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $dataSource->expects($this->never())->method('restrict');
+
+        $this->filter->apply($dataSource, 'number', [], []);
+    }
+
+    public function testFiltersNumberFrom(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
+        $expr = new \stdClass();
+
+        $builder
+            ->expects($this->once())
+            ->method('greaterThanOrEqual')
+            ->with('number', 3)
+            ->willReturn($expr);
+
+        $dataSource
+            ->expects($this->once())
+            ->method('restrict')
+            ->with($expr);
+
+        $this->filter->apply($dataSource, 'number', ['greaterThan' => '3'], []);
+    }
+
+    public function testFiltersNumberFromWithoutInclusiveFrom(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
+        $expr = new \stdClass();
+
+        $builder
+            ->expects($this->once())
+            ->method('greaterThan')
+            ->with('number', 7)
+            ->willReturn($expr);
+
+        $dataSource
+            ->expects($this->once())
+            ->method('restrict')
+            ->with($expr);
+
+        $this->filter->apply(
             $dataSource,
             'number',
+            ['greaterThan' => '7'],
+            ['inclusive_from' => false],
+        );
+    }
+
+    public function testFiltersNumberTo(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
+        $expr = new \stdClass();
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('number', 8)
+            ->willReturn($expr);
+
+        $dataSource
+            ->expects($this->once())
+            ->method('restrict')
+            ->with($expr);
+
+        $this->filter->apply($dataSource, 'number', ['lessThan' => '8'], []);
+    }
+
+    public function testFiltersNumberToWithoutInclusiveTo(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
+        $expr = new \stdClass();
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThan')
+            ->with('number', 9)
+            ->willReturn($expr);
+
+        $dataSource
+            ->expects($this->once())
+            ->method('restrict')
+            ->with($expr);
+
+        $this->filter->apply(
+            $dataSource,
+            'number',
+            ['lessThan' => '9'],
+            ['inclusive_to' => false],
+        );
+    }
+
+    public function testFiltersNumberInSpecifiedRange(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
+
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
+
+        $builder
+            ->expects($this->once())
+            ->method('greaterThanOrEqual')
+            ->with('number', 12)
+            ->willReturn($greaterExpr);
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('number', 120)
+            ->willReturn($lessExpr);
+
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->with($this->logicalOr(
+                $this->identicalTo($greaterExpr),
+                $this->identicalTo($lessExpr),
+            ));
+
+        $this->filter->apply(
+            $dataSource,
+            'number',
+            ['greaterThan' => '12.00', 'lessThan' => '120.00'],
             [],
-            [],
         );
     }
 
-    function it_filters_number_from(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $expressionBuilder->greaterThanOrEqual('number', 3)->willReturn('EXPR');
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testAmountScaleAndModeCanBeConfigured(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
 
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalledOnce();
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $this->apply(
+        $builder
+            ->expects($this->once())
+            ->method('greaterThanOrEqual')
+            ->with('number', 121)
+            ->willReturn($greaterExpr);
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('number', 259)
+            ->willReturn($lessExpr);
+
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->with($this->logicalOr(
+                $this->identicalTo($greaterExpr),
+                $this->identicalTo($lessExpr),
+            ));
+
+        $this->filter->apply(
             $dataSource,
             'number',
-            [
-                'greaterThan' => '3',
-            ],
-            [],
+            ['greaterThan' => '120.78', 'lessThan' => '258.51'],
+            ['scale' => 0, 'rounding_mode' => \NumberFormatter::ROUND_CEILING],
         );
     }
 
-    function it_filters_number_from_without_inclusive_from(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $expressionBuilder->greaterThan('number', 7)->willReturn('EXPR');
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersWithAllAvailableConfigurations(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
 
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalledOnce();
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $this->apply(
+        $builder
+            ->expects($this->once())
+            ->method('greaterThan')
+            ->with('number', 121)
+            ->willReturn($greaterExpr);
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('number', 259)
+            ->willReturn($lessExpr);
+
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->with($this->logicalOr(
+                $this->identicalTo($greaterExpr),
+                $this->identicalTo($lessExpr),
+            ));
+
+        $this->filter->apply(
             $dataSource,
             'number',
-            [
-                'greaterThan' => '7',
-            ],
-            [
-                'inclusive_from' => false,
-            ],
-        );
-    }
-
-    function it_filters_number_to(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->lessThanOrEqual('number', 8)->willReturn('EXPR');
-
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply(
-            $dataSource,
-            'number',
-            [
-                'lessThan' => '8',
-            ],
-            [],
-        );
-    }
-
-    function it_filters_number_to_without_inclusive_to(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->lessThan('number', 9)->willReturn('EXPR');
-
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply(
-            $dataSource,
-            'number',
-            [
-                'lessThan' => '9',
-            ],
-            [
-                'inclusive_to' => false,
-            ],
-        );
-    }
-
-    function it_filters_money_in_specified_range(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->greaterThanOrEqual('number', 12)->willReturn('EXPR2');
-        $expressionBuilder->lessThanOrEqual('number', 120)->willReturn('EXPR3');
-
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR2')->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR3')->shouldBeCalledOnce();
-
-        $this->apply(
-            $dataSource,
-            'number',
-            [
-                'greaterThan' => '12.00',
-                'lessThan' => '120.00',
-            ],
-            [],
-        );
-    }
-
-    function its_amount_scale_and_mode_can_be_configured(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->greaterThanOrEqual('number', 121)->willReturn('EXPR');
-        $expressionBuilder->lessThanOrEqual('number', 259)->willReturn('EXPR1');
-
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR1')->shouldBeCalledOnce();
-
-        $this->apply(
-            $dataSource,
-            'number',
-            [
-                'greaterThan' => '120.78',
-                'lessThan' => '258.51',
-            ],
-            [
-                'scale' => 0,
-                'rounding_mode' => \NumberFormatter::ROUND_CEILING,
-            ],
-        );
-    }
-
-    function it_filters_with_all_available_configurations(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->greaterThan('number', 121)->willReturn('EXPR');
-        $expressionBuilder->lessThanOrEqual('number', 259)->willReturn('EXPR1');
-
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR1')->shouldBeCalledOnce();
-
-        $this->apply(
-            $dataSource,
-            'number',
-            [
-                'greaterThan' => '120.78',
-                'lessThan' => '258.51',
-            ],
+            ['greaterThan' => '120.78', 'lessThan' => '258.51'],
             [
                 'scale' => 0,
                 'rounding_mode' => \NumberFormatter::ROUND_CEILING,
@@ -199,25 +256,39 @@ final class NumericRangeFilterSpec extends ObjectBehavior
         );
     }
 
-    function its_amount_scale_can_be_configured(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-        $expressionBuilder->greaterThan('number', 234520)->willReturn('EXPR');
-        $expressionBuilder->lessThanOrEqual('number', 122120)->willReturn('EXPR1');
+    public function testAmountScaleCanBeConfigured(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $builder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($builder);
 
-        $dataSource->getExpressionBuilder()->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR')->shouldBeCalledOnce();
-        $dataSource->restrict('EXPR1')->shouldBeCalledOnce();
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $this->apply(
+        $builder
+            ->expects($this->once())
+            ->method('greaterThan')
+            ->with('number', 234520)
+            ->willReturn($greaterExpr);
+
+        $builder
+            ->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('number', 122120)
+            ->willReturn($lessExpr);
+
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->with($this->logicalOr(
+                $this->identicalTo($greaterExpr),
+                $this->identicalTo($lessExpr),
+            ));
+
+        $this->filter->apply(
             $dataSource,
             'number',
-            [
-                'greaterThan' => '234.52',
-                'lessThan' => '122.12',
-            ],
+            ['greaterThan' => '234.52', 'lessThan' => '122.12'],
             [
                 'scale' => 3,
                 'rounding_mode' => \NumberFormatter::ROUND_CEILING,

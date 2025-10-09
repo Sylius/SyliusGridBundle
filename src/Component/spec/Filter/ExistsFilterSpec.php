@@ -11,62 +11,83 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Filter\ExistsFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class ExistsFilterSpec extends ObjectBehavior
+final class ExistsFilterTest extends TestCase
 {
-    function it_implements_filter_interface(): void
+    private ExistsFilter $filter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->filter = new ExistsFilter();
     }
 
-    function it_does_nothing_if_there_is_no_data(DataSourceInterface $dataSource): void
+    public function testImplementsFilterInterface(): void
     {
-        $dataSource->restrict(Argument::any())->shouldNotBeCalled();
-
-        $this->apply($dataSource, Argument::any(), null, []);
+        $this->assertInstanceOf(FilterInterface::class, $this->filter);
     }
 
-    function it_filters_off_all_data_with_provided_field_equal_to_null(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testDoesNothingIfThereIsNoData(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $dataSource->expects($this->never())->method('restrict');
 
-        $expressionBuilder->isNotNull('fieldName')->willReturn($expressionBuilder);
-        $dataSource->restrict($expressionBuilder)->shouldBeCalled();
-
-        $this->apply($dataSource, Argument::any(), ExistsFilter::TRUE, ['field' => 'fieldName']);
+        $this->filter->apply($dataSource, 'anyField', null, []);
     }
 
-    function it_filters_off_all_data_with_provided_field_not_equal_to_null(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersOffAllDataWithProvidedFieldEqualToNull(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->isNull('fieldName')->willReturn($expressionBuilder);
-        $dataSource->restrict($expressionBuilder)->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('isNotNull')
+            ->with('fieldName')
+            ->willReturn($expressionBuilder)
+        ;
 
-        $this->apply($dataSource, Argument::any(), ExistsFilter::FALSE, ['field' => 'fieldName']);
+        $dataSource->expects($this->once())->method('restrict')->with($expressionBuilder);
+
+        $this->filter->apply($dataSource, 'anyField', ExistsFilter::TRUE, ['field' => 'fieldName']);
     }
 
-    function it_filters_off_data_by_filters_name_if_field_is_not_provided(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersOffAllDataWithProvidedFieldNotEqualToNull(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->isNull('filterName')->willReturn($expressionBuilder);
-        $dataSource->restrict($expressionBuilder)->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('isNull')
+            ->with('fieldName')
+            ->willReturn($expressionBuilder)
+        ;
 
-        $this->apply($dataSource, 'filterName', ExistsFilter::FALSE, []);
+        $dataSource->expects($this->once())->method('restrict')->with($expressionBuilder);
+
+        $this->filter->apply($dataSource, 'anyField', ExistsFilter::FALSE, ['field' => 'fieldName']);
+    }
+
+    public function testFiltersOffDataByFilterNameIfFieldIsNotProvided(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('isNull')
+            ->with('filterName')
+            ->willReturn($expressionBuilder);
+
+        $dataSource->expects($this->once())->method('restrict')->with($expressionBuilder);
+
+        $this->filter->apply($dataSource, 'filterName', ExistsFilter::FALSE, []);
     }
 }

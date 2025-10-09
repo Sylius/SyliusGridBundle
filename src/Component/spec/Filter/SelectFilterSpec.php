@@ -11,56 +11,64 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Filter\SelectFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class SelectFilterSpec extends ObjectBehavior
+final class SelectFilterTest extends TestCase
 {
-    function it_implements_a_filter_interface(): void
+    private SelectFilter $selectFilter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->selectFilter = new SelectFilter();
     }
 
-    function it_filters_by_id(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-
-        $expressionBuilder->equals('select', '7')->willReturn('EXPR');
-
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply($dataSource, 'select', '7', []);
+    public function testImplementsAFilterInterface(): void
+    {
+        $this->assertInstanceOf(FilterInterface::class, $this->selectFilter);
     }
 
-    function it_filters_with_multiple_ids(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-
-        $expressionBuilder->in('select', ['4', '2'])->willReturn('EXPR');
-
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply($dataSource, 'select', ['4', '2'], []);
+    public function testFiltersById(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('equals')->with('select', '7')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+        $this->selectFilter->apply($dataSourceMock, 'select', '7', []);
     }
 
-    function it_does_not_filters_when_data_id_is_not_defined(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersWithMultipleIds(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('in')->with('select', ['4', '2'])->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+        $this->selectFilter->apply($dataSourceMock, 'select', ['4', '2'], []);
+    }
 
-        $expressionBuilder->equals('select', Argument::any())->shouldNotBeCalled();
-        $dataSource->restrict(Argument::any())->shouldNotBeCalled();
+    public function testDoesNotFiltersWhenDataIdIsNotDefined(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $this->apply($dataSource, 'select', '', []);
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+
+        $expressionBuilderMock->expects($this->never())->method('equals');
+        $dataSourceMock->expects($this->never())->method('restrict');
+
+        $this->selectFilter->apply($dataSourceMock, 'select', '', []);
     }
 }

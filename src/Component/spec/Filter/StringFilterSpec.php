@@ -11,257 +11,318 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 use Sylius\Component\Grid\Filter\StringFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class StringFilterSpec extends ObjectBehavior
+final class StringFilterTest extends TestCase
 {
-    function it_implements_filter_interface(): void
+    private StringFilter $stringFilter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->stringFilter = new StringFilter();
     }
 
-    function it_filters_with_like_by_default(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-
-        $expressionBuilder->like('firstName', '%John%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply($dataSource, 'firstName', 'John', []);
+    public function testImplementsFilterInterface(): void
+    {
+        $this->assertInstanceOf(FilterInterface::class, $this->stringFilter);
     }
 
-    function it_filters_equal_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersWithLikeByDefault(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->equals('firstName', 'John')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_EQUAL, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', '%John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', 'John', []);
     }
 
-    function it_filters_not_equal_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersEqualStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->notEquals('firstName', 'John')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_EQUAL, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('equals')->with('firstName', 'John')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_EQUAL, 'value' => 'John'], []);
     }
 
-    function it_filters_data_containing_empty_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersNotEqualStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->isNull('firstName')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_EMPTY], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('notEquals')->with('firstName', 'John')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_EQUAL, 'value' => 'John'], []);
     }
 
-    function it_filters_data_containing_not_empty_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingEmptyStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->isNotNull('firstName')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_EMPTY], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('isNull')->with('firstName')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_EMPTY], []);
     }
 
-    function it_filters_data_containing_a_string(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingNotEmptyStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', '%John%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('isNotNull')->with('firstName')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_EMPTY], []);
     }
 
-    function it_filters_data_not_containing_a_string(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingAString(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->notLike('firstName', '%John%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_CONTAINS, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', '%John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => 'John'], []);
     }
 
-    function it_filters_data_starting_with_a_string(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataNotContainingAString(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', 'John%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_STARTS_WITH, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('notLike')->with('firstName', '%John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_CONTAINS, 'value' => 'John'], []);
     }
 
-    function it_filters_data_ending_with_a_string(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataStartingWithAString(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', '%John')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_ENDS_WITH, 'value' => 'John'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', 'John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_STARTS_WITH, 'value' => 'John'], []);
     }
 
-    function it_filters_data_containing_one_of_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataEndingWithAString(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->in('firstName', ['John', 'Paul', 'Rick'])->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_IN, 'value' => 'John, Paul,Rick'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', '%John')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_ENDS_WITH, 'value' => 'John'], []);
     }
 
-    function it_filters_data_containing_value_being_member_of_field(
-        DataSourceInterface $dataSource,
-        MemberOfAwareExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingOneOfStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->memberOf('Rick', 'firstName')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_MEMBER_OF, 'value' => 'Rick'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('in')->with('firstName', ['John', 'Paul', 'Rick'])->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_IN, 'value' => 'John, Paul,Rick'], []);
     }
 
-    function it_filters_data_containing_none_of_strings(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingValueBeingMemberOfField(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->notIn('firstName', ['John', 'Paul', 'Rick'])->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var MemberOfAwareExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(MemberOfAwareExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_IN, 'value' => 'John, Paul,Rick'], []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('memberOf')->with('Rick', 'firstName')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_MEMBER_OF, 'value' => 'Rick'], []);
     }
 
-    function it_filters_in_multiple_fields(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDataContainingNoneOfStrings(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', '%John%')->willReturn('EXPR1');
-        $expressionBuilder->like('lastName', '%John%')->willReturn('EXPR2');
-        $expressionBuilder->orX('EXPR1', 'EXPR2')->willReturn('EXPR');
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('notIn')->with('firstName', ['John', 'Paul', 'Rick'])->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
 
-        $this->apply($dataSource, 'name', 'John', ['fields' => ['firstName', 'lastName']]);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_IN, 'value' => 'John, Paul,Rick'], []);
     }
 
-    function it_filters_translation_fields(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersInMultipleFields(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('translation.name', '%John%')->willReturn('EXPR');
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->exactly(2))->method('like')->willReturnMap([['firstName', '%John%', 'EXPR1'], ['lastName', '%John%', 'EXPR2']]);
+        $expressionBuilderMock->expects($this->once())->method('orX')->with('EXPR1', 'EXPR2')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
 
-        $this->apply($dataSource, 'name', 'John', ['fields' => ['translation.name']]);
+        $this->stringFilter->apply($dataSourceMock, 'name', 'John', ['fields' => ['firstName', 'lastName']]);
     }
 
-    function it_throws_an_exception_if_type_is_unknown(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersTranslationFields(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->during('apply', [
-            $dataSource,
-            'firstName',
-            ['type' => 'UNKNOWN_TYPE', 'value' => 'John'],
-            [],
-        ]);
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('translation.name', '%John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'name', 'John', ['fields' => ['translation.name']]);
     }
 
-    function it_ignores_filter_if_its_value_is_empty_and_the_filter_depends_on_it(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testThrowsAnExceptionIfTypeIsUnknown(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_ENDS_WITH, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_EQUAL, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_EQUAL, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_IN, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_CONTAINS, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_NOT_IN, 'value' => ''], []);
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_STARTS_WITH, 'value' => ''], []);
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => 'UNKNOWN_TYPE', 'value' => 'John'], []);
     }
 
-    function it_does_not_ignore_filter_if_its_value_is_zero(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testIgnoresFilterIfItsValueIsEmptyAndTheFilterDependsOnIt(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', '%0%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => '0'], []);
+        $dataSourceMock->expects($this->exactly(8))->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_ENDS_WITH, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_EQUAL, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_EQUAL, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_IN, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_CONTAINS, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_NOT_IN, 'value' => ''], []);
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_STARTS_WITH, 'value' => ''], []);
     }
 
-    function it_uses_scalar_data_as_value(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testDoesNotIgnoreFilterIfItsValueIsZero(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->like('firstName', '%John%')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', 'John', []);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', '%0%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', ['type' => StringFilter::TYPE_CONTAINS, 'value' => '0'], []);
     }
 
-    function it_uses_type_from_options_if_set(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testUsesScalarDataAsValue(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->equals('firstName', 'John')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'firstName', 'John', ['type' => StringFilter::TYPE_EQUAL]);
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('like')->with('firstName', '%John%')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', 'John', []);
+    }
+
+    public function testUsesTypeFromOptionsIfSet(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSourceMock->expects($this->once())->method('getExpressionBuilder')->willReturn($expressionBuilderMock);
+        $expressionBuilderMock->expects($this->once())->method('equals')->with('firstName', 'John')->willReturn('EXPR');
+        $dataSourceMock->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->stringFilter->apply($dataSourceMock, 'firstName', 'John', ['type' => StringFilter::TYPE_EQUAL]);
     }
 }

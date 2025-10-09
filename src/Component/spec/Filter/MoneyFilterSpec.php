@@ -11,204 +11,221 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Filter\MoneyFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class MoneyFilterSpec extends ObjectBehavior
+final class MoneyFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    private MoneyFilter $filter;
+
+    protected function setUp(): void
     {
-        $this->shouldHaveType(MoneyFilter::class);
+        $this->filter = new MoneyFilter();
     }
 
-    function it_implements_filter_interface(): void
+    public function testIsInitializable(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->assertInstanceOf(MoneyFilter::class, $this->filter);
     }
 
-    function it_does_nothing_when_there_is_no_data(DataSourceInterface $dataSource): void
+    public function testImplementsFilterInterface(): void
     {
-        $this->apply(
-            $dataSource,
-            'total',
-            [],
-            ['currency_field' => 'currencyCode'],
-        );
+        $this->assertInstanceOf(FilterInterface::class, $this->filter);
     }
 
-    function it_filters_by_total_alone_in_all_currencies_when_none_has_been_given(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testDoesNothingWhenThereIsNoData(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $dataSource->expects($this->never())->method('restrict');
+
+        $this->filter->apply($dataSource, 'total', [], ['currency_field' => 'currencyCode']);
+    }
+
+    public function testFiltersByTotalAloneInAllCurrenciesWhenNoneHasBeenGiven(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
         $expressionBuilder
-            ->greaterThan('total', 1200)
-            ->willReturn('EXPR1', 'EXPR2')
-        ;
+            ->expects($this->exactly(2))
+            ->method('greaterThan')
+            ->with('total', 1200)
+            ->willReturnOnConsecutiveCalls('EXPR1', 'EXPR2');
 
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $restricted = [];
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$restricted): void {
+                $restricted[] = $expr;
+            });
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '12.00',
-                'lessThan' => '',
-                'currency' => '',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '12.00',
+            'lessThan' => '',
+            'currency' => '',
+        ], ['currency_field' => 'currencyCode']);
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '12.00',
-                'lessThan' => '',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '12.00',
+            'lessThan' => '',
+        ], ['currency_field' => 'currencyCode']);
+
+        self::assertSame(['EXPR1', 'EXPR2'], $restricted);
     }
 
-    function it_filters_by_given_currency(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersByGivenCurrency(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->equals('currencyCode', 'GBP')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $expressionBuilder
+            ->expects($this->exactly(2))
+            ->method('equals')
+            ->with('currencyCode', 'GBP')
+            ->willReturn('EXPR');
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'currency' => 'GBP',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $restricted = [];
+        $dataSource
+            ->expects($this->exactly(2))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$restricted): void {
+                $restricted[] = $expr;
+            });
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '',
-                'lessThan' => '',
-                'currency' => 'GBP',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $this->filter->apply($dataSource, 'total', [
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode']);
+
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '',
+            'lessThan' => '',
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode']);
+
+        self::assertSame(['EXPR', 'EXPR'], $restricted);
     }
 
-    function it_filters_money_greater_than(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersMoneyGreaterThan(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->equals('currencyCode', 'GBP')->willReturn('EXPR1');
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
+        $expr1 = new \stdClass();
+        $expr2 = new \stdClass();
 
-        $expressionBuilder->greaterThan('total', 1200)->willReturn('EXPR2');
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $expressionBuilder->method('equals')->with('currencyCode', 'GBP')->willReturn($expr1);
+        $expressionBuilder->method('greaterThan')->with('total', 1200)->willReturn($expr2);
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '12.00',
-                'lessThan' => '',
-                'currency' => 'GBP',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $calls = [];
+        $dataSource->expects($this->exactly(2))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$calls): void {
+                $calls[] = $expr;
+            });
+
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '12.00',
+            'lessThan' => '',
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode']);
+
+        self::assertSame([$expr1, $expr2], $calls);
     }
 
-    function it_filters_money_less_than(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersMoneyLessThan(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->equals('currencyCode', 'GBP')->willReturn('EXPR1');
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
+        $currencyExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $expressionBuilder->lessThan('total', 12000)->willReturn('EXPR2');
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $expressionBuilder->method('equals')->with('currencyCode', 'GBP')->willReturn($currencyExpr);
+        $expressionBuilder->method('lessThan')->with('total', 12000)->willReturn($lessExpr);
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '',
-                'lessThan' => '120.00',
-                'currency' => 'GBP',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $calls = [];
+        $dataSource->expects($this->exactly(2))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$calls): void {
+                $calls[] = $expr;
+            });
+
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '',
+            'lessThan' => '120.00',
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode']);
+
+        self::assertSame([$currencyExpr, $lessExpr], $calls);
     }
 
-    function it_filters_money_in_specified_range(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersMoneyInSpecifiedRange(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->equals('currencyCode', 'GBP')->willReturn('EXPR1');
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
+        $currencyExpr = new \stdClass();
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $expressionBuilder->greaterThan('total', 1200)->willReturn('EXPR2');
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $expressionBuilder->method('equals')->with('currencyCode', 'GBP')->willReturn($currencyExpr);
+        $expressionBuilder->method('greaterThan')->with('total', 1200)->willReturn($greaterExpr);
+        $expressionBuilder->method('lessThan')->with('total', 12000)->willReturn($lessExpr);
 
-        $expressionBuilder->lessThan('total', 12000)->willReturn('EXPR3');
-        $dataSource->restrict('EXPR3')->shouldBeCalled();
+        $calls = [];
+        $dataSource->expects($this->exactly(3))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$calls): void {
+                $calls[] = $expr;
+            });
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '12.00',
-                'lessThan' => '120.00',
-                'currency' => 'GBP',
-            ],
-            ['currency_field' => 'currencyCode'],
-        );
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '12.00',
+            'lessThan' => '120.00',
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode']);
+
+        self::assertSame([$currencyExpr, $greaterExpr, $lessExpr], $calls);
     }
 
-    function its_amount_scale_can_be_configured(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testAmountScaleCanBeConfigured(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->equals('currencyCode', 'GBP')->willReturn('EXPR1');
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
+        $currencyExpr = new \stdClass();
+        $greaterExpr = new \stdClass();
+        $lessExpr = new \stdClass();
 
-        $expressionBuilder->greaterThan('total', 1200000)->willReturn('EXPR2');
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $expressionBuilder->method('equals')->with('currencyCode', 'GBP')->willReturn($currencyExpr);
+        $expressionBuilder->method('greaterThan')->with('total', 1_200_000)->willReturn($greaterExpr);
+        $expressionBuilder->method('lessThan')->with('total', 12_000_000)->willReturn($lessExpr);
 
-        $expressionBuilder->lessThan('total', 12000000)->willReturn('EXPR3');
-        $dataSource->restrict('EXPR3')->shouldBeCalled();
+        $calls = [];
+        $dataSource->expects($this->exactly(3))
+            ->method('restrict')
+            ->willReturnCallback(static function ($expr) use (&$calls): void {
+                $calls[] = $expr;
+            });
 
-        $this->apply(
-            $dataSource,
-            'total',
-            [
-                'greaterThan' => '12',
-                'lessThan' => '120',
-                'currency' => 'GBP',
-            ],
-            [
-                'currency_field' => 'currencyCode',
-                'scale' => 5,
-            ],
-        );
+        $this->filter->apply($dataSource, 'total', [
+            'greaterThan' => '12',
+            'lessThan' => '120',
+            'currency' => 'GBP',
+        ], ['currency_field' => 'currencyCode', 'scale' => 5]);
+
+        self::assertSame([$currencyExpr, $greaterExpr, $lessExpr], $calls);
     }
 }

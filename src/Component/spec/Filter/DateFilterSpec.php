@@ -11,30 +11,42 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
+use Sylius\Component\Grid\Filter\DateFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class DateFilterSpec extends ObjectBehavior
+final class DateFilterTest extends TestCase
 {
-    function it_implements_a_filter_interface(): void
+    private DateFilter $filter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->filter = new DateFilter();
     }
 
-    function it_filters_date_from(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testImplementsFilterInterface(): void
+    {
+        $this->assertInstanceOf(FilterInterface::class, $this->filter);
+    }
 
-        $expressionBuilder->greaterThanOrEqual('checkoutCompletedAt', '2016-12-05 08:00')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+    public function testFiltersDateFrom(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply(
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('greaterThanOrEqual')
+            ->with('checkoutCompletedAt', '2016-12-05 08:00')
+            ->willReturn('EXPR');
+
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -47,16 +59,20 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_from_not_inclusive(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateFromNotInclusive(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->greaterThan('checkoutCompletedAt', '2016-12-05 08:00')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('greaterThan')
+            ->with('checkoutCompletedAt', '2016-12-05 08:00')
+            ->willReturn('EXPR');
 
-        $this->apply(
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -73,16 +89,20 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_from_with_default_time(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateFromWithDefaultTime(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->greaterThanOrEqual('checkoutCompletedAt', '2016-12-05 00:00')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('greaterThanOrEqual')
+            ->with('checkoutCompletedAt', '2016-12-05 00:00')
+            ->willReturn('EXPR');
 
-        $this->apply(
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -99,16 +119,20 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_to(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateTo(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->lessThan('checkoutCompletedAt', '2016-12-06 08:00')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('lessThan')
+            ->with('checkoutCompletedAt', '2016-12-06 08:00')
+            ->willReturn('EXPR');
 
-        $this->apply(
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -121,16 +145,20 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_to_inclusive(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateToInclusive(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->lessThanOrEqual('checkoutCompletedAt', '2016-12-06 08:00')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('lessThanOrEqual')
+            ->with('checkoutCompletedAt', '2016-12-06 08:00')
+            ->willReturn('EXPR');
 
-        $this->apply(
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -147,16 +175,20 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_to_with_default_time(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateToWithDefaultTime(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->lessThan('checkoutCompletedAt', '2016-12-06 23:59')->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
+        $expressionBuilder->expects($this->once())
+            ->method('lessThan')
+            ->with('checkoutCompletedAt', '2016-12-06 23:59')
+            ->willReturn('EXPR');
 
-        $this->apply(
+        $dataSource->expects($this->once())->method('restrict')->with('EXPR');
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [
@@ -169,19 +201,24 @@ final class DateFilterSpec extends ObjectBehavior
         );
     }
 
-    function it_filters_date_from_to(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersDateFromTo(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
 
-        $expressionBuilder->greaterThanOrEqual('checkoutCompletedAt', '2016-12-05 08:00')->willReturn('EXPR1');
-        $dataSource->restrict('EXPR1')->shouldBeCalled();
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $expressionBuilder->lessThan('checkoutCompletedAt', '2016-12-06 08:00')->willReturn('EXPR2');
-        $dataSource->restrict('EXPR2')->shouldBeCalled();
+        $expressionBuilder->expects($this->exactly(2))
+            ->method($this->logicalOr('greaterThanOrEqual', 'lessThan'))
+            ->willReturnCallback(function (string $field, string $value) {
+                return $value === '2016-12-05 08:00' ? 'EXPR1' : 'EXPR2';
+            });
 
-        $this->apply(
+        $dataSource->expects($this->exactly(2))
+            ->method('restrict')
+            ->withConsecutive(['EXPR1'], ['EXPR2']);
+
+        $this->filter->apply(
             $dataSource,
             'checkoutCompletedAt',
             [

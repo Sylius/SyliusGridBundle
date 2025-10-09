@@ -11,42 +11,76 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filter;
+namespace Sylius\Component\Grid\Tests\Unit\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Filter\BooleanFilter;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 
-final class BooleanFilterSpec extends ObjectBehavior
+final class BooleanFilterTest extends TestCase
 {
-    function it_implements_filter_interface(): void
+    private BooleanFilter $booleanFilter;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->booleanFilter = new BooleanFilter();
     }
 
-    function it_filters_true_boolean_values(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
-
-        $expressionBuilder->equals('enabled', true)->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
-
-        $this->apply($dataSource, 'enabled', BooleanFilter::TRUE, []);
+    public function testImplementsFilterInterface(): void
+    {
+        $this->assertInstanceOf(FilterInterface::class, $this->booleanFilter);
     }
 
-    function it_filters_false_boolean_values(
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+    public function testFiltersTrueBooleanValues(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
 
-        $expressionBuilder->equals('enabled', false)->willReturn('EXPR');
-        $dataSource->restrict('EXPR')->shouldBeCalled();
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
 
-        $this->apply($dataSource, 'enabled', BooleanFilter::FALSE, []);
+        $dataSourceMock->expects($this->once())
+            ->method('getExpressionBuilder')
+            ->willReturn($expressionBuilderMock)
+        ;
+        $expressionBuilderMock->expects($this->once())
+            ->method('equals')
+            ->with('enabled', true)
+            ->willReturn('EXPR')
+        ;
+        $dataSourceMock->expects($this->once())
+            ->method('restrict')
+            ->with('EXPR')
+        ;
+
+        $this->booleanFilter->apply($dataSourceMock, 'enabled', BooleanFilter::TRUE, []);
+    }
+
+    public function testFiltersFalseBooleanValues(): void
+    {
+        /** @var DataSourceInterface|MockObject $dataSourceMock */
+        $dataSourceMock = $this->createMock(DataSourceInterface::class);
+
+        /** @var ExpressionBuilderInterface|MockObject $expressionBuilderMock */
+        $expressionBuilderMock = $this->createMock(ExpressionBuilderInterface::class);
+
+        $dataSourceMock->expects($this->once())
+            ->method('getExpressionBuilder')
+            ->willReturn($expressionBuilderMock)
+        ;
+        $expressionBuilderMock->expects($this->once())
+            ->method('equals')
+            ->with('enabled', false)
+            ->willReturn('EXPR')
+        ;
+        $dataSourceMock->expects($this->once())
+            ->method('restrict')
+            ->with('EXPR')
+        ;
+
+        $this->booleanFilter->apply($dataSourceMock, 'enabled', BooleanFilter::FALSE, []);
     }
 }
