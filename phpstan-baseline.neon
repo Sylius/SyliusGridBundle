@@ -1405,13 +1405,43 @@ parameters:
 			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:getCallable\(\) has parameter \$options with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:getCallable\(\) should return callable\(\)\: mixed but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
 			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
-			message: '#^Parameter \#1 \$callback of function call_user_func expects callable\(\)\: mixed, mixed given\.$#'
+			message: '#^Parameter \#1 \$id of method Psr\\Container\\ContainerInterface\:\:get\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Parameter \#1 \$id of method Psr\\Container\\ContainerInterface\:\:has\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/FieldTypes/CallableFieldType.php
@@ -1589,24 +1619,6 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Component/Provider/ChainProvider.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\Bar\:\:getId\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/Component/Tests/Dummy/Bar.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\DummyGridProvider\:\:getData\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Tests/Dummy/DummyGridProvider.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Tests\\Dummy\\Foo\:\:getId\(\) never returns null so it can be removed from the return type\.$#'
-			identifier: return.unusedType
-			count: 1
-			path: src/Component/Tests/Dummy/Foo.php
 
 		-
 			message: '#^Method Sylius\\Component\\Grid\\Validation\\FieldValidator\:\:validateFieldName\(\) has parameter \$enabledFields with no value type specified in iterable type array\.$#'

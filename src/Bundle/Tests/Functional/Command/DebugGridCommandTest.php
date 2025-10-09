@@ -65,7 +65,8 @@ final class DebugGridCommandTest extends KernelTestCase
               limits                [                                                            
                                       10,                                                        
                                       5,                                                         
-                                      15                                                         
+                                      15,                                                        
+                                      100                                                        
                                     ]                                                            
               fields                [                                                            
                                       "id" => Sylius\Component\Grid\Definition\Field {           
@@ -96,12 +97,15 @@ final class DebugGridCommandTest extends KernelTestCase
                                       },                                                         
                                       "nationality" => Sylius\Component\Grid\Definition\Field {  
                                         -name: "nationality"                                     
-                                        -type: "string"                                          
+                                        -type: "callable"                                        
                                         -path: "nationality"                                     
                                         -label: "Nationality"                                    
                                         -enabled: true                                           
                                         -sortable: "nationality.name"                            
-                                        -options: []                                             
+                                        -options: [                                              
+                                          "service" => "App\Helper\GridHelper",                  
+                                          "htmlspecialchars" => true                             
+                                        ]                                                        
                                         -position: 100                                           
                                       }                                                          
                                     ]                                                            
