@@ -214,9 +214,20 @@ final class DateFilterTest extends TestCase
                 return $value === '2016-12-05 08:00' ? 'EXPR1' : 'EXPR2';
             });
 
-        $dataSource->expects($this->exactly(2))
+        $invokedCount = $this->exactly(2);
+        $dataSource->expects($invokedCount)
             ->method('restrict')
-            ->withConsecutive(['EXPR1'], ['EXPR2']);
+            ->willReturnCallback(function (string $expression) use ($invokedCount) {
+                $numberOfInvocationMethod = method_exists($invokedCount, 'numberOfInvocations') ? 'numberOfInvocations' : 'getInvocationCount';
+
+                if ($invokedCount->$numberOfInvocationMethod() === 1) {
+                    $this->assertEquals('EXPR1', $expression);
+                }
+
+                if ($invokedCount->$numberOfInvocationMethod() === 2) {
+                    $this->assertEquals('EXPR2', $expression);
+                }
+            });
 
         $this->filter->apply(
             $dataSource,
