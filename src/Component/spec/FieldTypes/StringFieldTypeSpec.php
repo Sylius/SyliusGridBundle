@@ -11,39 +11,57 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\FieldTypes;
+namespace Sylius\Component\Grid\Tests\Unit\FieldTypes;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
+use Sylius\Component\Grid\FieldTypes\StringFieldType;
 
-final class StringFieldTypeSpec extends ObjectBehavior
+final class StringFieldTypeTest extends TestCase
 {
-    function let(DataExtractorInterface $dataExtractor): void
+    private DataExtractorInterface|MockObject $dataExtractorMock;
+
+    private StringFieldType $stringFieldType;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($dataExtractor);
+        $this->dataExtractorMock = $this->createMock(DataExtractorInterface::class);
+        $this->stringFieldType = new StringFieldType($this->dataExtractorMock);
     }
 
-    function it_is_a_grid_field_type(): void
+    public function testIsAGridFieldType(): void
     {
-        $this->shouldImplement(FieldTypeInterface::class);
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->stringFieldType);
     }
 
-    function it_uses_data_extractor_to_obtain_data_and_renders_it(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testUsesDataExtractorToObtainDataAndRendersIt(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('Value');
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('Value');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn('Value');
+
+        $this->assertSame('Value', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_escapes_string_values(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testEscapesStringValues(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('<i class="book icon"></i>');
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('&lt;i class=&quot;book icon&quot;&gt;&lt;/i&gt;');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn('<i class="book icon"></i>');
+
+        $this->assertSame('&lt;i class=&quot;book icon&quot;&gt;&lt;/i&gt;', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_casts_objects_to_string(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testCastsObjectsToString(): void
     {
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
         $data = new class() {
             public function __toString(): string
             {
@@ -51,12 +69,16 @@ final class StringFieldTypeSpec extends ObjectBehavior
             }
         };
 
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn($data);
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('Value');
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn($data);
+
+        $this->assertSame('Value', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_escapes_objects_casted_to_string(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testEscapesObjectsCastedToString(): void
     {
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
         $data = new class() {
             public function __toString(): string
             {
@@ -64,25 +86,54 @@ final class StringFieldTypeSpec extends ObjectBehavior
             }
         };
 
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn($data);
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('&lt;i class=&quot;book icon&quot;&gt;&lt;/i&gt;');
+        $this->dataExtractorMock->expects($this->once())
+            ->method('get')
+            ->with($fieldMock, ['foo' => 'bar'])
+            ->willReturn($data)
+        ;
+
+        $this->assertSame('&lt;i class=&quot;book icon&quot;&gt;&lt;/i&gt;', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_casts_ints_to_string(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testCastsIntsToString(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn(420);
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('420');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())
+            ->method('get')
+            ->with($fieldMock, ['foo' => 'bar'])
+            ->willReturn(420)
+        ;
+
+        $this->assertSame('420', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_casts_floats_to_string(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testCastsFloatsToString(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn(420.1337);
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('420.1337');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())
+            ->method('get')
+            ->with($fieldMock, ['foo' => 'bar'])
+            ->willReturn(420.1337)
+        ;
+
+        $this->assertSame('420.1337', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 
-    function it_casts_null_to_string(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testCastsNullToString(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn(null);
-        $this->render($field, ['foo' => 'bar'], [])->shouldReturn('');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())
+            ->method('get')
+            ->with($fieldMock, ['foo' => 'bar'])
+            ->willReturn(null)
+        ;
+
+        $this->assertSame('', $this->stringFieldType->render($fieldMock, ['foo' => 'bar'], []));
     }
 }

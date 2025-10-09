@@ -11,95 +11,117 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\FieldTypes;
+namespace Sylius\Component\Grid\Tests\Unit\FieldTypes;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
+use Sylius\Component\Grid\FieldTypes\DatetimeFieldType;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-final class DatetimeFieldTypeSpec extends ObjectBehavior
+final class DatetimeFieldTypeTest extends TestCase
 {
-    function let(DataExtractorInterface $dataExtractor): void
+    private DataExtractorInterface|MockObject $dataExtractorMock;
+
+    private DatetimeFieldType $datetimeFieldType;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($dataExtractor);
+        $this->dataExtractorMock = $this->createMock(DataExtractorInterface::class);
+        $this->datetimeFieldType = new DatetimeFieldType($this->dataExtractorMock);
     }
 
-    function it_is_a_grid_field_type(): void
+    public function testIsAGridFieldType(): void
     {
-        $this->shouldImplement(FieldTypeInterface::class);
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->datetimeFieldType);
     }
 
-    function it_uses_data_extractor_to_obtain_data_parse_it_with_given_configuration_and_renders_it(
-        DataExtractorInterface $dataExtractor,
-        \DateTime $dateTime,
-        Field $field,
-    ): void {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn($dateTime);
+    public function testUsesDataExtractorToObtainDataParseItWithGivenConfigurationAndRendersIt(): void
+    {
+        $dateTime = new \DateTimeImmutable('2021-10-10T00:00:00+00:00', new \DateTimeZone('utc'));
 
-        $dateTime->setTimezone(Argument::any())->shouldNotBeCalled();
-        $dateTime->format('Y-m-d')->willReturn('2001-10-10');
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
 
-        $this->render($field, ['foo' => 'bar'], [
-            'format' => 'Y-m-d',
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn($dateTime);
+
+        $this->assertSame('2021-10-10T00:00:00+00:00', $this->datetimeFieldType->render($fieldMock, ['foo' => 'bar'], [
+            'format' => 'c',
             'timezone' => null,
-        ])->shouldReturn('2001-10-10');
+        ]));
     }
 
-    function it_sets_timezone_if_specified(
-        DataExtractorInterface $dataExtractor,
-        \DateTime $dateTime,
-        Field $field,
-    ): void {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn($dateTime);
-
-        $dateTime->setTimezone(new \DateTimeZone('Europe/Warsaw'))->willReturn($dateTime);
-        $dateTime->format('Y-m-d H:i:s')->willReturn('2021-10-10 00:00:00');
-
-        $this->render($field, ['foo' => 'bar'], [
-            'format' => 'Y-m-d H:i:s',
-            'timezone' => 'Europe/Warsaw',
-        ])->shouldReturn('2021-10-10 00:00:00');
-    }
-
-    function it_returns_null_if_property_accessor_returns_null(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testSetsTimezoneIfSpecified(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn(null);
+        $dateTime = new \DateTimeImmutable('2021-10-10T00:00:00+00:00', new \DateTimeZone('utc'));
 
-        $this->render($field, ['foo' => 'bar'], [
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn($dateTime);
+
+        $this->assertSame('2021-10-10T02:00:00+02:00', $this->datetimeFieldType->render($fieldMock, ['foo' => 'bar'], [
+            'format' => 'c',
+            'timezone' => 'Europe/Warsaw',
+        ]));
+    }
+
+    public function testReturnsNullIfPropertyAccessorReturnsNull(): void
+    {
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())->method('get')->with($fieldMock, ['foo' => 'bar'])->willReturn(null);
+
+        $this->assertSame('', $this->datetimeFieldType->render($fieldMock, ['foo' => 'bar'], [
             'format' => '',
             'timezone' => null,
-        ])->shouldReturn('');
+        ]));
     }
 
-    function it_uses_timezone_parameter_as_default_timezone_option(
-        DataExtractorInterface $dataExtractor,
-        OptionsResolver $resolver,
-    ): void {
-        $this->beConstructedWith($dataExtractor, 'Europe/Warsaw');
-
-        $resolver->setDefault('format', 'Y-m-d H:i:s')->willReturn($resolver)->shouldBeCalled();
-        $resolver->setAllowedTypes('format', 'string')->willReturn($resolver)->shouldBeCalled();
-        $resolver->setDefault('timezone', 'Europe/Warsaw')->willReturn($resolver)->shouldBeCalled();
-        $resolver->setAllowedTypes('timezone', ['null', 'string'])->willReturn($resolver)->shouldBeCalled();
-        $resolver->setDefined('vars')->willReturn($resolver)->shouldBeCalled();
-        $resolver->setAllowedTypes('vars', 'array')->willReturn($resolver)->shouldBeCalled();
-
-        $this->configureOptions($resolver);
-    }
-
-    function it_throws_exception_if_returned_value_is_not_datetime(DataExtractorInterface $dataExtractor, Field $field): void
+    public function testUsesTimezoneParameterAsDefaultTimezoneOption(): void
     {
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('badObject');
+        /** @var OptionsResolver|MockObject $resolverMock */
+        $resolverMock = $this->createMock(OptionsResolver::class);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('render', [$field, ['foo' => 'bar'], [
-                'format' => '',
-                'timezone' => null,
-            ]])
+        $this->datetimeFieldType = new DatetimeFieldType($this->dataExtractorMock, 'Europe/Warsaw');
+
+        $resolverMock->expects($this->exactly(2))
+            ->method('setDefault')
+            ->willReturnMap([
+                ['format', 'Y-m-d H:i:s', $resolverMock],
+                ['timezone', 'Europe/Warsaw', $resolverMock],
+            ])
         ;
+        $resolverMock->expects($this->exactly(3))
+            ->method('setAllowedTypes')
+            ->willReturnMap([
+                ['format', 'string', $resolverMock],
+                ['timezone', ['null', 'string'], $resolverMock],
+                ['vars', 'array', $resolverMock],
+            ])
+        ;
+
+        $this->datetimeFieldType->configureOptions($resolverMock);
+    }
+
+    public function testThrowsExceptionIfReturnedValueIsNotDatetime(): void
+    {
+        /** @var Field|MockObject $fieldMock */
+        $fieldMock = $this->createMock(Field::class);
+
+        $this->dataExtractorMock->expects($this->once())
+            ->method('get')
+            ->with($fieldMock, ['foo' => 'bar'])
+            ->willReturn('badObject')
+        ;
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->datetimeFieldType->render($fieldMock, ['foo' => 'bar'], [
+            'format' => '',
+            'timezone' => null,
+        ]);
     }
 }
