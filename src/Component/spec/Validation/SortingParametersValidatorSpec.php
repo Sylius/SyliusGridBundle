@@ -11,46 +11,53 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Validation;
+namespace Sylius\Component\Grid\Tests\Unit\Validation;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Field;
-use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Validation\SortingParametersValidator;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-final class SortingParametersValidatorSpec extends ObjectBehavior
+final class SortingParametersValidatorTest extends TestCase
 {
-    function it_implements_grid_data_source_sorting_validator_interface(): void
+    private SortingParametersValidatorInterface $sortingValidator;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(SortingParametersValidatorInterface::class);
+        $this->sortingValidator = new SortingParametersValidator();
     }
 
-    function it_throws_exception_if_wrong_sorting_parameter_provided(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-    ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
-        $grid->getSorting()->willReturn(['name' => 'non_sortable_parameter']);
-
-        $this
-            ->shouldThrow(new BadRequestHttpException('non_sortable_parameter is not valid, use asc or desc instead.'))
-            ->during('validateSortingParameters', [['name' => 'non_sortable_parameter'], ['name' => $field, 'code' => $anotherField]])
-        ;
+    public function testItImplementsSortingParametersValidatorInterface(): void
+    {
+        $this->assertInstanceOf(SortingParametersValidatorInterface::class, $this->sortingValidator);
     }
 
-    function it_passes_if_valid_sorting_parameter_provided(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-    ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
-        $grid->getSorting()->willReturn(['name' => 'asc']);
+    public function testThrowsExceptionIfWrongSortingParameterProvided(): void
+    {
+        $this->expectException(BadRequestHttpException::class);
+        $this->expectExceptionMessage('non_sortable_parameter is not valid, use asc or desc instead.');
 
-        $this
-            ->shouldNotThrow(new BadRequestHttpException())
-            ->during('validateSortingParameters', [['name' => 'asc'], ['name' => $field, 'code' => $anotherField]])
-        ;
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
+
+        $this->sortingValidator->validateSortingParameters(
+            ['name' => 'non_sortable_parameter'],
+            ['name' => $field, 'code' => $anotherField],
+        );
+    }
+
+    public function testPassesIfValidSortingParameterProvided(): void
+    {
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
+
+        // Should not throw any exception
+        $this->sortingValidator->validateSortingParameters(
+            ['name' => 'asc'],
+            ['name' => $field, 'code' => $anotherField],
+        );
+
+        $this->assertTrue(true); // mark test as passed
     }
 }

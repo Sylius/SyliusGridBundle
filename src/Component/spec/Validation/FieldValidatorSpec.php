@@ -11,46 +11,47 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Validation;
+namespace Sylius\Component\Grid\Tests\Unit\Validation;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Field;
-use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Validation\FieldValidator;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
-final class FieldValidatorSpec extends ObjectBehavior
+final class FieldValidatorTest extends TestCase
 {
-    function it_implements_field_validator_interface(): void
+    private FieldValidatorInterface $fieldValidator;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FieldValidatorInterface::class);
+        $this->fieldValidator = new FieldValidator();
     }
 
-    function it_throws_exception_if_wrong_field_name_provided(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-    ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
-        $grid->getSorting()->willReturn(['sorting' => ['non_sortable_field' => 'desc']]);
-
-        $this
-            ->shouldThrow(new BadRequestHttpException('non_sortable_field is not valid field, did you mean one of these: name, code?'))
-            ->during('validateFieldName', ['non_sortable_field', ['name' => $field, 'code' => $anotherField]])
-        ;
+    public function testImplementsFieldValidatorInterface(): void
+    {
+        $this->assertInstanceOf(FieldValidatorInterface::class, $this->fieldValidator);
     }
 
-    function it_passes_if_valid_sorting_parameter_provided(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-    ): void {
-        $grid->getEnabledFields()->willReturn(['name' => $field, 'code' => $anotherField]);
-        $grid->getSorting()->willReturn(['sorting' => ['sortable_field' => 'desc']]);
+    public function testThrowsExceptionIfWrongFieldNameProvided(): void
+    {
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
 
-        $this
-            ->shouldNotThrow(new BadRequestHttpException())
-            ->during('validateFieldName', ['sortable_field', ['sortable_field' => $field, 'code' => $anotherField]])
-        ;
+        $this->expectException(BadRequestHttpException::class);
+        $this->expectExceptionMessage('non_sortable_field is not valid field, did you mean one of these: name, code?');
+
+        $this->fieldValidator->validateFieldName('non_sortable_field', ['name' => $field, 'code' => $anotherField]);
+    }
+
+    public function testPassesIfValidSortingParameterProvided(): void
+    {
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
+
+        // Should not throw
+        $this->fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField]);
+
+        $this->assertTrue(true); // Just to mark test as passed
     }
 }
