@@ -11,85 +11,112 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Sorting;
+namespace Sylius\Component\Grid\Tests\Unit\Sorting;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
+use Sylius\Component\Grid\Sorting\Sorter;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 
-final class SorterSpec extends ObjectBehavior
+final class SorterTest extends TestCase
 {
-    function let(SortingParametersValidatorInterface $sortingValidator, FieldValidatorInterface $fieldValidator): void
+    private Sorter $sorter;
+
+    private SortingParametersValidatorInterface $sortingValidator;
+
+    private FieldValidatorInterface $fieldValidator;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($sortingValidator, $fieldValidator);
+        $this->sortingValidator = $this->createMock(SortingParametersValidatorInterface::class);
+        $this->fieldValidator = $this->createMock(FieldValidatorInterface::class);
+        $this->sorter = new Sorter($this->sortingValidator, $this->fieldValidator);
     }
 
-    function it_implements_grid_data_source_sorter_interface(): void
+    public function testImplementsSorterInterface(): void
     {
-        $this->shouldImplement(SorterInterface::class);
+        $this->assertInstanceOf(SorterInterface::class, $this->sorter);
     }
 
-    function it_sorts_the_data_source_via_expression_builder_based_on_the_grid_definition(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-        SortingParametersValidatorInterface $sortingValidator,
-        FieldValidatorInterface $fieldValidator,
-    ): void {
+    public function testSortsDataSourceBasedOnGridDefinition(): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $parameters = new Parameters();
 
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $grid->getSorting()->willReturn(['name' => 'desc']);
-        $grid->getFields()->willReturn(['name' => $field, 'code' => $anotherField]);
+        $grid->method('getSorting')->willReturn(['name' => 'desc']);
+        $grid->method('getFields')->willReturn(['name' => $field, 'code' => $anotherField]);
 
-        $sortingValidator->validateSortingParameters(['name' => 'desc'], ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
-        $fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
+        $this->sortingValidator
+            ->expects($this->once())
+            ->method('validateSortingParameters')
+            ->with(['name' => 'desc'], ['name' => $field, 'code' => $anotherField]);
 
-        $grid->hasField('name')->willReturn(true);
-        $grid->getField('name')->willReturn($field);
-        $field->isSortable()->willReturn(true);
-        $field->getSortable()->willReturn('translation.name');
+        $this->fieldValidator
+            ->expects($this->once())
+            ->method('validateFieldName')
+            ->with('name', ['name' => $field, 'code' => $anotherField]);
 
-        $expressionBuilder->addOrderBy('translation.name', 'desc')->shouldBeCalled();
+        $grid->method('hasField')->with('name')->willReturn(true);
+        $grid->method('getField')->with('name')->willReturn($field);
 
-        $this->sort($dataSource, $grid, $parameters);
+        $field->method('isSortable')->willReturn(true);
+        $field->method('getSortable')->willReturn('translation.name');
+
+        $expressionBuilder
+            ->expects($this->once())
+            ->method('addOrderBy')
+            ->with('translation.name', 'desc');
+
+        $this->sorter->sort($dataSource, $grid, $parameters);
     }
 
-    function it_sorts_the_data_source_via_expression_builder_based_on_sorting_parameter(
-        Grid $grid,
-        Field $field,
-        Field $anotherField,
-        DataSourceInterface $dataSource,
-        ExpressionBuilderInterface $expressionBuilder,
-        SortingParametersValidatorInterface $sortingValidator,
-        FieldValidatorInterface $fieldValidator,
-    ): void {
+    public function testSortsDataSourceBasedOnSortingParameter(): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $field = $this->createMock(Field::class);
+        $anotherField = $this->createMock(Field::class);
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $parameters = new Parameters(['sorting' => ['name' => 'asc']]);
 
-        $dataSource->getExpressionBuilder()->willReturn($expressionBuilder);
+        $dataSource->method('getExpressionBuilder')->willReturn($expressionBuilder);
 
-        $grid->getSorting()->willReturn(['code' => 'asc']);
-        $grid->getFields()->willReturn(['name' => $field, 'code' => $anotherField]);
+        $grid->method('getSorting')->willReturn(['code' => 'asc']);
+        $grid->method('getFields')->willReturn(['name' => $field, 'code' => $anotherField]);
 
-        $sortingValidator->validateSortingParameters(['name' => 'asc'], ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
-        $fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField])->shouldBeCalled();
+        $this->sortingValidator
+            ->expects($this->once())
+            ->method('validateSortingParameters')
+            ->with(['name' => 'asc'], ['name' => $field, 'code' => $anotherField]);
 
-        $grid->hasField('name')->willReturn(true);
-        $grid->getField('name')->willReturn($field);
-        $field->isSortable()->willReturn(true);
-        $field->getSortable()->willReturn('translation.name');
+        $this->fieldValidator
+            ->expects($this->once())
+            ->method('validateFieldName')
+            ->with('name', ['name' => $field, 'code' => $anotherField]);
 
-        $expressionBuilder->addOrderBy('translation.name', 'asc')->shouldBeCalled();
+        $grid->method('hasField')->with('name')->willReturn(true);
+        $grid->method('getField')->with('name')->willReturn($field);
 
-        $this->sort($dataSource, $grid, $parameters);
+        $field->method('isSortable')->willReturn(true);
+        $field->method('getSortable')->willReturn('translation.name');
+
+        $expressionBuilder
+            ->expects($this->once())
+            ->method('addOrderBy')
+            ->with('translation.name', 'asc');
+
+        $this->sorter->sort($dataSource, $grid, $parameters);
     }
 }
