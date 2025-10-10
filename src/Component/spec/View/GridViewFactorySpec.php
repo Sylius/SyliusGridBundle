@@ -11,37 +11,49 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\View;
+namespace Sylius\Component\Grid\Tests\Unit\View;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\View\GridView;
+use Sylius\Component\Grid\View\GridViewFactory;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 
-final class GridViewFactorySpec extends ObjectBehavior
+final class GridViewFactoryTest extends TestCase
 {
-    function let(DataProviderInterface $dataProvider): void
+    private GridViewFactoryInterface $gridViewFactory;
+
+    private DataProviderInterface $dataProvider;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($dataProvider);
+        $this->dataProvider = $this->createMock(DataProviderInterface::class);
+        $this->gridViewFactory = new GridViewFactory($this->dataProvider);
     }
 
-    function it_implements_grid_view_factory_interface(): void
+    public function testImplementsGridViewFactoryInterface(): void
     {
-        $this->shouldImplement(GridViewFactoryInterface::class);
+        $this->assertInstanceOf(GridViewFactoryInterface::class, $this->gridViewFactory);
     }
 
-    function it_uses_data_provider_to_create_a_view_with_data_and_definition(
-        DataProviderInterface $dataProvider,
-        Grid $grid,
-    ): void {
+    public function testUsesDataProviderToCreateAViewWithDataAndDefinition(): void
+    {
+        $grid = $this->createMock(Grid::class);
         $parameters = new Parameters();
 
-        $expectedGridView = new GridView(['foo', 'bar'], $grid->getWrappedObject(), $parameters);
+        $data = ['foo', 'bar'];
+        $expectedGridView = new GridView($data, $grid, $parameters);
 
-        $dataProvider->getData($grid, $parameters)->willReturn(['foo', 'bar']);
+        $this->dataProvider
+            ->expects($this->once())
+            ->method('getData')
+            ->with($grid, $parameters)
+            ->willReturn($data);
 
-        $this->create($grid, $parameters)->shouldBeLike($expectedGridView);
+        $actualGridView = $this->gridViewFactory->create($grid, $parameters);
+
+        $this->assertEquals($expectedGridView, $actualGridView);
     }
 }

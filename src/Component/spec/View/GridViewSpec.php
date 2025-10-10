@@ -11,116 +11,136 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\View;
+namespace Sylius\Component\Grid\Tests\Unit\View;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
+use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewInterface;
 
-final class GridViewSpec extends ObjectBehavior
+final class GridViewTest extends TestCase
 {
-    function let(Grid $gridDefinition): void
+    private GridView $gridView;
+
+    private Grid $gridDefinition;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith(['foo', 'bar'], $gridDefinition, new Parameters());
+        $this->gridDefinition = $this->createMock(Grid::class);
+        $this->gridView = new GridView(['foo', 'bar'], $this->gridDefinition, new Parameters());
     }
 
-    function it_implements_a_grid_view_interface(): void
+    public function testItImplementsGridViewInterface(): void
     {
-        $this->shouldHaveType(GridViewInterface::class);
+        $this->assertInstanceOf(GridViewInterface::class, $this->gridView);
     }
 
-    function it_has_data(): void
+    public function testHasData(): void
     {
-        $this->getData()->shouldReturn(['foo', 'bar']);
+        $this->assertSame(['foo', 'bar'], $this->gridView->getData());
     }
 
-    function it_has_definition(Grid $gridDefinition): void
+    public function testHasDefinition(): void
     {
-        $this->getDefinition()->shouldReturn($gridDefinition);
+        $this->assertSame($this->gridDefinition, $this->gridView->getDefinition());
     }
 
-    function it_has_parameters(): void
+    public function testHasParameters(): void
     {
-        $this->getParameters()->shouldBeLike(new Parameters());
+        $this->assertEquals(new Parameters(), $this->gridView->getParameters());
     }
 
-    function it_uses_the_default_sorting_from_definition_if_not_provided_in_parameters(
-        Grid $gridDefinition,
-        Field $codeField,
-        Field $nameField,
-    ): void {
-        $gridDefinition->hasField('foo')->willReturn(true);
+    public function testUsesDefaultSortingFromDefinitionIfNotProvidedInParameters(): void
+    {
+        $codeField = $this->createMock(Field::class);
+        $nameField = $this->createMock(Field::class);
 
-        $gridDefinition->hasField('code')->willReturn(true);
-        $gridDefinition->getField('code')->willReturn($codeField);
-        $codeField->isSortable()->willReturn(true);
+        $this->gridDefinition->method('hasField')->willReturnMap([
+            ['foo', true],
+            ['code', true],
+            ['name', true],
+        ]);
 
-        $gridDefinition->hasField('name')->willReturn(true);
-        $gridDefinition->getField('name')->willReturn($nameField);
-        $nameField->isSortable()->willReturn(true);
-        $nameField->getSortable()->willReturn('name');
+        $this->gridDefinition->method('getField')->willReturnMap([
+            ['code', $codeField],
+            ['name', $nameField],
+        ]);
 
-        $gridDefinition->getSorting()->willReturn(['name' => 'asc']);
+        $codeField->method('isSortable')->willReturn(true);
+        $nameField->method('isSortable')->willReturn(true);
+        $nameField->method('getSortable')->willReturn('name');
 
-        $this->isSortedBy('code')->shouldReturn(false);
-        $this->isSortedBy('name')->shouldReturn(true);
+        $this->gridDefinition->method('getSorting')->willReturn(['name' => 'asc']);
+
+        $this->assertFalse($this->gridView->isSortedBy('code'));
+        $this->assertTrue($this->gridView->isSortedBy('name'));
     }
 
-    function it_knows_which_field_it_has_been_sorted_by(Grid $gridDefinition, Field $codeField, Field $nameField): void
+    public function testKnowsWhichFieldItHasBeenSortedBy(): void
     {
-        $this->beConstructedWith(['foo', 'bar'], $gridDefinition, new Parameters([
+        $nameField = $this->createMock(Field::class);
+        $codeField = $this->createMock(Field::class);
+
+        $gridView = new GridView(['foo', 'bar'], $this->gridDefinition, new Parameters([
             'sorting' => ['name' => ['direction' => 'asc']],
         ]));
 
-        $gridDefinition->hasField('foo')->willReturn(true);
+        $this->gridDefinition->method('hasField')->willReturnMap([
+            ['foo', true],
+            ['name', true],
+            ['code', true],
+        ]);
 
-        $gridDefinition->hasField('name')->willReturn(true);
-        $gridDefinition->getField('name')->willReturn($nameField);
-        $nameField->isSortable()->willReturn(true);
-        $nameField->getSortable()->willReturn('name');
+        $this->gridDefinition->method('getField')->willReturnMap([
+            ['name', $nameField],
+            ['code', $codeField],
+        ]);
 
-        $gridDefinition->hasField('code')->willReturn(true);
-        $gridDefinition->getField('code')->willReturn($codeField);
-        $codeField->isSortable()->willReturn(true);
-        $codeField->getSortable()->willReturn('code');
+        $nameField->method('isSortable')->willReturn(true);
+        $nameField->method('getSortable')->willReturn('name');
 
-        $gridDefinition->getSorting()->willReturn(['code' => ['order' => 'desc']]);
+        $codeField->method('isSortable')->willReturn(true);
+        $codeField->method('getSortable')->willReturn('code');
 
-        $this->isSortedBy('name')->shouldReturn(true);
-        $this->isSortedBy('code')->shouldReturn(false);
+        $this->gridDefinition->method('getSorting')->willReturn(['code' => ['order' => 'desc']]);
+
+        $this->assertTrue($gridView->isSortedBy('name'));
+        $this->assertFalse($gridView->isSortedBy('code'));
     }
 
-    function it_throws_exception_when_trying_to_sort_by_a_non_existent_field(Grid $gridDefinition): void
+    public function testThrowsExceptionWhenTryingToSortByNonExistentField(): void
     {
-        $gridDefinition->hasField('code')->willReturn(false);
+        $this->gridDefinition->method('hasField')->with('code')->willReturn(false);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Field "code" does not exist.'))
-            ->during('getSortingOrder', ['code'])
-        ;
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Field "code" does not exist.');
+
+        $this->gridView->getSortingOrder('code');
     }
 
-    function it_throws_exception_when_trying_to_sort_by_a_non_sortable_field(
-        Grid $gridDefinition,
-        Field $nameField,
-    ): void {
-        $gridDefinition->hasField('code')->willReturn(true);
+    public function testThrowsExceptionWhenTryingToSortByNonSortableField(): void
+    {
+        $nameField = $this->createMock(Field::class);
 
-        $gridDefinition->hasField('name')->willReturn(true);
-        $gridDefinition->getField('name')->willReturn($nameField);
-        $nameField->isSortable()->willReturn(false);
+        $this->gridDefinition->method('hasField')->willReturnMap([
+            ['code', true],
+            ['name', true],
+        ]);
 
-        $gridDefinition->getSorting()->willReturn(['code' => ['order' => 'asc']]);
+        $this->gridDefinition->method('getField')->willReturnMap([
+            ['name', $nameField],
+        ]);
 
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('isSortedBy', ['name'])
-        ;
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('getSortingOrder', ['name'])
-        ;
+        $nameField->method('isSortable')->willReturn(false);
+
+        $this->gridDefinition->method('getSorting')->willReturn(['code' => ['order' => 'asc']]);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->gridView->isSortedBy('name');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->gridView->getSortingOrder('name');
     }
 }
