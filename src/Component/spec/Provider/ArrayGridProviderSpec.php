@@ -11,104 +11,94 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Provider;
+namespace Sylius\Component\Grid\Tests\Unit\Provider;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 
-final class ArrayGridProviderSpec extends ObjectBehavior
+final class ArrayGridProviderTest extends TestCase
 {
-    function let(
-        ArrayToDefinitionConverterInterface $converter,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        Grid $firstGrid,
-        Grid $secondGrid,
-        Grid $thirdGrid,
-        Grid $fourthGrid,
-        Grid $fifthGrid,
-        Grid $sixthGrid,
-        Grid $seventhGrid,
-    ): void {
-        $converter->convert('sylius_admin_tax_category', ['configuration1'])->willReturn($firstGrid);
-        $converter->convert('sylius_admin_product', ['configuration2' => 'foo'])->willReturn($secondGrid);
-        $converter->convert('sylius_admin_order', ['configuration3'])->willReturn($thirdGrid);
-        $converter->convert('sylius_admin_product_from_taxon', ['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn($fourthGrid);
-        $converter->convert('sylius_admin_book', ['extends' => '404'])->willReturn($fifthGrid);
-        $converter->convert('sylius_admin_customer', ['fields' => []])->willReturn($sixthGrid);
-        $converter->convert('sylius_admin_book_per_author', [
-        'fields' => [
-            'title' => ['sortable' => true],
-        ],
-        'sorting' => [
-            'title' => 'asc',
-        ]])->willReturn($seventhGrid);
+    private ArrayGridProvider $provider;
 
-        $gridConfigurationRemovalsHandler->handle(['configuration1'])->willReturn(['configuration1']);
-        $gridConfigurationSortingHandler->handle(['configuration1'])->willReturn(['configuration1']);
-        $gridConfigurationRemovalsHandler->handle(['configuration2' => 'foo'])->willReturn(['configuration2' => 'foo']);
-        $gridConfigurationSortingHandler->handle(['configuration2' => 'foo'])->willReturn(['configuration2' => 'foo']);
-        $gridConfigurationRemovalsHandler->handle(['configuration3'])->willReturn(['configuration3']);
-        $gridConfigurationSortingHandler->handle(['configuration3'])->willReturn(['configuration3']);
-        $gridConfigurationRemovalsHandler->handle(['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn(['configuration4' => 'bar', 'configuration2' => 'foo']);
-        $gridConfigurationSortingHandler->handle(['configuration4' => 'bar', 'configuration2' => 'foo'])->willReturn(['configuration4' => 'bar', 'configuration2' => 'foo']);
-        $gridConfigurationRemovalsHandler->handle(['extends' => '404'])->willReturn(['extends' => '404']);
-        $gridConfigurationSortingHandler->handle(['extends' => '404'])->willReturn(['extends' => '404']);
-        $gridConfigurationRemovalsHandler->handle([
-            'fields' => ['customer' => []],
-            'removals' => [
-                'fields' => ['customer'],
-            ],
-        ])->willReturn([
-            'fields' => [],
-        ]);
-        $gridConfigurationSortingHandler->handle(['fields' => []])->willReturn(['fields' => []]);
-        $gridConfigurationRemovalsHandler->handle([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ])->willReturn([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ]);
-        $gridConfigurationSortingHandler->handle([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ])->willReturn([
-            'fields' => [
-                'title' => ['sortable' => true],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ]);
+    private ArrayToDefinitionConverterInterface $converter;
 
-        $this->beConstructedWith(
-            $converter,
+    private GridConfigurationRemovalsHandlerInterface $removalsHandler;
+
+    private GridConfigurationSortingHandlerInterface $sortingHandler;
+
+    private Grid $firstGrid;
+
+    private Grid $secondGrid;
+
+    private Grid $thirdGrid;
+
+    private Grid $fourthGrid;
+
+    private Grid $fifthGrid;
+
+    private Grid $sixthGrid;
+
+    private Grid $seventhGrid;
+
+    protected function setUp(): void
+    {
+        $this->converter = $this->createMock(ArrayToDefinitionConverterInterface::class);
+        $this->removalsHandler = $this->createMock(GridConfigurationRemovalsHandlerInterface::class);
+        $this->sortingHandler = $this->createMock(GridConfigurationSortingHandlerInterface::class);
+
+        $this->firstGrid = $this->createMock(Grid::class);
+        $this->secondGrid = $this->createMock(Grid::class);
+        $this->thirdGrid = $this->createMock(Grid::class);
+        $this->fourthGrid = $this->createMock(Grid::class);
+        $this->fifthGrid = $this->createMock(Grid::class);
+        $this->sixthGrid = $this->createMock(Grid::class);
+        $this->seventhGrid = $this->createMock(Grid::class);
+
+        $this->converter
+            ->method('convert')
+            ->willReturnCallback(function (string $name): Grid {
+                return match ($name) {
+                    'sylius_admin_tax_category' => $this->firstGrid,
+                    'sylius_admin_product' => $this->secondGrid,
+                    'sylius_admin_order' => $this->thirdGrid,
+                    'sylius_admin_product_from_taxon' => $this->fourthGrid,
+                    'sylius_admin_book' => $this->fifthGrid,
+                    'sylius_admin_customer' => $this->sixthGrid,
+                    'sylius_admin_book_per_author' => $this->seventhGrid,
+                    default => throw new UndefinedGridException($name),
+                };
+            });
+
+        $this->removalsHandler
+            ->method('handle')
+            ->willReturnCallback(static fn (array $config): array => $config);
+
+        $this->sortingHandler
+            ->method('handle')
+            ->willReturnCallback(static fn (array $config): array => $config);
+
+        $this->provider = new ArrayGridProvider(
+            $this->converter,
             [
                 'sylius_admin_tax_category' => ['configuration1'],
                 'sylius_admin_product' => ['configuration2' => 'foo'],
                 'sylius_admin_order' => ['configuration3'],
-                'sylius_admin_product_from_taxon' => ['extends' => 'sylius_admin_product', 'configuration4' => 'bar'],
+                'sylius_admin_product_from_taxon' => [
+                    'extends' => 'sylius_admin_product',
+                    'configuration4' => 'bar',
+                ],
                 'sylius_admin_book' => ['extends' => '404'],
-                'sylius_admin_customer' => ['fields' => ['customer' => []], 'removals' => ['fields' => ['customer']]],
+                'sylius_admin_customer' => [
+                    'fields' => ['customer' => []],
+                    'removals' => ['fields' => ['customer']],
+                ],
                 'sylius_admin_book_per_author' => [
                     'fields' => [
                         'title' => [],
@@ -119,52 +109,50 @@ final class ArrayGridProviderSpec extends ObjectBehavior
                 ],
             ],
             new GridConfigurationExtender(),
-            $gridConfigurationRemovalsHandler,
-            $gridConfigurationSortingHandler,
+            $this->removalsHandler,
+            $this->sortingHandler,
         );
     }
 
-    function it_implements_grid_provider_interface(): void
+    public function testImplementsGridProviderInterface(): void
     {
-        $this->shouldImplement(GridProviderInterface::class);
+        self::assertInstanceOf(GridProviderInterface::class, $this->provider);
     }
 
-    function it_returns_cloned_grid_definition_by_name(Grid $firstGrid, Grid $secondGrid, Grid $thirdGrid): void
+    public function testReturnsClonedGridDefinitionByName(): void
     {
-        $this->get('sylius_admin_tax_category')->shouldBeLike($firstGrid);
-        $this->get('sylius_admin_product')->shouldBeLike($secondGrid);
-        $this->get('sylius_admin_order')->shouldBeLike($thirdGrid);
+        self::assertSame($this->firstGrid, $this->provider->get('sylius_admin_tax_category'));
+        self::assertSame($this->secondGrid, $this->provider->get('sylius_admin_product'));
+        self::assertSame($this->thirdGrid, $this->provider->get('sylius_admin_order'));
     }
 
-    function it_supports_grid_inheritance(Grid $fourthGrid): void
+    public function testSupportsGridInheritance(): void
     {
-        $this->get('sylius_admin_product_from_taxon')->shouldBeLike($fourthGrid);
+        self::assertSame($this->fourthGrid, $this->provider->get('sylius_admin_product_from_taxon'));
     }
 
-    function it_throws_an_exception_if_grid_does_not_exist(): void
+    public function testThrowsAnExceptionIfGridDoesNotExist(): void
     {
-        $this
-            ->shouldThrow(new UndefinedGridException('sylius_admin_order_item'))
-            ->during('get', ['sylius_admin_order_item'])
-        ;
+        $this->expectException(UndefinedGridException::class);
+        $this->expectExceptionMessage('sylius_admin_order_item');
+
+        $this->provider->get('sylius_admin_order_item');
     }
 
-    function it_throws_an_invalid_argument_exception_when_parent_grid_is_not_found(): void
+    public function testThrowsAnInvalidArgumentExceptionWhenParentGridIsNotFound(): void
     {
-        $this->shouldThrow(\InvalidArgumentException::class)->during('get', ['sylius_admin_book']);
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->provider->get('sylius_admin_book');
     }
 
-    function it_supports_grid_removals(
-        ArrayToDefinitionConverterInterface $converter,
-        Grid $sixthGrid,
-    ): void {
-        $this->get('sylius_admin_customer')->shouldReturn($sixthGrid);
+    public function testSupportsGridRemovals(): void
+    {
+        self::assertSame($this->sixthGrid, $this->provider->get('sylius_admin_customer'));
     }
 
-    function it_makes_fields_sortable_if_sorting_is_enabled_for_it(
-        ArrayToDefinitionConverterInterface $converter,
-        Grid $seventhGrid,
-    ): void {
-        $this->get('sylius_admin_book_per_author')->shouldReturn($seventhGrid);
+    public function testMakesFieldsSortableIfSortingIsEnabledForIt(): void
+    {
+        self::assertSame($this->seventhGrid, $this->provider->get('sylius_admin_book_per_author'));
     }
 }

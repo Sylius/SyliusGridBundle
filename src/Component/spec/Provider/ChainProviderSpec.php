@@ -11,47 +11,68 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Provider;
+namespace Sylius\Component\Grid\Tests\Unit\Provider;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\ChainProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 
-class ChainProviderSpec extends ObjectBehavior
+final class ChainProviderTest extends TestCase
 {
-    function let(GridProviderInterface $firstGridProvider, GridProviderInterface $secondGridProvider): void
+    private GridProviderInterface $firstGridProvider;
+
+    private GridProviderInterface $secondGridProvider;
+
+    private ChainProvider $chainProvider;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith([
-            $firstGridProvider->getWrappedObject(),
-            $secondGridProvider->getWrappedObject(),
+        $this->firstGridProvider = $this->createMock(GridProviderInterface::class);
+        $this->secondGridProvider = $this->createMock(GridProviderInterface::class);
+
+        $this->chainProvider = new ChainProvider([
+            $this->firstGridProvider,
+            $this->secondGridProvider,
         ]);
     }
 
-    function it_is_initializable(): void
+    public function testIsInitializable(): void
     {
-        $this->shouldHaveType(ChainProvider::class);
+        $this->assertInstanceOf(ChainProvider::class, $this->chainProvider);
     }
 
-    function it_get_grids_from_its_providers(
-        GridProviderInterface $firstGridProvider,
-        GridProviderInterface $secondGridProvider,
-        Grid $gridDefinition,
-    ): void {
-        $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
-        $secondGridProvider->get('app_book')->willReturn($gridDefinition);
+    public function testGetsGridsFromItsProviders(): void
+    {
+        $gridDefinition = $this->createMock(Grid::class);
 
-        $this->get('app_book')->shouldReturn($gridDefinition);
+        $this->firstGridProvider
+            ->method('get')
+            ->with('app_book')
+            ->will($this->throwException(new UndefinedGridException('app_book')));
+
+        $this->secondGridProvider
+            ->method('get')
+            ->with('app_book')
+            ->willReturn($gridDefinition);
+
+        $this->assertSame($gridDefinition, $this->chainProvider->get('app_book'));
     }
 
-    function it_throws_an_undefined_grid_exception_when_its_providers_do_not_contains_definition(
-        GridProviderInterface $firstGridProvider,
-        GridProviderInterface $secondGridProvider,
-    ): void {
-        $firstGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
-        $secondGridProvider->get('app_book')->willThrow(UndefinedGridException::class);
+    public function testThrowsUndefinedGridExceptionWhenNoProviderHasDefinition(): void
+    {
+        $this->firstGridProvider
+            ->method('get')
+            ->with('app_book')
+            ->will($this->throwException(new UndefinedGridException('app_book')));
 
-        $this->shouldThrow(UndefinedGridException::class)->during('get', ['app_book']);
+        $this->secondGridProvider
+            ->method('get')
+            ->with('app_book')
+            ->will($this->throwException(new UndefinedGridException('app_book')));
+
+        $this->expectException(UndefinedGridException::class);
+        $this->chainProvider->get('app_book');
     }
 }
