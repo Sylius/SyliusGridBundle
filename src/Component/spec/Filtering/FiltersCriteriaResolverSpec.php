@@ -11,78 +11,89 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filtering;
+namespace Sylius\Component\Grid\Tests\Unit\Filtering;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
 use Sylius\Component\Grid\Parameters;
 
-final class FiltersCriteriaResolverSpec extends ObjectBehavior
+final class FiltersCriteriaResolverTest extends TestCase
 {
-    function it_implements_filters_criteria_resolver_interface(): void
+    private FiltersCriteriaResolver $filtersCriteriaResolver;
+
+    protected function setUp(): void
     {
-        $this->shouldImplement(FiltersCriteriaResolverInterface::class);
+        $this->filtersCriteriaResolver = new FiltersCriteriaResolver();
     }
 
-    function it_checks_whether_any_criteria_are_available(Grid $grid, Filter $filter): void
+    public function testItImplementsFiltersCriteriaResolverInterface(): void
     {
-        $emptyParameters = new Parameters();
-        $criteriaParameters = new Parameters(['criteria' => ['czapla']]);
-
-        $grid->getFilters()->willReturn([]);
-
-        $this->hasCriteria($grid, $emptyParameters)->shouldReturn(false);
-
-        $grid->getFilters()->willReturn([]);
-
-        $this->hasCriteria($grid, $criteriaParameters)->shouldReturn(true);
-
-        $grid->getFilters()->willReturn([$filter]);
-
-        $this->hasCriteria($grid, $emptyParameters)->shouldReturn(false);
-
-        $grid->getFilters()->willReturn([$filter]);
-
-        $this->hasCriteria($grid, $criteriaParameters)->shouldReturn(true);
-
-        $grid->getFilters()->willReturn([$filter]);
-        $filter->getCriteria()->willReturn('czapla');
-
-        $this->hasCriteria($grid, $emptyParameters)->shouldReturn(true);
-
-        $grid->getFilters()->willReturn([$filter]);
-        $filter->getCriteria()->willReturn('czapla');
-
-        $this->hasCriteria($grid, $criteriaParameters)->shouldReturn(true);
+        $this->assertInstanceOf(FiltersCriteriaResolverInterface::class, $this->filtersCriteriaResolver);
     }
 
-    function it_gets_default_criteria_from_grid_filters(Grid $grid, Filter $firstFilter, Filter $secondFilter): void
+    /**
+     * @dataProvider criteriaDataProvider
+     */
+    public function testChecksWhetherAnyCriteriaAreAvailable(array $filtersCriteria, Parameters $parameters, bool $expected): void
     {
+        $grid = $this->createMock(Grid::class);
+
+        $filters = [];
+        foreach ($filtersCriteria as $criteria) {
+            $filter = $this->createMock(Filter::class);
+            $filter->method('getCriteria')->willReturn($criteria);
+            $filters[] = $filter;
+        }
+
+        $grid->method('getFilters')->willReturn($filters);
+
+        self::assertSame($expected, $this->filtersCriteriaResolver->hasCriteria($grid, $parameters));
+    }
+
+    public function testGetsDefaultCriteriaFromGridFilters(): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $firstFilter = $this->createMock(Filter::class);
+        $secondFilter = $this->createMock(Filter::class);
+
         $startDate = new \DateTime();
         $endDate = new \DateTime();
 
-        $firstFilter->getCriteria()->willReturn('Pug');
-        $secondFilter->getCriteria()->willReturn(['start' => $startDate, 'end' => $endDate]);
+        $firstFilter->method('getCriteria')->willReturn('Pug');
+        $secondFilter->method('getCriteria')->willReturn(['start' => $startDate, 'end' => $endDate]);
 
-        $grid->getFilters()->willReturn(['favourite' => $firstFilter, 'date' => $secondFilter]);
+        $grid->method('getFilters')->willReturn([
+            'favourite' => $firstFilter,
+            'date' => $secondFilter,
+        ]);
 
-        $this->getCriteria($grid, new Parameters())->shouldIterateAs([
+        $result = $this->filtersCriteriaResolver->getCriteria($grid, new Parameters());
+
+        $this->assertSame([
             'favourite' => 'Pug',
             'date' => ['start' => $startDate, 'end' => $endDate],
-        ]);
+        ], $result);
     }
 
-    function it_gets_criteria_from_parameters(Grid $grid, Filter $firstFilter, Filter $secondFilter): void
+    public function testGetsCriteriaFromParameters(): void
     {
+        $grid = $this->createMock(Grid::class);
+        $firstFilter = $this->createMock(Filter::class);
+        $secondFilter = $this->createMock(Filter::class);
+
         $startDate = new \DateTime();
         $endDate = new \DateTime();
 
-        $firstFilter->getCriteria()->willReturn(null);
-        $secondFilter->getCriteria()->willReturn(null);
+        $firstFilter->method('getCriteria')->willReturn(null);
+        $secondFilter->method('getCriteria')->willReturn(null);
 
-        $grid->getFilters()->willReturn(['favourite' => $firstFilter, 'date' => $secondFilter]);
+        $grid->method('getFilters')->willReturn([
+            'favourite' => $firstFilter,
+            'date' => $secondFilter,
+        ]);
 
         $parameters = new Parameters([
             'criteria' => [
@@ -91,23 +102,29 @@ final class FiltersCriteriaResolverSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->getCriteria($grid, $parameters)->shouldIterateAs([
+        $result = $this->filtersCriteriaResolver->getCriteria($grid, $parameters);
+
+        $this->assertSame([
             'favourite' => 'Pug',
             'date' => ['start' => $startDate, 'end' => $endDate],
-        ]);
+        ], $result);
     }
 
-    function it_prioritizes_parameters_criteria_over_filters_default(
-        Grid $grid,
-        Filter $firstFilter,
-        Filter $secondFilter,
-    ): void {
+    public function testPrioritizesParametersCriteriaOverFiltersDefault(): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $firstFilter = $this->createMock(Filter::class);
+        $secondFilter = $this->createMock(Filter::class);
+
         $parametersDate = new \DateTime();
 
-        $firstFilter->getCriteria()->willReturn('Rum');
-        $secondFilter->getCriteria()->willReturn(null);
+        $firstFilter->method('getCriteria')->willReturn('Rum');
+        $secondFilter->method('getCriteria')->willReturn(null);
 
-        $grid->getFilters()->willReturn(['favourite' => $firstFilter, 'date' => $secondFilter]);
+        $grid->method('getFilters')->willReturn([
+            'favourite' => $firstFilter,
+            'date' => $secondFilter,
+        ]);
 
         $parameters = new Parameters([
             'criteria' => [
@@ -116,9 +133,50 @@ final class FiltersCriteriaResolverSpec extends ObjectBehavior
             ],
         ]);
 
-        $this->getCriteria($grid, $parameters)->shouldIterateAs([
+        $result = $this->filtersCriteriaResolver->getCriteria($grid, $parameters);
+
+        $this->assertSame([
             'favourite' => 'Pug',
             'date' => ['now' => $parametersDate],
-        ]);
+        ], $result);
+    }
+
+    public function criteriaDataProvider(): iterable
+    {
+        $emptyParameters = new Parameters();
+        $criteriaParameters = new Parameters(['criteria' => ['czapla']]);
+
+        return [
+            'no filters, no criteria' => [
+                [],                               // filtersCriteria
+                $emptyParameters,                 // parameters
+                false,                            // expected
+            ],
+            'no filters, but criteria provided' => [
+                [],
+                $criteriaParameters,
+                true,
+            ],
+            'one filter, no criteria' => [
+                [null],
+                $emptyParameters,
+                false,
+            ],
+            'one filter, parameters have criteria' => [
+                [null],
+                $criteriaParameters,
+                true,
+            ],
+            'filter has default criteria' => [
+                ['czapla'],
+                $emptyParameters,
+                true,
+            ],
+            'filter and parameters both have criteria' => [
+                ['czapla'],
+                $criteriaParameters,
+                true,
+            ],
+        ];
     }
 }

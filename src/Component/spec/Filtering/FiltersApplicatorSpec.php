@@ -11,103 +11,114 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Component\Grid\Filtering;
+namespace Sylius\Component\Grid\Tests\Unit\Filtering;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Filtering\FilterInterface;
+use Sylius\Component\Grid\Filtering\FiltersApplicator;
 use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 
-final class FiltersApplicatorSpec extends ObjectBehavior
+final class FiltersApplicatorTest extends TestCase
 {
-    function let(ServiceRegistryInterface $filtersRegistry, FiltersCriteriaResolverInterface $criteriaResolver): void
+    private FiltersApplicator $filtersApplicator;
+
+    private ServiceRegistryInterface $filtersRegistry;
+
+    private FiltersCriteriaResolverInterface $criteriaResolver;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($filtersRegistry, $criteriaResolver);
+        $this->filtersRegistry = $this->createMock(ServiceRegistryInterface::class);
+        $this->criteriaResolver = $this->createMock(FiltersCriteriaResolverInterface::class);
+
+        $this->filtersApplicator = new FiltersApplicator($this->filtersRegistry, $this->criteriaResolver);
     }
 
-    function it_implements_filters_applicator_interface(): void
+    public function testImplementsFiltersApplicatorInterface(): void
     {
-        $this->shouldImplement(FiltersApplicatorInterface::class);
+        $this->assertInstanceOf(FiltersApplicatorInterface::class, $this->filtersApplicator);
     }
 
-    function it_does_nothing_when_there_are_no_filtering_criteria(
-        FiltersCriteriaResolverInterface $criteriaResolver,
-        FilterInterface $stringFilter,
-        Grid $grid,
-        Filter $filter,
-        DataSourceInterface $dataSource,
-    ): void {
+    public function testDoesNothingWhenThereAreNoFilteringCriteria(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $grid = $this->createMock(Grid::class);
+        $filter = $this->createMock(Filter::class);
+        $stringFilter = $this->createMock(FilterInterface::class);
         $parameters = new Parameters();
 
-        $grid->getFilters()->willReturn(['keywords' => $filter]);
+        $grid->method('getFilters')->willReturn(['keywords' => $filter]);
+        $this->criteriaResolver->method('hasCriteria')->with($grid, $parameters)->willReturn(false);
 
-        $criteriaResolver->hasCriteria($grid, $parameters)->willReturn(false);
+        $stringFilter->expects($this->never())->method('apply');
 
-        $stringFilter->apply($dataSource, Argument::any(), Argument::any(), Argument::any())->shouldNotBeCalled();
-
-        $this->apply($dataSource, $grid, $parameters);
+        $this->filtersApplicator->apply($dataSource, $grid, $parameters);
     }
 
-    function it_filters_data_source_based_on_filters_default_criteria(
-        ServiceRegistryInterface $filtersRegistry,
-        FiltersCriteriaResolverInterface $criteriaResolver,
-        FilterInterface $stringFilter,
-        Grid $grid,
-        Filter $filter,
-        DataSourceInterface $dataSource,
-    ): void {
+    public function testFiltersDataSourceBasedOnFiltersDefaultCriteria(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $grid = $this->createMock(Grid::class);
+        $filter = $this->createMock(Filter::class);
+        $stringFilter = $this->createMock(FilterInterface::class);
         $parameters = new Parameters();
 
-        $grid->getFilters()->willReturn(['keywords' => $filter]);
+        $grid->method('getFilters')->willReturn(['keywords' => $filter]);
+        $grid->method('hasFilter')->willReturnMap([
+            ['keywords', true],
+        ]);
+        $grid->method('getFilter')->with('keywords')->willReturn($filter);
 
-        $grid->hasFilter('keywords')->willReturn(true);
-        $grid->getFilter('keywords')->willReturn($filter);
+        $filter->method('getType')->willReturn('string');
+        $filter->method('getOptions')->willReturn(['fields' => ['firstName', 'lastName']]);
 
-        $filter->getType()->willReturn('string');
-        $filter->getOptions()->willReturn(['fields' => ['firstName', 'lastName']]);
+        $this->criteriaResolver->method('hasCriteria')->with($grid, $parameters)->willReturn(true);
+        $this->criteriaResolver->method('getCriteria')->with($grid, $parameters)->willReturn(['keywords' => 'Banana']);
 
-        $criteriaResolver->hasCriteria($grid, $parameters)->willReturn(true);
-        $criteriaResolver->getCriteria($grid, $parameters)->willReturn(['keywords' => 'Banana']);
+        $this->filtersRegistry->method('get')->with('string')->willReturn($stringFilter);
 
-        $filtersRegistry->get('string')->willReturn($stringFilter);
+        $stringFilter
+            ->expects($this->once())
+            ->method('apply')
+            ->with($dataSource, 'keywords', 'Banana', ['fields' => ['firstName', 'lastName']]);
 
-        $stringFilter->apply($dataSource, 'keywords', 'Banana', ['fields' => ['firstName', 'lastName']])->shouldBeCalled();
-
-        $this->apply($dataSource, $grid, new Parameters());
+        $this->filtersApplicator->apply($dataSource, $grid, $parameters);
     }
 
-    function it_filters_data_source_based_on_criteria_parameter(
-        ServiceRegistryInterface $filtersRegistry,
-        FiltersCriteriaResolverInterface $criteriaResolver,
-        FilterInterface $stringFilter,
-        Grid $grid,
-        Filter $filter,
-        DataSourceInterface $dataSource,
-    ): void {
+    public function testFiltersDataSourceBasedOnCriteriaParameter(): void
+    {
+        $dataSource = $this->createMock(DataSourceInterface::class);
+        $grid = $this->createMock(Grid::class);
+        $filter = $this->createMock(Filter::class);
+        $stringFilter = $this->createMock(FilterInterface::class);
         $parameters = new Parameters(['criteria' => ['keywords' => 'Banana', 'enabled' => true]]);
 
-        $grid->getFilters()->willReturn(['keywords' => $filter]);
+        $grid->method('getFilters')->willReturn(['keywords' => $filter]);
+        $grid->method('hasFilter')->willReturnMap([
+            ['keywords', true],
+            ['enabled', false],
+        ]);
+        $grid->method('getFilter')->with('keywords')->willReturn($filter);
 
-        $grid->hasFilter('keywords')->willReturn(true);
-        $grid->hasFilter('enabled')->willReturn(false);
+        $filter->method('getType')->willReturn('string');
+        $filter->method('getOptions')->willReturn(['fields' => ['firstName', 'lastName']]);
 
-        $grid->getFilter('keywords')->willReturn($filter);
-        $filter->getType()->willReturn('string');
-        $filter->getOptions()->willReturn(['fields' => ['firstName', 'lastName']]);
+        $this->criteriaResolver->method('hasCriteria')->with($grid, $parameters)->willReturn(true);
+        $this->criteriaResolver->method('getCriteria')->with($grid, $parameters)->willReturn(['keywords' => 'Banana', 'enabled' => true]);
 
-        $criteriaResolver->hasCriteria($grid, $parameters)->willReturn(true);
-        $criteriaResolver->getCriteria($grid, $parameters)->willReturn(['keywords' => 'Banana', 'enabled' => true]);
+        $this->filtersRegistry->method('get')->with('string')->willReturn($stringFilter);
 
-        $filtersRegistry->get('string')->willReturn($stringFilter);
+        $stringFilter
+            ->expects($this->once())
+            ->method('apply')
+            ->with($dataSource, 'keywords', 'Banana', ['fields' => ['firstName', 'lastName']]);
 
-        $stringFilter->apply($dataSource, 'keywords', 'Banana', ['fields' => ['firstName', 'lastName']])->shouldBeCalled();
-
-        $this->apply($dataSource, $grid, $parameters);
+        $this->filtersApplicator->apply($dataSource, $grid, $parameters);
     }
 }
