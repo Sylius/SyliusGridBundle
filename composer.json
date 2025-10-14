@@ -77,6 +77,7 @@
         "symfony/dotenv": "^6.4 || ^7.0",
         "symfony/maker-bundle": "^1.36",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
+        "symfony/translation": "^6.4 || ^7.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "twig/twig": "^2.12 || ^3.0",
         "vimeo/psalm": "^5.23",

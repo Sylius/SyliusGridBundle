@@ -316,6 +316,11 @@ final class AdminUserGrid extends AbstractGrid
                     ->setLabel('Username')
                     ->setSortable(true)
             )
+            ->addField(
+                StringField::create('status')
+                    ->setLabel('Status')
+                    ->setSortable(true)
+            )
             ->addActionGroup(
                 MainActionGroup::create(
                     CreateAction::create(),

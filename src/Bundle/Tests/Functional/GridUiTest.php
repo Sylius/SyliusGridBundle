@@ -286,6 +286,19 @@ final class GridUiTest extends ApiTestCase
         $this->assertSame($totalItemsCountBeforeSorting, $totalItemsCountAfterSorting);
     }
 
+    /** @test */
+    public function it_shows_admin_user_status_enums(): void
+    {
+        $this->client->request('GET', '/admin-users/');
+
+        $statusses = $this->getAdminStatussesFromResponse();
+
+        $this->assertCount(3, $statusses);
+        $this->assertContains('enum.status.active', $statusses);
+        $this->assertContains('enum.status.inactive', $statusses);
+        $this->assertContains('enum.status.banned', $statusses);
+    }
+
     /** @return string[] */
     private function getBookTitlesFromResponse(): array
     {
@@ -341,6 +354,16 @@ final class GridUiTest extends ApiTestCase
     {
         return $this->getCrawler()
             ->filter('[data-test-name]')
+            ->each(
+                fn (Crawler $node): string => $node->text(),
+            );
+    }
+
+    /** @return string[] */
+    private function getAdminStatussesFromResponse(): array
+    {
+        return $this->getCrawler()
+            ->filter('[data-test-status]')
             ->each(
                 fn (Crawler $node): string => $node->text(),
             );

@@ -208,3 +208,25 @@ sylius_grid:
                     type: string
                     path: books[0].title
                     sortable: book.title
+
+        app_admin_user:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\AdminUser
+            filters:
+                username:
+                    type: string
+                status:
+                    type: enum
+                    form_options:
+                        class: App\Enum\AdminUserStatusEnum
+                        multiple: true
+            fields:
+                username:
+                    type: string
+                    label: Username
+                status:
+                    type: enum
+                    label: Status
+            limits: [10, 5, 15, 100]

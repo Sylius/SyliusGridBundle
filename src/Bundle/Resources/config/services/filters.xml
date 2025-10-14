@@ -92,5 +92,14 @@
             <tag name="form.type" />
         </service>
         <service id="Sylius\Bundle\GridBundle\Form\Type\Filter\SelectFilterType" alias="sylius.form.type.grid_filter.select" />
+
+        <service id="sylius.grid_filter.enum" class="Sylius\Component\Grid\Filter\SelectFilter">
+            <tag name="sylius.grid_filter" type="enum" form-type="Sylius\Bundle\GridBundle\Form\Type\Filter\EnumFilterType" />
+        </service>
+
+        <service id="sylius.form.type.grid_filter.enum" class="Sylius\Bundle\GridBundle\Form\Type\Filter\EnumFilterType">
+            <tag name="form.type" />
+        </service>
+        <service id="Sylius\Bundle\GridBundle\Form\Type\Filter\EnumFilterType" alias="sylius.form.type.grid_filter.enum" />
     </services>
 </container>

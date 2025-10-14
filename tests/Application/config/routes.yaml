@@ -77,3 +77,11 @@ app_author_with_books_with_use_output_walkers_enabled:
         _sylius:
             grid: app_author_with_books_with_use_output_walkers_enabled
             template: crud/index.html.twig
+
+app_admin_users:
+    resource: |
+        alias: app.admin_user
+        grid: app_admin_user
+        only: ['index']
+        templates: crud
+    type: sylius.resource
