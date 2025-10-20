@@ -40,7 +40,7 @@ final class Configuration implements ConfigurationInterface
         $node
             ->children()
                 ->arrayNode('drivers')
-                    ->setDeprecated('sylius/grid-bundle', '1.15', 'Drivers config will be deprecated starting sylius/grid-bundle 2.x, register drivers using tagged service "sylius.grid_driver".')
+                    ->setDeprecated('sylius/grid-bundle', '1.15', 'Drivers config is deprecated and will be removed in 2.0, register drivers using tagged service "sylius.grid_driver" instead.')
                     ->defaultValue([])
                     ->enumPrototype()->values(SyliusGridBundle::getAvailableDrivers())->end()
                 ->end()
