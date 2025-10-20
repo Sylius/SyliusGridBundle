@@ -165,6 +165,10 @@ final class SyliusGridExtension extends Extension
     private function assertDriversValid(array $configuredDrivers, array $availableDrivers, array $gridDrivers): void
     {
         foreach ($configuredDrivers as $driver) {
+            if (!\str_starts_with($driver, 'doctrine/')) {
+                continue;
+            }
+
             if (!in_array($driver, $availableDrivers, true)) {
                 throw new InvalidArgumentException(sprintf(
                     'Driver "%s" is configured, but this driver is not available. Try running "composer require %s"',
@@ -175,6 +179,10 @@ final class SyliusGridExtension extends Extension
         }
 
         foreach ($gridDrivers as $grid => $driver) {
+            if (!\str_starts_with($driver, 'doctrine/')) {
+                continue;
+            }
+
             if (!in_array($driver, $availableDrivers, true)) {
                 throw new InvalidArgumentException(sprintf(
                     'Grid "%s" uses drivers "%s", but this driver is not available. Try running "composer require %s"',
