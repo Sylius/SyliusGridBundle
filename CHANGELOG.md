@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v1.14.1 (2025-10-20)
+
+#### Details
+
+- [#400](https://github.com/Sylius/SyliusGridBundle/pull/400) Fix CI ([@loic425](https://github.com/loic425))
+- [#409](https://github.com/Sylius/SyliusGridBundle/pull/409) [Hotfix] Checking grid drivers availability from Doctrine only ([@loic425](https://github.com/loic425))
+
 ## v1.14.0 (2025-10-08)
 
 #### Details
