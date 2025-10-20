@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CheckDriverPass implements CompilerPassInterface
+final class ValidateConfiguredGridDriversPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {

@@ -15,10 +15,10 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
 use App\Driver\Foo;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\CheckDriverPass;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\ValidateConfiguredGridDriversPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-final class CheckDriverPassTest extends AbstractCompilerPassTestCase
+final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTestCase
 {
     /**
      * @test
@@ -207,6 +207,6 @@ final class CheckDriverPassTest extends AbstractCompilerPassTestCase
 
     protected function registerCompilerPass(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new CheckDriverPass());
+        $container->addCompilerPass(new ValidateConfiguredGridDriversPass());
     }
 }
