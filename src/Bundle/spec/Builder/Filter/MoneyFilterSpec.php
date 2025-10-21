@@ -11,25 +11,20 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
 
-final class MoneyFilterSpec extends ObjectBehavior
+final class MoneyFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testItCreatesMoneyFilters(): void
     {
-        $this->shouldHaveType(MoneyFilter::class);
-    }
+        $filter = MoneyFilter::create('search', 'EUR');
 
-    function it_creates_money_filters(): void
-    {
-        $filter = $this::create('search', 'EUR');
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'money',
             'options' => [
                 'currency_field' => 'EUR',
@@ -38,15 +33,15 @@ final class MoneyFilterSpec extends ObjectBehavior
             'form_options' => [
                 'scale' => 2,
             ],
-        ]);
+        ], $filter->toArray());
     }
 
-    function it_creates_money_filters_with_custom_scale(): void
+    public function testCreatesMoneyFiltersWithCustomScale(): void
     {
-        $filter = $this::create('search', 'EUR', 0);
+        $filter = MoneyFilter::create('search', 'EUR', 0);
 
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'money',
             'options' => [
                 'currency_field' => 'EUR',
@@ -55,6 +50,6 @@ final class MoneyFilterSpec extends ObjectBehavior
             'form_options' => [
                 'scale' => 0,
             ],
-        ]);
+        ], $filter->toArray());
     }
 }

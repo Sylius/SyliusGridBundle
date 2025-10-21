@@ -11,43 +11,38 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 
-final class UpdateActionSpec extends ObjectBehavior
+final class UpdateActionTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsUpdateActions(): void
     {
-        $this->shouldHaveType(UpdateAction::class);
-    }
+        $action = UpdateAction::create();
 
-    function it_builds_update_actions(): void
-    {
-        $action = $this::create();
+        $this->assertInstanceOf(ActionInterface::class, $action);
 
-        $action->shouldHaveType(ActionInterface::class);
-
-        $action->toArray()->shouldReturn([
+        $this->assertEquals([
             'type' => 'update',
             'label' => 'sylius.ui.edit',
-        ]);
+        ], $action->toArray());
     }
 
-    function it_builds_update_actions_with_options(): void
+    public function testBuildsUpdateActionsWithOptions(): void
     {
-        $action = $this::create(['custom' => true]);
+        $action = UpdateAction::create(['custom' => true]);
 
-        $action->shouldHaveType(ActionInterface::class);
+        $this->assertInstanceOf(ActionInterface::class, $action);
 
-        $action->toArray()->shouldReturn([
+        $this->assertEquals([
             'type' => 'update',
             'label' => 'sylius.ui.edit',
             'options' => [
                 'custom' => true,
             ],
-        ]);
+        ], $action->toArray());
     }
 }

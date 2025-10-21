@@ -11,43 +11,38 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
 
-final class SelectFilterSpec extends ObjectBehavior
+final class SelectFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesSelectFilters(): void
     {
-        $this->shouldHaveType(SelectFilter::class);
-    }
+        $filter = SelectFilter::create('search', ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published']);
 
-    function it_creates_select_filters(): void
-    {
-        $filter = $this::create('search', ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published']);
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'select',
             'form_options' => [
                 'choices' => ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'],
             ],
-        ]);
+        ], $filter->toArray());
     }
 
-    function it_creates_select_filters_with_multiple_option(): void
+    public function testCreatesSelectFiltersWithMultipleOption(): void
     {
-        $filter = $this::create('search', ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'], true);
+        $filter = SelectFilter::create('search', ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'], true);
 
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'select',
             'form_options' => [
                 'choices' => ['sylius.ui.new' => 'new', 'sylius.ui.published' => 'published'],
                 'multiple' => true,
             ],
-        ]);
+        ], $filter->toArray());
     }
 }

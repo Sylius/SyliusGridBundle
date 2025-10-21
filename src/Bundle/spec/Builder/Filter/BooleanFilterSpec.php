@@ -11,26 +11,21 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\BooleanFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
-final class BooleanFilterSpec extends ObjectBehavior
+final class BooleanFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesBooleanFilters(): void
     {
-        $this->shouldHaveType(BooleanFilter::class);
-    }
+        $filter = BooleanFilter::create('enabled');
 
-    function it_creates_boolean_filters(): void
-    {
-        $filter = $this::create('enabled');
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'boolean',
-        ]);
+        ], $filter->toArray());
     }
 }

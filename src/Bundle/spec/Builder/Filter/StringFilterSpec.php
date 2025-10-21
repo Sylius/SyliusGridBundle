@@ -11,29 +11,24 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 
-final class StringFilterSpec extends ObjectBehavior
+final class StringFilterTest extends TestCase
 {
-    function it_is_initializable()
+    public function testCreatesStringFilters(): void
     {
-        $this->shouldHaveType(StringFilter::class);
-    }
+        $filter = StringFilter::create('search', ['firstName', 'lastName']);
 
-    function it_creates_string_filters(): void
-    {
-        $filter = $this::create('search', ['firstName', 'lastName']);
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'string',
             'options' => [
                 'fields' => ['firstName', 'lastName'],
             ],
-        ]);
+        ], $filter->toArray());
     }
 }

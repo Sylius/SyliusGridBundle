@@ -11,26 +11,21 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\ExistsFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
-final class ExistsFilterSpec extends ObjectBehavior
+final class ExistsFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesExistsFilters(): void
     {
-        $this->shouldHaveType(ExistsFilter::class);
-    }
+        $filter = ExistsFilter::create('publishedAt');
 
-    function it_creates_exists_filters(): void
-    {
-        $filter = $this::create('publishedAt');
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'exists',
-        ]);
+        ], $filter->toArray());
     }
 }

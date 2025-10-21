@@ -11,43 +11,38 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 
-final class ShowActionSpec extends ObjectBehavior
+final class ShowActionTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsShowActions(): void
     {
-        $this->shouldHaveType(ShowAction::class);
-    }
+        $action = ShowAction::create();
 
-    function it_builds_show_actions(): void
-    {
-        $action = $this::create();
+        $this->assertInstanceOf(ActionInterface::class, $action);
 
-        $action->shouldHaveType(ActionInterface::class);
-
-        $action->toArray()->shouldReturn([
+        $this->assertEquals([
             'type' => 'show',
             'label' => 'sylius.ui.show',
-        ]);
+        ], $action->toArray());
     }
 
-    function it_builds_show_actions_with_options(): void
+    public function testBuildsShowActionsWithOptions(): void
     {
-        $action = $this::create(['custom' => true]);
+        $action = ShowAction::create(['custom' => true]);
 
-        $action->shouldHaveType(ActionInterface::class);
+        $this->assertInstanceOf(ActionInterface::class, $action);
 
-        $action->toArray()->shouldReturn([
+        $this->assertEquals([
             'type' => 'show',
             'label' => 'sylius.ui.show',
             'options' => [
                 'custom' => true,
             ],
-        ]);
+        ], $action->toArray());
     }
 }

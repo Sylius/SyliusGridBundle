@@ -11,34 +11,29 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Field;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Field;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 
-final class TwigFieldSpec extends ObjectBehavior
+final class TwigFieldTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesFields(): void
     {
-        $this->shouldHaveType(TwigField::class);
+        $field = TwigField::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig');
+
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals('enabled', $field->getName());
     }
 
-    function it_creates_fields(): void
+    public function testCreatesFieldsWithVars(): void
     {
-        $field = $this::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig');
-
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getName()->shouldReturn('enabled');
-    }
-
-    function it_creates_fields_with_vars(): void
-    {
-        $field = $this::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
+        $field = TwigField::create('enabled', '@SyliusUi/Grid/Field/enabled.html.twig')
             ->setOption('vars', ['labels' => 'path/to/label'])
         ;
 
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getName()->shouldReturn('enabled');
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals('enabled', $field->getName());
     }
 }

@@ -11,151 +11,148 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Field;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Field;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 
-final class FieldSpec extends ObjectBehavior
+final class FieldTest extends TestCase
 {
-    function let(): void
+    private Field $field;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('create', ['name', 'string']);
+        $this->field = Field::create('name', 'string');
     }
 
-    function it_is_initializable(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->shouldHaveType(Field::class);
+        $this->assertInstanceOf(FieldInterface::class, $this->field);
     }
 
-    function it_implements_an_interface(): void
+    public function testHasNoPathByDefault(): void
     {
-        $this->shouldImplement(FieldInterface::class);
+        $this->assertNull($this->field->getPath());
     }
 
-    function it_has_no_path_by_default(): void
+    public function testSetsPath(): void
     {
-        $this->getPath()->shouldReturn(null);
+        $this->field->setPath('custom_path');
+
+        $this->assertEquals('custom_path', $this->field->getPath());
     }
 
-    function it_sets_path(): void
+    public function testHasNoLabelByDefault(): void
     {
-        $this->setPath('custom_path');
-
-        $this->getPath()->shouldReturn('custom_path');
+        $this->assertNull($this->field->getLabel());
     }
 
-    function it_has_no_label_by_default(): void
+    public function testSetsLabel(): void
     {
-        $this->getLabel()->shouldReturn(null);
+        $this->field->setLabel('Name');
+
+        $this->assertEquals('Name', $this->field->getLabel());
     }
 
-    function it_sets_label(): void
+    public function testEnablesFields(): void
     {
-        $this->setLabel('Name');
+        $this->field->setEnabled(true);
 
-        $this->getLabel()->shouldReturn('Name');
+        $this->assertTrue($this->field->isEnabled());
     }
 
-    function it_enables_fields(): void
+    public function testDisablesFields(): void
     {
-        $this->setEnabled(true);
+        $this->field->setEnabled(false);
 
-        $this->isEnabled()->shouldReturn(true);
+        $this->assertFalse($this->field->isEnabled());
     }
 
-    function it_disables_fields(): void
+    public function testMakesFieldsSortable(): void
     {
-        $this->setEnabled(false);
+        $this->field->setSortable(true);
 
-        $this->isEnabled()->shouldReturn(false);
+        $this->assertTrue($this->field->isSortable());
+        $this->assertEquals(true, $this->field->toArray()['sortable']);
     }
 
-    function it_makes_fields_sortable(): void
+    public function testMakesFieldsSortableWithPath(): void
     {
-        $this->setSortable(true);
+        $this->field->setSortable(true, 'path');
 
-        $this->isSortable()->shouldReturn(true);
-        $this->toArray()['sortable']->shouldReturn(true);
+        $this->assertTrue($this->field->isSortable());
+        $this->assertEquals('path', $this->field->toArray()['sortable']);
     }
 
-    function it_makes_fields_sortable_with_path(): void
+    public function testMakesFieldsNotSortable(): void
     {
-        $this->setSortable(true, 'path');
+        $this->field->setSortable(false);
 
-        $this->isSortable()->shouldReturn(true);
-        $this->toArray()['sortable']->shouldReturn('path');
+        $this->assertFalse($this->field->isSortable());
+        $this->assertArrayNotHasKey('sortable', $this->field->toArray());
     }
 
-    function it_makes_fields_not_sortable(): void
+    public function testSetsPosition(): void
     {
-        $this->setSortable(false);
+        $this->field->setPosition(42);
 
-        $this->isSortable()->shouldReturn(false);
-        $this->toArray()['sortable']->shouldReturn(null);
+        $this->assertEquals(42, $this->field->getPosition());
     }
 
-    function it_sets_position(): void
+    public function testSetsOptions(): void
     {
-        $this->setPosition(42);
+        $this->field->setOptions(['template' => '/path/to/template']);
 
-        $this->getPosition()->shouldReturn(42);
+        $this->assertEquals(['template' => '/path/to/template'], $this->field->getOptions());
     }
 
-    function it_sets_options(): void
+    public function testSetsOneOption(): void
     {
-        $this->setOptions(['template' => '/path/to/template']);
+        $this->field->setOptions(['template' => '/path/to/template']);
+        $this->field->setOption('vars', ['labels' => '/path/to/label']);
 
-        $this->getOptions()->shouldReturn(['template' => '/path/to/template']);
-    }
-
-    function it_sets_one_option(): void
-    {
-        $this->setOptions(['template' => '/path/to/template']);
-        $this->setOption('vars', ['labels' => '/path/to/label']);
-
-        $this->getOptions()->shouldReturn([
+        $this->assertEquals([
             'template' => '/path/to/template',
             'vars' => ['labels' => '/path/to/label'],
-        ]);
+        ], $this->field->getOptions());
     }
 
-    function it_creates_with_options(): void
+    public function testCreatesWithOptions(): void
     {
-        $this->setOptions(['template' => '/path/to/template']);
-        $this->withOptions(['vars' => ['labels' => '/path/to/label']]);
+        $this->field->setOptions(['template' => '/path/to/template']);
+        $this->field->withOptions(['vars' => ['labels' => '/path/to/label']]);
 
-        $this->getOptions()->shouldReturn([
+        $this->assertEquals([
             'template' => '/path/to/template',
             'vars' => ['labels' => '/path/to/label'],
-        ]);
+        ], $this->field->getOptions());
     }
 
-    function it_adds_options(): void
+    public function testAddsOptions(): void
     {
-        $this->setOptions(['template' => '/path/to/template']);
-        $this->addOptions(['vars' => ['labels' => '/path/to/label']]);
+        $this->field->setOptions(['template' => '/path/to/template']);
+        $this->field->addOptions(['vars' => ['labels' => '/path/to/label']]);
 
-        $this->getOptions()->shouldReturn([
+        $this->assertEquals([
             'template' => '/path/to/template',
             'vars' => ['labels' => '/path/to/label'],
-        ]);
+        ], $this->field->getOptions());
     }
 
-    function it_removes_options(): void
+    public function testRemovesOptions(): void
     {
-        $this->setOptions([
+        $this->field->setOptions([
             'template' => '/path/to/template',
             'vars' => [
                 'labels' => '/path/to/label',
             ],
         ]);
 
-        $this->removeOption('vars');
+        $this->field->removeOption('vars');
 
-        $this->getOptions()->shouldReturn([
+        $this->assertEquals([
             'template' => '/path/to/template',
-        ]);
+        ], $this->field->getOptions());
     }
 }

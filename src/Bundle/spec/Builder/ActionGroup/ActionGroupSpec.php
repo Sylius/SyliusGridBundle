@@ -11,53 +11,49 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\ActionGroup;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\ActionGroup;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
 
-final class ActionGroupSpec extends ObjectBehavior
+final class ActionGroupTest extends TestCase
 {
-    function let(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->beConstructedThrough('create', [ActionGroupInterface::MAIN_GROUP]);
+        $subject = ActionGroup::create(ActionGroupInterface::MAIN_GROUP);
+        $this->assertInstanceOf(ActionGroupInterface::class, $subject);
     }
 
-    function it_is_initializable(): void
+    public function testAddsActions(): void
     {
-        $this->shouldHaveType(ActionGroup::class);
+        $subject = ActionGroup::create(ActionGroupInterface::MAIN_GROUP);
+        $action = $this->createMock(ActionInterface::class);
+
+        $action->method('getName')->willReturn('create');
+        $action->method('toArray')->willReturn([]);
+
+        $subject->addAction($action);
+
+        $this->assertEquals([], $subject->toArray()['create']);
     }
 
-    function it_implements_an_interface(): void
+    public function testAllowsToAddSeveralActionDuringInstantiation(): void
     {
-        $this->shouldImplement(ActionGroupInterface::class);
-    }
+        $createAction = $this->createMock(ActionInterface::class);
+        $createAction->method('getName')->willReturn('create');
+        $createAction->method('toArray')->willReturn([]);
 
-    function it_adds_actions(ActionInterface $action)
-    {
-        $action->getName()->willReturn('create');
-        $action->toArray()->willReturn([]);
+        $updateAction = $this->createMock(ActionInterface::class);
+        $updateAction->method('getName')->willReturn('update');
+        $updateAction->method('toArray')->willReturn([]);
 
-        $this->addAction($action);
+        $subject = ActionGroup::create(ActionGroupInterface::MAIN_GROUP, $createAction, $updateAction);
 
-        $this->toArray()['create']->shouldReturn([]);
-    }
-
-    function it_allows_to_add_several_action_during_instantioning(ActionInterface $createAction, ActionInterface $updateAction)
-    {
-        $createAction->getName()->willReturn('create');
-        $createAction->toArray()->willReturn([]);
-
-        $updateAction->getName()->willReturn('update');
-        $updateAction->toArray()->willReturn([]);
-
-        $this->beConstructedThrough('create', [ActionGroupInterface::MAIN_GROUP, $createAction, $updateAction]);
-
-        $this->toArray()->shouldReturn([
+        $this->assertEquals([
             'create' => [],
             'update' => [],
-        ]);
+        ], $subject->toArray());
     }
 }

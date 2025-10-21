@@ -11,33 +11,28 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Field;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Field;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 
-final class StringFieldSpec extends ObjectBehavior
+final class StringFieldTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesFields(): void
     {
-        $this->shouldHaveType(StringField::class);
+        $field = StringField::create('firstName');
+
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals('firstName', $field->getName());
     }
 
-    function it_creates_fields(): void
+    public function testDefinesVarOptions(): void
     {
-        $field = $this::create('firstName');
-
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getName()->shouldReturn('firstName');
-    }
-
-    function it_defines_var_options(): void
-    {
-        $field = $this::create('firstName');
+        $field = StringField::create('firstName');
         $field->setOption('vars', ['foo' => 'bar']);
 
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getOptions()->shouldReturn(['vars' => ['foo' => 'bar']]);
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals(['vars' => ['foo' => 'bar']], $field->getOptions());
     }
 }

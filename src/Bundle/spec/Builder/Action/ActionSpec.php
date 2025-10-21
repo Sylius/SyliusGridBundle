@@ -11,80 +11,77 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 
-final class ActionSpec extends ObjectBehavior
+final class ActionTest extends TestCase
 {
-    function let(): void
+    private Action $action;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('create', ['create', 'create']);
+        $this->action = Action::create('create', 'create');
     }
 
-    function it_is_initializable(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->shouldHaveType(Action::class);
+        $this->assertInstanceOf(ActionInterface::class, $this->action);
     }
 
-    function it_implements_an_interface(): void
+    public function testSetsLabel(): void
     {
-        $this->shouldImplement(ActionInterface::class);
+        $this->action->setLabel('Create');
+
+        $this->assertEquals('Create', $this->action->toArray()['label']);
     }
 
-    function it_sets_label(): void
+    public function testEnablesActions(): void
     {
-        $action = $this->setLabel('Create');
+        $this->action->setEnabled(true);
 
-        $action->toArray()['label']->shouldReturn('Create');
+        $this->assertTrue($this->action->toArray()['enabled']);
     }
 
-    function it_enables_actions(): void
+    public function testDisablesActions(): void
     {
-        $action = $this->setEnabled(true);
+        $this->action->setEnabled(false);
 
-        $action->toArray()['enabled']->shouldReturn(true);
+        $this->assertFalse($this->action->toArray()['enabled']);
     }
 
-    function it_disables_actions(): void
+    public function testHasNoTemplateByDefault(): void
     {
-        $action = $this->setEnabled(false);
-
-        $action->toArray()['enabled']->shouldReturn(false);
+        $this->assertNull($this->action->getTemplate());
     }
 
-    function it_has_no_template_by_default(): void
+    public function testSetsTemplate(): void
     {
-        $this->getTemplate()->shouldReturn(null);
+        $this->action->setTemplate('/path/to/template');
+
+        $this->assertEquals('/path/to/template', $this->action->getTemplate());
     }
 
-    function it_sets_template(): void
+    public function testSetsIcon(): void
     {
-        $this->setTemplate('/path/to/template');
+        $this->action->setIcon('cogs');
 
-        $this->getTemplate()->shouldReturn('/path/to/template');
+        $this->assertEquals('cogs', $this->action->toArray()['icon']);
     }
 
-    function it_sets_icon(): void
+    public function testSetsOptions(): void
     {
-        $action = $this->setIcon('cogs');
+        $this->action->setOptions(['custom' => true]);
 
-        $action->toArray()['icon']->shouldReturn('cogs');
+        $this->assertEquals(['custom' => true], $this->action->toArray()['options']);
     }
 
-    function it_sets_options(): void
+    public function testSetsPosition(): void
     {
-        $action = $this->setOptions(['custom' => true]);
+        $this->action->setPosition(42);
 
-        $action->toArray()['options']->shouldReturn(['custom' => true]);
-    }
-
-    function it_sets_position(): void
-    {
-        $action = $this->setPosition(42);
-
-        $action->toArray()['position']->shouldReturn(42);
+        $this->assertEquals(42, $this->action->toArray()['position']);
     }
 }

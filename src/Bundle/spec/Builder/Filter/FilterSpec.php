@@ -11,169 +11,166 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
 use App\Entity\Author;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
-final class FilterSpec extends ObjectBehavior
+final class FilterTest extends TestCase
 {
-    function let(): void
+    private Filter $filter;
+
+    public function setUp(): void
     {
-        $this->beConstructedThrough('create', ['search', 'string']);
+        $this->filter = Filter::create('search', 'string');
     }
 
-    function it_is_initializable(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->shouldHaveType(Filter::class);
+        $this->assertInstanceOf(FilterInterface::class, $this->filter);
     }
 
-    function it_implements_an_interface(): void
+    public function testHasNoLabelByDefault(): void
     {
-        $this->shouldImplement(FilterInterface::class);
+        $this->assertNull($this->filter->getLabel());
     }
 
-    function it_has_no_label_by_default(): void
+    public function testSetsStringLabel(): void
     {
-        $this->getLabel()->shouldReturn(null);
+        $this->filter->setLabel('Search');
+
+        $this->assertEquals('Search', $this->filter->getLabel());
     }
 
-    function it_sets_string_label(): void
+    public function testSetsBooleanLabel(): void
     {
-        $this->setLabel('Search');
+        $this->filter->setLabel(false);
 
-        $this->getLabel()->shouldReturn('Search');
+        $this->assertFalse($this->filter->getLabel());
     }
 
-    function it_sets_boolean_label(): void
+    public function testSetsNullLabel(): void
     {
-        $this->setLabel(false);
+        $this->filter->setLabel(null);
 
-        $this->getLabel()->shouldReturn(false);
+        $this->assertNull($this->filter->getLabel());
     }
 
-    function it_sets_null_label(): void
+    public function testIsEnabledByDefault(): void
     {
-        $this->setLabel(null);
-
-        $this->getLabel()->shouldReturn(null);
+        $this->assertTrue($this->filter->isEnabled());
     }
 
-    function it_is_enabled_by_default(): void
+    public function testEnablesFilters(): void
     {
-        $this->isEnabled()->shouldReturn(true);
+        $this->filter->setEnabled(true);
+
+        $this->assertTrue($this->filter->isEnabled());
     }
 
-    function it_enables_filters(): void
+    public function testDisablesFilters(): void
     {
-        $this->setEnabled(true);
+        $this->filter->setEnabled(false);
 
-        $this->isEnabled()->shouldReturn(true);
+        $this->assertFalse($this->filter->isEnabled());
     }
 
-    function it_disables_filters(): void
+    public function testHasNoTemplateByDefault(): void
     {
-        $this->setEnabled(false);
-
-        $this->isEnabled()->shouldReturn(false);
+        $this->assertNull($this->filter->getTemplate());
     }
 
-    function it_has_no_template_by_default(): void
+    public function testSetsTemplate(): void
     {
-        $this->getTemplate()->shouldReturn(null);
+        $this->filter->setTemplate('/path/to/template');
+
+        $this->assertEquals('/path/to/template', $this->filter->getTemplate());
     }
 
-    function it_sets_template(): void
+    public function testHasNoOptionsByDefault(): void
     {
-        $this->setTemplate('/path/to/template');
-
-        $this->getTemplate()->shouldReturn('/path/to/template');
+        $this->assertEquals([], $this->filter->getOptions());
     }
 
-    function it_has_no_options_by_default(): void
+    public function testSetsOptions(): void
     {
-        $this->getOptions()->shouldReturn([]);
+        $this->filter->setOptions(['fields' => ['name', 'code']]);
+
+        $this->assertEquals(['fields' => ['name', 'code']], $this->filter->getOptions());
     }
 
-    function it_sets_options(): void
+    public function testAddsOptions(): void
     {
-        $this->setOptions(['fields' => ['name', 'code']]);
+        $this->filter->addOption('fields', ['name', 'code']);
 
-        $this->getOptions()->shouldReturn(['fields' => ['name', 'code']]);
+        $this->assertEquals(['fields' => ['name', 'code']], $this->filter->getOptions());
     }
 
-    function it_adds_options(): void
+    public function testRemoveOption(): void
     {
-        $this->addOption('fields', ['name', 'code']);
+        $this->filter->addOption('fields', ['name', 'code']);
 
-        $this->getOptions()->shouldReturn(['fields' => ['name', 'code']]);
+        $this->filter->removeOption('fields');
+
+        $this->assertEquals([], $this->filter->getOptions());
     }
 
-    function it_remove_option(): void
+    public function testSetsFormOptions(): void
     {
-        $this->addOption('fields', ['name', 'code']);
+        $this->filter->setFormOptions(['multiple' => true]);
 
-        $this->removeOption('fields');
-
-        $this->getOptions()->shouldReturn([]);
+        $this->assertEquals(['multiple' => true], $this->filter->getFormOptions());
     }
 
-    function it_sets_form_options(): void
+    public function testAddsFormOptions(): void
     {
-        $this->setFormOptions(['multiple' => true]);
-
-        $this->getFormOptions()->shouldReturn(['multiple' => true]);
-    }
-
-    function it_adds_form_options(): void
-    {
-        $this
+        $this->filter
             ->addFormOption('class', Author::class)
             ->addFormOption('multiple', true)
         ;
 
-        $this->getFormOptions()->shouldReturn([
+        $this->assertEquals([
             'class' => Author::class,
             'multiple' => true,
-        ]);
+        ], $this->filter->getFormOptions());
     }
 
-    function it_removes_form_options(): void
+    public function testRemovesFormOptions(): void
     {
-        $this
+        $this->filter
             ->addFormOption('class', Author::class)
             ->addFormOption('multiple', true)
             ->removeFormOption('multiple')
         ;
 
-        $this->getFormOptions()->shouldReturn([
+        $this->assertEquals([
             'class' => Author::class,
-        ]);
+        ], $this->filter->getFormOptions());
     }
 
-    function is_has_no_criteria_by_default(): void
+    public function testHasNoCriteriaByDefault(): void
     {
-        $this->getCriteria()->shouldReturn([]);
+        $this->assertEquals([], $this->filter->getCriteria());
     }
 
-    function it_sets_criteria(): void
+    public function testSetsCriteria(): void
     {
-        $this->setCriteria(['name' => 'test']);
+        $this->filter->setCriteria(['name' => 'test']);
 
-        $this->getCriteria()->shouldReturn(['name' => 'test']);
+        $this->assertEquals(['name' => 'test'], $this->filter->getCriteria());
     }
 
-    function it_has_no_default_value_by_default(): void
+    public function testHasNoDefaultValueByDefault(): void
     {
-        $this->getDefaultValue()->shouldReturn(null);
+        $this->assertNull($this->filter->getDefaultValue());
     }
 
-    function its_default_value_is_mutable(): void
+    public function testsDefaultValueIsMutable(): void
     {
-        $this->setDefaultValue(false);
+        $this->filter->setDefaultValue(false);
 
-        $this->getDefaultValue()->shouldReturn(false);
+        $this->assertFalse($this->filter->getDefaultValue());
     }
 }

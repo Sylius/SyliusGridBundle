@@ -11,26 +11,21 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\DateFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
-final class DateFilterSpec extends ObjectBehavior
+final class DateFilterTest extends TestCase
 {
-    function it_is_initializable()
+    public function testCreatesDateFilters(): void
     {
-        $this->shouldHaveType(DateFilter::class);
-    }
+        $filter = DateFilter::create('publishedAt');
 
-    function it_creates_date_filters(): void
-    {
-        $filter = $this::create('publishedAt');
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'date',
-        ]);
+        ], $filter->toArray());
     }
 }

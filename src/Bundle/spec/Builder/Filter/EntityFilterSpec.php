@@ -11,44 +11,39 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Filter;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
 use App\Entity\Author;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 
-final class EntityFilterSpec extends ObjectBehavior
+final class EntityFilterTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesEntityFilters(): void
     {
-        $this->shouldHaveType(EntityFilter::class);
-    }
+        $filter = EntityFilter::create('author', Author::class);
 
-    function it_creates_entity_filters(): void
-    {
-        $filter = $this::create('author', Author::class);
-
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'entity',
             'form_options' => [
                 'class' => Author::class,
             ],
-        ]);
+        ], $filter->toArray());
     }
 
-    function it_creates_entity_filters_with_multiple_option(): void
+    public function testCreatesEntityFiltersWithMultipleOption(): void
     {
-        $filter = $this::create('author', Author::class, true);
+        $filter = EntityFilter::create('author', Author::class, true);
 
-        $filter->shouldHaveType(FilterInterface::class);
-        $filter->toArray()->shouldReturn([
+        $this->assertInstanceOf(FilterInterface::class, $filter);
+        $this->assertEquals([
             'type' => 'entity',
             'form_options' => [
                 'class' => Author::class,
                 'multiple' => true,
             ],
-        ]);
+        ], $filter->toArray());
     }
 }

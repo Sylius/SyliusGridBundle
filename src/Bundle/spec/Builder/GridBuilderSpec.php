@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder;
 
 use App\Entity\Book;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
@@ -27,248 +27,246 @@ use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
-final class GridBuilderSpec extends ObjectBehavior
+final class GridBuilderTest extends TestCase
 {
-    function let(): void
+    private GridBuilder $gridBuilder;
+
+    protected function setUp(): void
     {
-        $this->beConstructedThrough('create', ['admin_book_grid', Book::class]);
+        $this->gridBuilder = GridBuilder::create('admin_book_grid', Book::class);
     }
 
-    function it_is_initializable(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->shouldHaveType(GridBuilder::class);
+        $this->assertInstanceOf(GridBuilderInterface::class, $this->gridBuilder);
     }
 
-    function it_implements_an_interface(): void
+    public function testSetsDriver(): void
     {
-        $this->shouldImplement(GridBuilderInterface::class);
+        $this->gridBuilder->setDriver('doctrine/dbal');
+
+        $this->assertSame('doctrine/dbal', $this->gridBuilder->toArray()['driver']['name']);
     }
 
-    function it_sets_driver(): void
+    public function testSetsDriverOptions(): void
     {
-        $this->setDriver('doctrine/dbal');
-
-        $this->toArray()['driver']['name']->shouldReturn('doctrine/dbal');
-    }
-
-    function it_sets_driver_options(): void
-    {
-        $gridBuilder = $this->setDriverOption('pagination', [
+        $gridBuilder = $this->gridBuilder->setDriverOption('pagination', [
             'fetch_join_collection' => false,
         ]);
 
-        $gridBuilder->toArray()['driver']['options']['pagination']->shouldReturn([
+        $this->assertSame([
             'fetch_join_collection' => false,
-        ]);
+        ], $gridBuilder->toArray()['driver']['options']['pagination']);
     }
 
-    function it_sets_a_repository_method(): void
+    public function testSetsARepositoryMethod(): void
     {
-        $this->setRepositoryMethod('createListQueryBuilder', []);
+        $this->gridBuilder->setRepositoryMethod('createListQueryBuilder', []);
 
-        $this->toArray()['driver']['options']['repository']->shouldReturn([
+        $this->assertSame([
             'method' => 'createListQueryBuilder',
             'arguments' => [],
-        ]);
+        ], $this->gridBuilder->toArray()['driver']['options']['repository']);
     }
 
-    function it_sets_a_repository_method_with_service(): void
+    public function testSetsARepositoryMethodWithService(): void
     {
         $queryBuilder = new \stdClass();
-        $this->setRepositoryMethod([$queryBuilder, 'method'], []);
+        $this->gridBuilder->setRepositoryMethod([$queryBuilder, 'method'], []);
 
-        $this->toArray()['driver']['options']['repository']->shouldReturn([
+        $this->assertSame([
             'method' => [$queryBuilder, 'method'],
             'arguments' => [],
-        ]);
+        ], $this->gridBuilder->toArray()['driver']['options']['repository']);
     }
 
-    function it_sets_provider_with_a_string(): void
+    public function testSetsProviderWithAString(): void
     {
-        $this->setProvider('App/Driver');
+        $this->gridBuilder->setProvider('App/Driver');
 
-        $this->toArray()['provider']->shouldReturn('App/Driver');
+        $this->assertSame('App/Driver', $this->gridBuilder->toArray()['provider']);
     }
 
-    function it_sets_provider_with_a_callable(): void
+    public function testSetsProviderWithACallable(): void
     {
-        $this->setProvider([CallableProvider::class, 'getData']);
+        $this->gridBuilder->setProvider([CallableProvider::class, 'getData']);
 
-        $this->toArray()['provider']->shouldBeCallable();
+        $this->assertIsCallable($this->gridBuilder->toArray()['provider']);
     }
 
-    function it_adds_fields(): void
-    {
-        $field = Field::create('title', 'string');
-        $this->addField($field);
-
-        $this->toArray()['fields']->shouldHaveKey('title');
-    }
-
-    function it_remove_fields(): void
+    public function testAddsFields(): void
     {
         $field = Field::create('title', 'string');
-        $this->addField($field);
-        $this->removeField('title');
+        $this->gridBuilder->addField($field);
 
-        $this->toArray()->shouldNotHaveKey('fields');
-        $this->toArray()['removals']['fields']->shouldContain('title');
+        $this->assertArrayHasKey('title', $this->gridBuilder->toArray()['fields']);
     }
 
-    function it_sets_orders(): void
+    public function testRemoveFields(): void
     {
-        $this->orderBy('title');
-        $this->addOrderBy('createdAt', 'desc');
+        $field = Field::create('title', 'string');
+        $this->gridBuilder->addField($field);
+        $this->gridBuilder->removeField('title');
 
-        $this->toArray()['sorting']->shouldReturn(['title' => 'asc', 'createdAt' => 'desc']);
+        $this->assertArrayNotHasKey('fields', $this->gridBuilder->toArray());
+        $this->assertContains('title', $this->gridBuilder->toArray()['removals']['fields']);
     }
 
-    function it_sets_limits(): void
+    public function testSetsOrders(): void
     {
-        $this->setLimits([10, 5, 25]);
+        $this->gridBuilder->orderBy('title');
+        $this->gridBuilder->addOrderBy('createdAt', 'desc');
 
-        $this->toArray()['limits']->shouldReturn([10, 5, 25]);
+        $this->assertSame(['title' => 'asc', 'createdAt' => 'desc'], $this->gridBuilder->toArray()['sorting']);
     }
 
-    function it_adds_filters(): void
+    public function testSetsLimits(): void
+    {
+        $this->gridBuilder->setLimits([10, 5, 25]);
+
+        $this->assertSame([10, 5, 25], $this->gridBuilder->toArray()['limits']);
+    }
+
+    public function testAddsFilters(): void
     {
         $filter = Filter::create('search', 'string');
-        $this->addFilter($filter);
+        $this->gridBuilder->addFilter($filter);
 
-        $this->toArray()['filters']->shouldHaveKey('search');
+        $this->assertArrayHasKey('search', $this->gridBuilder->toArray()['filters']);
     }
 
-    function it_remove_filters(): void
+    public function testRemoveFilters(): void
     {
         $filter = Filter::create('search', 'string');
-        $this->addFilter($filter);
-        $this->removeFilter('search');
+        $this->gridBuilder->addFilter($filter);
+        $this->gridBuilder->removeFilter('search');
 
-        $this->toArray()->shouldNotHaveKey('filters');
-        $this->toArray()['removals']['filters']->shouldContain('search');
+        $this->assertArrayNotHasKey('filters', $this->gridBuilder->toArray());
+        $this->assertContains('search', $this->gridBuilder->toArray()['removals']['filters']);
     }
 
-    function it_adds_actions_groups(ActionGroupInterface $actionGroup): void
+    public function testAddsActionsGroups(): void
     {
-        $actionGroup->getName()->willReturn(ActionGroupInterface::MAIN_GROUP);
-        $actionGroup->toArray()->willReturn([]);
+        $actionGroup = $this->createMock(ActionGroupInterface::class);
+        $actionGroup->method('getName')->willReturn(ActionGroupInterface::MAIN_GROUP);
+        $actionGroup->method('toArray')->willReturn([]);
 
-        $this->addActionGroup($actionGroup);
+        $this->gridBuilder->addActionGroup($actionGroup);
 
-        $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::MAIN_GROUP);
+        $this->assertArrayHasKey(ActionGroupInterface::MAIN_GROUP, $this->gridBuilder->toArray()['actions']);
     }
 
-    function it_remove_actions_groups(): void
+    public function testRemoveActionsGroups(): void
     {
         $actionGroup = ActionGroup::create('main');
-        $this->addActionGroup($actionGroup);
+        $this->gridBuilder->addActionGroup($actionGroup);
         $actionGroup = ActionGroup::create('item');
-        $this->addActionGroup($actionGroup);
+        $this->gridBuilder->addActionGroup($actionGroup);
 
-        $this->removeActionGroup('main');
+        $this->gridBuilder->removeActionGroup('main');
 
-        $this->toArray()['actions']->shouldNotHaveKey('main');
-        $this->toArray()['removals']['actions']->shouldContain('main');
+        $this->assertArrayNotHasKey('main', $this->gridBuilder->toArray()['actions']);
+        $this->assertContains('main', $this->gridBuilder->toArray()['removals']['actions']);
     }
 
-    function it_adds_create_actions(): void
+    public function testAddsCreateActions(): void
     {
-        $this->addAction(CreateAction::create(), ActionGroupInterface::MAIN_GROUP);
+        $this->gridBuilder->addAction(CreateAction::create(), ActionGroupInterface::MAIN_GROUP);
 
-        $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::MAIN_GROUP);
-        $this->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]->shouldHaveKey('create');
-        $this->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]['create']->shouldHaveKey('label');
-        $this->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]['create']['label']->shouldReturn('sylius.ui.create');
+        $this->assertArrayHasKey(ActionGroupInterface::MAIN_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('create', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]['create']);
+        $this->assertSame('sylius.ui.create', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]['create']['label']);
     }
 
-    function it_adds_create_actions_on_a_specific_group(): void
+    public function testAddsCreateActionsOnASpecificGroup(): void
     {
-        $this->addAction(CreateAction::create(), 'custom');
+        $this->gridBuilder->addAction(CreateAction::create(), 'custom');
 
-        $this->toArray()['actions']->shouldHaveKey('custom');
-        $this->toArray()['actions']['custom']->shouldHaveKey('create');
-        $this->toArray()['actions']['custom']['create']->shouldHaveKey('label');
-        $this->toArray()['actions']['custom']['create']['label']->shouldReturn('sylius.ui.create');
+        $this->assertArrayHasKey('custom', $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('create', $this->gridBuilder->toArray()['actions']['custom']);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions']['custom']['create']);
+        $this->assertSame('sylius.ui.create', $this->gridBuilder->toArray()['actions']['custom']['create']['label']);
     }
 
-    function it_adds_show_actions(): void
+    public function testAddsShowActions(): void
     {
-        $this->addAction(ShowAction::create(), ActionGroupInterface::ITEM_GROUP);
+        $this->gridBuilder->addAction(ShowAction::create(), ActionGroupInterface::ITEM_GROUP);
 
-        $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::ITEM_GROUP);
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]->shouldHaveKey('show');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['show']->shouldHaveKey('label');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['show']['label']->shouldReturn('sylius.ui.show');
+        $this->assertArrayHasKey(ActionGroupInterface::ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('show', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['show']);
+        $this->assertSame('sylius.ui.show', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['show']['label']);
     }
 
-    function it_adds_show_actions_on_a_specific_group(): void
+    public function testAddsShowActionsOnASpecificGroup(): void
     {
-        $this->addAction(ShowAction::create(), 'custom');
+        $this->gridBuilder->addAction(ShowAction::create(), 'custom');
 
-        $this->toArray()['actions']->shouldHaveKey('custom');
-        $this->toArray()['actions']['custom']->shouldHaveKey('show');
-        $this->toArray()['actions']['custom']['show']->shouldHaveKey('label');
-        $this->toArray()['actions']['custom']['show']['label']->shouldReturn('sylius.ui.show');
+        $this->assertArrayHasKey('custom', $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('show', $this->gridBuilder->toArray()['actions']['custom']);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions']['custom']['show']);
+        $this->assertSame('sylius.ui.show', $this->gridBuilder->toArray()['actions']['custom']['show']['label']);
     }
 
-    function it_adds_update_actions(): void
+    public function testAddsUpdateActions(): void
     {
-        $this->addAction(UpdateAction::create(), ActionGroupInterface::ITEM_GROUP);
+        $this->gridBuilder->addAction(UpdateAction::create(), ActionGroupInterface::ITEM_GROUP);
 
-        $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::ITEM_GROUP);
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]->shouldHaveKey('update');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']->shouldHaveKey('label');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']['label']->shouldReturn('sylius.ui.edit');
+        $this->assertArrayHasKey(ActionGroupInterface::ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('update', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']);
+        $this->assertSame('sylius.ui.edit', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']['label']);
     }
 
-    function it_adds_update_actions_on_a_specific_group(): void
+    public function testAddsUpdateActionsOnASpecificGroup(): void
     {
-        $this->addAction(UpdateAction::create(), 'custom');
+        $this->gridBuilder->addAction(UpdateAction::create(), 'custom');
 
-        $this->toArray()['actions']->shouldHaveKey('custom');
-        $this->toArray()['actions']['custom']->shouldHaveKey('update');
-        $this->toArray()['actions']['custom']['update']->shouldHaveKey('label');
-        $this->toArray()['actions']['custom']['update']['label']->shouldReturn('sylius.ui.edit');
+        $this->assertArrayHasKey('custom', $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('update', $this->gridBuilder->toArray()['actions']['custom']);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions']['custom']['update']);
+        $this->assertSame('sylius.ui.edit', $this->gridBuilder->toArray()['actions']['custom']['update']['label']);
     }
 
-    function it_adds_delete_actions(): void
+    public function testAddsDeleteActions(): void
     {
-        $this->addAction(DeleteAction::create(), ActionGroupInterface::ITEM_GROUP);
+        $this->gridBuilder->addAction(DeleteAction::create(), ActionGroupInterface::ITEM_GROUP);
 
-        $this->toArray()['actions']->shouldHaveKey(ActionGroupInterface::ITEM_GROUP);
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]->shouldHaveKey('delete');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['delete']->shouldHaveKey('label');
-        $this->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['delete']['label']->shouldReturn('sylius.ui.delete');
+        $this->assertArrayHasKey(ActionGroupInterface::ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('delete', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['delete']);
+        $this->assertSame('sylius.ui.delete', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['delete']['label']);
     }
 
-    function it_adds_delete_actions_on_a_specific_group(): void
+    public function testAddsDeleteActionsOnASpecificGroup(): void
     {
-        $this->addAction(DeleteAction::create(), 'custom');
+        $this->gridBuilder->addAction(DeleteAction::create(), 'custom');
 
-        $this->toArray()['actions']->shouldHaveKey('custom');
-        $this->toArray()['actions']['custom']->shouldHaveKey('delete');
-        $this->toArray()['actions']['custom']['delete']->shouldHaveKey('label');
-        $this->toArray()['actions']['custom']['delete']['label']->shouldReturn('sylius.ui.delete');
+        $this->assertArrayHasKey('custom', $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('delete', $this->gridBuilder->toArray()['actions']['custom']);
+        $this->assertArrayHasKey('label', $this->gridBuilder->toArray()['actions']['custom']['delete']);
+        $this->assertSame('sylius.ui.delete', $this->gridBuilder->toArray()['actions']['custom']['delete']['label']);
     }
 
-    function it_remove_actions(): void
+    public function testRemoveActions(): void
     {
         $action = Action::create('update', 'update');
-        $this->addAction($action, 'item');
+        $this->gridBuilder->addAction($action, 'item');
         $action = Action::create('delete', 'delete');
-        $this->addAction($action, 'item');
+        $this->gridBuilder->addAction($action, 'item');
 
-        $this->removeAction('delete', 'item');
+        $this->gridBuilder->removeAction('delete', 'item');
 
-        $this->toArray()['actions']['item']->shouldNotHaveKey('delete');
-        $this->toArray()['removals']['actions']['item']->shouldContain('delete');
+        $this->assertArrayNotHasKey('delete', $this->gridBuilder->toArray()['actions']['item']);
+        $this->assertContains('delete', $this->gridBuilder->toArray()['removals']['actions']['item']);
     }
 
-    function it_can_build_extended_grids(): void
+    public function testCanBuildExtendedGrids(): void
     {
-        $gridBuilder = $this->extends('app_author');
+        $gridBuilder = $this->gridBuilder->extends('app_author');
 
-        $gridBuilder->toArray()['extends']->shouldReturn('app_author');
+        $this->assertSame('app_author', $gridBuilder->toArray()['extends']);
     }
 }
 

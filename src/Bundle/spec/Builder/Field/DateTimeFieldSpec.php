@@ -11,33 +11,28 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Field;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Field;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
 
-final class DateTimeFieldSpec extends ObjectBehavior
+final class DateTimeFieldTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testCreatesFields(): void
     {
-        $this->shouldHaveType(DateTimeField::class);
+        $field = DateTimeField::create('createdAt');
+
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals('createdAt', $field->getName());
     }
 
-    function it_creates_fields(): void
+    public function testDefinesVarOptions(): void
     {
-        $field = $this::create('createdAt');
-
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getName()->shouldReturn('createdAt');
-    }
-
-    function it_defines_var_options(): void
-    {
-        $field = $this::create('createdAt');
+        $field = DateTimeField::create('createdAt');
         $field->setOption('vars', ['foo' => 'bar']);
 
-        $field->shouldHaveType(FieldInterface::class);
-        $field->getOptions()['vars']->shouldReturn(['foo' => 'bar']);
+        $this->assertInstanceOf(FieldInterface::class, $field);
+        $this->assertEquals(['foo' => 'bar'], $field->getOptions()['vars']);
     }
 }

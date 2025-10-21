@@ -11,41 +11,36 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 
-final class CreateActionSpec extends ObjectBehavior
+final class CreateActionTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsCreateActions(): void
     {
-        $this->shouldHaveType(CreateAction::class);
-    }
+        $action = CreateAction::create();
 
-    function it_builds_create_actions(): void
-    {
-        $action = $this::create();
-
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'create',
             'label' => 'sylius.ui.create',
-        ]);
+        ], $action->toArray());
     }
 
-    function it_builds_create_action_with_options(): void
+    public function testBuildsCreateActionWithOptions(): void
     {
-        $action = $this::create(['custom' => true]);
+        $action = CreateAction::create(['custom' => true]);
 
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'create',
             'label' => 'sylius.ui.create',
             'options' => [
                 'custom' => true,
             ],
-        ]);
+        ], $action->toArray());
     }
 }

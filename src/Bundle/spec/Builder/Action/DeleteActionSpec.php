@@ -11,41 +11,36 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 
-final class DeleteActionSpec extends ObjectBehavior
+final class DeleteActionTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsCreateActions(): void
     {
-        $this->shouldHaveType(DeleteAction::class);
-    }
+        $action = DeleteAction::create();
 
-    function it_builds_create_actions(): void
-    {
-        $action = $this::create();
-
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'delete',
             'label' => 'sylius.ui.delete',
-        ]);
+        ], $action->toArray());
     }
 
-    function it_builds_create_actions_with_options(): void
+    public function testBuildsCreateActionsWithOptions(): void
     {
-        $action = $this::create(['custom' => true]);
+        $action = DeleteAction::create(['custom' => true]);
 
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'delete',
             'label' => 'sylius.ui.delete',
             'options' => [
                 'custom' => true,
             ],
-        ]);
+        ], $action->toArray());
     }
 }

@@ -11,39 +11,36 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\ActionGroup;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\ActionGroup;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 
-final class MainActionGroupSpec extends ObjectBehavior
+final class MainActionGroupTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsAnActionGroup(): void
     {
-        $this->shouldHaveType(MainActionGroup::class);
+        $subject = MainActionGroup::create();
+        $this->assertInstanceOf(ActionGroupInterface::class, $subject);
     }
 
-    function it_builds_an_action_group(): void
+    public function testBuildsAnActionGroupWithActions(): void
     {
-        $this::create()->shouldHaveType(ActionGroupInterface::class);
-    }
+        $firstAction = $this->createMock(ActionInterface::class);
+        $firstAction->method('getName')->willReturn('first');
+        $firstAction->method('toArray')->willReturn([]);
 
-    function it_builds_an_action_group_with_actions(
-        ActionInterface $firstAction,
-        ActionInterface $secondAction,
-    ): void {
-        $firstAction->getName()->willReturn('first');
-        $firstAction->toArray()->willReturn([]);
-        $secondAction->getName()->willReturn('second');
-        $secondAction->toArray()->willReturn([]);
+        $secondAction = $this->createMock(ActionInterface::class);
+        $secondAction->method('getName')->willReturn('second');
+        $secondAction->method('toArray')->willReturn([]);
 
-        $actionGroup = $this::create($firstAction, $secondAction);
+        $actionGroup = MainActionGroup::create($firstAction, $secondAction);
 
-        $actionGroup->toArray()->shouldHaveKey('first');
-        $actionGroup->toArray()['first']->shouldReturn([]);
-        $actionGroup->toArray()->shouldHaveKey('second');
-        $actionGroup->toArray()['second']->shouldReturn([]);
+        $this->assertArrayHasKey('first', $actionGroup->toArray());
+        $this->assertEquals([], $actionGroup->toArray()['first']);
+        $this->assertArrayHasKey('second', $actionGroup->toArray());
+        $this->assertEquals([], $actionGroup->toArray()['second']);
     }
 }
