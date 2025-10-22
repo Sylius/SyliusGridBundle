@@ -11,31 +11,29 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Config;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Config;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 use Sylius\Bundle\GridBundle\Config\GridConfigInterface;
 
-final class GridConfigSpec extends ObjectBehavior
+final class GridConfigTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testImplementsAnInterface(): void
     {
-        $this->shouldHaveType(GridConfig::class);
+        $gridConfig = new GridConfig();
+        self::assertInstanceOf(GridConfigInterface::class, $gridConfig);
     }
 
-    function it_implements_an_interface(): void
+    public function testAddsGrids(): void
     {
-        $this->shouldImplement(GridConfigInterface::class);
-    }
+        $gridBuilder = $this->createMock(GridBuilderInterface::class);
+        $gridBuilder->method('getName')->willReturn('my_grid');
+        $gridBuilder->method('toArray')->willReturn(['my_grid' => []]);
 
-    function it_adds_grids(GridBuilderInterface $gridBuilder): void
-    {
-        $gridBuilder->getName()->willReturn('my_grid');
-        $gridBuilder->toArray()->willReturn(['my_grid' => []]);
-
-        $this->addGrid($gridBuilder);
-        $this->toArray()['grids']->shouldHaveKey('my_grid');
+        $gridConfig = new GridConfig();
+        $gridConfig->addGrid($gridBuilder);
+        self::assertArrayHasKey('my_grid', $gridConfig->toArray()['grids']);
     }
 }
