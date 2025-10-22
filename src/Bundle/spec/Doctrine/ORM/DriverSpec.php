@@ -11,47 +11,53 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Doctrine\ORM;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Doctrine\ORM\DataSource;
+use Sylius\Bundle\GridBundle\Doctrine\ORM\Driver;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Parameters;
 
-final class DriverSpec extends ObjectBehavior
+final class DriverTest extends TestCase
 {
-    function let(ManagerRegistry $managerRegistry): void
+    public function testImplementsGridDriver(): void
     {
-        $this->beConstructedWith($managerRegistry);
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $driver = new Driver($managerRegistry);
+
+        $this->assertInstanceOf(DriverInterface::class, $driver);
     }
 
-    function it_implements_grid_driver(): void
+    public function testThrowsExceptionIfClassIsUndefined(): void
     {
-        $this->shouldImplement(DriverInterface::class);
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $driver = new Driver($managerRegistry);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.');
+
+        $driver->getDataSource([], new Parameters());
     }
 
-    function it_throws_exception_if_class_is_undefined(): void
+    public function testCreatesDataSourceViaDoctrineOrmQueryBuilder(): void
     {
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.'))
-            ->during('getDataSource', [[], new Parameters()])
-        ;
-    }
+        $managerRegistry = $this->createMock(ManagerRegistry::class);
+        $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityRepository = $this->createMock(EntityRepository::class);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
 
-    function it_creates_data_source_via_doctrine_orm_query_builder(
-        ManagerRegistry $managerRegistry,
-        EntityManagerInterface $entityManager,
-        EntityRepository $entityRepository,
-        QueryBuilder $queryBuilder,
-    ): void {
-        $managerRegistry->getManagerForClass('App:Book')->willReturn($entityManager);
-        $entityManager->getRepository('App:Book')->willReturn($entityRepository);
-        $entityRepository->createQueryBuilder('o')->willReturn($queryBuilder);
+        $managerRegistry->expects($this->once())->method('getManagerForClass')->with('App:Book')->willReturn($entityManager);
+        $entityManager->expects($this->once())->method('getRepository')->with('App:Book')->willReturn($entityRepository);
+        $entityRepository->expects($this->once())->method('createQueryBuilder')->with('o')->willReturn($queryBuilder);
 
-        $this->getDataSource(['class' => 'App:Book'], new Parameters())->shouldHaveType(DataSource::class);
+        $driver = new Driver($managerRegistry);
+        $dataSource = $driver->getDataSource(['class' => 'App:Book'], new Parameters());
+
+        $this->assertInstanceOf(DataSource::class, $dataSource);
     }
 }

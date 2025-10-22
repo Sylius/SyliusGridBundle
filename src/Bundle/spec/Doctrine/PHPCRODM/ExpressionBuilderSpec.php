@@ -11,131 +11,157 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 
 use Doctrine\Common\Collections\Expr\Expression;
 use Doctrine\Common\Collections\ExpressionBuilder as CollectionsExpressionBuilder;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExpressionBuilder;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExtraComparison;
 
 /**
  * @require Doctrine\ODM\PHPCR\DocumentManagerInterface
  */
-final class ExpressionBuilderSpec extends ObjectBehavior
+final class ExpressionBuilderTest extends TestCase
 {
-    function let(CollectionsExpressionBuilder $expressionBuilder): void
+    public function testBuildsAndx(): void
     {
-        $this->beConstructedWith($expressionBuilder);
+        $expression = $this->createMock(Expression::class);
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('andX')->with($expression);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->andX($expression);
     }
 
-    function it_builds_andx(
-        Expression $expression,
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->andX($expression);
-        $expressionBuilder->andX($expression)->shouldHaveBeenCalled();
-    }
-
-    function it_builds_orx(
-        Expression $expression,
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->orX($expression);
-        $expressionBuilder->orX($expression)->shouldHaveBeenCalled();
-    }
-
-    function it_builds_equals(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->equals('o.foo', 'value');
-        $expressionBuilder->eq('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_not_equals(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->notEquals('o.foo', 'value');
-        $expressionBuilder->neq('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_less_than_or_equal(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->lessThanOrEqual('o.foo', 'value');
-        $expressionBuilder->lte('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_greater_than(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->greaterThan('o.foo', 'value');
-        $expressionBuilder->gt('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_greater_than_or_equal(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->greaterThanOrequal('o.foo', 'value');
-        $expressionBuilder->gte('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_in(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->in('o.foo', ['value']);
-        $expressionBuilder->in('o.foo', ['value'])->shouldHaveBeenCalled();
-    }
-
-    function it_builds_not_in(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->notIn('o.foo', ['value']);
-        $expressionBuilder->notIn('o.foo', ['value'])->shouldHaveBeenCalled();
-    }
-
-    function it_builds_is_null(): void
+    public function testBuildsOrx(): void
     {
-        $expr = $this->isNull('o.foo');
-        $expr->getOperator()->shouldReturn(ExtraComparison::IS_NULL);
-        $expr->getField()->shouldReturn('o.foo');
+        $expression = $this->createMock(Expression::class);
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('orX')->with($expression);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->orX($expression);
     }
 
-    function it_builds_is_not_null(): void
+    public function testBuildsEquals(): void
     {
-        $expr = $this->isNotNull('o.foo');
-        $expr->getOperator()->shouldReturn(ExtraComparison::IS_NOT_NULL);
-        $expr->getField()->shouldReturn('o.foo');
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('eq')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->equals('o.foo', 'value');
     }
 
-    function it_builds_like(
-        CollectionsExpressionBuilder $expressionBuilder,
-    ): void {
-        $this->like('o.foo', 'value');
-        $expressionBuilder->contains('o.foo', 'value')->shouldHaveBeenCalled();
-    }
-
-    function it_builds_not_like(): void
+    public function testBuildsNotEquals(): void
     {
-        $expr = $this->notLike('o.foo', 'value');
-        $expr->getOperator()->shouldReturn(ExtraComparison::NOT_CONTAINS);
-        $expr->getField()->shouldReturn('o.foo');
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('neq')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->notEquals('o.foo', 'value');
     }
 
-    function it_orders_by(): void
+    public function testBuildsLessThanOrEqual(): void
     {
-        $this->orderBy('o.foo', 'asc');
-        $this->getOrderBys()->shouldReturn([
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('lte')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->lessThanOrEqual('o.foo', 'value');
+    }
+
+    public function testBuildsGreaterThan(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('gt')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->greaterThan('o.foo', 'value');
+    }
+
+    public function testBuildsGreaterThanOrEqual(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('gte')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->greaterThanOrEqual('o.foo', 'value');
+    }
+
+    public function testBuildsIn(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('in')->with('o.foo', ['value']);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->in('o.foo', ['value']);
+    }
+
+    public function testBuildsNotIn(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('notIn')->with('o.foo', ['value']);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->notIn('o.foo', ['value']);
+    }
+
+    public function testBuildsIsNull(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->isNull('o.foo');
+
+        $this->assertEquals(ExtraComparison::IS_NULL, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testBuildsIsNotNull(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->isNotNull('o.foo');
+
+        $this->assertEquals(ExtraComparison::IS_NOT_NULL, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testBuildsLike(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('contains')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->like('o.foo', 'value');
+    }
+
+    public function testBuildsNotLike(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->notLike('o.foo', 'value');
+
+        $this->assertEquals(ExtraComparison::NOT_CONTAINS, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testOrdersBy(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expressionBuilder->orderBy('o.foo', 'asc');
+
+        $this->assertEquals([
             'o.foo' => 'asc',
-        ]);
+        ], $expressionBuilder->getOrderBys());
     }
 
-    function it_adds_order_by(): void
+    public function testAddsOrderBy(): void
     {
-        $this->orderBy('o.foo', 'asc');
-        $this->addOrderBy('o.bar', 'desc');
-        $this->getOrderBys()->shouldReturn([
+        $expressionBuilder = new ExpressionBuilder();
+        $expressionBuilder->orderBy('o.foo', 'asc');
+        $expressionBuilder->addOrderBy('o.bar', 'desc');
+
+        $this->assertEquals([
             'o.foo' => 'asc',
             'o.bar' => 'desc',
-        ]);
+        ], $expressionBuilder->getOrderBys());
     }
 }

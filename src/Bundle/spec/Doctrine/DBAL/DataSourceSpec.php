@@ -11,34 +11,34 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Doctrine\DBAL;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\DBAL;
 
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Pagerfanta;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Doctrine\DBAL\DataSource;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Parameters;
 
-final class DataSourceSpec extends ObjectBehavior
+final class DataSourceTest extends TestCase
 {
-    function let(QueryBuilder $queryBuilder): void
+    public function testImplementsDataSource(): void
     {
-        $this->beConstructedWith($queryBuilder);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $dataSource = new DataSource($queryBuilder);
+
+        $this->assertInstanceOf(DataSourceInterface::class, $dataSource);
     }
 
-    function it_implements_data_source(): void
+    public function testGetsTheData(): void
     {
-        $this->shouldImplement(DataSourceInterface::class);
-    }
+        $queryBuilder = $this->createMock(QueryBuilder::class);
 
-    function it_gets_the_data(QueryBuilder $queryBuilder): void
-    {
-        $queryBuilder->getType()->willReturn(QueryBuilder::SELECT);
+        $dataSource = new DataSource($queryBuilder);
+        $data = $dataSource->getData(new Parameters(['page' => '1']));
 
-        $data = $this->getData(new Parameters(['page' => '1']));
-
-        $data->shouldHaveType(Pagerfanta::class);
-        $data->getCurrentPage()->shouldReturn(1);
-        $data->getNormalizeOutOfRangePages()->shouldReturn(true);
+        $this->assertInstanceOf(Pagerfanta::class, $data);
+        $this->assertEquals(1, $data->getCurrentPage());
+        $this->assertTrue($data->getNormalizeOutOfRangePages());
     }
 }

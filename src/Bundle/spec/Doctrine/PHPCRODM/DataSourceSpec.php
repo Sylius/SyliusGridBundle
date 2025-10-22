@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 
 use Doctrine\Common\Collections\Expr\Comparison;
-use Doctrine\Common\Collections\Expr\Value;
+use Doctrine\Common\Collections\Expr\Expression;
+use Doctrine\Common\Collections\ExpressionBuilder as CollectionsExpressionBuilder;
 use Doctrine\ODM\PHPCR\Query\Builder\ConstraintComparison;
 use Doctrine\ODM\PHPCR\Query\Builder\OrderBy;
 use Doctrine\ODM\PHPCR\Query\Builder\Ordering;
@@ -22,8 +23,9 @@ use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
 use Doctrine\ODM\PHPCR\Query\Builder\WhereOr;
 use Doctrine\ODM\PHPCR\Query\Query;
 use Pagerfanta\Pagerfanta;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\DataSource;
+use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExpressionBuilder;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExpressionBuilderInterface;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Parameters;
@@ -31,136 +33,264 @@ use Sylius\Component\Grid\Parameters;
 /**
  * @require Doctrine\ODM\PHPCR\DocumentManagerInterface
  */
-final class DataSourceSpec extends ObjectBehavior
+final class DataSourceTest extends TestCase
 {
-    function it_implements_data_source(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testImplementsDataSource(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
 
-        $this->shouldImplement(DataSourceInterface::class);
+        $this->assertInstanceOf(DataSourceInterface::class, $dataSource);
     }
 
-    function it_should_restrict_with_or_condition(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-        Comparison $comparison,
-        Value $value,
-        WhereOr $constraint,
-        ConstraintComparison $comparisonConstraint,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldRestrictWithOrCondition(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $comparison = $this->createMock(Comparison::class);
+        $value = $this->createMock(\Doctrine\Common\Collections\Expr\Value::class);
+        $constraint = $this->createMock(WhereOr::class);
+        $comparisonConstraint = $this->createMock(ConstraintComparison::class);
 
-        $queryBuilder->orWhere()->willReturn($constraint);
-        $value->getValue()->willReturn('value');
-        $comparison->getValue()->willReturn($value);
-        $comparison->getField()->willReturn('foo');
-        $comparison->getOperator()->willReturn('=');
+        $queryBuilder->expects($this->once())->method('orWhere')->willReturn($constraint);
+        $value->expects($this->once())->method('getValue')->willReturn('value');
+        $comparison->expects($this->once())->method('getValue')->willReturn($value);
+        $comparison->expects($this->once())->method('getField')->willReturn('foo');
+        $comparison->expects($this->once())->method('getOperator')->willReturn('=');
+        $constraint->expects($this->once())->method('eq')->willReturn($comparisonConstraint);
+        $comparisonConstraint->expects($this->once())->method('field')->with('o.foo')->willReturn($comparisonConstraint);
+        $comparisonConstraint->expects($this->once())->method('literal')->with('value')->willReturn($comparisonConstraint);
+        $comparisonConstraint->expects($this->once())->method('end');
 
-        $constraint->eq()->willReturn($comparisonConstraint);
-        $comparisonConstraint->field('o.foo')->willReturn($comparisonConstraint);
-        $comparisonConstraint->literal('value')->shouldBeCalled()->willReturn($comparisonConstraint);
-        $comparisonConstraint->end()->shouldBeCalled();
-
-        $this->restrict($comparison, DataSourceInterface::CONDITION_OR);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
+        $dataSource->restrict($comparison, DataSourceInterface::CONDITION_OR);
     }
 
-    function it_should_throw_an_exception_if_an_unknown_condition_is_passed(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-        Comparison $comparison,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldThrowAnExceptionIfAnUnknownConditionIsPassed(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $comparison = $this->createMock(Comparison::class);
 
-        $this->shouldThrow(
-            new \RuntimeException('Unknown restrict condition "foo"'),
-        )->during('restrict', [$comparison, 'foo']);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Unknown restrict condition "foo"');
+
+        $dataSource->restrict($comparison, 'foo');
     }
 
-    function it_should_return_the_expression_builder(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldReturnTheExpressionBuilder(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
 
-        $this->getExpressionBuilder()->shouldReturn($expressionBuilder);
+        $this->assertSame($expressionBuilder, $dataSource->getExpressionBuilder());
     }
 
-    function it_should_get_the_data(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-        Query $query,
-        OrderBy $orderBy,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldGetTheData(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $query = $this->createMock(Query::class);
+        $orderBy = $this->createMock(OrderBy::class);
 
-        $expressionBuilder->getOrderBys()->willReturn([]);
+        $expressionBuilder->expects($this->once())->method('getOrderBys')->willReturn([]);
+        $queryBuilder->expects($this->once())->method('orderBy')->willReturn($orderBy);
 
-        $queryBuilder->orderBy()->willReturn($orderBy);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->setMaxResults(Argument::any())->willReturn($query);
-        $query->setFirstResult(Argument::any())->willReturn($query);
-        $query->execute()->willReturn([]);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
+        $data = $dataSource->getData(new Parameters(['page' => '1']));
 
-        $data = $this->getData(new Parameters(['page' => '1']));
-
-        $data->shouldHaveType(Pagerfanta::class);
-        $data->getCurrentPage()->shouldReturn(1);
-        $data->getNormalizeOutOfRangePages()->shouldReturn(false);
+        $this->assertInstanceOf(Pagerfanta::class, $data);
+        $this->assertEquals(1, $data->getCurrentPage());
+        $this->assertFalse($data->getNormalizeOutOfRangePages());
     }
 
-    function it_should_set_the_order_on_the_query_builder(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-        Query $query,
-        OrderBy $orderBy,
-        Ordering $ordering,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldSetTheOrderOnTheQueryBuilder(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $query = $this->createMock(Query::class);
+        $orderBy = $this->createMock(OrderBy::class);
+        $ordering = $this->createMock(Ordering::class);
 
-        $expressionBuilder->getOrderBys()->willReturn([
+        $expressionBuilder->expects($this->once())->method('getOrderBys')->willReturn([
             'foo' => 'asc',
             'bar' => 'desc',
         ]);
-        $queryBuilder->orderBy()->willReturn($orderBy);
-        $orderBy->asc()->willReturn($ordering);
-        $orderBy->desc()->willReturn($ordering);
-        $ordering->field('o.foo')->shouldBeCalled();
-        $ordering->field('o.bar')->shouldBeCalled();
+        $queryBuilder->expects($this->once())->method('orderBy')->willReturn($orderBy);
+        $orderBy->expects($this->once())->method('asc')->willReturn($ordering);
+        $orderBy->expects($this->once())->method('desc')->willReturn($ordering);
+        $ordering->expects($this->exactly(2))->method('field')->withConsecutive(['o.foo'], ['o.bar']);
 
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->setMaxResults(Argument::any())->willReturn($query);
-        $query->setFirstResult(Argument::any())->willReturn($query);
-        $query->execute()->willReturn([]);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
+        $data = $dataSource->getData(new Parameters(['page' => '1']));
 
-        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
+        $this->assertInstanceOf(Pagerfanta::class, $data);
     }
 
-    function it_should_set_the_order_on_the_query_builder_as_fields_only(
-        QueryBuilder $queryBuilder,
-        ExpressionBuilderInterface $expressionBuilder,
-        Query $query,
-        OrderBy $orderBy,
-        Ordering $ordering,
-    ): void {
-        $this->beConstructedWith($queryBuilder, $expressionBuilder);
+    public function testShouldSetTheOrderOnTheQueryBuilderAsFieldsOnly(): void
+    {
+        $queryBuilder = $this->createMock(QueryBuilder::class);
+        $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
+        $query = $this->createMock(Query::class);
+        $orderBy = $this->createMock(OrderBy::class);
+        $ordering = $this->createMock(Ordering::class);
 
-        $expressionBuilder->getOrderBys()->willReturn([
+        $expressionBuilder->expects($this->once())->method('getOrderBys')->willReturn([
             'foo',
             'bar',
         ]);
-        $queryBuilder->orderBy()->willReturn($orderBy);
-        $orderBy->asc()->willReturn($ordering);
-        $orderBy->asc()->willReturn($ordering);
-        $ordering->field('o.foo')->shouldBeCalled();
-        $ordering->field('o.bar')->shouldBeCalled();
+        $queryBuilder->expects($this->once())->method('orderBy')->willReturn($orderBy);
+        $orderBy->expects($this->exactly(2))->method('asc')->willReturn($ordering);
+        $ordering->expects($this->exactly(2))->method('field')->withConsecutive(['o.foo'], ['o.bar']);
 
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->setMaxResults(Argument::any())->willReturn($query);
-        $query->setFirstResult(Argument::any())->willReturn($query);
-        $query->execute()->willReturn([]);
+        $dataSource = new DataSource($queryBuilder, $expressionBuilder);
+        $data = $dataSource->getData(new Parameters(['page' => '1']));
 
-        $this->getData(new Parameters(['page' => '1']))->shouldHaveType(Pagerfanta::class);
+        $this->assertInstanceOf(Pagerfanta::class, $data);
+    }
+
+    public function testBuildsAndx(): void
+    {
+        $expression = $this->createMock(Expression::class);
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('andX')->with($expression);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->andX($expression);
+    }
+
+    public function testBuildsOrx(): void
+    {
+        $expression = $this->createMock(Expression::class);
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('orX')->with($expression);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->orX($expression);
+    }
+
+    public function testBuildsEquals(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('eq')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->equals('o.foo', 'value');
+    }
+
+    public function testBuildsNotEquals(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('neq')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->notEquals('o.foo', 'value');
+    }
+
+    public function testBuildsLessThanOrEqual(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('lte')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->lessThanOrEqual('o.foo', 'value');
+    }
+
+    public function testBuildsGreaterThan(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('gt')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->greaterThan('o.foo', 'value');
+    }
+
+    public function testBuildsGreaterThanOrEqual(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('gte')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->greaterThanOrEqual('o.foo', 'value');
+    }
+
+    public function testBuildsIn(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('in')->with('o.foo', ['value']);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->in('o.foo', ['value']);
+    }
+
+    public function testBuildsNotIn(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('notIn')->with('o.foo', ['value']);
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->notIn('o.foo', ['value']);
+    }
+
+    public function testBuildsIsNull(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->isNull('o.foo');
+
+        $this->assertEquals(\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExtraComparison::IS_NULL, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testBuildsIsNotNull(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->isNotNull('o.foo');
+
+        $this->assertEquals(\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExtraComparison::IS_NOT_NULL, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testBuildsLike(): void
+    {
+        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
+        $collectionsExpressionBuilder->expects($this->once())->method('contains')->with('o.foo', 'value');
+
+        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
+        $expressionBuilder->like('o.foo', 'value');
+    }
+
+    public function testBuildsNotLike(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expr = $expressionBuilder->notLike('o.foo', 'value');
+
+        $this->assertEquals(\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExtraComparison::NOT_CONTAINS, $expr->getOperator());
+        $this->assertEquals('o.foo', $expr->getField());
+    }
+
+    public function testOrdersBy(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expressionBuilder->orderBy('o.foo', 'asc');
+
+        $this->assertEquals([
+            'o.foo' => 'asc',
+        ], $expressionBuilder->getOrderBys());
+    }
+
+    public function testAddsOrderBy(): void
+    {
+        $expressionBuilder = new ExpressionBuilder();
+        $expressionBuilder->orderBy('o.foo', 'asc');
+        $expressionBuilder->addOrderBy('o.bar', 'desc');
+
+        $this->assertEquals([
+            'o.foo' => 'asc',
+            'o.bar' => 'desc',
+        ], $expressionBuilder->getOrderBys());
     }
 }

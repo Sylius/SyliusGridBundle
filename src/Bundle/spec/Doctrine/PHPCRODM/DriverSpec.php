@@ -11,47 +11,52 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Doctrine\PHPCRODM;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\DataSource;
+use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\Driver;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Parameters;
 
 /**
  * @require Doctrine\ODM\PHPCR\DocumentManagerInterface
  */
-final class DriverSpec extends ObjectBehavior
+final class DriverTest extends TestCase
 {
-    function let(DocumentManagerInterface $documentManager): void
+    public function testImplementsGridDriver(): void
     {
-        $this->beConstructedWith($documentManager);
+        $documentManager = $this->createMock(DocumentManagerInterface::class);
+        $driver = new Driver($documentManager);
+
+        $this->assertInstanceOf(DriverInterface::class, $driver);
     }
 
-    function it_implements_grid_driver(): void
+    public function testThrowsExceptionIfClassIsUndefined(): void
     {
-        $this->shouldImplement(DriverInterface::class);
+        $documentManager = $this->createMock(DocumentManagerInterface::class);
+        $driver = new Driver($documentManager);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $driver->getDataSource([], new Parameters());
     }
 
-    function it_throws_exception_if_class_is_undefined(): void
+    public function testCreatesDataSourceViaDoctrinePhpcrodmQueryBuilder(): void
     {
-        $this
-            ->shouldThrow(\InvalidArgumentException::class)
-            ->during('getDataSource', [[], new Parameters()])
-        ;
-    }
+        $documentManager = $this->createMock(DocumentManagerInterface::class);
+        $documentRepository = $this->createMock(DocumentRepository::class);
+        $queryBuilder = $this->createMock(QueryBuilder::class);
 
-    function it_creates_data_source_via_doctrine_phpcrodm_query_builder(
-        DocumentManagerInterface $documentManager,
-        DocumentRepository $documentRepository,
-        QueryBuilder $queryBuilder,
-    ): void {
-        $documentManager->getRepository('App:Book')->willReturn($documentRepository);
-        $documentRepository->createQueryBuilder('o')->willReturn($queryBuilder);
+        $documentManager->expects($this->once())->method('getRepository')->with('App:Book')->willReturn($documentRepository);
+        $documentRepository->expects($this->once())->method('createQueryBuilder')->with('o')->willReturn($queryBuilder);
 
-        $this->getDataSource(['class' => 'App:Book'], new Parameters())->shouldHaveType(DataSource::class);
+        $driver = new Driver($documentManager);
+        $dataSource = $driver->getDataSource(['class' => 'App:Book'], new Parameters());
+
+        $this->assertInstanceOf(DataSource::class, $dataSource);
     }
 }
