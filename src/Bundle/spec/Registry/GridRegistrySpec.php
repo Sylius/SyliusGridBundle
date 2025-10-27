@@ -11,39 +11,39 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Registry;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Registry;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
-class GridRegistrySpec extends ObjectBehavior
+class GridRegistryTest extends TestCase
 {
-    function let(ServiceLocator $serviceLocator): void
+    private GridRegistry $registry;
+
+    private ServiceLocator $serviceLocator;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($serviceLocator);
+        $this->serviceLocator = $this->createMock(ServiceLocator::class);
+        $this->registry = new GridRegistry($this->serviceLocator);
     }
 
-    function it_is_initializable(): void
+    public function testReturnsGridsFromItsCode(): void
     {
-        $this->shouldHaveType(GridRegistry::class);
+        $bookGrid = $this->createMock(GridInterface::class);
+
+        $this->serviceLocator->method('has')->with('app_book')->willReturn(true);
+        $this->serviceLocator->method('get')->with('app_book')->willReturn($bookGrid);
+
+        $this->assertSame($bookGrid, $this->registry->getGrid('app_book'));
     }
 
-    function it_returns_grids_from_its_code(
-        ServiceLocator $serviceLocator,
-        GridInterface $bookGrid,
-    ): void {
-        $serviceLocator->has('app_book')->willReturn(true);
-        $serviceLocator->get('app_book')->willReturn($bookGrid);
-
-        $this->getGrid('app_book')->shouldReturn($bookGrid);
-    }
-
-    function it_returns_null_when_grid_was_not_found(ServiceLocator $serviceLocator): void
+    public function testReturnsNullWhenGridWasNotFound(): void
     {
-        $serviceLocator->has('not_found')->willReturn(false);
+        $this->serviceLocator->method('has')->with('not_found')->willReturn(false);
 
-        $this->getGrid('not_found')->shouldReturn(null);
+        $this->assertNull($this->registry->getGrid('not_found'));
     }
 }
