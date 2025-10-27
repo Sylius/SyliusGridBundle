@@ -11,26 +11,40 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Templating\Helper;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Templating\Helper;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
 
-final class BulkActionGridHelperSpec extends ObjectBehavior
+final class BulkActionGridHelperTest extends TestCase
 {
-    function let(BulkActionGridRendererInterface $bulkActionGridRenderer): void
+    private BulkActionGridRendererInterface $bulkActionGridRenderer;
+
+    private BulkActionGridHelper $helper;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($bulkActionGridRenderer);
+        $this->bulkActionGridRenderer = $this->createMock(BulkActionGridRendererInterface::class);
+        $this->helper = new BulkActionGridHelper($this->bulkActionGridRenderer);
     }
 
-    function it_uses_a_grid_renderer_to_render_a_bulk_action(
-        BulkActionGridRendererInterface $bulkActionGridRenderer,
-        GridView $gridView,
-        Action $bulkAction,
-    ): void {
-        $bulkActionGridRenderer->renderBulkAction($gridView, $bulkAction, null)->willReturn('<a href="#">Delete</a>');
-        $this->renderBulkAction($gridView, $bulkAction)->shouldReturn('<a href="#">Delete</a>');
+    public function testUsesGridRendererToRenderBulkAction(): void
+    {
+        $gridView = $this->createMock(GridView::class);
+        $bulkAction = $this->createMock(Action::class);
+
+        $this->bulkActionGridRenderer
+            ->expects($this->once())
+            ->method('renderBulkAction')
+            ->with($gridView, $bulkAction, null)
+            ->willReturn('<a href="#">Delete</a>')
+        ;
+
+        $result = $this->helper->renderBulkAction($gridView, $bulkAction);
+
+        $this->assertSame('<a href="#">Delete</a>', $result);
     }
 }

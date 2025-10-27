@@ -11,36 +11,74 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Templating\Helper;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Templating\Helper;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Templating\Helper\GridHelper;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\Renderer\GridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
 
-final class GridHelperSpec extends ObjectBehavior
+final class GridHelperTest extends TestCase
 {
-    function let(GridRendererInterface $gridRenderer): void
+    private GridRendererInterface $gridRenderer;
+
+    private GridHelper $helper;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($gridRenderer);
+        $this->gridRenderer = $this->createMock(GridRendererInterface::class);
+        $this->helper = new GridHelper($this->gridRenderer);
     }
 
-    function it_uses_grid_renderer_to_render_grid(GridRendererInterface $gridRenderer, GridView $gridView): void
+    public function testUsesGridRendererToRenderGrid(): void
     {
-        $gridRenderer->render($gridView, null)->willReturn('<html>Grid!</html>');
-        $this->renderGrid($gridView, null)->shouldReturn('<html>Grid!</html>');
+        $gridView = $this->createMock(GridView::class);
+
+        $this->gridRenderer
+            ->expects($this->once())
+            ->method('render')
+            ->with($gridView, null)
+            ->willReturn('<html>Grid!</html>')
+        ;
+
+        $result = $this->helper->renderGrid($gridView, null);
+
+        $this->assertSame('<html>Grid!</html>', $result);
     }
 
-    function it_uses_grid_renderer_to_render_field(GridRendererInterface $gridRenderer, GridView $gridView, Field $field): void
+    public function testUsesGridRendererToRenderField(): void
     {
-        $gridRenderer->renderField($gridView, $field, 'foo')->willReturn('Value');
-        $this->renderField($gridView, $field, 'foo')->shouldReturn('Value');
+        $gridView = $this->createMock(GridView::class);
+        $field = $this->createMock(Field::class);
+
+        $this->gridRenderer
+            ->expects($this->once())
+            ->method('renderField')
+            ->with($gridView, $field, 'foo')
+            ->willReturn('Value')
+        ;
+
+        $result = $this->helper->renderField($gridView, $field, 'foo');
+
+        $this->assertSame('Value', $result);
     }
 
-    function it_uses_grid_renderer_to_render_action(GridRendererInterface $gridRenderer, GridView $gridView, Action $action): void
+    public function testUsesGridRendererToRenderAction(): void
     {
-        $gridRenderer->renderAction($gridView, $action, null)->willReturn('<a href="#">Go go Gadget arms!</a>');
-        $this->renderAction($gridView, $action)->shouldReturn('<a href="#">Go go Gadget arms!</a>');
+        $gridView = $this->createMock(GridView::class);
+        $action = $this->createMock(Action::class);
+
+        $this->gridRenderer
+            ->expects($this->once())
+            ->method('renderAction')
+            ->with($gridView, $action, null)
+            ->willReturn('<a href="#">Go go Gadget arms!</a>')
+        ;
+
+        $result = $this->helper->renderAction($gridView, $action);
+
+        $this->assertSame('<a href="#">Go go Gadget arms!</a>', $result);
     }
 }
