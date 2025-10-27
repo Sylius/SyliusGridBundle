@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Provider;
+namespace Tests\Sylius\Bundle\GridBundle\Provider;
 
 use App\Grid\BookGrid;
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
@@ -26,212 +26,159 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 
-class ServiceGridProviderSpec extends ObjectBehavior
+final class ServiceGridProviderTest extends TestCase
 {
-    function let(
-        ArrayToDefinitionConverterInterface $converter,
-        GridRegistryInterface $gridRegistry,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-    ): void {
-        $this->beConstructedWith(
-            $converter,
-            $gridRegistry,
+    private ArrayToDefinitionConverterInterface $converter;
+
+    private GridRegistryInterface $gridRegistry;
+
+    private GridConfigurationRemovalsHandlerInterface $removalsHandler;
+
+    private GridConfigurationSortingHandlerInterface $sortingHandler;
+
+    private ServiceGridProvider $provider;
+
+    protected function setUp(): void
+    {
+        $this->converter = $this->createMock(ArrayToDefinitionConverterInterface::class);
+        $this->gridRegistry = $this->createMock(GridRegistryInterface::class);
+        $this->removalsHandler = $this->createMock(GridConfigurationRemovalsHandlerInterface::class);
+        $this->sortingHandler = $this->createMock(GridConfigurationSortingHandlerInterface::class);
+
+        $this->provider = new ServiceGridProvider(
+            $this->converter,
+            $this->gridRegistry,
             new GridConfigurationExtender(),
-            $gridConfigurationRemovalsHandler,
-            $gridConfigurationSortingHandler,
+            $this->removalsHandler,
+            $this->sortingHandler,
         );
     }
 
-    function it_is_initializable(): void
+    public function testIsAGridProvider(): void
     {
-        $this->shouldHaveType(ServiceGridProvider::class);
+        $this->assertInstanceOf(GridProviderInterface::class, $this->provider);
     }
 
-    function it_is_a_grid_provider(): void
+    public function testGetsGridDefinitionByCode(): void
     {
-        $this->shouldImplement(GridProviderInterface::class);
+        $grid = $this->createMock(GridInterface::class);
+        $gridDefinition = $this->createMock(Grid::class);
+
+        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn($grid);
+        $grid->method('toArray')->willReturn([]);
+
+        $this->removalsHandler->method('handle')->willReturn([]);
+        $this->sortingHandler->method('handle')->willReturn([]);
+        $this->converter->method('convert')->with('app_book', [])->willReturn($gridDefinition);
+
+        $this->assertSame($gridDefinition, $this->provider->get('app_book'));
     }
 
-    function it_gets_grids_definitions_by_code(
-        ArrayToDefinitionConverterInterface $converter,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        GridRegistryInterface $gridRegistry,
-        GridInterface $bookGrid,
-        Grid $gridDefinition,
-    ): void {
-        $gridRegistry->getGrid('app_book')->willReturn($bookGrid);
-        $bookGrid->toArray()->willReturn([]);
-
-        $converter->convert('app_book', [])->willReturn($gridDefinition);
-        $gridConfigurationRemovalsHandler->handle([])->willReturn([]);
-        $gridConfigurationSortingHandler->handle([])->willReturn([]);
-
-        $this->get('app_book')->shouldReturn($gridDefinition);
-    }
-
-    function it_gets_grids_definitions_by_fully_qualified_class_name(
-        ArrayToDefinitionConverterInterface $converter,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        GridRegistryInterface $gridRegistry,
-        Grid $gridDefinition,
-    ): void {
+    public function testGetsGridDefinitionByClassName(): void
+    {
         $bookGrid = new BookGrid();
-        $gridRegistry->getGrid('app_book')->willReturn($bookGrid);
+        $gridDefinition = $this->createMock(Grid::class);
 
-        $converter->convert('app_book', [])->willReturn($gridDefinition);
-        $gridConfigurationRemovalsHandler->handle($bookGrid->toArray())->willReturn([]);
-        $gridConfigurationSortingHandler->handle([])->willReturn([]);
+        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn($bookGrid);
+        $this->removalsHandler->method('handle')->willReturn([]);
+        $this->sortingHandler->method('handle')->willReturn([]);
+        $this->converter->method('convert')->with('app_book', [])->willReturn($gridDefinition);
 
-        $this->get(BookGrid::class)->shouldReturn($gridDefinition);
+        $this->assertSame($gridDefinition, $this->provider->get(BookGrid::class));
     }
 
-    function it_supports_grid_inheritance(
-        ArrayToDefinitionConverterInterface $converter,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        GridRegistryInterface $gridRegistry,
-        GridInterface $fooGrid,
-        GridInterface $fooFightersGrid,
-        Grid $fooGridDefinition,
-        Grid $fooFightersGridDefinition,
-    ): void {
-        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
-        $gridRegistry->getGrid('app_foo_fighters')->willReturn($fooFightersGrid);
+    public function testSupportsGridInheritance(): void
+    {
+        $fooGrid = $this->createMock(GridInterface::class);
+        $fooFightersGrid = $this->createMock(GridInterface::class);
+        $fooGridDefinition = $this->createMock(Grid::class);
+        $fooFightersGridDefinition = $this->createMock(Grid::class);
 
-        $fooGrid->toArray()->willReturn(['configuration_foo' => 'foo']);
-        $fooFightersGrid->toArray()->willReturn(['extends' => 'app_foo', 'configuration_foo_fighters' => 'foo_fighters']);
+        $this->gridRegistry
+            ->method('getGrid')
+            ->willReturnMap([
+                ['app_foo', $fooGrid],
+                ['app_foo_fighters', $fooFightersGrid],
+            ]);
 
-        $converter->convert('app_foo', ['configuration_foo' => 'foo'])->willReturn($fooGridDefinition);
-        $converter->convert('app_foo_fighters', ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn($fooFightersGridDefinition);
+        $fooGrid->method('toArray')->willReturn(['configuration_foo' => 'foo']);
+        $fooFightersGrid->method('toArray')->willReturn(['extends' => 'app_foo', 'configuration_foo_fighters' => 'foo_fighters']);
 
-        $gridConfigurationRemovalsHandler->handle(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters']);
-        $gridConfigurationSortingHandler->handle(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'])->willReturn(['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters']);
+        $config = ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'];
 
-        $this->get('app_foo_fighters')->shouldReturn($fooFightersGridDefinition);
+        $this->removalsHandler->method('handle')->willReturn($config);
+        $this->sortingHandler->method('handle')->willReturn($config);
+        $this->converter->method('convert')->with('app_foo_fighters', $config)->willReturn($fooFightersGridDefinition);
+
+        $this->assertSame($fooFightersGridDefinition, $this->provider->get('app_foo_fighters'));
     }
 
-    function it_throws_an_undefined_grid_exception_when_grid_is_not_found(
-        GridRegistryInterface $gridRegistry,
-    ): void {
-        $gridRegistry->getGrid('app_book')->willReturn(null);
+    public function testThrowsUndefinedGridExceptionWhenGridIsNotFound(): void
+    {
+        $this->gridRegistry->method('getGrid')->willReturn(null);
 
-        $this->shouldThrow(UndefinedGridException::class)->during('get', ['app_book']);
+        $this->expectException(UndefinedGridException::class);
+
+        $this->provider->get('app_book');
     }
 
-    function it_throws_an_invalid_argument_exception_when_parent_grid_is_not_found(
-        GridRegistryInterface $gridRegistry,
-        GridInterface $grid,
-    ): void {
-        $gridRegistry->getGrid('app_foo_fighters')->willReturn($grid);
-        $gridRegistry->getGrid('app_foo')->willReturn(null);
+    public function testThrowsInvalidArgumentExceptionWhenParentGridIsNotFound(): void
+    {
+        $grid = $this->createMock(GridInterface::class);
 
-        $grid->toArray()->willReturn(['extends' => 'app_foo']);
+        $this->gridRegistry->method('getGrid')->willReturnMap([
+            ['app_foo_fighters', $grid],
+            ['app_foo', null],
+        ]);
 
-        $this->shouldThrow(\InvalidArgumentException::class)->during('get', ['app_foo_fighters']);
+        $grid->method('toArray')->willReturn(['extends' => 'app_foo']);
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->provider->get('app_foo_fighters');
     }
 
-    function it_supports_grid_removals(
-        ArrayToDefinitionConverterInterface $converter,
-        GridRegistryInterface $gridRegistry,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        GridInterface $fooGrid,
-        Grid $fooGridDefinition,
-    ): void {
-        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
+    public function testSupportsGridRemovals(): void
+    {
+        $grid = $this->createMock(GridInterface::class);
+        $gridDefinition = $this->createMock(Grid::class);
 
-        $fooGrid->toArray()->willReturn([
+        $this->gridRegistry->method('getGrid')->with('app_foo')->willReturn($grid);
+
+        $grid->method('toArray')->willReturn([
             'fields' => ['customer' => []],
-            'removals' => [
-                'fields' => ['customer'],
-            ],
+            'removals' => ['fields' => ['customer']],
         ]);
 
-        $gridConfigurationRemovalsHandler->handle([
-            'fields' => ['customer' => []],
-            'removals' => [
-                'fields' => ['customer'],
-            ],
-        ])->willReturn([
-            'fields' => [],
-        ]);
+        $this->removalsHandler->method('handle')->willReturn(['fields' => []]);
+        $this->sortingHandler->method('handle')->willReturn(['fields' => []]);
+        $this->converter->method('convert')->with('app_foo', ['fields' => []])->willReturn($gridDefinition);
 
-        $gridConfigurationSortingHandler->handle([
-            'fields' => [],
-        ])->willReturn([
-            'fields' => [],
-        ]);
-
-        $converter->convert('app_foo', [
-            'fields' => [],
-        ])->willReturn($fooGridDefinition);
-
-        $this->get('app_foo')->shouldReturn($fooGridDefinition);
+        $this->assertSame($gridDefinition, $this->provider->get('app_foo'));
     }
 
-    function it_makes_fields_sortable_if_sorting_is_enabled_for_it(
-        ArrayToDefinitionConverterInterface $converter,
-        GridRegistryInterface $gridRegistry,
-        GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler,
-        GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler,
-        GridInterface $fooGrid,
-        Grid $fooGridDefinition,
-    ): void {
-        $gridRegistry->getGrid('app_foo')->willReturn($fooGrid);
+    public function testMakesFieldsSortableIfSortingIsEnabled(): void
+    {
+        $grid = $this->createMock(GridInterface::class);
+        $gridDefinition = $this->createMock(Grid::class);
 
-        $fooGrid->toArray()->willReturn([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ]);
+        $this->gridRegistry->method('getGrid')->with('app_foo')->willReturn($grid);
 
-        $gridConfigurationRemovalsHandler->handle([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ])->willReturn([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ]);
+        $config = [
+            'fields' => ['title' => []],
+            'sorting' => ['title' => 'asc'],
+        ];
 
-        $gridConfigurationSortingHandler->handle([
-            'fields' => [
-                'title' => [],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ])->willReturn([
-            'fields' => [
-                'title' => ['sortable' => true],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ]);
+        $sortableConfig = [
+            'fields' => ['title' => ['sortable' => true]],
+            'sorting' => ['title' => 'asc'],
+        ];
 
-        $converter->convert('app_foo', [
-            'fields' => [
-                'title' => ['sortable' => true],
-            ],
-            'sorting' => [
-                'title' => 'asc',
-            ],
-        ])->willReturn($fooGridDefinition);
+        $grid->method('toArray')->willReturn($config);
+        $this->removalsHandler->method('handle')->willReturn($config);
+        $this->sortingHandler->method('handle')->willReturn($sortableConfig);
+        $this->converter->method('convert')->with('app_foo', $sortableConfig)->willReturn($gridDefinition);
 
-        $this->get('app_foo')->shouldReturn($fooGridDefinition);
+        $this->assertSame($gridDefinition, $this->provider->get('app_foo'));
     }
 }

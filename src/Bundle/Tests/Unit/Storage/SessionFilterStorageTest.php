@@ -47,7 +47,7 @@ final class SessionFilterStorageTest extends TestCase
         $this->assertEquals($filters, $session->get('filters'));
     }
 
-    public function testItReturnsAllFiltersFromASession(): void
+    public function testReturnsAllFiltersFromASession(): void
     {
         $filters = [
             'filter' => 'value',
@@ -66,7 +66,7 @@ final class SessionFilterStorageTest extends TestCase
         $this->assertEquals($filters, $filterStorage->all());
     }
 
-    public function testItReturnsTrueIfFiltersAreSet(): void
+    public function testReturnsTrueIfFiltersAreSet(): void
     {
         $filters = [
             'filter' => 'value',
@@ -85,7 +85,7 @@ final class SessionFilterStorageTest extends TestCase
         $this->assertTrue($filterStorage->hasFilters());
     }
 
-    public function testItReturnsFalseIfFiltersAreSet(): void
+    public function testReturnsFalseIfFiltersAreSet(): void
     {
         $filters = [];
 
