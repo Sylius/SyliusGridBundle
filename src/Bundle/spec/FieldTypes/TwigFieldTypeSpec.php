@@ -11,48 +11,60 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\FieldTypes;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\FieldTypes;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType;
 use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Twig\Environment;
 
-final class TwigFieldTypeSpec extends ObjectBehavior
+final class TwigFieldTypeTest extends TestCase
 {
-    function let(DataExtractorInterface $dataExtractor, Environment $twig): void
+    private DataExtractorInterface|MockObject $dataExtractor;
+
+    private Environment|MockObject $twig;
+
+    private TwigFieldType $fieldType;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($dataExtractor, $twig);
+        $this->dataExtractor = $this->createMock(DataExtractorInterface::class);
+        $this->twig = $this->createMock(Environment::class);
+        $this->fieldType = new TwigFieldType($this->dataExtractor, $this->twig);
     }
 
-    function it_is_a_grid_field_type(): void
+    public function testIsAGridFieldType(): void
     {
-        $this->shouldImplement(FieldTypeInterface::class);
+        $this->assertInstanceOf(FieldTypeInterface::class, $this->fieldType);
     }
 
-    function it_uses_data_extractor_to_obtain_data_and_renders_it_via_twig(
-        DataExtractorInterface $dataExtractor,
-        Environment $twig,
-        Field $field,
-    ): void {
-        $field->getPath()->willReturn('foo');
+    public function testUsesDataExtractorToObtainDataAndRendersItViaTwig(): void
+    {
+        $field = $this->createMock(Field::class);
+        $field->method('getPath')->willReturn('foo');
 
-        $dataExtractor->get($field, ['foo' => 'bar'])->willReturn('Value');
-        $twig->render('foo.html.twig', ['data' => 'Value', 'options' => ['template' => 'foo.html.twig']])->willReturn('<html>Value</html>');
+        $this->dataExtractor->expects(self::once())->method('get')->with($field, ['foo' => 'bar'])->willReturn('Value');
+        $this->twig->expects(self::once())->method('render')->with('foo.html.twig', ['data' => 'Value', 'options' => ['template' => 'foo.html.twig']])->willReturn('<html>Value</html>');
 
-        $this->render($field, ['foo' => 'bar'], [
+        $result = $this->fieldType->render($field, ['foo' => 'bar'], [
             'template' => 'foo.html.twig',
-        ])->shouldReturn('<html>Value</html>');
+        ]);
+
+        $this->assertEquals('<html>Value</html>', $result);
     }
 
-    function it_uses_data_directly_if_dot_is_configured_as_path(
-        Environment $twig,
-        Field $field,
-    ): void {
-        $field->getPath()->willReturn('.');
-        $twig->render('foo.html.twig', ['data' => 'bar', 'options' => ['template' => 'foo.html.twig']])->willReturn('<html>Bar</html>');
+    public function testUsesDataDirectlyIfDotIsConfiguredAsPath(): void
+    {
+        $field = $this->createMock(Field::class);
+        $field->method('getPath')->willReturn('.');
 
-        $this->render($field, 'bar', ['template' => 'foo.html.twig'])->shouldReturn('<html>Bar</html>');
+        $this->twig->expects(self::once())->method('render')->with('foo.html.twig', ['data' => 'bar', 'options' => ['template' => 'foo.html.twig']])->willReturn('<html>Bar</html>');
+
+        $result = $this->fieldType->render($field, 'bar', ['template' => 'foo.html.twig']);
+
+        $this->assertEquals('<html>Bar</html>', $result);
     }
 }
