@@ -11,36 +11,44 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Renderer;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Renderer;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
 use Twig\Environment;
 
-final class TwigBulkActionGridRendererSpec extends ObjectBehavior
+final class TwigBulkActionGridRendererTest extends TestCase
 {
-    function let(Environment $twig): void
+    private TwigBulkActionGridRenderer $renderer;
+
+    private Environment $twig;
+
+    protected function setUp(): void
     {
-        $this->beConstructedWith($twig, ['delete' => '@SyliusGrid/BulkAction/_delete.html.twig']);
+        $this->twig = $this->createMock(Environment::class);
+        $this->renderer = new TwigBulkActionGridRenderer($this->twig, ['delete' => '@SyliusGrid/BulkAction/_delete.html.twig']);
     }
 
-    function it_is_a_bulk_action_grid_renderer(): void
+    public function testIsABulkActionGridRenderer(): void
     {
-        $this->shouldImplement(BulkActionGridRendererInterface::class);
+        $this->assertInstanceOf(BulkActionGridRendererInterface::class, $this->renderer);
     }
 
-    function it_uses_twig_to_render_the_bulk_action(
-        Environment $twig,
-        GridViewInterface $gridView,
-        Action $bulkAction,
-    ): void {
-        $bulkAction->getType()->willReturn('delete');
-        $bulkAction->getOptions()->willReturn([]);
+    public function testUsesTwigToRenderTheBulkAction(): void
+    {
+        $gridView = $this->createMock(GridViewInterface::class);
+        $bulkAction = $this->createMock(Action::class);
 
-        $twig
-            ->render('@SyliusGrid/BulkAction/_delete.html.twig', [
+        $bulkAction->method('getType')->willReturn('delete');
+        $bulkAction->method('getOptions')->willReturn([]);
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('@SyliusGrid/BulkAction/_delete.html.twig', [
                 'grid' => $gridView,
                 'action' => $bulkAction,
                 'data' => null,
@@ -48,18 +56,20 @@ final class TwigBulkActionGridRendererSpec extends ObjectBehavior
             ->willReturn('<a href="#">Delete</a>')
         ;
 
-        $this->renderBulkAction($gridView, $bulkAction)->shouldReturn('<a href="#">Delete</a>');
+        $result = $this->renderer->renderBulkAction($gridView, $bulkAction);
+        $this->assertEquals('<a href="#">Delete</a>', $result);
     }
 
-    function it_throws_an_exception_if_template_is_not_configured_for_given_bulk_action_type(
-        GridViewInterface $gridView,
-        Action $bulkAction,
-    ): void {
-        $bulkAction->getType()->willReturn('foo');
+    public function testThrowsAnExceptionIfTemplateIsNotConfiguredForGivenBulkActionType(): void
+    {
+        $gridView = $this->createMock(GridViewInterface::class);
+        $bulkAction = $this->createMock(Action::class);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Missing template for bulk action type "foo".'))
-            ->during('renderBulkAction', [$gridView, $bulkAction])
-        ;
+        $bulkAction->method('getType')->willReturn('foo');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing template for bulk action type "foo".');
+
+        $this->renderer->renderBulkAction($gridView, $bulkAction);
     }
 }

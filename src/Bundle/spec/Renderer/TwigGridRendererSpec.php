@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Renderer;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Renderer;
 
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistryInterface;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
+use Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
@@ -29,15 +29,28 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Twig\Environment;
 
-final class TwigGridRendererSpec extends ObjectBehavior
+final class TwigGridRendererTest extends TestCase
 {
-    function let(
-        Environment $twig,
-        ServiceRegistryInterface $fieldsRegistry,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $formTypeRegistry,
-        OptionsParserInterface $optionsParser,
-    ): void {
+    private TwigGridRenderer $renderer;
+
+    private Environment $twig;
+
+    private ServiceRegistryInterface $fieldsRegistry;
+
+    private FormFactoryInterface $formFactory;
+
+    private FormTypeRegistryInterface $formTypeRegistry;
+
+    private OptionsParserInterface $optionsParser;
+
+    protected function setUp(): void
+    {
+        $this->twig = $this->createMock(Environment::class);
+        $this->fieldsRegistry = $this->createMock(ServiceRegistryInterface::class);
+        $this->formFactory = $this->createMock(FormFactoryInterface::class);
+        $this->formTypeRegistry = $this->createMock(FormTypeRegistryInterface::class);
+        $this->optionsParser = $this->createMock(OptionsParserInterface::class);
+
         $actionTemplates = [
             'link' => '@SyliusGrid/Action/_link.html.twig',
             'form' => '@SyliusGrid/Action/_form.html.twig',
@@ -46,43 +59,65 @@ final class TwigGridRendererSpec extends ObjectBehavior
             StringFilter::NAME => '@SyliusGrid/Filter/_string.html.twig',
         ];
 
-        $this->beConstructedWith(
-            $twig,
-            $fieldsRegistry,
-            $formFactory,
-            $formTypeRegistry,
+        $this->renderer = new TwigGridRenderer(
+            $this->twig,
+            $this->fieldsRegistry,
+            $this->formFactory,
+            $this->formTypeRegistry,
             '"@SyliusGrid/default"',
             $actionTemplates,
             $filterTemplates,
-            $optionsParser,
+            $this->optionsParser,
         );
     }
 
-    function it_is_a_grid_renderer(): void
+    public function testIsAGridRenderer(): void
     {
-        $this->shouldImplement(GridRendererInterface::class);
+        $this->assertInstanceOf(GridRendererInterface::class, $this->renderer);
     }
 
-    function it_uses_twig_to_render_the_grid_view(Environment $twig, GridViewInterface $gridView): void
+    public function testUsesTwigToRenderTheGridView(): void
     {
-        $twig->render('"@SyliusGrid/default"', ['grid' => $gridView])->willReturn('<html>Grid!</html>');
-        $this->render($gridView)->shouldReturn('<html>Grid!</html>');
+        $gridView = $this->createMock(GridViewInterface::class);
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('"@SyliusGrid/default"', ['grid' => $gridView])
+            ->willReturn('<html>Grid!</html>')
+        ;
+
+        $result = $this->renderer->render($gridView);
+        $this->assertEquals('<html>Grid!</html>', $result);
     }
 
-    function it_uses_custom_template_if_specified(Environment $twig, GridView $gridView): void
+    public function testUsesCustomTemplateIfSpecified(): void
     {
-        $twig->render('"@SyliusGrid/custom"', ['grid' => $gridView])->willReturn('<html>Grid!</html>');
-        $this->render($gridView, '"@SyliusGrid/custom"')->shouldReturn('<html>Grid!</html>');
+        $gridView = $this->createMock(GridView::class);
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('"@SyliusGrid/custom"', ['grid' => $gridView])
+            ->willReturn('<html>Grid!</html>')
+        ;
+
+        $result = $this->renderer->render($gridView, '"@SyliusGrid/custom"');
+        $this->assertEquals('<html>Grid!</html>', $result);
     }
 
-    function it_uses_twig_to_render_the_action(Environment $twig, GridViewInterface $gridView, Action $action): void
+    public function testUsesTwigToRenderTheAction(): void
     {
-        $action->getType()->willReturn('link');
-        $action->getTemplate()->willReturn(null)->shouldBeCalled();
-        $action->getOptions()->willReturn([]);
+        $gridView = $this->createMock(GridViewInterface::class);
+        $action = $this->createMock(Action::class);
 
-        $twig
-            ->render('@SyliusGrid/Action/_link.html.twig', [
+        $action->expects($this->once())->method('getType')->willReturn('link');
+        $action->expects($this->once())->method('getTemplate')->willReturn(null);
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('@SyliusGrid/Action/_link.html.twig', [
                 'grid' => $gridView,
                 'action' => $action,
                 'data' => null,
@@ -90,76 +125,81 @@ final class TwigGridRendererSpec extends ObjectBehavior
             ->willReturn('<a href="#">Action!</a>')
         ;
 
-        $this->renderAction($gridView, $action)->shouldReturn('<a href="#">Action!</a>');
+        $result = $this->renderer->renderAction($gridView, $action);
+        $this->assertEquals('<a href="#">Action!</a>', $result);
     }
 
-    function it_uses_custom_action_template_if_specified(
-        GridViewInterface $gridView,
-        Action $action,
-        Environment $twig,
-    ): void {
-        $action->getType()->willReturn('foo')->shouldBeCalled();
-        $action->getTemplate()->willReturn('path/to/template')->shouldBeCalled();
+    public function testUsesCustomActionTemplateIfSpecified(): void
+    {
+        $gridView = $this->createMock(GridViewInterface::class);
+        $action = $this->createMock(Action::class);
 
-        $twig
-            ->render('path/to/template', [
+        $action->expects($this->once())->method('getType')->willReturn('foo');
+        $action->expects($this->once())->method('getTemplate')->willReturn('path/to/template');
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('path/to/template', [
                 'grid' => $gridView,
                 'action' => $action,
                 'data' => null,
             ])
             ->willReturn('<a href="#">Action!</a>')
-            ->shouldBeCalled()
         ;
 
-        $this->renderAction($gridView, $action, null);
+        $this->renderer->renderAction($gridView, $action, null);
     }
 
-    function it_throws_an_exception_if_template_is_not_configured_for_given_action_type(
-        GridViewInterface $gridView,
-        Action $action,
-    ): void {
-        $action->getType()->willReturn('foo')->shouldBeCalled();
-        $action->getTemplate()->willReturn(null)->shouldBeCalled();
+    public function testThrowsAnExceptionIfTemplateIsNotConfiguredForGivenActionType(): void
+    {
+        $gridView = $this->createMock(GridViewInterface::class);
+        $action = $this->createMock(Action::class);
 
-        $this
-            ->shouldThrow(new \InvalidArgumentException('Missing template for action type "foo".'))
-            ->during('renderAction', [$gridView, $action])
-        ;
+        $action->expects($this->once())->method('getType')->willReturn('foo');
+        $action->expects($this->once())->method('getTemplate')->willReturn(null);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing template for action type "foo".');
+
+        $this->renderer->renderAction($gridView, $action);
     }
 
-    function it_renders_a_field_with_data_via_appropriate_field_type(
-        GridViewInterface $gridView,
-        Field $field,
-        ServiceRegistryInterface $fieldsRegistry,
-        FieldTypeInterface $fieldType,
-        OptionsParserInterface $optionsParser,
-    ): void {
-        $field->getType()->willReturn('string');
-        $fieldsRegistry->get('string')->willReturn($fieldType);
-        $fieldType->configureOptions(Argument::type(OptionsResolver::class))
-            ->will(function ($args) {
-                $args[0]->setRequired('foo');
+    public function testRendersAFieldWithDataViaAppropriateFieldType(): void
+    {
+        $gridView = $this->createMock(GridViewInterface::class);
+        $field = $this->createMock(Field::class);
+        $fieldType = $this->createMock(FieldTypeInterface::class);
+
+        $field->method('getType')->willReturn('string');
+        $this->fieldsRegistry->method('get')->with('string')->willReturn($fieldType);
+        $fieldType
+            ->expects($this->once())
+            ->method('configureOptions')
+            ->with($this->isInstanceOf(OptionsResolver::class))
+            ->willReturnCallback(function (OptionsResolver $resolver) {
+                $resolver->setRequired('foo');
             })
         ;
 
-        $field->getOptions()->willReturn([
-            'foo' => 'bar',
-        ]);
-        $optionsParser->parseOptions(['foo' => 'bar'])->willReturn(['foo' => 'bar']);
-        $fieldType->render($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
+        $field->method('getOptions')->willReturn(['foo' => 'bar']);
+        $this->optionsParser->method('parseOptions')->with(['foo' => 'bar'])->willReturn(['foo' => 'bar']);
+        $fieldType->method('render')->with($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
 
-        $this->renderField($gridView, $field, 'Value')->shouldReturn('<strong>Value</strong>');
+        $result = $this->renderer->renderField($gridView, $field, 'Value');
+        $this->assertEquals('<strong>Value</strong>', $result);
     }
 
-    function it_renders_a_field_with_data_via_appropriate_field_type_when_no_option_parser_is_provided(
-        Environment $twig,
-        ServiceRegistryInterface $fieldsRegistry,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $formTypeRegistry,
-        GridViewInterface $gridView,
-        Field $field,
-        FieldTypeInterface $fieldType,
-    ): void {
+    public function testRendersAFieldWithDataViaAppropriateFieldTypeWhenNoOptionParserIsProvided(): void
+    {
+        $twig = $this->createMock(Environment::class);
+        $fieldsRegistry = $this->createMock(ServiceRegistryInterface::class);
+        $formFactory = $this->createMock(FormFactoryInterface::class);
+        $formTypeRegistry = $this->createMock(FormTypeRegistryInterface::class);
+        $gridView = $this->createMock(GridViewInterface::class);
+        $field = $this->createMock(Field::class);
+        $fieldType = $this->createMock(FieldTypeInterface::class);
+
         $actionTemplates = [
             'link' => '@SyliusGrid/Action/_link.html.twig',
             'form' => '@SyliusGrid/Action/_form.html.twig',
@@ -168,7 +208,7 @@ final class TwigGridRendererSpec extends ObjectBehavior
             StringFilter::NAME => '@SyliusGrid/Filter/_string.html.twig',
         ];
 
-        $this->beConstructedWith(
+        $renderer = new TwigGridRenderer(
             $twig,
             $fieldsRegistry,
             $formFactory,
@@ -179,19 +219,21 @@ final class TwigGridRendererSpec extends ObjectBehavior
             null,
         );
 
-        $field->getType()->willReturn('string');
-        $fieldsRegistry->get('string')->willReturn($fieldType);
-        $fieldType->configureOptions(Argument::type(OptionsResolver::class))
-            ->will(function ($args) {
-                $args[0]->setRequired('foo');
+        $field->method('getType')->willReturn('string');
+        $fieldsRegistry->method('get')->with('string')->willReturn($fieldType);
+        $fieldType
+            ->expects($this->once())
+            ->method('configureOptions')
+            ->with($this->isInstanceOf(OptionsResolver::class))
+            ->willReturnCallback(function (OptionsResolver $resolver) {
+                $resolver->setRequired('foo');
             })
         ;
 
-        $field->getOptions()->willReturn([
-            'foo' => 'bar',
-        ]);
-        $fieldType->render($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
+        $field->method('getOptions')->willReturn(['foo' => 'bar']);
+        $fieldType->method('render')->with($field, 'Value', ['foo' => 'bar'])->willReturn('<strong>Value</strong>');
 
-        $this->renderField($gridView, $field, 'Value')->shouldReturn('<strong>Value</strong>');
+        $result = $renderer->renderField($gridView, $field, 'Value');
+        $this->assertEquals('<strong>Value</strong>', $result);
     }
 }
