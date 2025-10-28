@@ -5,7 +5,7 @@
 /ecs.php export-ignore
 /phpspec/bootstrap.php export-ignore
 /phpspec.yml.dist export-ignore
-/phpstan.neon export-ignore
+/phpstan.neon.dist export-ignore
 /phpunit.xml.dist export-ignore
 /psalm.xml export-ignore
 /rector.php

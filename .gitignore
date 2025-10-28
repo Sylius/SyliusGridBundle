@@ -3,6 +3,8 @@
 /composer.phar
 /composer.lock
 
+/phpstan.neon
+
 /.phpunit.result.cache
 tests/Application/tmp
 
