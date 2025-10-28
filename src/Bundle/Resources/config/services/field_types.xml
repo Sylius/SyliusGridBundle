@@ -34,5 +34,12 @@
             <tag name="sylius.grid_field" type="string" />
         </service>
         <service id="Sylius\Component\Grid\FieldTypes\StringFieldType" alias="sylius.grid_field.string" />
+
+        <service id="sylius.grid_field.enum" class="Sylius\Component\Grid\FieldTypes\EnumFieldType">
+            <argument type="service" id="sylius.grid.data_extractor" />
+            <argument type="service" id="translator" on-invalid="null" />
+            <tag name="sylius.grid_field" type="enum" />
+        </service>
+        <service id="Sylius\Component\Grid\FieldTypes\EnumFieldType" alias="sylius.grid_field.enum" />
     </services>
 </container>
