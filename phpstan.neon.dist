@@ -33,6 +33,11 @@ parameters:
           identifier: method.nonObject
           count: 166
           path: src/Bundle/DependencyInjection/Configuration.php
+        # Symfony Dependency Injection Reflector
+        - message: '#^Parameter \#2 \$configurator of method Symfony\\Component\\DependencyInjection\\ContainerBuilder\:\:registerAttributeForAutoconfiguration\(\)#'
+          identifier: argument.type
+          count: 2
+          path: src/Bundle/DependencyInjection/SyliusGridExtension.php
         # Symfony 8 without Doctrine PHPCR-ODM
         - message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\DataSourceInterface\:\:getQueryBuilder\(\) has invalid return type Doctrine\\ODM\\PHPCR\\Query\\Builder\\QueryBuilder\.$#'
           identifier: class.notFound
