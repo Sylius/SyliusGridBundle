@@ -23,6 +23,7 @@ interface FieldTypeInterface
      * $options.
      *
      * @param mixed $data
+     * @param array<string, mixed> $options
      *
      * @return string
      */
