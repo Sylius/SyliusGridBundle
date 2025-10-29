@@ -17,24 +17,36 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ["8.1", "8.2", "8.3"]
+                php: ["8.2", "8.3"]
                 postgres: [""]
-                symfony: ["^6.4"]
+                minimum_stability: [""]
+                symfony: ["^6.4", "^7.2"]
                 include:
                     -
-                        php: 8.1
-                        symfony: "^6.4"
+                        php: 8.3
+                        symfony: "^7.2"
                         postgres: "13.3"
                     -
-                        php: 8.1
-                        symfony: "^6.4"
+                        php: 8.3
+                        symfony: "^7.2"
                         postgres: "14.0"
                     -
                         php: 8.3
-                        symfony: "^7.0"
+                        symfony: "7.4.*"
+                        minimum_stability: "beta"
         steps:
             -
                 uses: actions/checkout@v4
+
+            -
+                name: Change minimum-stability
+                if: matrix.minimum_stability != ''
+                run: |
+                    composer config minimum-stability ${{ matrix.minimum_stability }}
+                    composer config prefer-stable true
+                    (cd src/Component && composer config  minimum-stability ${{ matrix.minimum_stability }})
+                    (cd src/Component && composer config prefer-stable true)
+
             -
                 name: Setup PHP
                 uses: shivammathur/setup-php@v2
