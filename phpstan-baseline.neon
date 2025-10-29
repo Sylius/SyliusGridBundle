@@ -667,12 +667,6 @@ parameters:
 			path: src/Bundle/Doctrine/ORM/Driver.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\FieldTypes\\TwigFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/FieldTypes/TwigFieldType.php
-
-		-
 			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1417,12 +1411,6 @@ parameters:
 			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
 			message: '#^Parameter \#1 \$id of method Psr\\Container\\ContainerInterface\:\:get\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1447,12 +1435,6 @@ parameters:
 			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\DatetimeFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/DatetimeFieldType.php
-
-		-
 			message: '#^Parameter \#1 \$format of method DateTime\:\:format\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -1463,24 +1445,6 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Component/FieldTypes/DatetimeFieldType.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\EnumFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/EnumFieldType.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\FieldTypeInterface\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/FieldTypeInterface.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\StringFieldType\:\:render\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/StringFieldType.php
 
 		-
 			message: '#^Method Sylius\\Component\\Grid\\Filter\\BooleanFilter\:\:apply\(\) has parameter \$options with no value type specified in iterable type array\.$#'
