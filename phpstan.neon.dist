@@ -36,8 +36,5 @@ parameters:
     ignoreErrors:
         - '/Cannot cast mixed to int./'
         - '/Cannot cast mixed to string./'
-        - '/Method Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface::dispatch\(\) invoked with 2 parameters, 1 required\./'
-        - '/Method Sylius\\Component\\Grid\\Definition\\Filter::setCriteria\(\) has no return typehint specified\./'
         - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
         - '/Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager::getRepository\(\)/'
-        - '/UndefinedClass - src\/Bundle\/Config\/GridConfigInterface/'

@@ -469,56 +469,8 @@ parameters:
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:getAvailableDrivers\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
 			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:getConfiguration\(\) has parameter \$config with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) has parameter \$drivers with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) has parameter \$grids with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#1 \$configuredDrivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:assertDriversValid\(\) expects array\<string\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#1 \$drivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#1 \$grids of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:resolveDriversUsedInGrids\(\) expects array\<string, array\{driver\?\: array\{name\: string\}\}\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#2 \$availableDrivers of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:assertDriversValid\(\) expects array\<string\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#2 \$grids of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:loadPersistence\(\) expects array, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
@@ -526,12 +478,6 @@ parameters:
 			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
 			identifier: argument.type
 			count: 4
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
 		-
