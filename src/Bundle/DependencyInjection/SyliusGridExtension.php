@@ -26,7 +26,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Twig\Environment;
 
 final class SyliusGridExtension extends Extension
@@ -34,9 +34,9 @@ final class SyliusGridExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $loader->load('services.xml');
+        $loader->load('services.php');
 
         $container->setParameter('sylius.grid.templates.action', $config['templates']['action']);
         $container->setParameter('sylius.grid.templates.bulk_action', $config['templates']['bulk_action']);
@@ -48,15 +48,15 @@ final class SyliusGridExtension extends Extension
         $container->setAlias('sylius.grid.data_extractor', 'sylius.grid.data_extractor.property_access');
 
         if ($container::willBeAvailable('twig/twig', Environment::class, ['symfony/twig-bundle'])) {
-            $loader->load('services/integrations/twig.xml');
+            $loader->load('services/integrations/twig.php');
         }
 
         if (\class_exists(SyliusCurrencyBundle::class)) {
-            $loader->load('services/integrations/sylius_currency_bundle.xml');
+            $loader->load('services/integrations/sylius_currency_bundle.php');
         }
 
         if (\class_exists(DoctrineBundle::class)) {
-            $loader->load('services/integrations/doctrine/orm.xml');
+            $loader->load('services/integrations/doctrine/orm.php');
         }
 
         if (\class_exists(DoctrinePHPCRBundle::class)) {
@@ -64,7 +64,7 @@ final class SyliusGridExtension extends Extension
                 'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
                 SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM,
             ), \E_USER_DEPRECATED);
-            $loader->load('services/integrations/doctrine/phpcr-odm.xml');
+            $loader->load('services/integrations/doctrine/phpcr-odm.php');
         }
 
         $container->registerForAutoconfiguration(GridInterface::class)
