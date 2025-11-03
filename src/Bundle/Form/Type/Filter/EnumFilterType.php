@@ -17,6 +17,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class EnumFilterType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void

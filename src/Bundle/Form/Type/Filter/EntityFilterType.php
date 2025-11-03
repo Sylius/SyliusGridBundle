@@ -17,6 +17,9 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class EntityFilterType extends AbstractType
 {
     public function configureOptions(OptionsResolver $resolver): void
