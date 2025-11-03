@@ -79,11 +79,13 @@ interface ExpressionBuilderInterface
     public function greaterThanOrEqual(string $field, $value);
 
     /**
+     * @param mixed[] $values
      * @return mixed
      */
     public function in(string $field, array $values);
 
     /**
+     * @param mixed[] $values
      * @return mixed
      */
     public function notIn(string $field, array $values);

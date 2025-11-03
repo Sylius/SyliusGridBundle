@@ -15,5 +15,9 @@ namespace Sylius\Component\Grid\Configuration;
 
 interface GridConfigurationSortingHandlerInterface
 {
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @return array<string, mixed>
+     */
     public function handle(array $gridConfiguration): array;
 }

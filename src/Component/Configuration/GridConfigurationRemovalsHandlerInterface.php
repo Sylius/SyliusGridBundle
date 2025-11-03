@@ -15,5 +15,9 @@ namespace Sylius\Component\Grid\Configuration;
 
 interface GridConfigurationRemovalsHandlerInterface
 {
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @return array<string, mixed>
+     */
     public function handle(array $gridConfiguration): array;
 }
