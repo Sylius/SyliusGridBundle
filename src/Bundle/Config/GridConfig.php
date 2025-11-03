@@ -37,8 +37,8 @@ final class GridConfig implements GridConfigInterface
             'grids' => [],
         ];
 
-        foreach ($this->grids as $gridBuilder) {
-            $output['grids'][] = $gridBuilder->toArray();
+        foreach ($this->grids as $name => $gridBuilder) {
+            $output['grids'][$name] = $gridBuilder->toArray();
         }
 
         return $output;
