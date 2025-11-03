@@ -118,7 +118,7 @@
         "analyse": [
             "@composer validate --strict",
             "vendor/bin/ecs check",
-            "vendor/bin/phpstan analyse --ansi -l max src"
+            "vendor/bin/phpstan analyse --ansi"
         ],
         "fix": [
             "vendor/bin/ecs check --fix"
