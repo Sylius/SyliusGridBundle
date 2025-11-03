@@ -65,9 +65,11 @@
         "matthiasnoback/symfony-dependency-injection-test": "^5.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
+        "phpstan/extension-installer": "^1.4",
         "phpspec/phpspec": "^7.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
+        "phpstan/phpstan-symfony": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
         "phpunit/phpunit": "^9.5",
         "sylius-labs/coding-standard": "^4.0",
@@ -81,9 +83,7 @@
         "symfony/twig-bundle": "^6.4 || ^7.2",
         "twig/twig": "^2.12 || ^3.0",
         "rector/rector": "^2.0",
-        "rector/custom-phpspec-to-phpunit": "^0.6.2",
-        "phpstan/phpstan-symfony": "^2.0",
-        "phpstan/extension-installer": "^1.4"
+        "rector/custom-phpspec-to-phpunit": "^0.6.2"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -111,7 +111,8 @@
     "config": {
         "allow-plugins": {
             "symfony/flex": true,
-            "dealerdirect/phpcodesniffer-composer-installer": false
+            "dealerdirect/phpcodesniffer-composer-installer": false,
+            "phpstan/extension-installer": true
         }
     },
     "scripts": {
