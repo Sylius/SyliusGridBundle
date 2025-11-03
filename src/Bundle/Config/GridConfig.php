@@ -17,9 +17,7 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
 final class GridConfig implements GridConfigInterface
 {
-    /**
-     * @var array<string, GridBuilderInterface>
-     */
+    /** @var array<string, GridBuilderInterface> */
     private array $grids = [];
 
     public function addGrid(GridBuilderInterface $gridBuilder): GridConfigInterface

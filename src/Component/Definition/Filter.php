@@ -26,9 +26,7 @@ class Filter
 
     private ?string $template = null;
 
-    /**
-     * @var array<string, mixed>
-     */
+    /** @var array<string, mixed> */
     private array $options = [];
 
     private array $formOptions = [];

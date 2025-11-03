@@ -78,6 +78,7 @@ final class ServiceGridProvider implements GridProviderInterface
 
     /**
      * @param array<string, mixed> $gridConfiguration
+     *
      * @return array<string, mixed>
      */
     private function extend(array $gridConfiguration, string $parentGridCode): array
