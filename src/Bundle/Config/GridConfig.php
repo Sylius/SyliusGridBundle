@@ -17,6 +17,9 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
 final class GridConfig implements GridConfigInterface
 {
+    /**
+     * @var array<string, GridBuilderInterface>
+     */
     private array $grids = [];
 
     public function addGrid(GridBuilderInterface $gridBuilder): GridConfigInterface
@@ -28,10 +31,16 @@ final class GridConfig implements GridConfigInterface
 
     public function toArray(): array
     {
-        $output = [];
+        if (count($this->grids) <= 0) {
+            return [];
+        }
 
-        if (count($this->grids) > 0) {
-            $output['grids'] = array_map(function (GridBuilderInterface $gridBuilder): array { return $gridBuilder->toArray(); }, $this->grids);
+        $output = [
+            'grids' => [],
+        ];
+
+        foreach ($this->grids as $gridBuilder) {
+            $output['grids'][] = $gridBuilder->toArray();
         }
 
         return $output;

@@ -34,9 +34,12 @@ final class ArrayGridProvider implements GridProviderInterface
 
     private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
 
-    /** @var array[] */
+    /** @var array<string, array<string, mixed>> */
     private array $gridConfigurations;
 
+    /**
+     * @param array<string, array<string, mixed>> $gridConfigurations
+     */
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         array $gridConfigurations,
@@ -58,12 +61,13 @@ final class ArrayGridProvider implements GridProviderInterface
         }
 
         $gridConfiguration = $this->gridConfigurations[$code];
+        /** @var string|null $parentGridCode */
         $parentGridCode = $gridConfiguration['extends'] ?? null;
 
         if (null !== $parentGridCode) {
-            $parentGridConfiguration = $this->gridConfigurations[$gridConfiguration['extends']] ?? null;
+            $parentGridConfiguration = $this->gridConfigurations[$parentGridCode] ?? null;
 
-            Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $gridConfiguration['extends']));
+            Assert::notNull($parentGridConfiguration, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
             $gridConfiguration = $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
         }
 

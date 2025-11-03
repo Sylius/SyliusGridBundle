@@ -76,6 +76,10 @@ final class ServiceGridProvider implements GridProviderInterface
         return $this->converter->convert($code, $gridConfiguration);
     }
 
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @return array<string, mixed>
+     */
     private function extend(array $gridConfiguration, string $parentGridCode): array
     {
         $parentGrid = $this->gridRegistry->getGrid($parentGridCode);
