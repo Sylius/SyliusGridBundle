@@ -256,7 +256,7 @@ final class GridBuilder implements GridBuilderInterface
         }
 
         foreach ($this->actionGroups as $name => $actionGroup) {
-            $output['actionGroups'][$name] = $actionGroup->toArray();
+            $output['actions'][$name] = $actionGroup->toArray();
         }
 
         if (count($this->limits) > 0) {
