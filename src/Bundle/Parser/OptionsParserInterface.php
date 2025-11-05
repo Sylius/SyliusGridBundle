@@ -17,6 +17,7 @@ interface OptionsParserInterface
 {
     /**
      * @param array<string, mixed> $parameters
+     *
      * @return array<string, mixed>
      */
     public function parseOptions(array $parameters): array;

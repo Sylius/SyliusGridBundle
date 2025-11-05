@@ -19,9 +19,7 @@ final class ActionGroup implements ActionGroupInterface
 {
     private string $name;
 
-    /**
-     * @var array<string, ActionInterface>
-     */
+    /** @var array<string, ActionInterface> */
     private array $actions = [];
 
     private function __construct(string $name)
