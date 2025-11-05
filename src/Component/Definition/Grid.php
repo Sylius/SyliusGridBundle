@@ -21,7 +21,7 @@ class Grid
 
     private string $driver;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private $driverConfiguration;
 
     /** @var string|callable|null */
@@ -42,6 +42,9 @@ class Grid
     /** @var array */
     private $actionGroups = [];
 
+    /**
+     * @param array<string, mixed> $driverConfiguration
+     */
     private function __construct(string $code, string $driver, array $driverConfiguration)
     {
         $this->code = $code;
@@ -49,6 +52,9 @@ class Grid
         $this->driverConfiguration = $driverConfiguration;
     }
 
+    /**
+     * @param array<string, mixed> $driverConfiguration
+     */
     public static function fromCodeAndDriverConfiguration(string $code, string $driver, array $driverConfiguration): self
     {
         return new self($code, $driver, $driverConfiguration);
@@ -64,11 +70,17 @@ class Grid
         return $this->driver;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getDriverConfiguration(): array
     {
         return $this->driverConfiguration;
     }
 
+    /**
+     * @param array<string, mixed> $driverConfiguration
+     */
     public function setDriverConfiguration(array $driverConfiguration): void
     {
         $this->driverConfiguration = $driverConfiguration;

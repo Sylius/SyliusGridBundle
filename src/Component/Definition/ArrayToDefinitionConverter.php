@@ -29,10 +29,13 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
 
     public function convert(string $code, array $configuration): Grid
     {
+        /** @var array<string, mixed> $driverConfiguration */
+        $driverConfiguration = $configuration['driver']['options'] ?? [];
+
         $grid = Grid::fromCodeAndDriverConfiguration(
             $code,
             $configuration['driver']['name'],
-            $configuration['driver']['options'] ?? [],
+            $driverConfiguration,
         );
 
         $grid->setProvider($configuration['provider'] ?? null);

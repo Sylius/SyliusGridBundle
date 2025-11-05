@@ -26,6 +26,7 @@ class Filter
 
     private ?string $template = null;
 
+    /** @var array<string, mixed> */
     private array $options = [];
 
     private array $formOptions = [];
@@ -98,6 +99,9 @@ class Filter
         $this->template = $template;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;

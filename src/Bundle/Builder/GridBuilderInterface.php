@@ -67,5 +67,8 @@ interface GridBuilderInterface
 
     public function extends(string $gridName): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

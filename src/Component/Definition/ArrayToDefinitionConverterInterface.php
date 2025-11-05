@@ -15,5 +15,8 @@ namespace Sylius\Component\Grid\Definition;
 
 interface ArrayToDefinitionConverterInterface
 {
+    /**
+     * @param array<string, mixed> $configuration
+     */
     public function convert(string $code, array $configuration): Grid;
 }
