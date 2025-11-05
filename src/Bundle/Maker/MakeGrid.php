@@ -68,6 +68,7 @@ final class MakeGrid extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
+        /** @var string $class */
         $class = $input->getArgument('entity');
 
         if (!\class_exists($class)) {
@@ -75,9 +76,11 @@ final class MakeGrid extends AbstractMaker
         }
 
         if (!\class_exists($class)) {
-            throw new RuntimeCommandException(\sprintf('Entity "%s" not found.', $input->getArgument('entity')));
+            $entityArg = $input->getArgument('entity');
+            throw new RuntimeCommandException(\sprintf('Entity "%s" not found.', is_string($entityArg) ? $entityArg : 'unknown'));
         }
 
+        /** @var string $namespace */
         $namespace = $input->getOption('namespace');
 
         // strip maker's root namespace if set
@@ -109,6 +112,9 @@ final class MakeGrid extends AbstractMaker
         // No dependencies needed
     }
 
+    /**
+     * @return string[]
+     */
     private function entityChoices(): array
     {
         $choices = [];
@@ -128,7 +134,11 @@ final class MakeGrid extends AbstractMaker
         return $choices;
     }
 
-    /** @param class-string $class */
+    /**
+     * @param class-string $class
+     *
+     * @return iterable<string, string|null>
+     */
     private function defaultFieldsFor(string $class): iterable
     {
         $entityManager = $this->managerRegistry?->getManagerForClass($class);
