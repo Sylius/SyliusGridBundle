@@ -1,37 +1,39 @@
 includes:
     - phpstan-baseline.neon
-    - vendor/phpstan/phpstan-webmozart-assert/extension.neon
-    - vendor/phpstan/phpstan-phpunit/extension.neon
-    - vendor/phpstan/phpstan-phpunit/rules.neon
 
 parameters:
     reportUnmatchedIgnoredErrors: false
     treatPhpDocTypesAsCertain: false
 
+    level: max
+
+    paths:
+        - src
+
     excludePaths:
-        - %currentWorkingDirectory%/src/Bundle/Config/GridConfigInterface.php
-        - %currentWorkingDirectory%/src/Bundle/Doctrine/PHPCRODM/*
-        - %currentWorkingDirectory%/src/Bundle/Doctrine/ORM/ExpressionBuilder.php
-        - %currentWorkingDirectory%/src/Bundle/DependencyInjection/Configuration.php
-        - %currentWorkingDirectory%/src/Bundle/Form/DataTransformer/DateTimeFilterTransformer.php
-        - %currentWorkingDirectory%/src/Bundle/Maker/MakeGrid.php
-        - %currentWorkingDirectory%/src/Bundle/Registry/GridRegistry.php
-        - %currentWorkingDirectory%/src/Bundle/Renderer/TwigGridRenderer.php
-        - %currentWorkingDirectory%/src/Bundle/Resources/*
-        - %currentWorkingDirectory%/src/Bundle/spec/*
-        - %currentWorkingDirectory%/src/Bundle/Tests/*
-        - %currentWorkingDirectory%/src/Component/DataExtractor/PropertyAccessDataExtractor.php
-        - %currentWorkingDirectory%/src/Component/Definition/Filter.php
-        - %currentWorkingDirectory%/src/Component/Filter/DateFilter.php
-        - %currentWorkingDirectory%/src/Component/Filter/MoneyFilter.php
-        - %currentWorkingDirectory%/src/Component/Filter/NumericRangeFilter.php
-        - %currentWorkingDirectory%/src/Component/Filter/StringFilter.php
-        - %currentWorkingDirectory%/src/Component/Filtering/FiltersCriteriaResolver.php
-        - %currentWorkingDirectory%/src/Component/Sorting/Sorter.php
-        - %currentWorkingDirectory%/src/Component/View/GridView.php
-        - %currentWorkingDirectory%/src/Component/spec/*
-        - %currentWorkingDirectory%/src/Component/Tests/*
-        - %currentWorkingDirectory%/src/Component/vendor/*
+        - src/Bundle/Config/GridConfigInterface.php
+        - src/Bundle/Doctrine/PHPCRODM/*
+        - src/Bundle/Doctrine/ORM/ExpressionBuilder.php
+        - src/Bundle/DependencyInjection/Configuration.php
+        - src/Bundle/Form/DataTransformer/DateTimeFilterTransformer.php
+        - src/Bundle/Maker/MakeGrid.php
+        - src/Bundle/Registry/GridRegistry.php
+        - src/Bundle/Renderer/TwigGridRenderer.php
+        - src/Bundle/Resources/*
+        - src/Bundle/spec/*
+        - src/Bundle/Tests/*
+        - src/Component/DataExtractor/PropertyAccessDataExtractor.php
+        - src/Component/Definition/Filter.php
+        - src/Component/Filter/DateFilter.php
+        - src/Component/Filter/MoneyFilter.php
+        - src/Component/Filter/NumericRangeFilter.php
+        - src/Component/Filter/StringFilter.php
+        - src/Component/Filtering/FiltersCriteriaResolver.php
+        - src/Component/Sorting/Sorter.php
+        - src/Component/View/GridView.php
+        - src/Component/spec/*
+        - src/Component/Tests/*
+        - src/Component/vendor/*
 
     ignoreErrors:
         - '/Cannot cast mixed to int./'
