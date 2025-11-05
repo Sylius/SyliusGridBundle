@@ -19,6 +19,9 @@ final class ActionGroup implements ActionGroupInterface
 {
     private string $name;
 
+    /**
+     * @var array<string, ActionInterface>
+     */
     private array $actions = [];
 
     private function __construct(string $name)
@@ -30,9 +33,9 @@ final class ActionGroup implements ActionGroupInterface
     {
         $actionGroup = new self($name);
 
-        array_map(function (ActionInterface $action) use ($actionGroup) {
+        foreach ($actions as $action) {
             $actionGroup->addAction($action);
-        }, $actions);
+        }
 
         return $actionGroup;
     }
@@ -58,10 +61,14 @@ final class ActionGroup implements ActionGroupInterface
 
     public function toArray(): array
     {
+        if (count($this->actions) <= 0) {
+            return [];
+        }
+
         $output = [];
 
-        if (count($this->actions) > 0) {
-            $output = array_map(function (ActionInterface $action) { return $action->toArray(); }, $this->actions);
+        foreach ($this->actions as $name => $action) {
+            $output[$name] = $action->toArray();
         }
 
         return $output;
