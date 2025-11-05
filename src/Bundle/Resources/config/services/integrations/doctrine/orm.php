@@ -20,7 +20,7 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     $services->set('sylius.grid_driver.doctrine.orm', 'Sylius\Bundle\GridBundle\Doctrine\ORM\Driver')
-        ->args([service('doctrine')->nullOnInvalid()])
+        ->args([service('doctrine')])
         ->tag('sylius.grid_driver', ['alias' => 'doctrine/orm']);
 
     $services->alias('Sylius\Bundle\GridBundle\Doctrine\ORM\Driver', 'sylius.grid_driver.doctrine.orm');

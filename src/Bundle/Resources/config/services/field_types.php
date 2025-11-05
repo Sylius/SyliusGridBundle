@@ -33,7 +33,7 @@ return static function (ContainerConfigurator $container) {
             service('sylius.grid.data_extractor'),
             '%sylius_grid.timezone%',
         ])
-        ->tag('sylius.grid_field', ['type' => \datetime::class]);
+        ->tag('sylius.grid_field', ['type' => 'datetime']);
 
     $services->alias('Sylius\Component\Grid\FieldTypes\DatetimeFieldType', 'sylius.grid_field.datetime');
 
