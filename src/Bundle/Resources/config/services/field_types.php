@@ -13,13 +13,18 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Sylius\Component\Grid\FieldTypes\CallableFieldType;
+use Sylius\Component\Grid\FieldTypes\DatetimeFieldType;
+use Sylius\Component\Grid\FieldTypes\EnumFieldType;
+use Sylius\Component\Grid\FieldTypes\StringFieldType;
+
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
 
     $services->defaults()
         ->public();
 
-    $services->set('sylius.grid_field.callable', 'Sylius\Component\Grid\FieldTypes\CallableFieldType')
+    $services->set('sylius.grid_field.callable', CallableFieldType::class)
         ->args([
             service('sylius.grid.data_extractor'),
             tagged_locator('sylius.grid_field_callable_service'),
@@ -28,7 +33,7 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias('Sylius\Component\Grid\FieldTypes\CallableFieldType', 'sylius.grid_field.callable');
 
-    $services->set('sylius.grid_field.datetime', 'Sylius\Component\Grid\FieldTypes\DatetimeFieldType')
+    $services->set('sylius.grid_field.datetime', DatetimeFieldType::class)
         ->args([
             service('sylius.grid.data_extractor'),
             '%sylius_grid.timezone%',
@@ -37,13 +42,13 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias('Sylius\Component\Grid\FieldTypes\DatetimeFieldType', 'sylius.grid_field.datetime');
 
-    $services->set('sylius.grid_field.string', 'Sylius\Component\Grid\FieldTypes\StringFieldType')
+    $services->set('sylius.grid_field.string', StringFieldType::class)
         ->args([service('sylius.grid.data_extractor')])
         ->tag('sylius.grid_field', ['type' => 'string']);
 
     $services->alias('Sylius\Component\Grid\FieldTypes\StringFieldType', 'sylius.grid_field.string');
 
-    $services->set('sylius.grid_field.enum', 'Sylius\Component\Grid\FieldTypes\EnumFieldType')
+    $services->set('sylius.grid_field.enum', EnumFieldType::class)
         ->args([
             service('sylius.grid.data_extractor'),
             service('translator')->nullOnInvalid(),

@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType;
+use Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer;
+use Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer;
+use Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension;
+use Sylius\Bundle\GridBundle\Twig\GridExtension;
+
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
     $container->import('twig/**');
@@ -20,7 +26,7 @@ return static function (ContainerConfigurator $container) {
     $services->defaults()
         ->public();
 
-    $services->set('sylius.grid.renderer.twig', 'Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer')
+    $services->set('sylius.grid.renderer.twig', TwigGridRenderer::class)
         ->args([
             service('twig'),
             service('sylius.registry.grid_field'),
@@ -34,7 +40,7 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias('Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer', 'sylius.grid.renderer.twig');
 
-    $services->set('sylius.grid.bulk_action_renderer.twig', 'Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer')
+    $services->set('sylius.grid.bulk_action_renderer.twig', TwigBulkActionGridRenderer::class)
         ->args([
             service('twig'),
             '%sylius.grid.templates.bulk_action%',
@@ -42,7 +48,7 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias('Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer', 'sylius.grid.bulk_action_renderer.twig');
 
-    $services->set('sylius.twig.extension.grid', 'Sylius\Bundle\GridBundle\Twig\GridExtension')
+    $services->set('sylius.twig.extension.grid', GridExtension::class)
         ->private()
         ->args([service('sylius.templating.helper.grid')])
         ->tag('twig.extension');
@@ -50,7 +56,7 @@ return static function (ContainerConfigurator $container) {
     $services->alias('Sylius\Bundle\GridBundle\Twig\GridExtension', 'sylius.twig.extension.grid')
         ->private();
 
-    $services->set('sylius.twig.extension.bulk_action_grid', 'Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension')
+    $services->set('sylius.twig.extension.bulk_action_grid', BulkActionGridExtension::class)
         ->private()
         ->args([service('sylius.templating.helper.bulk_action_grid')])
         ->tag('twig.extension');
@@ -58,7 +64,7 @@ return static function (ContainerConfigurator $container) {
     $services->alias('Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension', 'sylius.twig.extension.bulk_action_grid')
         ->private();
 
-    $services->set('sylius.grid_field.twig', 'Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType')
+    $services->set('sylius.grid_field.twig', TwigFieldType::class)
         ->args([
             service('sylius.grid.data_extractor'),
             service('twig'),
