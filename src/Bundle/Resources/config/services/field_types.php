@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $container) {
         ])
         ->tag('sylius.grid_field', ['type' => 'callable']);
 
-    $services->alias('Sylius\Component\Grid\FieldTypes\CallableFieldType', 'sylius.grid_field.callable');
+    $services->alias(CallableFieldType::class, 'sylius.grid_field.callable');
 
     $services->set('sylius.grid_field.datetime', DatetimeFieldType::class)
         ->args([
@@ -40,13 +40,13 @@ return static function (ContainerConfigurator $container) {
         ])
         ->tag('sylius.grid_field', ['type' => 'datetime']);
 
-    $services->alias('Sylius\Component\Grid\FieldTypes\DatetimeFieldType', 'sylius.grid_field.datetime');
+    $services->alias(DatetimeFieldType::class, 'sylius.grid_field.datetime');
 
     $services->set('sylius.grid_field.string', StringFieldType::class)
         ->args([service('sylius.grid.data_extractor')])
         ->tag('sylius.grid_field', ['type' => 'string']);
 
-    $services->alias('Sylius\Component\Grid\FieldTypes\StringFieldType', 'sylius.grid_field.string');
+    $services->alias(StringFieldType::class, 'sylius.grid_field.string');
 
     $services->set('sylius.grid_field.enum', EnumFieldType::class)
         ->args([
@@ -55,5 +55,5 @@ return static function (ContainerConfigurator $container) {
         ])
         ->tag('sylius.grid_field', ['type' => 'enum']);
 
-    $services->alias('Sylius\Component\Grid\FieldTypes\EnumFieldType', 'sylius.grid_field.enum');
+    $services->alias(EnumFieldType::class, 'sylius.grid_field.enum');
 };
