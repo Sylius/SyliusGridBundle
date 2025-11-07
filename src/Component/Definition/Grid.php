@@ -27,7 +27,7 @@ class Grid
     /** @var string|callable|null */
     private $provider;
 
-    /** @var array */
+    /** @var array<string, string> */
     private $sorting = [];
 
     /** @var array */
@@ -96,11 +96,17 @@ class Grid
         $this->provider = $provider;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getSorting(): array
     {
         return $this->sorting;
     }
 
+    /**
+     * @param array<string, string> $sorting
+     */
     public function setSorting(array $sorting): void
     {
         $this->sorting = $sorting;

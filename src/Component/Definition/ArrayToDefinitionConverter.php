@@ -41,7 +41,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $grid->setProvider($configuration['provider'] ?? null);
 
         if (array_key_exists('sorting', $configuration)) {
-            $grid->setSorting($configuration['sorting']);
+            /** @var array<string, string> $sorting */
+            $sorting = $configuration['sorting'];
+            $grid->setSorting($sorting);
         }
 
         if (array_key_exists('limits', $configuration)) {
