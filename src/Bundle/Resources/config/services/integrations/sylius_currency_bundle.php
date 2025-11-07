@@ -23,12 +23,12 @@ return static function (ContainerConfigurator $container) {
         ->public();
 
     $services->set('sylius.grid_filter.money', MoneyFilter::class)
-        ->tag('sylius.grid_filter', ['type' => 'money', 'form_type' => 'Sylius\Bundle\GridBundle\Form\Type\Filter\MoneyFilterType']);
+        ->tag('sylius.grid_filter', ['type' => 'money', 'form_type' => MoneyFilterType::class]);
 
-    $services->alias('Sylius\Component\Grid\Filter\MoneyFilter', 'sylius.grid_filter.money');
+    $services->alias(MoneyFilter::class, 'sylius.grid_filter.money');
 
     $services->set('sylius.form.type.grid_filter.money', MoneyFilterType::class)
         ->tag('form.type');
 
-    $services->alias('Sylius\Bundle\GridBundle\Form\Type\Filter\MoneyFilterType', 'sylius.form.type.grid_filter.money');
+    $services->alias(MoneyFilterType::class, 'sylius.form.type.grid_filter.money');
 };

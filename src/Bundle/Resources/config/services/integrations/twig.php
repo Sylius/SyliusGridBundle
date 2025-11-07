@@ -38,7 +38,7 @@ return static function (ContainerConfigurator $container) {
             service('sylius.grid.options_parser'),
         ]);
 
-    $services->alias('Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer', 'sylius.grid.renderer.twig');
+    $services->alias(TwigGridRenderer::class, 'sylius.grid.renderer.twig');
 
     $services->set('sylius.grid.bulk_action_renderer.twig', TwigBulkActionGridRenderer::class)
         ->args([
@@ -46,14 +46,14 @@ return static function (ContainerConfigurator $container) {
             '%sylius.grid.templates.bulk_action%',
         ]);
 
-    $services->alias('Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer', 'sylius.grid.bulk_action_renderer.twig');
+    $services->alias(TwigBulkActionGridRenderer::class, 'sylius.grid.bulk_action_renderer.twig');
 
     $services->set('sylius.twig.extension.grid', GridExtension::class)
         ->private()
         ->args([service('sylius.templating.helper.grid')])
         ->tag('twig.extension');
 
-    $services->alias('Sylius\Bundle\GridBundle\Twig\GridExtension', 'sylius.twig.extension.grid')
+    $services->alias(GridExtension::class, 'sylius.twig.extension.grid')
         ->private();
 
     $services->set('sylius.twig.extension.bulk_action_grid', BulkActionGridExtension::class)
@@ -61,7 +61,7 @@ return static function (ContainerConfigurator $container) {
         ->args([service('sylius.templating.helper.bulk_action_grid')])
         ->tag('twig.extension');
 
-    $services->alias('Sylius\Bundle\GridBundle\Twig\BulkActionGridExtension', 'sylius.twig.extension.bulk_action_grid')
+    $services->alias(BulkActionGridExtension::class, 'sylius.twig.extension.bulk_action_grid')
         ->private();
 
     $services->set('sylius.grid_field.twig', TwigFieldType::class)
@@ -71,5 +71,5 @@ return static function (ContainerConfigurator $container) {
         ])
         ->tag('sylius.grid_field', ['type' => 'twig']);
 
-    $services->alias('Sylius\Bundle\GridBundle\FieldTypes\TwigFieldType', 'sylius.grid_field.twig');
+    $services->alias(TwigFieldType::class, 'sylius.grid_field.twig');
 };

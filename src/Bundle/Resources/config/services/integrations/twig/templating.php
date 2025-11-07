@@ -26,11 +26,11 @@ return static function (ContainerConfigurator $container) {
         ->lazy()
         ->args([service('sylius.grid.renderer')]);
 
-    $services->alias('Sylius\Bundle\GridBundle\Templating\Helper\GridHelper', 'sylius.templating.helper.grid');
+    $services->alias(GridHelper::class, 'sylius.templating.helper.grid');
 
     $services->set('sylius.templating.helper.bulk_action_grid', BulkActionGridHelper::class)
         ->lazy()
         ->args([service('sylius.grid.bulk_action_renderer')]);
 
-    $services->alias('Sylius\Bundle\GridBundle\Templating\Helper\BulkActionGridHelper', 'sylius.templating.helper.bulk_action_grid');
+    $services->alias(BulkActionGridHelper::class, 'sylius.templating.helper.bulk_action_grid');
 };
