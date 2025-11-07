@@ -29,41 +29,18 @@ use Twig\Environment;
 
 final class TwigGridRenderer implements GridRendererInterface
 {
-    private Environment $twig;
-
-    private ServiceRegistryInterface $fieldsRegistry;
-
-    private FormFactoryInterface $formFactory;
-
-    private FormTypeRegistryInterface $formTypeRegistry;
-
-    private string $defaultTemplate;
-
-    private array $actionTemplates;
-
-    private array $filterTemplates;
-
-    private ?OptionsParserInterface $optionsParser;
-
     public function __construct(
-        Environment $twig,
-        ServiceRegistryInterface $fieldsRegistry,
-        FormFactoryInterface $formFactory,
-        FormTypeRegistryInterface $formTypeRegistry,
-        string $defaultTemplate,
-        array $actionTemplates = [],
-        array $filterTemplates = [],
-        ?OptionsParserInterface $optionsParser = null,
+        private Environment $twig,
+        private ServiceRegistryInterface $fieldsRegistry,
+        private FormFactoryInterface $formFactory,
+        private FormTypeRegistryInterface $formTypeRegistry,
+        private string $defaultTemplate,
+        /** @var array<string, string> $actionTemplates */
+        private array $actionTemplates = [],
+        /** @var array<string, string> $filterTemplates */
+        private array $filterTemplates = [],
+        private ?OptionsParserInterface $optionsParser = null,
     ) {
-        $this->twig = $twig;
-        $this->fieldsRegistry = $fieldsRegistry;
-        $this->formFactory = $formFactory;
-        $this->formTypeRegistry = $formTypeRegistry;
-        $this->defaultTemplate = $defaultTemplate;
-        $this->actionTemplates = $actionTemplates;
-        $this->filterTemplates = $filterTemplates;
-        $this->optionsParser = $optionsParser;
-
         if (null === $optionsParser) {
             trigger_deprecation(
                 'sylius/grid-bundle',
@@ -91,6 +68,8 @@ final class TwigGridRenderer implements GridRendererInterface
         if (null !== $this->optionsParser) {
             $options = $this->optionsParser->parseOptions($options);
         }
+
+        /** @var array<string, mixed> $options */
         $options = $resolver->resolve($options);
 
         return $fieldType->render($field, $data, $options);
@@ -127,6 +106,7 @@ final class TwigGridRenderer implements GridRendererInterface
             $filter->getFormOptions(),
         );
 
+        /** @var array<string, mixed> $criteria */
         $criteria = $gridView->getParameters()->get('criteria', []);
         $form->submit($criteria);
 

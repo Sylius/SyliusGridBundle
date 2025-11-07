@@ -12,7 +12,6 @@ parameters:
 
     excludePaths:
         - src/Bundle/Doctrine/PHPCRODM/*
-        - src/Bundle/Renderer/TwigGridRenderer.php
         - src/Bundle/Resources/*
         - src/Bundle/spec/*
         - src/Bundle/Tests/*

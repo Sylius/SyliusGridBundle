@@ -95,7 +95,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $field->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            $field->setOptions($configuration['options']);
+            /** @var array<string, mixed> $options */
+            $options = $configuration['options'];
+            $field->setOptions($options);
         }
 
         return $field;
