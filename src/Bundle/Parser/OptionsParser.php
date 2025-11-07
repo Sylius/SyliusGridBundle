@@ -22,6 +22,7 @@ final class OptionsParser implements OptionsParserInterface
         return array_map(
             function (mixed $parameter): mixed {
                 if (is_array($parameter)) {
+                    /** @var array<string, mixed> $parameter */
                     return $this->parseOptions($parameter);
                 }
 

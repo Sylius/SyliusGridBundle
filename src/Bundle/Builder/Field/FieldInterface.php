@@ -39,16 +39,27 @@ interface FieldInterface
 
     public function setPosition(?int $position): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array;
 
-    /** @deprecated use self::withOptions instead */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @deprecated use self::withOptions instead
+     */
     public function setOptions(array $options): self;
 
-    /** @deprecated use self::withOptions instead */
+    /**
+     * @param array<string, mixed> $options
+     *
+     * @deprecated use self::withOptions instead
+     */
     public function addOptions(array $options): self;
 
     /**
-     * @param array<mixed> $options
+     * @param array<string, mixed> $options
      */
     public function withOptions(array $options): self;
 
@@ -59,5 +70,8 @@ interface FieldInterface
 
     public function removeOption(string $option): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

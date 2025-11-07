@@ -15,6 +15,9 @@ namespace Sylius\Bundle\GridBundle\Builder\Action;
 
 final class CreateAction
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public static function create(array $options = []): ActionInterface
     {
         $action = Action::create('create', 'create');
