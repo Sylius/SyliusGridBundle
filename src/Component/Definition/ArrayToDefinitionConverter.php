@@ -47,7 +47,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         }
 
         if (array_key_exists('limits', $configuration)) {
-            $grid->setLimits($configuration['limits']);
+            /** @var int[] $limits */
+            $limits = $configuration['limits'];
+            $grid->setLimits($limits);
         }
 
         foreach ($configuration['fields'] ?? [] as $name => $fieldConfiguration) {
@@ -169,7 +171,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $action->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            $action->setOptions($configuration['options']);
+            /** @var array<string, mixed> $options */
+            $options = $configuration['options'];
+            $action->setOptions($options);
         }
 
         return $action;

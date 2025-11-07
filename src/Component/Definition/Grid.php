@@ -28,19 +28,19 @@ class Grid
     private $provider;
 
     /** @var array<string, string> */
-    private $sorting = [];
+    private array $sorting = [];
 
-    /** @var array */
-    private $limits = [];
+    /** @var array<int> */
+    private array $limits = [];
 
     /** @var array<string, Field> */
-    private $fields = [];
+    private array $fields = [];
 
     /** @var array<string, Filter> */
-    private $filters = [];
+    private array $filters = [];
 
-    /** @var array */
-    private $actionGroups = [];
+    /** @var array<string, ActionGroup> */
+    private array $actionGroups = [];
 
     /**
      * @param array<string, mixed> $driverConfiguration
@@ -112,11 +112,17 @@ class Grid
         $this->sorting = $sorting;
     }
 
+    /**
+     * @return array<int>
+     */
     public function getLimits(): array
     {
         return $this->limits;
     }
 
+    /**
+     * @param int[] $limits
+     */
     public function setLimits(array $limits): void
     {
         $this->limits = $limits;
@@ -182,7 +188,7 @@ class Grid
     }
 
     /**
-     * @return array|ActionGroup[]
+     * @return array<string, ActionGroup>
      */
     public function getActionGroups(): array
     {
@@ -190,7 +196,7 @@ class Grid
     }
 
     /**
-     * @return array|ActionGroup[]
+     * @return array<string, ActionGroup>
      */
     public function getEnabledActionGroups(): array
     {

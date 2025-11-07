@@ -27,8 +27,8 @@ class Action
 
     private ?string $icon = null;
 
-    /** @var array */
-    private $options = [];
+    /** @var array<string, mixed> */
+    private array $options = [];
 
     /**
      * Position equals to 100 to ensure that wile sorting actions by position ASC
@@ -97,11 +97,17 @@ class Action
         $this->icon = $icon;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options;
