@@ -39,8 +39,10 @@ final class NumericRangeFilter implements FilterInterface
         }
 
         $field = (string) ($options['field'] ?? $name);
-        $scale = (int) ($options['scale'] ?? self::DEFAULT_SCALE);
-        $mode = (int) ($options['rounding_mode'] ?? self::DEFAULT_ROUNDING_MODE);
+        /** @var int $scale */
+        $scale = $options['scale'] ?? self::DEFAULT_SCALE;
+        /** @var int $mode */
+        $mode = $options['rounding_mode'] ?? self::DEFAULT_ROUNDING_MODE;
 
         $greaterThan = $this->getDataValue($data, 'greaterThan');
         $lessThan = $this->getDataValue($data, 'lessThan');

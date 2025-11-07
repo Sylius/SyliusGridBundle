@@ -25,7 +25,6 @@ parameters:
         - src/Component/Filter/MoneyFilter.php
 
     ignoreErrors:
-        - '/Cannot cast mixed to int./'
         - '/Cannot cast mixed to string./'
         - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
         - '/Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager::getRepository\(\)/'

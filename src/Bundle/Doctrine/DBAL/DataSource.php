@@ -62,7 +62,8 @@ final class DataSource implements DataSourceInterface
             throw new \LogicException('Pagerfanta DBAL adapter is not available. Try running "composer require pagerfanta/doctrine-dbal-adapter".');
         }
 
-        $page = (int) $parameters->get('page', 1);
+        /** @var int $page */
+        $page = $parameters->get('page', 1);
 
         $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
             $queryBuilder
