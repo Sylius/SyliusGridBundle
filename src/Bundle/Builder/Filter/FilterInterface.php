@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 /**
  * @method mixed getDefaultValue()
  * @method self setDefaultValue(mixed $defaultValue)
+ * @method array<string, mixed> getCriteria()
  */
 interface FilterInterface
 {
