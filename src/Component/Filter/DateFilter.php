@@ -41,7 +41,8 @@ final class DateFilter implements FilterInterface
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
-        $field = (string) $this->getOption($options, 'field', $name);
+        /** @var string $field */
+        $field = $this->getOption($options, 'field', $name);
 
         $from = isset($data['from']) ? $this->getDateTime($data['from'], '00:00') : null;
         if (null !== $from) {

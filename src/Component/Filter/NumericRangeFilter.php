@@ -38,7 +38,8 @@ final class NumericRangeFilter implements FilterInterface
             return;
         }
 
-        $field = (string) ($options['field'] ?? $name);
+        /** @var string $field */
+        $field = $options['field'] ?? $name;
         /** @var int $scale */
         $scale = $options['scale'] ?? self::DEFAULT_SCALE;
         /** @var int $mode */

@@ -205,25 +205,7 @@ parameters:
 			path: src/Bundle/Doctrine/ORM/Driver.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$repository contains generic class Doctrine\\ORM\\EntityRepository but does not specify its types\: T$#'
-			identifier: missingType.generics
-			count: 1
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
 			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#1 \$class of method Doctrine\\Persistence\\ManagerRegistry\:\:getManagerForClass\(\) expects class\-string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#1 \$className of method Doctrine\\Persistence\\ObjectManager\:\:getRepository\(\) expects class\-string\<object\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Bundle/Doctrine/ORM/Driver.php
@@ -238,12 +220,6 @@ parameters:
 			message: '#^Parameter \#2 \$fetchJoinCollection of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects bool, mixed given\.$#'
 			identifier: argument.type
 			count: 3
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Bundle/Doctrine/ORM/Driver.php
 
 		-
@@ -809,3 +785,54 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Component/Definition/Filter.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Component/FieldTypes/CallableFieldType.php
+
+
+		# src/Bundle/Form/Type/Filter/MoneyFilterType.php is deprecated since 1.8
+		-
+			message: '#^Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Bundle/Form/Type/Filter/MoneyFilterType.php
+
+		# src/Component/Filter/MoneyFilter.php is deprecated since 1.8
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: src/Component/Filter/MoneyFilter.php
+
+		-
+			message: '#^Parameter \#1 \$data of method Sylius\\Component\\Grid\\Filter\\MoneyFilter\:\:getDataValue\(\) expects array<string>, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Component/Filter/MoneyFilter.php
+
+		-
+			message: '#^Cannot access offset ''currency'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Component/Filter/MoneyFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/MoneyFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:greaterThan\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/MoneyFilter.php
+
+		-
+			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:lessThan\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Filter/MoneyFilter.php

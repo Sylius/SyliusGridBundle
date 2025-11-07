@@ -37,14 +37,17 @@ final class Driver implements DriverInterface
             throw new \InvalidArgumentException('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.');
         }
 
-        $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
+        /** @var class-string $class */
+        $class = $configuration['class'];
+
+        $manager = $this->managerRegistry->getManagerForClass($class);
 
         if (null === $manager) {
-            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $configuration['class']));
+            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $class));
         }
 
-        /** @var EntityRepository $repository */
-        $repository = $manager->getRepository($configuration['class']);
+        /** @var EntityRepository<object> $repository */
+        $repository = $manager->getRepository($class);
 
         $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? true;
         $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? true;
