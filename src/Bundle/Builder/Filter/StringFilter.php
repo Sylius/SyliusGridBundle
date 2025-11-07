@@ -40,6 +40,7 @@ final class StringFilter
     public const TYPE_NOT_IN = GridStringFilter::TYPE_NOT_IN;
 
     /**
+     * @param string[]|null $fields
      * @param mixed $type
      */
     public static function create(string $name, ?array $fields = null, $type = null): FilterInterface

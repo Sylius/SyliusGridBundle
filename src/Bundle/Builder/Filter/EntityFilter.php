@@ -15,6 +15,9 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class EntityFilter
 {
+    /**
+     * @param string[]|null $fields
+     */
     public static function create(string $name, string $resourceClass, ?bool $multiple = null, ?array $fields = null): FilterInterface
     {
         $filter = Filter::create($name, 'entity');

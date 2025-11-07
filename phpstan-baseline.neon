@@ -1,42 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Property Sylius\\Bundle\\GridBundle\\Builder\\Action\\Action\:\:\$options type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/Action/Action.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\ActionGroup\\ActionGroup\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/ActionGroup/ActionGroup.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\ActionGroup\\ActionGroupInterface\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/ActionGroup/ActionGroupInterface.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\EntityFilter\:\:create\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/Filter/EntityFilter.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\SelectFilter\:\:create\(\) has parameter \$choices with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/Filter/SelectFilter.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Builder\\Filter\\StringFilter\:\:create\(\) has parameter \$fields with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Builder/Filter/StringFilter.php
-
-		-
 			message: '#^Cannot access an offset on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2

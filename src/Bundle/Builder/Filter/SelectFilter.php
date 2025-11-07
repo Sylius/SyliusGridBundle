@@ -15,6 +15,9 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
 final class SelectFilter
 {
+    /**
+     * @param mixed[] $choices
+     */
     public static function create(string $name, array $choices, ?bool $multiple = null, ?string $field = null): FilterInterface
     {
         $filter = Filter::create($name, 'select');

@@ -46,6 +46,9 @@ final class DataSource implements DataSourceInterface
         $this->useOutputWalkers = $useOutputWalkers;
     }
 
+    /**
+     * @param mixed $expression
+     */
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
     {
         switch ($condition) {
