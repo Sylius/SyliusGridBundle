@@ -15,7 +15,6 @@ parameters:
         - src/Bundle/Resources/*
         - src/Bundle/spec/*
         - src/Bundle/Tests/*
-        - src/Component/Sorting/Sorter.php
         - src/Component/View/GridView.php
         - src/Component/spec/*
         - src/Component/Tests/*

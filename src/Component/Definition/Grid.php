@@ -33,7 +33,7 @@ class Grid
     /** @var array */
     private $limits = [];
 
-    /** @var array */
+    /** @var array<string, Field> */
     private $fields = [];
 
     /** @var array<string, Filter> */
@@ -117,7 +117,7 @@ class Grid
     }
 
     /**
-     * @return array|Field[]
+     * @return array<string, Field>
      */
     public function getFields(): array
     {
@@ -125,7 +125,7 @@ class Grid
     }
 
     /**
-     * @return array|Field[]
+     * @return array<string, Field>
      */
     public function getEnabledFields(): array
     {
