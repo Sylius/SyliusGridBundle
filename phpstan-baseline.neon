@@ -43,26 +43,8 @@ parameters:
 			path: src/Bundle/Builder/GridBuilder.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:__construct\(\) has parameter \$gridConfigurations with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Command/DebugGridCommand.php
-
-		-
 			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:__construct\(\) has parameter \$taggedGrids with generic interface Symfony\\Contracts\\Service\\ServiceProviderInterface but does not specify its types\: T$#'
 			identifier: missingType.generics
-			count: 1
-			path: src/Bundle/Command/DebugGridCommand.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:getGridChoices\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Command/DebugGridCommand.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Command\\DebugGridCommand\:\:objectToArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Bundle/Command/DebugGridCommand.php
 

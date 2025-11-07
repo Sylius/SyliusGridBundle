@@ -36,7 +36,7 @@ final class CallableFieldType implements FieldTypeInterface
         $value = $this->dataExtractor->get($field, $data);
         $value = call_user_func($this->getCallable($options), $value);
 
-        if (!is_scalar($value) && !is_null($value) && !(is_object($value) && method_exists($value, '__toString'))) {
+        if (!is_scalar($value) && null !== $value && !(is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedValueException(\sprintf(
                 'Callable field (name "%s") returned value could not be converted to string.',
                 $field->getName(),

@@ -240,7 +240,7 @@ class Grid
     }
 
     /**
-     * @return array|Action[]
+     * @return Action[]
      */
     public function getActions(string $groupName): array
     {
@@ -250,7 +250,7 @@ class Grid
     /**
      * @param string $groupName
      *
-     * @return array|Action[]
+     * @return Action[]
      */
     public function getEnabledActions($groupName): array
     {

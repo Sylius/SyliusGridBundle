@@ -27,6 +27,9 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 #[AsCommand(name: 'sylius:debug:grid', description: 'Debug grid configuration')]
 final class DebugGridCommand extends Command
 {
+    /**
+     * @param array<string, mixed> $gridConfigurations
+     */
     public function __construct(
         private readonly GridProviderInterface $gridProvider,
         private readonly ServiceProviderInterface $taggedGrids,
@@ -90,6 +93,9 @@ EOF
         return Command::SUCCESS;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function objectToArray(object $object): array
     {
         $accessor = PropertyAccess::createPropertyAccessor();
@@ -108,6 +114,9 @@ EOF
         return $values;
     }
 
+    /**
+     * @return array<int, string>
+     */
     private function getGridChoices(): array
     {
         $grids = array_merge(
