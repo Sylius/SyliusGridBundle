@@ -27,6 +27,9 @@ final class GridConfig implements GridConfigInterface
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array
     {
         if (count($this->grids) <= 0) {

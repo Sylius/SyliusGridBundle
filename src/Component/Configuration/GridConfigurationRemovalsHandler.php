@@ -27,6 +27,10 @@ final class GridConfigurationRemovalsHandler implements GridConfigurationRemoval
         return $gridConfiguration;
     }
 
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @param array<string, mixed> $removals
+     */
     private function handleRemovals(array &$gridConfiguration, array $removals): void
     {
         foreach ($removals as $type => $name) {

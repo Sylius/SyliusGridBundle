@@ -51,6 +51,9 @@ final class RegisterFiltersPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     private function registerFilter(
         ContainerBuilder $container,
         Definition $filterRegistry,

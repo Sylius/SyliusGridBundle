@@ -69,6 +69,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $grid;
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function convertField(string $name, array $configuration): Field
     {
         $field = Field::fromNameAndType($name, $configuration['type']);
@@ -107,6 +110,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $field;
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function convertFilter(string $name, array $configuration): Filter
     {
         $filter = Filter::fromNameAndType($name, $configuration['type']);
@@ -140,6 +146,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $filter;
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function convertActionGroup(string $name, array $configuration): ActionGroup
     {
         $actionGroup = ActionGroup::named($name);
@@ -151,6 +160,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $actionGroup;
     }
 
+    /**
+     * @param array<string, mixed> $configuration
+     */
     private function convertAction(string $name, array $configuration): Action
     {
         $action = Action::fromNameAndType($name, $configuration['type']);

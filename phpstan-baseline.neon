@@ -13,12 +13,6 @@ parameters:
 			path: src/Bundle/Command/DebugGridCommand.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Config\\GridConfig\:\:toArray\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Config/GridConfig.php
-
-		-
 			message: '#^Cannot access offset ''alias'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -49,12 +43,6 @@ parameters:
 			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilter\(\) has parameter \$attributes with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
 			message: '#^Parameter \#2 \$filterType of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilterTemplate\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -67,10 +55,10 @@ parameters:
 			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
 
 		-
-			message: '#^PHPDoc tag @var for variable \$bundles has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^Parameter \#5 \$attributes of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilter\(\) expects array\<string, mixed\>, array given\.$#'
+			identifier: argument.type
 			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterStubCommandsPass.php
+			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
 
 		-
 			message: '#^Cannot access offset ''action'' on mixed\.$#'
@@ -87,12 +75,6 @@ parameters:
 		-
 			message: '#^Cannot access offset ''filter'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\DependencyInjection\\SyliusGridExtension\:\:getConfiguration\(\) has parameter \$config with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
@@ -181,20 +163,8 @@ parameters:
 			path: src/Bundle/FieldTypes/TwigFieldType.php
 
 		-
-			message: '#^Cannot access offset string on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 3
-			path: src/Bundle/Form/Registry/FormTypeRegistry.php
-
-		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:get\(\) should return string\|null but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Bundle/Form/Registry/FormTypeRegistry.php
-
-		-
-			message: '#^Property Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:\$formTypes type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
+			message: '#^Property Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:\$formTypes \(array\<string, array\<string, class\-string\>\>\) does not accept array\<string, array\<string, string\>\>\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: src/Bundle/Form/Registry/FormTypeRegistry.php
 
@@ -211,49 +181,19 @@ parameters:
 			path: src/Bundle/Provider/ServiceGridProvider.php
 
 		-
-			message: '#^Method Sylius\\Bundle\\GridBundle\\Renderer\\TwigBulkActionGridRenderer\:\:__construct\(\) has parameter \$bulkActionTemplates with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
-
-		-
-			message: '#^Property Sylius\\Bundle\\GridBundle\\Renderer\\TwigBulkActionGridRenderer\:\:\$bulkActionTemplates type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Bundle/Renderer/TwigBulkActionGridRenderer.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handle\(\) should return array\<string, mixed\> but returns array\<mixed, mixed\>\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) has parameter \$removals with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
-
-		-
-			message: '#^Parameter \#1 \$gridConfiguration of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#1 \$gridConfiguration of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
 
 		-
-			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
+
+		-
+			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
@@ -307,12 +247,6 @@ parameters:
 			path: src/Component/DataExtractor/PropertyAccessDataExtractor.php
 
 		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\ActionGroup\:\:getActions\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Definition/ActionGroup.php
-
-		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 3
@@ -327,30 +261,6 @@ parameters:
 		-
 			message: '#^Cannot access offset ''options'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Component/Definition/ArrayToDefinitionConverter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertAction\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Definition/ArrayToDefinitionConverter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Definition/ArrayToDefinitionConverter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Definition/ArrayToDefinitionConverter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) has parameter \$configuration with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
 			count: 1
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
 
@@ -463,25 +373,25 @@ parameters:
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
 
 		-
-			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertAction\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertAction\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
 
 		-
-			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertActionGroup\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
 
 		-
-			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertField\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
 
 		-
-			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) expects array, mixed given\.$#'
+			message: '#^Parameter \#2 \$configuration of method Sylius\\Component\\Grid\\Definition\\ArrayToDefinitionConverter\:\:convertFilter\(\) expects array\<string, mixed\>, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/Definition/ArrayToDefinitionConverter.php
@@ -515,18 +425,6 @@ parameters:
 			identifier: missingType.return
 			count: 1
 			path: src/Component/Definition/Filter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Definition\\Grid\:\:getActions\(\) should return array\<Sylius\\Component\\Grid\\Definition\\Action\> but returns array\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Component/Definition/Grid.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:getCallable\(\) has parameter \$options with no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
 			message: '#^Method Sylius\\Component\\Grid\\FieldTypes\\CallableFieldType\:\:getCallable\(\) should return callable\(\)\: mixed but returns mixed\.$#'
@@ -647,39 +545,3 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Component/Filter/SelectFilter.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Parameters\:\:all\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Parameters.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Parameters\:\:keys\(\) return type has no value type specified in iterable type array\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Parameters.php
-
-		-
-			message: '#^Cannot call method get\(\) on mixed\.$#'
-			identifier: method.nonObject
-			count: 1
-			path: src/Component/Provider/ChainProvider.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:__construct\(\) has parameter \$providers with no value type specified in iterable type iterable\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Provider/ChainProvider.php
-
-		-
-			message: '#^Method Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:get\(\) should return Sylius\\Component\\Grid\\Definition\\Grid but returns mixed\.$#'
-			identifier: return.type
-			count: 1
-			path: src/Component/Provider/ChainProvider.php
-
-		-
-			message: '#^Property Sylius\\Component\\Grid\\Provider\\ChainProvider\:\:\$providers type has no value type specified in iterable type iterable\.$#'
-			identifier: missingType.iterableValue
-			count: 1
-			path: src/Component/Provider/ChainProvider.php

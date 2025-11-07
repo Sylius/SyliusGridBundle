@@ -21,9 +21,6 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class RegisterStubCommandsPass implements CompilerPassInterface
 {
-    /**
-     * @inheritdoc
-     */
     public function process(ContainerBuilder $container): void
     {
         if (!$this->isMakerEnabled($container)) {
@@ -39,7 +36,7 @@ final class RegisterStubCommandsPass implements CompilerPassInterface
             return false;
         }
 
-        /** @var array $bundles */
+        /** @var array<string, class-string> $bundles */
         $bundles = $container->getParameter('kernel.bundles');
 
         return in_array(MakerBundle::class, $bundles, true);

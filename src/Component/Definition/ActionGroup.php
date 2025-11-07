@@ -17,7 +17,7 @@ class ActionGroup
 {
     private string $name;
 
-    /** @var Action[] */
+    /** @var array<string, Action> */
     private $actions = [];
 
     private function __construct(string $name)
@@ -35,6 +35,9 @@ class ActionGroup
         return $this->name;
     }
 
+    /**
+     * @return array<string, Action>
+     */
     public function getActions(): array
     {
         return $this->actions;

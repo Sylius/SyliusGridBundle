@@ -22,8 +22,12 @@ final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterfac
 {
     private Environment $twig;
 
+    /** @var array<string, string> */
     private array $bulkActionTemplates;
 
+    /**
+     * @param array<string, string> $bulkActionTemplates
+     */
     public function __construct(Environment $twig, array $bulkActionTemplates)
     {
         $this->twig = $twig;

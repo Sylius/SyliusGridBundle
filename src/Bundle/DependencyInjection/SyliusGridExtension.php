@@ -103,6 +103,9 @@ final class SyliusGridExtension extends Extension
         );
     }
 
+    /**
+     * @param array<int, mixed> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         $configuration = new Configuration();

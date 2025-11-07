@@ -52,6 +52,9 @@ final class CallableFieldType implements FieldTypeInterface
         return $value;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     private function getCallable(array $options): callable
     {
         if (isset($options['callable'])) {
