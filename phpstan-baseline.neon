@@ -893,3 +893,9 @@ parameters:
 			identifier: missingType.iterableValue
 			count: 1
 			path: src/Component/Provider/ChainProvider.php
+
+		-
+			message: '#^Parameter \#1 \$objectOrArray of method Symfony\\Component\\PropertyAccess\\PropertyAccessorInterface\:\:getValue\(\) expects array\|object, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Component/DataExtractor/PropertyAccessDataExtractor.php
