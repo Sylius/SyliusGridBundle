@@ -27,14 +27,16 @@ final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
     public function getCriteria(Grid $grid, Parameters $parameters): array
     {
         $defaultCriteria = array_map(
-            /** @return mixed */
             function (Filter $filter) {
                 return $filter->getCriteria();
             },
             $this->getFiltersDefaultCriteria($grid->getFilters()),
         );
 
-        return $parameters->get('criteria', $defaultCriteria);
+        /** @var array<string, mixed> $criteria */
+        $criteria = $parameters->get('criteria', $defaultCriteria);
+
+        return $criteria;
     }
 
     /**

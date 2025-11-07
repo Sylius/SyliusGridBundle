@@ -36,7 +36,7 @@ class Grid
     /** @var array */
     private $fields = [];
 
-    /** @var array */
+    /** @var array<string, Filter> */
     private $filters = [];
 
     /** @var array */
@@ -253,7 +253,7 @@ class Grid
     }
 
     /**
-     * @return array|Filter[]
+     * @return array<string, Filter>
      */
     public function getFilters(): array
     {
@@ -261,7 +261,7 @@ class Grid
     }
 
     /**
-     * @return array|Filter[]
+     * @return array<string, Filter>
      */
     public function getEnabledFilters(): array
     {
