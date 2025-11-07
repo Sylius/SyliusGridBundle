@@ -899,3 +899,9 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Component/DataExtractor/PropertyAccessDataExtractor.php
+
+		-
+			message: '#^Method Sylius\\Component\\Grid\\Definition\\Filter\:\:setCriteria\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Component/Definition/Filter.php
