@@ -15,8 +15,6 @@ parameters:
         - src/Bundle/Resources/*
         - src/Bundle/spec/*
         - src/Bundle/Tests/*
-        - src/Component/Filter/MoneyFilter.php
-        - src/Component/Filter/NumericRangeFilter.php
         - src/Component/Filter/StringFilter.php
         - src/Component/Filtering/FiltersCriteriaResolver.php
         - src/Component/Sorting/Sorter.php
@@ -24,6 +22,8 @@ parameters:
         - src/Component/spec/*
         - src/Component/Tests/*
         - src/Component/vendor/*
+        # deprecated
+        - src/Component/Filter/MoneyFilter.php
 
     ignoreErrors:
         - '/Cannot cast mixed to int./'
