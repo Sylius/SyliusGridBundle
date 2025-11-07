@@ -29,7 +29,7 @@ final class EnumFieldType implements FieldTypeInterface
     ) {
     }
 
-    public function render(Field $field, $data, array $options): string
+    public function render(Field $field, mixed $data, array $options): string
     {
         $enum = $this->dataExtractor->get($field, $data);
 

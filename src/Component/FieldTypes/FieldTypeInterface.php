@@ -22,12 +22,11 @@ interface FieldTypeInterface
      * Return a HTML representation of the $field using the given $data and
      * $options.
      *
-     * @param mixed $data
      * @param array<string, mixed> $options
      *
      * @return string
      */
-    public function render(Field $field, $data, array $options);
+    public function render(Field $field, mixed $data, array $options);
 
     /**
      * Configure options for this field type.
