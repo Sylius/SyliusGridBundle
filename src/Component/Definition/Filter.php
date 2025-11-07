@@ -29,6 +29,7 @@ class Filter
     /** @var array<string, mixed> */
     private array $options = [];
 
+    /** @var array<string, mixed> */
     private array $formOptions = [];
 
     /** @var mixed */
@@ -107,16 +108,25 @@ class Filter
         return $this->options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFormOptions(): array
     {
         return $this->formOptions;
     }
 
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function setFormOptions(array $formOptions): void
     {
         $this->formOptions = $formOptions;
@@ -143,7 +153,7 @@ class Filter
     /**
      * @param mixed $criteria
      *
-     * @psalm-suppress MissingReturnType
+     * @return void
      */
     public function setCriteria($criteria)
     {
