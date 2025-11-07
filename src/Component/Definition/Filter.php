@@ -152,8 +152,6 @@ class Filter
 
     /**
      * @param mixed $criteria
-     *
-     * @return void
      */
     public function setCriteria($criteria)
     {

@@ -77,6 +77,7 @@ final class MakeGrid extends AbstractMaker
 
         if (!\class_exists($class)) {
             $entityArg = $input->getArgument('entity');
+
             throw new RuntimeCommandException(\sprintf('Entity "%s" not found.', is_string($entityArg) ? $entityArg : 'unknown'));
         }
 
