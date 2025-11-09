@@ -39,7 +39,12 @@ parameters:
         - '/Cannot cast mixed to string./'
         - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
         - '/Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager::getRepository\(\)/'
-        # Symfony 7.4
+        # Symfony <7.4
+        - message: '#^PHPDoc tag .+ is not generic\.$#'
+          identifier: generics.notGeneric
+          count: 9
+          path: src/Bundle/DependencyInjection/Configuration.php
+        # Symfony >=7.4
         - message: '#^Call to method .+\.$#'
           identifier: class.notFound
           count: 3
