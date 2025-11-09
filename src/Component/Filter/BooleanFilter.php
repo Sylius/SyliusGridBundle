@@ -28,6 +28,7 @@ final class BooleanFilter implements FilterInterface
             return;
         }
 
+        /** @var string $field */
         $field = $options['field'] ?? $name;
 
         $data = self::TRUE === $data;

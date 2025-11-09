@@ -28,16 +28,21 @@ final class MoneyFilter implements FilterInterface
             return;
         }
 
+        /** @var string $field */
         $field = $options['field'] ?? $name;
         $scale = (int) ($options['scale'] ?? self::DEFAULT_SCALE);
 
-        $greaterThan = $this->getDataValue($data, 'greaterThan');
-        $lessThan = $this->getDataValue($data, 'lessThan');
+        /** @var array<string> $dataArray */
+        $dataArray = $data;
+        $greaterThan = $this->getDataValue($dataArray, 'greaterThan');
+        $lessThan = $this->getDataValue($dataArray, 'lessThan');
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
         if (!empty($data['currency'])) {
-            $dataSource->restrict($expressionBuilder->equals($options['currency_field'], $data['currency']));
+            /** @var string $currencyField */
+            $currencyField = $options['currency_field'];
+            $dataSource->restrict($expressionBuilder->equals($currencyField, $data['currency']));
         }
         if ('' !== $greaterThan) {
             $dataSource->restrict($expressionBuilder->greaterThan($field, $this->normalizeAmount((float) $greaterThan, $scale)));

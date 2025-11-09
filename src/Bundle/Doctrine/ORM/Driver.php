@@ -49,22 +49,32 @@ final class Driver implements DriverInterface
         /** @var EntityRepository<object> $repository */
         $repository = $manager->getRepository($class);
 
+        /** @var bool $fetchJoinCollection */
         $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? true;
+        /** @var bool $useOutputWalkers */
         $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? true;
 
         if (!isset($configuration['repository']['method'])) {
             return new DataSource($repository->createQueryBuilder('o'), $fetchJoinCollection, $useOutputWalkers);
         }
 
-        $arguments = isset($configuration['repository']['arguments']) ? array_values($configuration['repository']['arguments']) : [];
+        /** @var array<int|string, mixed> $repositoryArguments */
+        $repositoryArguments = $configuration['repository']['arguments'] ?? [];
+        $arguments = array_values($repositoryArguments);
         $method = $configuration['repository']['method'];
         if (is_array($method) && 2 === count($method)) {
+            /** @var \Doctrine\ORM\QueryBuilder $queryBuilder */
             $queryBuilder = $method[0];
+            /** @var string $method */
             $method = $method[1];
 
-            return new DataSource($queryBuilder->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
+            /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
+            $resultQueryBuilder = $queryBuilder->$method(...$arguments);
+            return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
         }
 
-        return new DataSource($repository->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
+        /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
+        $resultQueryBuilder = $repository->$method(...$arguments);
+        return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
     }
 }

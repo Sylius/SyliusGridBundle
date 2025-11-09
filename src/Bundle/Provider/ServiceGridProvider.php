@@ -67,7 +67,9 @@ final class ServiceGridProvider implements GridProviderInterface
         $gridConfiguration = $grid->toArray();
 
         if (isset($gridConfiguration['extends'])) {
-            $gridConfiguration = $this->extend($gridConfiguration, $gridConfiguration['extends']);
+            /** @var string $parentGridCode */
+            $parentGridCode = $gridConfiguration['extends'];
+            $gridConfiguration = $this->extend($gridConfiguration, $parentGridCode);
         }
 
         $gridConfiguration = $this->gridConfigurationRemovalsHandler->handle($gridConfiguration);

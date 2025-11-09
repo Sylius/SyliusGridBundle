@@ -25,6 +25,7 @@ final class EntityFilter implements FilterInterface
         }
 
         $values = is_array($data) ? $data : [$data];
+        /** @var string[] $fields */
         $fields = $options['fields'] ?? [$name];
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
@@ -32,6 +33,7 @@ final class EntityFilter implements FilterInterface
         $expressions = [];
         foreach ($fields as $field) {
             foreach ($values as $value) {
+                /** @var string $field */
                 $expressions[] = $expressionBuilder->equals($field, $value);
             }
         }

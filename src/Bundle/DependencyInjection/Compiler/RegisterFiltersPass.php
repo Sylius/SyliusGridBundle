@@ -47,6 +47,7 @@ final class RegisterFiltersPass implements CompilerPassInterface
                 $formType = $class::getFormType();
             }
 
+            /** @var array<string, mixed> $attributes */
             $this->registerFilter($container, $filterRegistry, $formTypeRegistry, $id, $attributes, $type, $formType);
         }
     }
@@ -63,7 +64,9 @@ final class RegisterFiltersPass implements CompilerPassInterface
         ?string $type = null,
         ?string $formType = null,
     ): void {
+        /** @var array<string, mixed> $attribute */
         foreach ($attributes as $attribute) {
+            /** @var string|null $template */
             $template = $attribute['template'] ?? null;
 
             $filterType = $type ?? $attribute['type'] ?? null;
@@ -81,6 +84,7 @@ final class RegisterFiltersPass implements CompilerPassInterface
             $formTypeRegistry->addMethodCall('add', [$filterType, 'default', $filterFormType]);
 
             if (null !== $template) {
+                /** @var string $filterType */
                 $this->registerFilterTemplate($container, $filterType, $template);
             }
         }

@@ -43,10 +43,14 @@ final class DatetimeFieldType implements FieldTypeInterface
         Assert::isInstanceOf($value, \DateTimeInterface::class);
 
         if (null !== $options['timezone']) {
-            $value = $value->setTimezone(new \DateTimeZone($options['timezone']));
+            /** @var string $timezone */
+            $timezone = $options['timezone'];
+            $value = $value->setTimezone(new \DateTimeZone($timezone));
         }
 
-        return $value->format($options['format']);
+        /** @var string $format */
+        $format = $options['format'];
+        return $value->format($format);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

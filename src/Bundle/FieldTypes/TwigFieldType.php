@@ -37,7 +37,9 @@ final class TwigFieldType implements FieldTypeInterface
             $data = $this->dataExtractor->get($field, $data);
         }
 
-        return $this->twig->render($options['template'], ['data' => $data, 'options' => $options]);
+        /** @var string $template */
+        $template = $options['template'];
+        return $this->twig->render($template, ['data' => $data, 'options' => $options]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

@@ -25,42 +25,6 @@ parameters:
 			path: src/Bundle/DependencyInjection/Compiler/RegisterFieldTypesPass.php
 
 		-
-			message: '#^Cannot access offset ''form_type'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
-			message: '#^Cannot access offset ''template'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
-			message: '#^Cannot access offset ''type'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
-			message: '#^Parameter \#2 \$filterType of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilterTemplate\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
-			message: '#^Parameter \#3 \$template of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilterTemplate\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
-			message: '#^Parameter \#5 \$attributes of method Sylius\\Bundle\\GridBundle\\DependencyInjection\\Compiler\\RegisterFiltersPass\:\:registerFilter\(\) expects array\<string, mixed\>, array given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/DependencyInjection/Compiler/RegisterFiltersPass.php
-
-		-
 			message: '#^Cannot access offset ''action'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -79,32 +43,8 @@ parameters:
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
 		-
-			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 4
-			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
-
-		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
-			count: 1
-			path: src/Bundle/Doctrine/DBAL/Driver.php
-
-		-
-			message: '#^Parameter \#1 \$from of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:from\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Doctrine/DBAL/Driver.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Doctrine/DBAL/Driver.php
-
-		-
-			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/Bundle/Doctrine/DBAL/Driver.php
 
@@ -133,36 +73,6 @@ parameters:
 			path: src/Bundle/Doctrine/ORM/Driver.php
 
 		-
-			message: '#^Parameter \#1 \$array of function array_values expects array\<T\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#1 \$queryBuilder of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects Doctrine\\ORM\\QueryBuilder, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#2 \$fetchJoinCollection of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects bool, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#3 \$useOutputWalkers of class Sylius\\Bundle\\GridBundle\\Doctrine\\ORM\\DataSource constructor expects bool, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Bundle/Doctrine/ORM/Driver.php
-
-		-
-			message: '#^Parameter \#1 \$name of method Twig\\Environment\:\:render\(\) expects string\|Twig\\TemplateWrapper, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/FieldTypes/TwigFieldType.php
-
-		-
 			message: '#^Property Sylius\\Bundle\\GridBundle\\Form\\Registry\\FormTypeRegistry\:\:\$formTypes \(array\<string, array\<string, class\-string\>\>\) does not accept array\<string, array\<string, string\>\>\.$#'
 			identifier: assign.propertyType
 			count: 1
@@ -173,30 +83,6 @@ parameters:
 			identifier: class.notFound
 			count: 1
 			path: src/Bundle/Form/Type/Filter/MoneyFilterType.php
-
-		-
-			message: '#^Parameter \#2 \$parentGridCode of method Sylius\\Bundle\\GridBundle\\Provider\\ServiceGridProvider\:\:extend\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Bundle/Provider/ServiceGridProvider.php
-
-		-
-			message: '#^Parameter \#1 \$gridConfiguration of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
-
-		-
-			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
-
-		-
-			message: '#^Parameter \#2 \$removals of method Sylius\\Component\\Grid\\Configuration\\GridConfigurationRemovalsHandler\:\:handleRemovals\(\) expects array\<string, mixed\>, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Configuration/GridConfigurationRemovalsHandler.php
 
 		-
 			message: '#^Possibly invalid array key type mixed\.$#'
@@ -220,18 +106,6 @@ parameters:
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 2
-			path: src/Component/Configuration/GridConfigurationSortingHandler.php
-
-		-
-			message: '#^Parameter \#1 \$array of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects array, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Configuration/GridConfigurationSortingHandler.php
-
-		-
-			message: '#^Parameter \#2 \$key of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects int\|string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
 			path: src/Component/Configuration/GridConfigurationSortingHandler.php
 
 		-
@@ -277,72 +151,6 @@ parameters:
 			path: src/Component/FieldTypes/CallableFieldType.php
 
 		-
-			message: '#^Parameter \#1 \$id of method Psr\\Container\\ContainerInterface\:\:get\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
-			message: '#^Parameter \#1 \$id of method Psr\\Container\\ContainerInterface\:\:has\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
-			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
-			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
-			message: '#^Parameter \#1 \$format of method DateTime\:\:format\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/FieldTypes/DatetimeFieldType.php
-
-		-
-			message: '#^Parameter \#1 \$timezone of class DateTimeZone constructor expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/FieldTypes/DatetimeFieldType.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/BooleanFilter.php
-
-		-
-			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
-			identifier: foreach.nonIterable
-			count: 1
-			path: src/Component/Filter/EntityFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/EntityFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:isNotNull\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/ExistsFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:isNull\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/ExistsFilter.php
-
-		-
 			message: '#^Cannot access offset ''currency'' on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 1
@@ -353,39 +161,3 @@ parameters:
 			identifier: cast.int
 			count: 1
 			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Parameter \#1 \$data of method Sylius\\Component\\Grid\\Filter\\MoneyFilter\:\:getDataValue\(\) expects array\<string\>, mixed given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:greaterThan\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:lessThan\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:equals\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/SelectFilter.php
-
-		-
-			message: '#^Parameter \#1 \$field of method Sylius\\Component\\Grid\\Data\\ExpressionBuilderInterface\:\:in\(\) expects string, mixed given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/Component/Filter/SelectFilter.php
