@@ -14,7 +14,6 @@ parameters:
         - src/Bundle/Config/GridConfigInterface.php
         - src/Bundle/Doctrine/PHPCRODM/*
         - src/Bundle/Doctrine/ORM/ExpressionBuilder.php
-        - src/Bundle/DependencyInjection/Configuration.php
         - src/Bundle/Form/DataTransformer/DateTimeFilterTransformer.php
         - src/Bundle/Maker/MakeGrid.php
         - src/Bundle/Registry/GridRegistry.php
@@ -40,3 +39,12 @@ parameters:
         - '/Cannot cast mixed to string./'
         - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
         - '/Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager::getRepository\(\)/'
+        # Symfony 7.4
+        - message: '#^Call to method .+\.$#'
+          identifier: class.notFound
+          count: 3
+          path: src/Bundle/DependencyInjection/Configuration.php
+        - message: '#^Cannot call method [^\(]+\(\) on mixed\.$#'
+          identifier: method.nonObject
+          count: 166
+          path: src/Bundle/DependencyInjection/Configuration.php
