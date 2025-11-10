@@ -155,9 +155,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
      */
     private function convertFilter(string $name, array $configuration): Filter
     {
-        /** @var string $type */
-        $type = $configuration['type'];
-        $filter = Filter::fromNameAndType($name, $type);
+        $filter = Filter::fromNameAndType($name, $configuration['type']);
 
         if (array_key_exists('label', $configuration)) {
             $filter->setLabel($configuration['label']);
@@ -203,9 +201,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
      */
     private function convertAction(string $name, array $configuration): Action
     {
-        /** @var string $type */
-        $type = $configuration['type'];
-        $action = Action::fromNameAndType($name, $type);
+        $action = Action::fromNameAndType($name, $configuration['type']);
 
         if (array_key_exists('label', $configuration)) {
             $action->setLabel($configuration['label']);
