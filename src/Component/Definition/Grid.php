@@ -28,19 +28,19 @@ class Grid
     private $provider;
 
     /** @var array<string, string> */
-    private array $sorting = [];
+    private $sorting = [];
 
     /** @var array<int> */
-    private array $limits = [];
+    private $limits = [];
 
     /** @var array<string, Field> */
-    private array $fields = [];
+    private $fields = [];
 
     /** @var array<string, Filter> */
-    private array $filters = [];
+    private $filters = [];
 
     /** @var array<string, ActionGroup> */
-    private array $actionGroups = [];
+    private $actionGroups = [];
 
     /**
      * @param array<string, mixed> $driverConfiguration
