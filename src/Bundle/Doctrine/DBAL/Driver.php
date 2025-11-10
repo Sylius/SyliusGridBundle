@@ -29,13 +29,18 @@ final class Driver implements DriverInterface
         $this->connection = $connection;
     }
 
+    /**
+     * @param array{
+     *     table: string,
+     *     aliases: array<string, string>,
+     * } $configuration
+     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('table', $configuration)) {
             throw new \InvalidArgumentException('"table" must be configured.');
         }
 
-        /** @var string $table */
         $table = $configuration['table'];
 
         $queryBuilder = $this->connection->createQueryBuilder();

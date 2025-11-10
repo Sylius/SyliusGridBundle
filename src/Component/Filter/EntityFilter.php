@@ -33,7 +33,6 @@ final class EntityFilter implements FilterInterface
         $expressions = [];
         foreach ($fields as $field) {
             foreach ($values as $value) {
-                /** @var string $field */
                 $expressions[] = $expressionBuilder->equals($field, $value);
             }
         }

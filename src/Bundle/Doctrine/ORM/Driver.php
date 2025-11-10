@@ -31,6 +31,19 @@ final class Driver implements DriverInterface
         $this->managerRegistry = $managerRegistry;
     }
 
+    /**
+     * @param array{
+     *     class: class-string,
+     *     repository?: array{
+     *         method: string|array{object, string},
+     *         arguments?: array<int|string, mixed>,
+     *     },
+     *     pagination?: array{
+     *         fetch_join_collection?: bool,
+     *         use_output_walkers?: bool,
+     *     },
+     * } $configuration
+     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('class', $configuration)) {
@@ -70,11 +83,13 @@ final class Driver implements DriverInterface
 
             /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
             $resultQueryBuilder = $queryBuilder->$method(...$arguments);
+
             return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
         }
 
         /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
         $resultQueryBuilder = $repository->$method(...$arguments);
+
         return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
     }
 }

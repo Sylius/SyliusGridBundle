@@ -39,6 +39,7 @@ final class TwigFieldType implements FieldTypeInterface
 
         /** @var string $template */
         $template = $options['template'];
+
         return $this->twig->render($template, ['data' => $data, 'options' => $options]);
     }
 

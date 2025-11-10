@@ -27,6 +27,7 @@ final class RegisterFieldTypesPass implements CompilerPassInterface
 
         $registry = $container->getDefinition('sylius.registry.grid_field');
 
+        /** @var array<string, array<string, string>> $attributes */
         foreach ($container->findTaggedServiceIds('sylius.grid_field') as $id => $attributes) {
             foreach ($attributes as $attribute) {
                 if (!isset($attribute['type'])) {

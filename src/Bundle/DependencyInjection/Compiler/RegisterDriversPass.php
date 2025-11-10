@@ -27,6 +27,7 @@ final class RegisterDriversPass implements CompilerPassInterface
 
         $registry = $container->findDefinition('sylius.registry.grid_driver');
 
+        /** @var array<string, array<string, string>> $attributes */
         foreach ($container->findTaggedServiceIds('sylius.grid_driver') as $id => $attributes) {
             foreach ($attributes as $attribute) {
                 if (!isset($attribute['alias'])) {

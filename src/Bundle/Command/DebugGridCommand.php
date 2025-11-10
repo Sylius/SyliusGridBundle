@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Command;
 
+use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -28,6 +29,7 @@ use Symfony\Contracts\Service\ServiceProviderInterface;
 final class DebugGridCommand extends Command
 {
     /**
+     * @param ServiceProviderInterface<GridInterface> $taggedGrids
      * @param array<string, mixed> $gridConfigurations
      */
     public function __construct(

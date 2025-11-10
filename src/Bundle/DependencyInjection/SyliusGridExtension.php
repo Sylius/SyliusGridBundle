@@ -38,18 +38,20 @@ final class SyliusGridExtension extends Extension
 
         $loader->load('services.php');
 
-        /** @var array<string, string> $actionTemplates */
-        $actionTemplates = $config['templates']['action'];
-        /** @var array<string, string> $bulkActionTemplates */
-        $bulkActionTemplates = $config['templates']['bulk_action'];
-        /** @var array<string, string> $filterTemplates */
-        $filterTemplates = $config['templates']['filter'];
+        /**
+         * @var array{
+         *     'filter': array<string, string>,
+         *     'action': array<string, string>,
+         *     'bulk_action': array<string, string>,
+         * } $templates
+         */
+        $templates = $config['templates'];
         /** @var array<string, mixed> $gridsDefinitions */
         $gridsDefinitions = $config['grids'];
 
-        $container->setParameter('sylius.grid.templates.action', $actionTemplates);
-        $container->setParameter('sylius.grid.templates.bulk_action', $bulkActionTemplates);
-        $container->setParameter('sylius.grid.templates.filter', $filterTemplates);
+        $container->setParameter('sylius.grid.templates.action', $templates['action']);
+        $container->setParameter('sylius.grid.templates.bulk_action', $templates['bulk_action']);
+        $container->setParameter('sylius.grid.templates.filter', $templates['filter']);
         $container->setParameter('sylius.grids_definitions', $gridsDefinitions);
 
         $container->setAlias('sylius.grid.renderer', 'sylius.grid.renderer.twig');

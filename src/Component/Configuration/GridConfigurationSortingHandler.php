@@ -17,6 +17,12 @@ use Webmozart\Assert\Assert;
 
 final class GridConfigurationSortingHandler implements GridConfigurationSortingHandlerInterface
 {
+    /**
+     * @param array{
+     *        fields?: array<string, array{sortable?: bool}>,
+     *        sorting?: array<string, string>,
+     * } $gridConfiguration
+     */
     public function handle(array $gridConfiguration): array
     {
         if (false === isset($gridConfiguration['sorting'])) {
@@ -26,7 +32,6 @@ final class GridConfigurationSortingHandler implements GridConfigurationSortingH
         foreach ($gridConfiguration['sorting'] as $sorting => $order) {
             /** @var array<string, mixed> $fields */
             $fields = $gridConfiguration['fields'] ?? [];
-            /** @var string $sorting */
             Assert::keyExists($fields, $sorting);
 
             if (isset($gridConfiguration['fields'][$sorting]['sortable'])) {

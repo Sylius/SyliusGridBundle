@@ -16,6 +16,41 @@ namespace Sylius\Component\Grid\Definition;
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @template TDriver of array{
+ *     name: string,
+ *     options?: array<string, mixed>,
+ * }
+ * @template TField of array{
+ *         type: string,
+ *         label?: string,
+ *         path?: string,
+ *         enabled?: bool,
+ *         sortable?: bool|string,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *  }
+ * @template TFilter of array{
+ *         type: string,
+ *         label?: string,
+ *         template?: string,
+ *         enabled?: bool,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *         form_options?: array<string, mixed>,
+ *         default_value?: mixed,
+ *  }
+ * @template TActionGroup of array<string, TAction>
+ * @template TAction of array{
+ *         type: string,
+ *         label?: string,
+ *         template?: string,
+ *         icon?: string,
+ *         enabled?: bool,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *  }
+ */
 final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
 {
     public const EVENT_NAME = 'sylius.grid.%s';
@@ -27,51 +62,47 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param array{
+     *        driver: TDriver,
+     *        provider?: string|callable,
+     *        sorting?: array<string, string>,
+     *        limits?: int[],
+     *        fields?: array<string, TField>,
+     *        filters?: array<string, TFilter>,
+     *        actions?: array<string, TActionGroup>,
+     * } $configuration
+     */
     public function convert(string $code, array $configuration): Grid
     {
-        /** @var array<string, mixed> $driverConfiguration */
-        $driverConfiguration = $configuration['driver']['options'] ?? [];
-
-        /** @var string $driverName */
-        $driverName = $configuration['driver']['name'];
-
         $grid = Grid::fromCodeAndDriverConfiguration(
             $code,
-            $driverName,
-            $driverConfiguration,
+            $configuration['driver']['name'],
+            $configuration['driver']['options'] ?? [],
         );
 
-        /** @var string|callable|null $provider */
-        $provider = $configuration['provider'] ?? null;
-        $grid->setProvider($provider);
+        $grid->setProvider($configuration['provider'] ?? null);
 
         if (array_key_exists('sorting', $configuration)) {
-            /** @var array<string, string> $sorting */
-            $sorting = $configuration['sorting'];
-            $grid->setSorting($sorting);
+            $grid->setSorting($configuration['sorting']);
         }
 
         if (array_key_exists('limits', $configuration)) {
-            /** @var int[] $limits */
-            $limits = $configuration['limits'];
-            $grid->setLimits($limits);
+            $grid->setLimits($configuration['limits']);
         }
 
+        /** @var TField $fieldConfiguration */
         foreach ($configuration['fields'] ?? [] as $name => $fieldConfiguration) {
-            /** @var string $name */
-            /** @var array<string, mixed> $fieldConfiguration */
             $grid->addField($this->convertField($name, $fieldConfiguration));
         }
 
+        /** @var TFilter $filterConfiguration */
         foreach ($configuration['filters'] ?? [] as $name => $filterConfiguration) {
-            /** @var string $name */
-            /** @var array<string, mixed> $filterConfiguration */
             $grid->addFilter($this->convertFilter($name, $filterConfiguration));
         }
 
+        /** @var TActionGroup $actionGroupConfiguration */
         foreach ($configuration['actions'] ?? [] as $name => $actionGroupConfiguration) {
-            /** @var string $name */
-            /** @var array<string, mixed> $actionGroupConfiguration */
             $grid->addActionGroup($this->convertActionGroup($name, $actionGroupConfiguration));
         }
 
@@ -81,28 +112,20 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
     }
 
     /**
-     * @param array<string, mixed> $configuration
+     * @param TField $configuration
      */
     private function convertField(string $name, array $configuration): Field
     {
-        /** @var string $type */
-        $type = $configuration['type'];
-        $field = Field::fromNameAndType($name, $type);
+        $field = Field::fromNameAndType($name, $configuration['type']);
 
         if (array_key_exists('path', $configuration)) {
-            /** @var string $path */
-            $path = $configuration['path'];
-            $field->setPath($path);
+            $field->setPath($configuration['path']);
         }
         if (array_key_exists('label', $configuration)) {
-            /** @var string $label */
-            $label = $configuration['label'];
-            $field->setLabel($label);
+            $field->setLabel($configuration['label']);
         }
         if (array_key_exists('enabled', $configuration)) {
-            /** @var bool $enabled */
-            $enabled = $configuration['enabled'];
-            $field->setEnabled($enabled);
+            $field->setEnabled($configuration['enabled']);
         }
         if (array_key_exists('sortable', $configuration)) {
             $sortable = $configuration['sortable'];
@@ -115,25 +138,20 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
                 $sortable = null;
             }
 
-            /** @var string|null $sortable */
             $field->setSortable($sortable);
         }
         if (array_key_exists('position', $configuration)) {
-            /** @var int $position */
-            $position = $configuration['position'];
-            $field->setPosition($position);
+            $field->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            /** @var array<string, mixed> $options */
-            $options = $configuration['options'];
-            $field->setOptions($options);
+            $field->setOptions($configuration['options']);
         }
 
         return $field;
     }
 
     /**
-     * @param array<string, mixed> $configuration
+     * @param TFilter $configuration
      */
     private function convertFilter(string $name, array $configuration): Filter
     {
@@ -142,34 +160,22 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $filter = Filter::fromNameAndType($name, $type);
 
         if (array_key_exists('label', $configuration)) {
-            /** @var string|bool|null $label */
-            $label = $configuration['label'];
-            $filter->setLabel($label);
+            $filter->setLabel($configuration['label']);
         }
         if (array_key_exists('template', $configuration)) {
-            /** @var string $template */
-            $template = $configuration['template'];
-            $filter->setTemplate($template);
+            $filter->setTemplate($configuration['template']);
         }
         if (array_key_exists('enabled', $configuration)) {
-            /** @var bool $enabled */
-            $enabled = $configuration['enabled'];
-            $filter->setEnabled($enabled);
+            $filter->setEnabled($configuration['enabled']);
         }
         if (array_key_exists('position', $configuration)) {
-            /** @var int $position */
-            $position = $configuration['position'];
-            $filter->setPosition($position);
+            $filter->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            /** @var array<string, mixed> $options */
-            $options = $configuration['options'];
-            $filter->setOptions($options);
+            $filter->setOptions($configuration['options']);
         }
         if (array_key_exists('form_options', $configuration)) {
-            /** @var array<string, mixed> $formOptions */
-            $formOptions = $configuration['form_options'];
-            $filter->setFormOptions($formOptions);
+            $filter->setFormOptions($configuration['form_options']);
         }
         if (array_key_exists('default_value', $configuration)) {
             $filter->setCriteria($configuration['default_value']);
@@ -179,15 +185,13 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
     }
 
     /**
-     * @param array<string, mixed> $configuration
+     * @param TActionGroup $configuration
      */
     private function convertActionGroup(string $name, array $configuration): ActionGroup
     {
         $actionGroup = ActionGroup::named($name);
 
         foreach ($configuration as $actionName => $actionConfiguration) {
-            /** @var string $actionName */
-            /** @var array<string, mixed> $actionConfiguration */
             $actionGroup->addAction($this->convertAction($actionName, $actionConfiguration));
         }
 
@@ -195,7 +199,7 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
     }
 
     /**
-     * @param array<string, mixed> $configuration
+     * @param TAction $configuration
      */
     private function convertAction(string $name, array $configuration): Action
     {
@@ -204,34 +208,22 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $action = Action::fromNameAndType($name, $type);
 
         if (array_key_exists('label', $configuration)) {
-            /** @var string $label */
-            $label = $configuration['label'];
-            $action->setLabel($label);
+            $action->setLabel($configuration['label']);
         }
         if (array_key_exists('template', $configuration)) {
-            /** @var string $template */
-            $template = $configuration['template'];
-            $action->setTemplate($template);
+            $action->setTemplate($configuration['template']);
         }
         if (array_key_exists('icon', $configuration)) {
-            /** @var string $icon */
-            $icon = $configuration['icon'];
-            $action->setIcon($icon);
+            $action->setIcon($configuration['icon']);
         }
         if (array_key_exists('enabled', $configuration)) {
-            /** @var bool $enabled */
-            $enabled = $configuration['enabled'];
-            $action->setEnabled($enabled);
+            $action->setEnabled($configuration['enabled']);
         }
         if (array_key_exists('position', $configuration)) {
-            /** @var int $position */
-            $position = $configuration['position'];
-            $action->setPosition($position);
+            $action->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            /** @var array<string, mixed> $options */
-            $options = $configuration['options'];
-            $action->setOptions($options);
+            $action->setOptions($configuration['options']);
         }
 
         return $action;

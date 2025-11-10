@@ -50,6 +50,7 @@ final class DatetimeFieldType implements FieldTypeInterface
 
         /** @var string $format */
         $format = $options['format'];
+
         return $value->format($format);
     }
 
