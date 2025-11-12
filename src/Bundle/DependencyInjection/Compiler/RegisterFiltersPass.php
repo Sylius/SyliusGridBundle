@@ -69,6 +69,7 @@ final class RegisterFiltersPass implements CompilerPassInterface
             /** @var string|null $template */
             $template = $attribute['template'] ?? null;
 
+            /** @var string|null $filterType */
             $filterType = $type ?? $attribute['type'] ?? null;
             $filterFormType = $formType ?? $attribute['form_type'] ?? null;
 
@@ -84,7 +85,6 @@ final class RegisterFiltersPass implements CompilerPassInterface
             $formTypeRegistry->addMethodCall('add', [$filterType, 'default', $filterFormType]);
 
             if (null !== $template) {
-                /** @var string $filterType */
                 $this->registerFilterTemplate($container, $filterType, $template);
             }
         }
