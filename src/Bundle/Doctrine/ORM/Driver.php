@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
@@ -76,18 +77,18 @@ final class Driver implements DriverInterface
         $arguments = array_values($repositoryArguments);
         $method = $configuration['repository']['method'];
         if (is_array($method) && 2 === count($method)) {
-            /** @var \Doctrine\ORM\QueryBuilder $queryBuilder */
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $method[0];
             /** @var string $method */
             $method = $method[1];
 
-            /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
+            /** @var QueryBuilder $resultQueryBuilder */
             $resultQueryBuilder = $queryBuilder->$method(...$arguments);
 
             return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
         }
 
-        /** @var \Doctrine\ORM\QueryBuilder $resultQueryBuilder */
+        /** @var QueryBuilder $resultQueryBuilder */
         $resultQueryBuilder = $repository->$method(...$arguments);
 
         return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
