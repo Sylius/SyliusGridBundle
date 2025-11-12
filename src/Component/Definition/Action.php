@@ -28,7 +28,7 @@ class Action
     private ?string $icon = null;
 
     /** @var array<string, mixed> */
-    private array $options = [];
+    private $options = [];
 
     /**
      * Position equals to 100 to ensure that wile sorting actions by position ASC
