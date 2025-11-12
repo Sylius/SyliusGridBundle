@@ -42,11 +42,13 @@ final class DateFilter implements FilterInterface
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
         /** @var string $field */
-        $field = $this->getOption($options, 'field', $name);
+        $field = $options['field'] ?? $name;
 
         $from = isset($data['from']) ? $this->getDateTime($data['from'], '00:00') : null;
         if (null !== $from) {
-            $inclusive = (bool) $this->getOption($options, 'inclusive_from', self::DEFAULT_INCLUSIVE_FROM);
+            /** @var bool|string|int $inclusive */
+            $inclusive = $options['inclusive_from'] ?? self::DEFAULT_INCLUSIVE_FROM;
+            $inclusive = (bool) $inclusive;
             if (true === $inclusive) {
                 $dataSource->restrict($expressionBuilder->greaterThanOrEqual($field, $from));
             } else {
@@ -56,24 +58,15 @@ final class DateFilter implements FilterInterface
 
         $to = isset($data['to']) ? $this->getDateTime($data['to'], '23:59') : null;
         if (null !== $to) {
-            $inclusive = (bool) $this->getOption($options, 'inclusive_to', self::DEFAULT_INCLUSIVE_TO);
+            /** @var bool|string|int $inclusive */
+            $inclusive = $options['inclusive_to'] ?? self::DEFAULT_INCLUSIVE_TO;
+            $inclusive = (bool) $inclusive;
             if (true === $inclusive) {
                 $dataSource->restrict($expressionBuilder->lessThanOrEqual($field, $to));
             } else {
                 $dataSource->restrict($expressionBuilder->lessThan($field, $to));
             }
         }
-    }
-
-    /**
-     * @param array<string, mixed> $options
-     * @param mixed $default
-     *
-     * @return mixed
-     */
-    private function getOption(array $options, string $name, $default)
-    {
-        return $options[$name] ?? $default;
     }
 
     /**
