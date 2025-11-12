@@ -29,15 +29,3 @@ parameters:
 			identifier: return.type
 			count: 1
 			path: src/Component/FieldTypes/CallableFieldType.php
-
-		-
-			message: '#^Cannot access offset ''currency'' on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 1
-			path: src/Component/Filter/MoneyFilter.php
-
-		-
-			message: '#^Cannot cast mixed to int\.$#'
-			identifier: cast.int
-			count: 1
-			path: src/Component/Filter/MoneyFilter.php
