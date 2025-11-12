@@ -41,17 +41,13 @@ final class Driver implements DriverInterface
             throw new \InvalidArgumentException('"table" must be configured.');
         }
 
-        $table = $configuration['table'];
-
         $queryBuilder = $this->connection->createQueryBuilder();
         $queryBuilder
             ->select('o.*')
-            ->from($table, 'o')
+            ->from($configuration['table'], 'o')
         ;
 
         foreach ($configuration['aliases'] as $column => $alias) {
-            /** @var string $column */
-            /** @var string $alias */
             $queryBuilder->addSelect(sprintf('o.%s as %s', $column, $alias));
         }
 
