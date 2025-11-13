@@ -30,16 +30,16 @@ use Twig\Environment;
 final class TwigGridRenderer implements GridRendererInterface
 {
     public function __construct(
-        private Environment $twig,
-        private ServiceRegistryInterface $fieldsRegistry,
-        private FormFactoryInterface $formFactory,
-        private FormTypeRegistryInterface $formTypeRegistry,
-        private string $defaultTemplate,
+        private readonly Environment $twig,
+        private readonly ServiceRegistryInterface $fieldsRegistry,
+        private readonly FormFactoryInterface $formFactory,
+        private readonly FormTypeRegistryInterface $formTypeRegistry,
+        private readonly string $defaultTemplate,
         /** @var array<string, string> $actionTemplates */
-        private array $actionTemplates = [],
+        private readonly array $actionTemplates = [],
         /** @var array<string, string> $filterTemplates */
-        private array $filterTemplates = [],
-        private ?OptionsParserInterface $optionsParser = null,
+        private readonly array $filterTemplates = [],
+        private readonly ?OptionsParserInterface $optionsParser = null,
     ) {
         if (null === $optionsParser) {
             trigger_deprecation(
