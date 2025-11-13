@@ -68,7 +68,7 @@ final class MakeGrid extends AbstractMaker
 
     public function generate(InputInterface $input, ConsoleStyle $io, Generator $generator): void
     {
-        /** @var string $class */
+        /** @var class-string $class */
         $class = $input->getArgument('entity');
 
         if (!\class_exists($class)) {
@@ -76,6 +76,7 @@ final class MakeGrid extends AbstractMaker
         }
 
         if (!\class_exists($class)) {
+            /** @var class-string $entityArg */
             $entityArg = $input->getArgument('entity');
 
             throw new RuntimeCommandException(\sprintf('Entity "%s" not found.', is_string($entityArg) ? $entityArg : 'unknown'));
