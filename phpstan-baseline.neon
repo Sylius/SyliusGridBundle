@@ -919,12 +919,6 @@ parameters:
 			path: src/Component/Configuration/GridConfigurationSortingHandler.php
 
 		-
-			message: '#^Cannot access offset mixed on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Component/Configuration/GridConfigurationSortingHandler.php
-
-		-
 			message: '#^Method Sylius\\Component\\Grid\\Configuration\\GridConfigurationSortingHandler\:\:handle\(\) has parameter \$gridConfiguration with no value type specified in iterable type array\.$#'
 			identifier: missingType.iterableValue
 			count: 1
@@ -946,6 +940,12 @@ parameters:
 			message: '#^Parameter \#2 \$key of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
 			path: src/Component/Configuration/GridConfigurationSortingHandler.php
 
 		-
@@ -1453,7 +1453,7 @@ parameters:
 			path: src/Component/FieldTypes/DatetimeFieldType.php
 
 		-
-			message: '#^Parameter \#1 \$format of method DateTime\:\:format\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$format of method DateTimeImmutable\:\:format\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Component/FieldTypes/DatetimeFieldType.php
