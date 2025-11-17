@@ -1,6 +1,3 @@
-imports:
-    - { resource: "sylius/resources.yaml" }
-
 parameters:
     locale: en_US
     secret: "Three can keep a secret, if two of them are dead."
@@ -13,22 +10,7 @@ services:
         bind:
             $dataDir: '%kernel.project_dir%/config/data'
 
-    app.english_books_query_builder:
-        class: App\QueryBuilder\EnglishBooksQueryBuilder
-        arguments:
-            - '@app.repository.book'
-        public: true
-
-    app.authors_with_books_query_builder:
-        class: App\QueryBuilder\AuthorsWithBooksQueryBuilder
-        arguments:
-            - '@app.repository.author'
-        public: true
-
-    App\Filter\AttributeNationalityFilter: null
-    App\Filter\NationalityFilter: null
-
-    App\BoardGameBlog\:
-        resource: '../src/BoardGameBlog'
-
-    App\Helper\GridHelper: ~
+    App\:
+        resource: '../src'
+        # we do not use grids as service here
+        exclude: '../src/Grid'

@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace App\BoardGameBlog\Infrastructure\Sylius\Grid;
 
 use App\BoardGameBlog\Infrastructure\Sylius\Grid\DataProvider\BoardGameGridProvider;
-use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
 
-final class BoardGameGrid extends AbstractGrid implements ResourceAwareGridInterface
+final class BoardGameGrid extends AbstractGrid
 {
     public static function getName(): string
     {
@@ -40,10 +38,5 @@ final class BoardGameGrid extends AbstractGrid implements ResourceAwareGridInter
                     ->setLabel('Short Description'),
             )
         ;
-    }
-
-    public function getResourceClass(): string
-    {
-        return BoardGameResource::class;
     }
 }

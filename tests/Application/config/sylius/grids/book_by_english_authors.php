@@ -23,7 +23,7 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 return static function (GridConfig $grid) {
     $grid->addGrid(
         GridBuilder::create('app_book_by_english_authors', Book::class)
-        ->setRepositoryMethod(["expr:service('app.english_books_query_builder')", 'create'])
+        ->setRepositoryMethod('createEnglishBooksQueryBuilder')
         ->addFilter(StringFilter::create('title'))
         ->addFilter(EntityFilter::create('author', Author::class))
         ->addFilter(NationalityFilter::create(

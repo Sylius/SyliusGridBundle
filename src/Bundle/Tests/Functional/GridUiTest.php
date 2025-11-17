@@ -33,7 +33,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_shows_authors_grid(): void
     {
-        $this->client->request('GET', '/authors/');
+        $this->client->request('GET', '/authors');
         $response = $this->client->getResponse();
 
         $this->assertResponseCode($response, Response::HTTP_OK);
@@ -44,7 +44,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_shows_authors_ids(): void
     {
-        $this->client->request('GET', '/authors/?limit=100');
+        $this->client->request('GET', '/authors?limit=100');
 
         $ids = $this->getAuthorIdsFromResponse();
 
@@ -58,7 +58,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_shows_authors_nationalities(): void
     {
-        $this->client->request('GET', '/authors/?limit=100');
+        $this->client->request('GET', '/authors?limit=100');
 
         $nationalities = $this->getAuthorNationalitiesFromResponse();
 
@@ -71,7 +71,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_sorts_authors_by_name_ascending_by_default(): void
     {
-        $this->client->request('GET', '/authors/?limit=100');
+        $this->client->request('GET', '/authors?limit=100');
 
         $names = $this->getAuthorNamesFromResponse();
 
@@ -84,7 +84,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_sorts_authors_by_name_descending(): void
     {
-        $this->client->request('GET', '/authors/?sorting[name]=desc&limit=100');
+        $this->client->request('GET', '/authors?sorting[name]=desc&limit=100');
 
         $names = $this->getAuthorNamesFromResponse();
 
@@ -97,7 +97,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_paginates_authors_by_10_by_default(): void
     {
-        $this->client->request('GET', '/authors/');
+        $this->client->request('GET', '/authors');
 
         $this->assertCount(10, $this->getAuthorNamesFromResponse());
     }
@@ -105,20 +105,30 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_paginates_authors_by_5_or_15(): void
     {
-        $this->client->request('GET', '/authors/?limit=5');
+        $this->client->request('GET', '/authors?limit=5');
 
         $this->assertCount(5, $this->getAuthorNamesFromResponse());
 
-        $this->client->request('GET', '/authors/?limit=15');
+        $this->client->request('GET', '/authors?limit=15');
 
         $this->assertCount(15, $this->getAuthorNamesFromResponse());
+    }
+
+    /** @test */
+    public function it_list_books(): void
+    {
+        $this->client->request('GET', '/books');
+
+        $titles = $this->getBookTitlesFromResponse();
+
+        $this->assertCount(10, $titles);
     }
 
     /** @test */
     public function it_filters_books_by_title(): void
     {
         $this->client->request('GET', sprintf(
-            '/books/?criteria[title][type]=equal&criteria[title][value]=%s',
+            '/books?criteria[title][type]=equal&criteria[title][value]=%s',
             urlencode('Book 5'),
         ));
 
@@ -132,7 +142,7 @@ final class GridUiTest extends ApiTestCase
     public function it_filters_books_by_title_with_contains(): void
     {
         $this->client->request('GET', sprintf(
-            '/books/?criteria[title][type]=contains&criteria[title][value]=%s',
+            '/books?criteria[title][type]=contains&criteria[title][value]=%s',
             urlencode('jurassic'),
         ));
 
@@ -147,7 +157,7 @@ final class GridUiTest extends ApiTestCase
     {
         $authorId = $this->data['author_michael_crichton']->getId();
 
-        $this->client->request('GET', sprintf('/books/?criteria[author][]=%d', $authorId));
+        $this->client->request('GET', sprintf('/books?criteria[author][]=%d', $authorId));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -161,7 +171,7 @@ final class GridUiTest extends ApiTestCase
         $firstAuthorId = $this->data['author_michael_crichton']->getId();
         $secondAuthorId = $this->data['author_john_watson']->getId();
 
-        $this->client->request('GET', sprintf('/books/?criteria[author][]=%d&criteria[author][]=%d', $firstAuthorId, $secondAuthorId));
+        $this->client->request('GET', sprintf('/books?criteria[author][]=%d&criteria[author][]=%d', $firstAuthorId, $secondAuthorId));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -174,7 +184,7 @@ final class GridUiTest extends ApiTestCase
     {
         $authorNationalityId = $this->data['author_michael_crichton']->getNationality()->getId();
 
-        $this->client->request('GET', sprintf('/books/?criteria[nationality]=%d', $authorNationalityId));
+        $this->client->request('GET', sprintf('/books?criteria[nationality]=%d', $authorNationalityId));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -187,7 +197,7 @@ final class GridUiTest extends ApiTestCase
     {
         $authorId = $this->data['author_michael_crichton']->getId();
 
-        $this->client->request('GET', sprintf('/books/?criteria[author]=%d&criteria[currencyCode]=%s', $authorId, 'EUR'));
+        $this->client->request('GET', sprintf('/books?criteria[author]=%d&criteria[currencyCode]=%s', $authorId, 'EUR'));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -198,7 +208,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_sorts_books_ascending_by_author(): void
     {
-        $this->client->request('GET', '/books/?sorting[author]=asc&limit=100');
+        $this->client->request('GET', '/books?sorting[author]=asc&limit=100');
 
         $names = $this->getBookAuthorsFromResponse();
 
@@ -211,7 +221,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_sorts_books_descending_by_authors_nationality(): void
     {
-        $this->client->request('GET', '/books/?sorting[nationality]=desc&limit=100');
+        $this->client->request('GET', '/books?sorting[nationality]=desc&limit=100');
 
         $names = $this->getBookAuthorNationalitiesFromResponse();
 
@@ -226,7 +236,7 @@ final class GridUiTest extends ApiTestCase
     {
         $authorId = $this->data['author_michael_crichton']->getId();
 
-        $this->client->request('GET', sprintf('/by-american-authors/books/?criteria[author]=%d', $authorId));
+        $this->client->request('GET', sprintf('/by-american-authors/books?criteria[author]=%d', $authorId));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -237,7 +247,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_sorts_authors_using_table_alias_defined_in_query_builder(): void
     {
-        $this->client->request('GET', '/by-american-authors/books/?sorting[author]=asc');
+        $this->client->request('GET', '/by-american-authors/books?sorting[author]=asc');
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -250,7 +260,7 @@ final class GridUiTest extends ApiTestCase
     {
         $authorId = $this->data['author_john_watson']->getId();
 
-        $this->client->request('GET', sprintf('/by-english-authors/books/?criteria[author]=%d', $authorId));
+        $this->client->request('GET', sprintf('/by-english-authors/books?criteria[author]=%d', $authorId));
 
         $titles = $this->getBookTitlesFromResponse();
 
@@ -261,7 +271,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_renders_option_vars(): void
     {
-        $this->client->request('GET', '/books/');
+        $this->client->request('GET', '/books');
 
         $data = $this->getCrawler()
             ->filter('th.text-end')
@@ -289,14 +299,14 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_shows_admin_user_status_enums(): void
     {
-        $this->client->request('GET', '/admin-users/');
+        $this->client->request('GET', '/admin-users');
 
-        $statusses = $this->getAdminStatussesFromResponse();
+        $statuses = $this->getAdminStatusesFromResponse();
 
-        $this->assertCount(3, $statusses);
-        $this->assertContains('enum.status.active', $statusses);
-        $this->assertContains('enum.status.inactive', $statusses);
-        $this->assertContains('enum.status.banned', $statusses);
+        $this->assertCount(3, $statuses);
+        $this->assertContains('enum.status.active', $statuses);
+        $this->assertContains('enum.status.inactive', $statuses);
+        $this->assertContains('enum.status.banned', $statuses);
     }
 
     /** @return string[] */
@@ -360,7 +370,7 @@ final class GridUiTest extends ApiTestCase
     }
 
     /** @return string[] */
-    private function getAdminStatussesFromResponse(): array
+    private function getAdminStatusesFromResponse(): array
     {
         return $this->getCrawler()
             ->filter('[data-test-status]')

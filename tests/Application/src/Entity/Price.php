@@ -14,27 +14,13 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
-/**
- * @Serializer\ExclusionPolicy("all")
- */
 #[ORM\Embeddable]
 final class Price
 {
-    /**
-     * @Serializer\Expose
-     *
-     * @Serializer\Type("integer")
-     */
     #[ORM\Column(type: 'integer')]
     private ?int $amount = null;
 
-    /**
-     * @Serializer\Expose
-     *
-     * @Serializer\Type("string")
-     */
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $currencyCode = null;
 

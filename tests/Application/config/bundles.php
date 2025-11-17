@@ -16,7 +16,6 @@ use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Fidry\AliceDataFixtures\Bridge\Symfony\FidryAliceDataFixturesBundle;
 use Nelmio\Alice\Bridge\Symfony\NelmioAliceBundle;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
-use Sylius\Bundle\ResourceBundle\SyliusResourceBundle;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\MakerBundle\MakerBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
@@ -25,7 +24,6 @@ return [
     FrameworkBundle::class => ['all' => true],
     DoctrineBundle::class => ['all' => true],
     TwigBundle::class => ['all' => true],
-    SyliusResourceBundle::class => ['all' => true],
     SyliusGridBundle::class => ['all' => true],
     BabDevPagerfantaBundle::class => ['all' => true],
     FidryAliceDataFixturesBundle::class => ['all' => true],
