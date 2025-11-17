@@ -21,11 +21,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 
 final class Configuration implements ConfigurationInterface
 {
+    /**
+     * @return TreeBuilder<'array'>
+     */
     public function getConfigTreeBuilder(): TreeBuilder
     {
         $treeBuilder = new TreeBuilder('sylius_grid');
 
-        /** @var ArrayNodeDefinition $rootNode */
+        /** @var ArrayNodeDefinition<TreeBuilder<'array'>> $rootNode */
         $rootNode = $treeBuilder->getRootNode();
 
         $this->addDriversSection($rootNode);
@@ -35,6 +38,9 @@ final class Configuration implements ConfigurationInterface
         return $treeBuilder;
     }
 
+    /**
+     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $node
+     */
     private function addDriversSection(ArrayNodeDefinition $node): void
     {
         $node
@@ -48,6 +54,9 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
+    /**
+     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $node
+     */
     private function addTemplatesSection(ArrayNodeDefinition $node): void
     {
         $node
@@ -73,6 +82,9 @@ final class Configuration implements ConfigurationInterface
         ;
     }
 
+    /**
+     * @param ArrayNodeDefinition<TreeBuilder<'array'>> $node
+     */
     private function addGridsSection(ArrayNodeDefinition $node): void
     {
         $node
