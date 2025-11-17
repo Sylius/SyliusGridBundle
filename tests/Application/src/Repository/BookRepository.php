@@ -13,11 +13,19 @@ declare(strict_types=1);
 
 namespace App\Repository;
 
+use App\Entity\Book;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
-use Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-final class BookRepository extends EntityRepository
+final class BookRepository extends ServiceEntityRepository
 {
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+    ) {
+        parent::__construct($managerRegistry, Book::class);
+    }
+
     public function createAmericanBooksQueryBuilder(): QueryBuilder
     {
         return $this->createQueryBuilder('b')
@@ -25,6 +33,16 @@ final class BookRepository extends EntityRepository
             ->innerJoin('author.nationality', 'na')
             ->andWhere('na.name = :nationality')
             ->setParameter(':nationality', 'American')
+        ;
+    }
+
+    public function createEnglishBooksQueryBuilder(): QueryBuilder
+    {
+        return $this->createQueryBuilder('b')
+            ->innerJoin('b.author', 'author')
+            ->innerJoin('author.nationality', 'na')
+            ->andWhere('na.name = :nationality')
+            ->setParameter(':nationality', 'English')
         ;
     }
 }

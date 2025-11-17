@@ -11,6 +11,7 @@
 
 declare(strict_types=1);
 
+use App\Entity\Author;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
@@ -19,7 +20,7 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(
-        GridBuilder::create('app_author', '%app.model.author.class%')
+        GridBuilder::create('app_author', Author::class)
             ->addFilter(StringFilter::create('name'))
             ->orderBy('name', 'asc')
             ->addField(

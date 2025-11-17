@@ -35,7 +35,7 @@ final class AuthorWithBooksWithUseOutputWalkersDisabled extends AbstractGrid imp
     {
         $gridBuilder
             ->extends('app_author')
-            ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
+            ->setRepositoryMethod('createWithBooksQueryBuilder')
             ->setDriverOption('pagination', ['use_output_walkers' => false])
             ->addField(
                 StringField::create('book')

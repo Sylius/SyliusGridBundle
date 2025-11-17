@@ -34,7 +34,7 @@ final class AuthorWithBooksWithFetchJoinCollectionDisabled extends AbstractGrid 
     {
         $gridBuilder
             ->extends('app_author')
-            ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
+            ->setRepositoryMethod('createWithBooksQueryBuilder')
             ->setDriverOption('pagination', ['fetch_join_collection' => false])
         ;
     }

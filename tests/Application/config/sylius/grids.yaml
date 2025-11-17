@@ -59,6 +59,7 @@ sylius_grid:
                 item:
                     show:
                         type: show
+                        template: 'book/grid/action/show.html.twig'
             limits: [10, 5, 15]
 
         app_author:
@@ -135,7 +136,7 @@ sylius_grid:
                 options:
                     class: App\Entity\Book
                     repository:
-                        method: [expr:service('app.english_books_query_builder'), create]
+                        method: createEnglishBooksQueryBuilder
             filters:
                 title:
                     type: string
@@ -171,7 +172,7 @@ sylius_grid:
             driver:
                 options:
                     repository:
-                        method: [expr:service('app.authors_with_books_query_builder'), create]
+                        method: createWithBooksQueryBuilder
                     pagination:
                         fetch_join_collection: false
 
@@ -180,7 +181,7 @@ sylius_grid:
             driver:
                 options:
                     repository:
-                        method: [ expr:service('app.authors_with_books_query_builder'), create]
+                        method: createWithBooksQueryBuilder
 
 
         app_author_with_books_with_use_output_walkers_disabled:
@@ -188,7 +189,7 @@ sylius_grid:
             driver:
                 options:
                     repository:
-                        method: [expr:service('app.authors_with_books_query_builder'), create]
+                        method: createWithBooksQueryBuilder
                     pagination:
                         use_output_walkers: false
             fields:
@@ -202,7 +203,7 @@ sylius_grid:
             driver:
                 options:
                     repository:
-                        method: [ expr:service('app.authors_with_books_query_builder'), create]
+                        method: createWithBooksQueryBuilder
             fields:
                 book:
                     type: string

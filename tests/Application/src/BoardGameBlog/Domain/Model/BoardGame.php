@@ -11,12 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Tests\Dummy;
+namespace App\BoardGameBlog\Domain\Model;
 
-final class Bar
+final class BoardGame
 {
-    public function getId(): ?int
-    {
-        return 666;
+    public function __construct(
+        public string $id,
+        public string $name,
+        public string $shortDescription,
+    ) {
     }
 }

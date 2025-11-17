@@ -15,11 +15,11 @@ namespace App\Entity;
 
 use App\Enum\AdminUserStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
-use Sylius\Component\Resource\Model\ResourceInterface;
 
 #[ORM\MappedSuperclass]
 #[ORM\Table(name: 'app_admin_user')]
-class AdminUser implements ResourceInterface
+#[ORM\Entity]
+class AdminUser
 {
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
