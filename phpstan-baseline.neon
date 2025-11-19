@@ -367,12 +367,6 @@ parameters:
 			path: src/Component/Configuration/GridConfigurationSortingHandler.php
 
 		-
-			message: '#^Cannot access offset mixed on mixed\.$#'
-			identifier: offsetAccess.nonOffsetAccessible
-			count: 2
-			path: src/Component/Configuration/GridConfigurationSortingHandler.php
-
-		-
 			message: '#^Parameter \#1 \$array of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects array, mixed given\.$#'
 			identifier: argument.type
 			count: 1
@@ -382,6 +376,12 @@ parameters:
 			message: '#^Parameter \#2 \$key of static method Webmozart\\Assert\\Assert\:\:keyExists\(\) expects int\|string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
+			path: src/Component/Configuration/GridConfigurationSortingHandler.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 2
 			path: src/Component/Configuration/GridConfigurationSortingHandler.php
 
 		-
