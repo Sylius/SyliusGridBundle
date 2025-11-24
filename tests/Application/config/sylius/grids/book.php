@@ -15,6 +15,7 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Grid\Builder\AttributeNationalityFilter;
 use App\Grid\Builder\NationalityFilter;
+use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
@@ -22,61 +23,67 @@ use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (GridConfig $grid) {
-    $grid->addGrid(
-        GridBuilder::create('app_book', Book::class)
-        ->addFilter(StringFilter::create('title'))
-        ->addFilter(EntityFilter::create('author', Author::class, true))
-        ->addFilter(NationalityFilter::create(
-            'nationality',
-            null,
-            ['author.nationality'],
-        ))
-        ->addFilter(AttributeNationalityFilter::create(
-            'attribute_nationality',
-            null,
-            ['author.nationality'],
-        ))
-        ->addFilter(StringFilter::create(
-            'currencyCode',
-            ['price.currencyCode'],
-        ))
-        ->addFilter(
-            SelectFilter::create(
-                'state',
-                [
-                    'initial' => 'initial',
-                    'published' => 'published',
-                    'unpublished' => 'unpublished',
-                ],
-            )
+$gridBuilder = GridBuilder::create('app_book', Book::class)
+    ->addFilter(StringFilter::create('title'))
+    ->addFilter(EntityFilter::create('author', Author::class, true))
+    ->addFilter(NationalityFilter::create(
+        'nationality',
+        null,
+        ['author.nationality'],
+    ))
+    ->addFilter(AttributeNationalityFilter::create(
+        'attribute_nationality',
+        null,
+        ['author.nationality'],
+    ))
+    ->addFilter(StringFilter::create(
+        'currencyCode',
+        ['price.currencyCode'],
+    ))
+    ->addFilter(
+        SelectFilter::create(
+            'state',
+            [
+                'initial' => 'initial',
+                'published' => 'published',
+                'unpublished' => 'unpublished',
+            ],
+        )
             ->addFormOption('multiple', true),
-        )
-        ->orderBy('title', 'asc')
-        ->addField(
-            CallableField::create('title', 'strtoupper')
-                ->setLabel('Title'),
-        )
-        ->addField(
-            StringField::create('author')
-                ->setLabel('Author')
-                ->setPath('author.name')
-                ->setSortable(true, 'author.name'),
-        )
-        ->addField(
-            StringField::create('nationality')
-                ->setLabel('Nationality')
-                ->setPath('author.nationality.name')
-                ->setSortable(true, 'author.nationality.name'),
-        )
-        ->addField(
-            StringField::create('currency')
-                ->setLabel('Currency')
-                ->setPath('price.currencyCode')
-                ->setSortable(true, 'price.currencyCode')
-                ->setOption('vars', ['th_class' => 'text-end']),
-        )
-        ->setLimits([10, 5, 15]),
-    );
-};
+    )
+    ->orderBy('title', 'asc')
+    ->addField(
+        CallableField::create('title', 'strtoupper')
+            ->setLabel('Title'),
+    )
+    ->addField(
+        StringField::create('author')
+            ->setLabel('Author')
+            ->setPath('author.name')
+            ->setSortable(true, 'author.name'),
+    )
+    ->addField(
+        StringField::create('nationality')
+            ->setLabel('Nationality')
+            ->setPath('author.nationality.name')
+            ->setSortable(true, 'author.nationality.name'),
+    )
+    ->addField(
+        StringField::create('currency')
+            ->setLabel('Currency')
+            ->setPath('price.currencyCode')
+            ->setSortable(true, 'price.currencyCode')
+            ->setOption('vars', ['th_class' => 'text-end']),
+    )
+    ->setLimits([10, 5, 15])
+;
+
+if (Kernel::MAJOR_VERSION < 8) {
+    return static function (GridConfig $grid) use ($gridBuilder): void {
+        $grid->addGrid($gridBuilder);
+    };
+}
+
+return App::config(['sylius_grid' => (new GridConfig())->addGrid($gridBuilder)->toArray()]);
