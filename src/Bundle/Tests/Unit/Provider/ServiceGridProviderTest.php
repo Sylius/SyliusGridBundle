@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Sylius\Bundle\GridBundle\Provider;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Provider;
 
 use App\Grid\BookGrid;
 use PHPUnit\Framework\TestCase;
