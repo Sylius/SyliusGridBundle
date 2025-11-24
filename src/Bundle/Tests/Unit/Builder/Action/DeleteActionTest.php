@@ -19,7 +19,7 @@ use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 
 final class DeleteActionTest extends TestCase
 {
-    public function testBuildsCreateActions(): void
+    public function testBuildsDeleteActions(): void
     {
         $action = DeleteAction::create();
 
@@ -30,7 +30,7 @@ final class DeleteActionTest extends TestCase
         ], $action->toArray());
     }
 
-    public function testBuildsCreateActionsWithOptions(): void
+    public function testBuildsDeleteActionsWithOptions(): void
     {
         $action = DeleteAction::create(['custom' => true]);
 
