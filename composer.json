@@ -31,11 +31,42 @@
         {
             "type": "vcs",
             "url": "https://github.com/mbabker/SymfonyDependencyInjectionTest"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/loic425/phpcr-utils"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/acrobat/ApiTestCase.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/Kocal/symfony-maker-bundle.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/loic425/jackalope-doctrine-dbal.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/loic425/phpcr-odm.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/loic425/phpcr-utils.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/acrobat/alice.git"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/loic425/doctrine-persistence.git"
         }
     ],
     "require": {
         "php": "^8.2",
-        "sylius-labs/polyfill-symfony-event-dispatcher": "^1.0",
         "sylius/registry": "^1.5",
         "symfony/config": "^6.4 || ^7.2 || ^8.0",
         "symfony/dependency-injection": "^6.4 || ^7.2 || ^8.0",
@@ -61,36 +92,37 @@
         "pagerfanta/pagerfanta": "<3.7"
     },
     "require-dev": {
-        "babdev/pagerfanta-bundle": "^4.4",
-        "doctrine/doctrine-bundle": "^1.12 || ^2.0",
-        "doctrine/orm": "^2.8",
-        "doctrine/persistence": "^1.3 || ^2.0 || ^3.1",
-        "doctrine/phpcr-odm": "^1.5 || ^2.0",
-        "jackalope/jackalope-doctrine-dbal": "^2.0",
-        "lchrusciel/api-test-case": "^5.0",
+        "babdev/pagerfanta-bundle": "4.x-dev",
+        "doctrine/doctrine-bundle": "^2.0 || ^3.0 || ^4.0",
+        "doctrine/orm": "^2.8 || ^3.0",
+        "doctrine/persistence": "^1.3 || ^2.0 || ^3.1 || ^4.0 || dev-sf-8 as 4.1.1.1",
+        "doctrine/phpcr-odm": "^1.5 || ^2.0 || dev-sf8 as 2.1.0.1",
+        "jackalope/jackalope-doctrine-dbal": "^2.0 || dev-sf8 as 2.0.2.1",
+        "phpcr/phpcr-utils": "dev-sf8 as 2.0.2.1",
+        "lchrusciel/api-test-case": "^5.0 || dev-bump-symfony-doctrine-deps as 5.3.4.1",
         "matthiasnoback/symfony-config-test": "^6.1",
         "matthiasnoback/symfony-dependency-injection-test": "dev-ci-updates as 6.1.0.1",
+        "nelmio/alice": "dev-symfony8-support as 3.14.2.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
-        "pamil/phpspec-skip-example-extension": "^4.2",
         "phpstan/extension-installer": "^1.4",
-        "phpspec/phpspec": "^7.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-symfony": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
         "phpunit/phpunit": "^11.0",
-        "sylius-labs/coding-standard": "^4.0",
+        "sylius-labs/coding-standard": "^4.5",
         "symfony/console": "^6.4 || ^7.2 || ^8.0",
         "symfony/css-selector": "^6.4 || ^7.2 || ^8.0",
         "symfony/dotenv": "^6.4 || ^7.2 || ^8.0",
-        "symfony/maker-bundle": "^1.36",
+        "symfony/maker-bundle": "^1.36 || dev-symfony-8-support as 1.64.0.1",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/security-csrf": "^6.4 || ^7.2 || ^8.0",
         "symfony/translation": "^6.4 || ^7.2 || ^8.0",
         "symfony/twig-bundle": "^6.4 || ^7.2 || ^8.0",
         "twig/twig": "^2.12 || ^3.0",
         "rector/rector": "^2.0",
-        "rector/custom-phpspec-to-phpunit": "^0.6.2"
+        "rector/custom-phpspec-to-phpunit": "^0.6.2",
+        "symplify/easy-coding-standard": "^13.0"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -135,7 +167,6 @@
             "vendor/bin/ecs check --fix"
         ],
         "test-yaml-config": [
-            "vendor/bin/phpspec run --ansi --no-interaction",
             "APP_ENV=test_grids_with_yaml_config vendor/bin/phpunit --colors=always"
         ],
         "test-php-config": [
@@ -148,5 +179,6 @@
             "APP_ENV=test_with_postgres vendor/bin/phpunit --colors=always"
         ]
     },
-    "prefer-stable": true
+    "prefer-stable": true,
+    "minimum-stability": "dev"
 }
