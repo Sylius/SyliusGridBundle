@@ -15,13 +15,13 @@ namespace App\Factory;
 
 use App\Entity\Author;
 use App\Entity\Nationality;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 
 /**
- * @extends PersistentProxyObjectFactory<Author>
+ * @extends PersistentObjectFactory<Author>
  */
-final class AuthorFactory extends PersistentProxyObjectFactory
+final class AuthorFactory extends PersistentObjectFactory
 {
     #[\Override]
     public static function class(): string

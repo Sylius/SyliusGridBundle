@@ -17,13 +17,13 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Entity\Price;
 use function Zenstruck\Foundry\lazy;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 use Zenstruck\Foundry\Persistence\Proxy;
 
 /**
- * @extends PersistentProxyObjectFactory<Book>
+ * @extends PersistentObjectFactory<Book>
  */
-final class BookFactory extends PersistentProxyObjectFactory
+final class BookFactory extends PersistentObjectFactory
 {
     #[\Override]
     public static function class(): string

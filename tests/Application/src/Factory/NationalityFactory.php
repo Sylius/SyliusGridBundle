@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace App\Factory;
 
 use App\Entity\Nationality;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<Nationality>
+ * @extends PersistentObjectFactory<Nationality>
  */
-final class NationalityFactory extends PersistentProxyObjectFactory
+final class NationalityFactory extends PersistentObjectFactory
 {
     #[\Override]
     public static function class(): string
