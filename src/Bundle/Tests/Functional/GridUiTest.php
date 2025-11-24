@@ -13,21 +13,27 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
-use ApiTestCase\ApiTestCase;
-use Coduo\PHPMatcher\Backtrace\VoidBacktrace;
-use Coduo\PHPMatcher\Matcher;
+use App\Factory\AuthorFactory;
+use App\Story\AppStory;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
-final class GridUiTest extends ApiTestCase
+final class GridUiTest extends WebTestCase
 {
-    private array $data;
+    use Factories;
+    use ResetDatabase;
+
+    private KernelBrowser $client;
 
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->client = $this->createClient();
 
-        $this->data = $this->loadFixturesFromFile('fixtures.yml');
+        AppStory::load();
     }
 
     /** @test */
@@ -36,7 +42,7 @@ final class GridUiTest extends ApiTestCase
         $this->client->request('GET', '/authors');
         $response = $this->client->getResponse();
 
-        $this->assertResponseCode($response, Response::HTTP_OK);
+        $this->assertSame(Response::HTTP_OK, $response->getStatusCode());
 
         $this->assertCount(10, $this->getAuthorNamesFromResponse());
     }
@@ -155,7 +161,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_author(): void
     {
-        $authorId = $this->data['author_michael_crichton']->getId();
+        $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
 
         $this->client->request('GET', sprintf('/books?criteria[author][]=%d', $authorId));
 
@@ -168,8 +174,8 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_authors(): void
     {
-        $firstAuthorId = $this->data['author_michael_crichton']->getId();
-        $secondAuthorId = $this->data['author_john_watson']->getId();
+        $firstAuthorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
+        $secondAuthorId = AuthorFactory::find(['name' => 'John Watson'])->getId();
 
         $this->client->request('GET', sprintf('/books?criteria[author][]=%d&criteria[author][]=%d', $firstAuthorId, $secondAuthorId));
 
@@ -182,7 +188,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_authors_nationality(): void
     {
-        $authorNationalityId = $this->data['author_michael_crichton']->getNationality()->getId();
+        $authorNationalityId = AuthorFactory::find(['name' => 'Michael Crichton'])->getNationality()->getId();
 
         $this->client->request('GET', sprintf('/books?criteria[nationality]=%d', $authorNationalityId));
 
@@ -195,7 +201,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_author_and_currency(): void
     {
-        $authorId = $this->data['author_michael_crichton']->getId();
+        $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
 
         $this->client->request('GET', sprintf('/books?criteria[author]=%d&criteria[currencyCode]=%s', $authorId, 'EUR'));
 
@@ -234,7 +240,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_author_when_an_author_association_is_used_in_join_in_query_builder(): void
     {
-        $authorId = $this->data['author_michael_crichton']->getId();
+        $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
 
         $this->client->request('GET', sprintf('/by-american-authors/books?criteria[author]=%d', $authorId));
 
@@ -258,7 +264,7 @@ final class GridUiTest extends ApiTestCase
     /** @test */
     public function it_filters_books_by_author_when_an_author_is_used_in_join_in_query_builder_without_association_in_the_mapping(): void
     {
-        $authorId = $this->data['author_john_watson']->getId();
+        $authorId = AuthorFactory::find(['name' => 'John Watson'])->getId();
 
         $this->client->request('GET', sprintf('/by-english-authors/books?criteria[author]=%d', $authorId));
 
@@ -382,10 +388,5 @@ final class GridUiTest extends ApiTestCase
     private function getCrawler(): Crawler
     {
         return $this->client->getCrawler();
-    }
-
-    protected function buildMatcher(): Matcher
-    {
-        return $this->matcherFactory->createMatcher(new VoidBacktrace());
     }
 }

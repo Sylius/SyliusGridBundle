@@ -13,18 +13,25 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
-use ApiTestCase\ApiTestCase;
-use Coduo\PHPMatcher\Backtrace\VoidBacktrace;
-use Coduo\PHPMatcher\Matcher;
+use App\Story\AppStory;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
-final class PaginationTest extends ApiTestCase
+final class PaginationTest extends WebTestCase
 {
+    use Factories;
+    use ResetDatabase;
+
+    private KernelBrowser $client;
+
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->client = $this->createClient();
 
-        $this->loadFixturesFromFile('fixtures.yml');
+        AppStory::load();
     }
 
     /** @test */
@@ -56,10 +63,5 @@ final class PaginationTest extends ApiTestCase
     private function getCrawler(): Crawler
     {
         return $this->client->getCrawler();
-    }
-
-    protected function buildMatcher(): Matcher
-    {
-        return $this->matcherFactory->createMatcher(new VoidBacktrace());
     }
 }

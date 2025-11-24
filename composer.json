@@ -58,10 +58,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/acrobat/alice.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/loic425/doctrine-persistence.git"
         }
     ],
@@ -99,10 +95,8 @@
         "doctrine/phpcr-odm": "^1.5 || ^2.0 || dev-sf8 as 2.1.0.1",
         "jackalope/jackalope-doctrine-dbal": "^2.0 || dev-sf8 as 2.0.2.1",
         "phpcr/phpcr-utils": "dev-sf8 as 2.0.2.1",
-        "lchrusciel/api-test-case": "^5.0 || dev-bump-symfony-doctrine-deps as 5.3.4.1",
         "matthiasnoback/symfony-config-test": "^6.1",
         "matthiasnoback/symfony-dependency-injection-test": "dev-ci-updates as 6.1.0.1",
-        "nelmio/alice": "dev-symfony8-support as 3.14.2.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.0",
@@ -122,7 +116,8 @@
         "twig/twig": "^2.12 || ^3.0",
         "rector/rector": "^2.0",
         "rector/custom-phpspec-to-phpunit": "^0.6.2",
-        "symplify/easy-coding-standard": "^13.0"
+        "symplify/easy-coding-standard": "^13.0",
+        "zenstruck/foundry": "^2.8"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -155,7 +150,8 @@
             "symfony/flex": true,
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "phpstan/extension-installer": true
-        }
+        },
+        "sort-packages": true
     },
     "scripts": {
         "analyse": [
