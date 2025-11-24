@@ -11,25 +11,20 @@
 
 declare(strict_types=1);
 
-namespace spec\Sylius\Bundle\GridBundle\Builder\Action;
+namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
-use PhpSpec\ObjectBehavior;
+use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\Action\ApplyTransitionAction;
 
-final class ApplyTransitionActionSpec extends ObjectBehavior
+final class ApplyTransitionActionTest extends TestCase
 {
-    function it_is_initializable(): void
+    public function testBuildsApplyTransitionActions(): void
     {
-        $this->shouldHaveType(ApplyTransitionAction::class);
-    }
+        $action = ApplyTransitionAction::create('publish', 'app_book_publish', ['id' => 'resource.id']);
 
-    function it_builds_apply_transition_actions(): void
-    {
-        $action = $this::create('publish', 'app_book_publish', ['id' => 'resource.id']);
-
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'apply_transition',
             'options' => [
                 'link' => [
@@ -38,12 +33,12 @@ final class ApplyTransitionActionSpec extends ObjectBehavior
                 ],
                 'transition' => 'publish',
             ],
-        ]);
+        ], $action->toArray());
     }
 
-    function it_builds_apply_transition_with_options(): void
+    public function testBuildsApplyTransitionWithOptions(): void
     {
-        $action = $this::create(
+        $action = ApplyTransitionAction::create(
             'publish',
             'app_book_publish',
             [
@@ -55,8 +50,8 @@ final class ApplyTransitionActionSpec extends ObjectBehavior
             ],
         );
 
-        $action->shouldHaveType(ActionInterface::class);
-        $action->toArray()->shouldReturn([
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertEquals([
             'type' => 'apply_transition',
             'options' => [
                 'link' => [
@@ -67,6 +62,6 @@ final class ApplyTransitionActionSpec extends ObjectBehavior
                 'class' => 'green',
                 'graph' => 'sylius_book_publishing',
             ],
-        ]);
+        ], $action->toArray());
     }
 }
