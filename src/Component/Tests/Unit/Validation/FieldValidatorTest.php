@@ -46,12 +46,12 @@ final class FieldValidatorTest extends TestCase
 
     public function testPassesIfValidSortingParameterProvided(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $field = $this->createMock(Field::class);
         $anotherField = $this->createMock(Field::class);
 
         // Should not throw
         $this->fieldValidator->validateFieldName('name', ['name' => $field, 'code' => $anotherField]);
-
-        $this->assertTrue(true); // Just to mark test as passed
     }
 }

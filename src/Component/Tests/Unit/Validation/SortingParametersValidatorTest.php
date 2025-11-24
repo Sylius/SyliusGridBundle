@@ -49,6 +49,8 @@ final class SortingParametersValidatorTest extends TestCase
 
     public function testPassesIfValidSortingParameterProvided(): void
     {
+        $this->expectNotToPerformAssertions();
+
         $field = $this->createMock(Field::class);
         $anotherField = $this->createMock(Field::class);
 
@@ -57,7 +59,5 @@ final class SortingParametersValidatorTest extends TestCase
             ['name' => 'asc'],
             ['name' => $field, 'code' => $anotherField],
         );
-
-        $this->assertTrue(true); // mark test as passed
     }
 }
