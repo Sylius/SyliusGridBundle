@@ -15,12 +15,12 @@ namespace App\Factory;
 
 use App\Entity\AdminUser;
 use App\Enum\AdminUserStatusEnum;
-use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
+use Zenstruck\Foundry\Persistence\PersistentObjectFactory;
 
 /**
- * @extends PersistentProxyObjectFactory<AdminUser>
+ * @extends PersistentObjectFactory<AdminUser>
  */
-final class AdminUserFactory extends PersistentProxyObjectFactory
+final class AdminUserFactory extends PersistentObjectFactory
 {
     #[\Override]
     public static function class(): string
