@@ -42,10 +42,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/Kocal/symfony-maker-bundle.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/loic425/jackalope-doctrine-dbal.git"
         },
         {
@@ -108,7 +104,7 @@
         "symfony/console": "^6.4 || ^7.2 || ^8.0",
         "symfony/css-selector": "^6.4 || ^7.2 || ^8.0",
         "symfony/dotenv": "^6.4 || ^7.2 || ^8.0",
-        "symfony/maker-bundle": "^1.36 || dev-symfony-8-support as 1.64.0.1",
+        "symfony/maker-bundle": "^1.65",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/security-csrf": "^6.4 || ^7.2 || ^8.0",
         "symfony/translation": "^6.4 || ^7.2 || ^8.0",
