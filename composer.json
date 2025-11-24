@@ -80,7 +80,8 @@
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/translation": "^6.4 || ^7.2",
         "symfony/twig-bundle": "^6.4 || ^7.2",
-        "twig/twig": "^2.12 || ^3.0"
+        "twig/twig": "^2.12 || ^3.0",
+        "zenstruck/foundry": "^2.8"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
