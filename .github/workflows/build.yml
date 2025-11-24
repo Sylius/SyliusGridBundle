@@ -34,6 +34,10 @@ jobs:
                         php: 8.3
                         symfony: "7.4.*"
                         minimum_stability: "beta"
+                    -
+                        php: 8.4
+                        symfony: "8.0.*"
+                        minimum_stability: "beta"
         steps:
             -
                 uses: actions/checkout@v4
