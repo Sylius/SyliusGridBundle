@@ -41,7 +41,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $grid->setProvider($configuration['provider'] ?? null);
 
         if (array_key_exists('sorting', $configuration)) {
-            $grid->setSorting($configuration['sorting']);
+            /** @var array<string, string> $sorting */
+            $sorting = $configuration['sorting'];
+            $grid->setSorting($sorting);
         }
 
         if (array_key_exists('limits', $configuration)) {
@@ -95,7 +97,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $field->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            $field->setOptions($configuration['options']);
+            /** @var array<string, mixed> $options */
+            $options = $configuration['options'];
+            $field->setOptions($options);
         }
 
         return $field;
@@ -118,10 +122,14 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $filter->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            $filter->setOptions($configuration['options']);
+            /** @var array<string, mixed> $options */
+            $options = $configuration['options'];
+            $filter->setOptions($options);
         }
         if (array_key_exists('form_options', $configuration)) {
-            $filter->setFormOptions($configuration['form_options']);
+            /** @var array<string, mixed> $formOptions */
+            $formOptions = $configuration['form_options'];
+            $filter->setFormOptions($formOptions);
         }
         if (array_key_exists('default_value', $configuration)) {
             $filter->setCriteria($configuration['default_value']);

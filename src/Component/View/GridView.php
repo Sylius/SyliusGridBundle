@@ -71,7 +71,10 @@ class GridView implements GridViewInterface
         $this->assertFieldIsSortable($fieldName);
 
         if ($this->parameters->has('sorting')) {
-            return array_key_exists($fieldName, $this->parameters->get('sorting'));
+            /** @var array<string, string> $sorting */
+            $sorting = $this->parameters->get('sorting');
+
+            return array_key_exists($fieldName, $sorting);
         }
 
         $sortingDefinition = $this->getDefinition()->getSorting();
@@ -80,12 +83,20 @@ class GridView implements GridViewInterface
         return $fieldName === array_shift($sortedFields);
     }
 
+    /**
+     * @return array<string, string>
+     */
     private function getCurrentlySortedBy(): array
     {
-        return $this->parameters->has('sorting')
-            ? array_merge($this->definition->getSorting(), $this->parameters->get('sorting'))
-            : $this->definition->getSorting()
-        ;
+        $defaultSorting = $this->definition->getSorting();
+        if (!$this->parameters->has('sorting')) {
+            return $defaultSorting;
+        }
+
+        /** @var array<string, string> $sorting */
+        $sorting = $this->parameters->get('sorting');
+
+        return array_merge($defaultSorting, $sorting);
     }
 
     /**

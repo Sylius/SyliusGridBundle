@@ -27,7 +27,7 @@ class Field
 
     private ?string $sortable = null;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private $options = [];
 
     /**
@@ -105,11 +105,17 @@ class Field
         return null !== $this->sortable;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options;

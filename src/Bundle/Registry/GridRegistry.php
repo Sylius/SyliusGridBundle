@@ -18,11 +18,10 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class GridRegistry implements GridRegistryInterface
 {
-    private ServiceLocator $gridLocator;
-
-    public function __construct(ServiceLocator $gridLocator)
-    {
-        $this->gridLocator = $gridLocator;
+    public function __construct(
+        /** @var ServiceLocator<GridInterface> */
+        private ServiceLocator $gridLocator,
+    ) {
     }
 
     public function getGrid(string $code): ?GridInterface

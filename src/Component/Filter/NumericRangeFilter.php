@@ -26,6 +26,12 @@ final class NumericRangeFilter implements FilterInterface
 
     public const DEFAULT_INCLUSIVE_TO = true;
 
+    /**
+     * @param array{
+     *     greaterThan?: string,
+     *     lessThan?: string,
+     * } $data
+     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         if (empty($data)) {
@@ -69,7 +75,12 @@ final class NumericRangeFilter implements FilterInterface
         return (int) round($amount * (10 ** $scale), $mode);
     }
 
-    /** @param array<array-key, string> $data */
+    /**
+     * @param array{
+     *     greaterThan?: string,
+     *     lessThan?: string,
+     * } $data
+     */
     private function getDataValue(array $data, string $key): string
     {
         return $data[$key] ?? '';

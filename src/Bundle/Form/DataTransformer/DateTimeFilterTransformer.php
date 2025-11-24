@@ -16,6 +16,9 @@ namespace Sylius\Bundle\GridBundle\Form\DataTransformer;
 use Symfony\Component\Form\DataTransformerInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @implements DataTransformerInterface<array<string, mixed>, array<string, mixed>>
+ */
 final class DateTimeFilterTransformer implements DataTransformerInterface
 {
     /** @var array<string, array{hour: string, minute: string}> */
@@ -24,31 +27,32 @@ final class DateTimeFilterTransformer implements DataTransformerInterface
         'to' => ['hour' => '23', 'minute' => '59'],
     ];
 
-    private string $type;
-
-    public function __construct(string $type)
+    public function __construct(private readonly string $type)
     {
-        /** @psalm-suppress RedundantCondition */
-        Assert::oneOf($type, array_keys(static::$defaultTime));
-
-        $this->type = $type;
+        Assert::oneOf($type, array_keys(self::$defaultTime));
     }
 
-    /** @param mixed|array $value */
-    public function transform(mixed $value): array
+    public function transform(mixed $value): mixed
     {
         return $value;
     }
 
-    /** @param mixed|array $value */
-    public function reverseTransform(mixed $value): array
+    public function reverseTransform(mixed $value): mixed
     {
-        if (!($value['date']['year'] ?? false)) {
+        if (!is_array($value)) {
             return $value;
         }
 
-        $value['time']['hour'] = $value['time']['hour'] === '' ? static::$defaultTime[$this->type]['hour'] : $value['time']['hour'];
-        $value['time']['minute'] = $value['time']['minute'] === '' ? static::$defaultTime[$this->type]['minute'] : $value['time']['minute'];
+        if (!isset($value['date']) || !is_array($value['date']) || !($value['date']['year'] ?? false)) {
+            return $value;
+        }
+
+        if (!isset($value['time']) || !is_array($value['time'])) {
+            return $value;
+        }
+
+        $value['time']['hour'] = $value['time']['hour'] === '' ? self::$defaultTime[$this->type]['hour'] : $value['time']['hour'];
+        $value['time']['minute'] = $value['time']['minute'] === '' ? self::$defaultTime[$this->type]['minute'] : $value['time']['minute'];
 
         return $value;
     }

@@ -24,6 +24,19 @@ final class DateFilter implements FilterInterface
 
     public const DEFAULT_INCLUSIVE_TO = false;
 
+    /**
+     * @param array{
+     *     from?: array{
+     *        date: string,
+     *        time?: string,
+     *     },
+     *     to?: array{
+     *        date: string,
+     *        time?: string,
+     *     },
+     * } $data
+     * @param array<string, mixed> $options
+     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();
@@ -52,6 +65,7 @@ final class DateFilter implements FilterInterface
     }
 
     /**
+     * @param array<string, mixed> $options
      * @param mixed $default
      *
      * @return mixed
@@ -62,7 +76,10 @@ final class DateFilter implements FilterInterface
     }
 
     /**
-     * @param string[] $data
+     * @param array{
+     *     date: string,
+     *     time?: string,
+     * } $data
      */
     private function getDateTime(array $data, string $defaultTime): ?string
     {

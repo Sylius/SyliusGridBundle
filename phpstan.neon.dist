@@ -11,28 +11,15 @@ parameters:
         - src
 
     excludePaths:
-        - src/Bundle/Config/GridConfigInterface.php
         - src/Bundle/Doctrine/PHPCRODM/*
-        - src/Bundle/Doctrine/ORM/ExpressionBuilder.php
-        - src/Bundle/Form/DataTransformer/DateTimeFilterTransformer.php
-        - src/Bundle/Maker/MakeGrid.php
-        - src/Bundle/Registry/GridRegistry.php
-        - src/Bundle/Renderer/TwigGridRenderer.php
         - src/Bundle/Resources/*
         - src/Bundle/spec/*
         - src/Bundle/Tests/*
-        - src/Component/DataExtractor/PropertyAccessDataExtractor.php
-        - src/Component/Definition/Filter.php
-        - src/Component/Filter/DateFilter.php
-        - src/Component/Filter/MoneyFilter.php
-        - src/Component/Filter/NumericRangeFilter.php
-        - src/Component/Filter/StringFilter.php
-        - src/Component/Filtering/FiltersCriteriaResolver.php
-        - src/Component/Sorting/Sorter.php
-        - src/Component/View/GridView.php
         - src/Component/spec/*
         - src/Component/Tests/*
         - src/Component/vendor/*
+        # deprecated
+        - src/Component/Filter/MoneyFilter.php
 
     ignoreErrors:
         - '/Cannot cast mixed to int./'

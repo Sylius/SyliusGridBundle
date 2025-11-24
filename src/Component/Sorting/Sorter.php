@@ -39,6 +39,7 @@ final class Sorter implements SorterInterface
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
+        /** @var array<string, string> $sorting */
         $sorting = $parameters->get('sorting', $grid->getSorting());
         $this->sortingValidator->validateSortingParameters($sorting, $enabledFields);
 

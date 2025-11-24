@@ -20,5 +20,8 @@ interface FiltersCriteriaResolverInterface
 {
     public function hasCriteria(Grid $grid, Parameters $parameters): bool;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCriteria(Grid $grid, Parameters $parameters): array;
 }

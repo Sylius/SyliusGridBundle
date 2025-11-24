@@ -27,16 +27,16 @@ class Grid
     /** @var string|callable|null */
     private $provider;
 
-    /** @var array */
+    /** @var array<string, string> */
     private $sorting = [];
 
     /** @var array */
     private $limits = [];
 
-    /** @var array */
+    /** @var array<string, Field> */
     private $fields = [];
 
-    /** @var array */
+    /** @var array<string, Filter> */
     private $filters = [];
 
     /** @var array */
@@ -96,11 +96,17 @@ class Grid
         $this->provider = $provider;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getSorting(): array
     {
         return $this->sorting;
     }
 
+    /**
+     * @param array<string, string> $sorting
+     */
     public function setSorting(array $sorting): void
     {
         $this->sorting = $sorting;
@@ -117,7 +123,7 @@ class Grid
     }
 
     /**
-     * @return array|Field[]
+     * @return array<string, Field>
      */
     public function getFields(): array
     {
@@ -125,7 +131,7 @@ class Grid
     }
 
     /**
-     * @return array|Field[]
+     * @return array<string, Field>
      */
     public function getEnabledFields(): array
     {
@@ -253,7 +259,7 @@ class Grid
     }
 
     /**
-     * @return array|Filter[]
+     * @return array<string, Filter>
      */
     public function getFilters(): array
     {
@@ -261,7 +267,7 @@ class Grid
     }
 
     /**
-     * @return array|Filter[]
+     * @return array<string, Filter>
      */
     public function getEnabledFilters(): array
     {
