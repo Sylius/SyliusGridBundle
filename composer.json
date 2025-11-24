@@ -27,6 +27,12 @@
             "homepage": "https://github.com/Sylius/Sylius/contributors"
         }
     ],
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mbabker/SymfonyDependencyInjectionTest"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "sylius-labs/polyfill-symfony-event-dispatcher": "^1.0",
@@ -63,7 +69,7 @@
         "jackalope/jackalope-doctrine-dbal": "^2.0",
         "lchrusciel/api-test-case": "^5.0",
         "matthiasnoback/symfony-config-test": "^6.1",
-        "matthiasnoback/symfony-dependency-injection-test": "^6.1",
+        "matthiasnoback/symfony-dependency-injection-test": "dev-ci-updates as 6.1.0.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
         "pamil/phpspec-skip-example-extension": "^4.2",
         "phpstan/extension-installer": "^1.4",
