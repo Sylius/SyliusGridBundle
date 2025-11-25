@@ -37,7 +37,7 @@ jobs:
                     -
                         php: 8.4
                         symfony: "8.0.*"
-                        minimum_stability: "beta"
+                        minimum_stability: "dev"
         steps:
             -
                 uses: actions/checkout@v4
