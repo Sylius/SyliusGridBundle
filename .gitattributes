@@ -5,7 +5,6 @@
 /ecs.php export-ignore
 /phpstan.neon export-ignore
 /phpunit.xml.dist export-ignore
-/psalm.xml export-ignore
 /rector.php
 /src/Bundle/test export-ignore
 /src/Bundle/Tests export-ignore
