@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\DataSource;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\Driver;
@@ -29,6 +30,8 @@ final class DriverTest extends TestCase
 {
     public function testImplementsGridDriver(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $driver = new Driver($documentManager);
 
@@ -37,6 +40,8 @@ final class DriverTest extends TestCase
 
     public function testThrowsExceptionIfClassIsUndefined(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $driver = new Driver($documentManager);
 
@@ -47,6 +52,8 @@ final class DriverTest extends TestCase
 
     public function testCreatesDataSourceViaDoctrinePhpcrodmQueryBuilder(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $documentRepository = $this->createMock(DocumentRepository::class);
         $queryBuilder = $this->createMock(QueryBuilder::class);
@@ -58,5 +65,14 @@ final class DriverTest extends TestCase
         $dataSource = $driver->getDataSource(['class' => 'App:Book'], new Parameters());
 
         $this->assertInstanceOf(DataSource::class, $dataSource);
+    }
+
+    private function skipIfNecessary(): void
+    {
+        if (!(new \ReflectionMethod(ObjectManager::class, 'getClassMetadata'))->hasReturnType()) {
+            return;
+        }
+
+        $this->markTestSkipped(message: 'doctrine/phpcr-odm does not support doctrine persistence 4 yet');
     }
 }
