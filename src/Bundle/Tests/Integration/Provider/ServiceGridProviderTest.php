@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle\Tests\Provider;
+namespace Sylius\Bundle\GridBundle\Tests\Integration\Provider;
 
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

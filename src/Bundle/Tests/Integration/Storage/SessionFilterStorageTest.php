@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Integration\Storage;
+namespace Sylius\Bundle\GridBundle\Tests\Integration\Storage;
 
 use Sylius\Bundle\GridBundle\Storage\FilterStorageInterface;
 use Sylius\Bundle\GridBundle\Storage\SessionFilterStorage;
