@@ -77,8 +77,7 @@
         "symfony/maker-bundle": "^1.36",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
-        "twig/twig": "^2.12 || ^3.0",
-        "vimeo/psalm": "^5.23"
+        "twig/twig": "^2.12 || ^3.0"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -112,8 +111,7 @@
         "analyse": [
             "@composer validate --strict",
             "vendor/bin/ecs check",
-            "vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max src",
-            "vendor/bin/psalm"
+            "vendor/bin/phpstan analyse --ansi -c phpstan.neon -l max src"
         ],
         "fix": [
             "vendor/bin/ecs check --fix"
