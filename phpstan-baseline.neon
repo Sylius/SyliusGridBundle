@@ -157,13 +157,25 @@ parameters:
 			path: src/Bundle/DependencyInjection/SyliusGridExtension.php
 
 		-
+			message: '#^Parameter \#1 \$predicate of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:andWhere\(\) expects Doctrine\\DBAL\\Query\\Expression\\CompositeExpression\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/DataSource.php
+
+		-
+			message: '#^Parameter \#1 \$predicate of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:orWhere\(\) expects Doctrine\\DBAL\\Query\\Expression\\CompositeExpression\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/DataSource.php
+
+		-
 			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
 			identifier: foreach.nonIterable
 			count: 1
 			path: src/Bundle/Doctrine/DBAL/Driver.php
 
 		-
-			message: '#^Parameter \#1 \$from of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:from\(\) expects string, mixed given\.$#'
+			message: '#^Parameter \#1 \$table of method Doctrine\\DBAL\\Query\\QueryBuilder\:\:from\(\) expects string, mixed given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/Bundle/Doctrine/DBAL/Driver.php
@@ -179,6 +191,24 @@ parameters:
 			identifier: argument.type
 			count: 1
 			path: src/Bundle/Doctrine/DBAL/Driver.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:andX\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Call to an undefined method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:orX\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
+
+		-
+			message: '#^Parameter \#3 \$y of method Doctrine\\DBAL\\Query\\Expression\\ExpressionBuilder\:\:comparison\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Doctrine/DBAL/ExpressionBuilder.php
 
 		-
 			message: '#^Cannot access offset ''arguments'' on mixed\.$#'
