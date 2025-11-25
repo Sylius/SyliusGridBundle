@@ -64,12 +64,11 @@
         "matthiasnoback/symfony-config-test": "^5.1",
         "matthiasnoback/symfony-dependency-injection-test": "^5.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
-        "pamil/phpspec-skip-example-extension": "^4.2",
-        "phpspec/phpspec": "^7.2",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
         "phpstan/phpstan-webmozart-assert": "^2.0",
         "phpunit/phpunit": "^9.5",
+        "rector/rector": "^2.0",
         "sylius-labs/coding-standard": "^4.0",
         "sylius/resource-bundle": "^1.12",
         "symfony/console": "^6.4 || ^7.0",
@@ -79,9 +78,7 @@
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
         "symfony/twig-bundle": "^6.4 || ^7.0",
         "twig/twig": "^2.12 || ^3.0",
-        "vimeo/psalm": "^5.23",
-        "rector/rector": "^2.0",
-        "rector/custom-phpspec-to-phpunit": "^0.6.2"
+        "vimeo/psalm": "^5.23"
     },
     "suggest": {
         "sylius/currency-bundle": "^1.7"
@@ -110,7 +107,8 @@
         "allow-plugins": {
             "symfony/flex": true,
             "dealerdirect/phpcodesniffer-composer-installer": false
-        }
+        },
+        "sort-packages": true
     },
     "scripts": {
         "analyse": [
@@ -123,7 +121,6 @@
             "vendor/bin/ecs check --fix"
         ],
         "test-yaml-config": [
-            "vendor/bin/phpspec run --ansi --no-interaction",
             "APP_ENV=test_grids_with_yaml_config vendor/bin/phpunit --colors=always"
         ],
         "test-php-config": [
