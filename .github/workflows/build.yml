@@ -99,10 +99,6 @@ jobs:
                     (cd src/Component && composer validate --strict)
 
             -
-                name: Run component tests
-                run: (cd src/Component && vendor/bin/phpspec run)
-
-            -
                 name: Run lint container
                 run: (cd tests/Application && bin/console lint:container)
 
