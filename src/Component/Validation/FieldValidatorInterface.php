@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Validation;
 
+use Sylius\Component\Grid\Definition\Field;
+
 interface FieldValidatorInterface
 {
+    /**
+     * @param array<string, Field> $enabledFields
+     */
     public function validateFieldName(string $fieldName, array $enabledFields): void;
 }

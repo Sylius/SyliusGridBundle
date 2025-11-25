@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\DependencyInjection;
 
+use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
+use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
@@ -21,12 +23,10 @@ use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Twig\Environment;
 
 final class SyliusGridExtension extends Extension
@@ -34,9 +34,9 @@ final class SyliusGridExtension extends Extension
     public function load(array $configs, ContainerBuilder $container): void
     {
         $config = $this->processConfiguration($this->getConfiguration([], $container), $configs);
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
 
-        $loader->load('services.xml');
+        $loader->load('services.php');
 
         $container->setParameter('sylius.grid.templates.action', $config['templates']['action']);
         $container->setParameter('sylius.grid.templates.bulk_action', $config['templates']['bulk_action']);
@@ -48,13 +48,23 @@ final class SyliusGridExtension extends Extension
         $container->setAlias('sylius.grid.data_extractor', 'sylius.grid.data_extractor.property_access');
 
         if ($container::willBeAvailable('twig/twig', Environment::class, ['symfony/twig-bundle'])) {
-            $loader->load('services/integrations/twig.xml');
+            $loader->load('services/integrations/twig.php');
         }
 
-        $this->loadPersistence($config['drivers'], $config['grids'], $loader, $container);
-
         if (\class_exists(SyliusCurrencyBundle::class)) {
-            $loader->load('services/integrations/sylius_currency_bundle.xml');
+            $loader->load('services/integrations/sylius_currency_bundle.php');
+        }
+
+        if (\class_exists(DoctrineBundle::class)) {
+            $loader->load('services/integrations/doctrine/orm.php');
+        }
+
+        if (\class_exists(DoctrinePHPCRBundle::class)) {
+            @trigger_error(sprintf(
+                'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
+                SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM,
+            ), \E_USER_DEPRECATED);
+            $loader->load('services/integrations/doctrine/phpcr-odm.php');
         }
 
         $container->registerForAutoconfiguration(GridInterface::class)
@@ -100,106 +110,5 @@ final class SyliusGridExtension extends Extension
         $container->addObjectResource($configuration);
 
         return $configuration;
-    }
-
-    private function loadPersistence(array $drivers, array $grids, LoaderInterface $loader, ContainerBuilder $container): void
-    {
-        $availableDrivers = $this->getAvailableDrivers($container);
-
-        // Enable all available drivers if there is no configured drivers
-        $drivers = [] !== $drivers ? $drivers : $availableDrivers;
-
-        $gridDrivers = $this->resolveDriversUsedInGrids($grids);
-
-        $this->assertDriversValid($drivers, $availableDrivers, $gridDrivers);
-
-        foreach ($drivers as $enabledDriver) {
-            if ($enabledDriver === SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM) {
-                @trigger_error(sprintf(
-                    'The "%s" driver is deprecated in Sylius 1.3. Doctrine PHPCR will no longer be supported in Sylius 2.0.',
-                    SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM,
-                ), \E_USER_DEPRECATED);
-            }
-
-            $loader->load(sprintf('services/integrations/%s.xml', $enabledDriver));
-        }
-    }
-
-    /**
-     * @param array<string, array{driver?: array{name: string}}> $grids
-     *
-     * @return array<string, string>
-     */
-    private function resolveDriversUsedInGrids(array $grids): array
-    {
-        $gridDrivers = array_map(function (array $grid): string|false {
-            return $grid['driver']['name'] ?? false;
-        }, $grids);
-
-        // Remove grid with disabled driver
-        return array_filter($gridDrivers, function (string|false $driver): bool {
-            return false !== $driver;
-        });
-    }
-
-    private function getAvailableDrivers(ContainerBuilder $container): array
-    {
-        $availableDrivers = [];
-
-        if ($container::willBeAvailable(SyliusGridBundle::DRIVER_DOCTRINE_ORM, \Doctrine\ORM\EntityManagerInterface::class, ['doctrine/doctrine-bundle'])) {
-            $availableDrivers[] = SyliusGridBundle::DRIVER_DOCTRINE_ORM;
-        }
-
-        if ($container::willBeAvailable(SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM, \Doctrine\ODM\PHPCR\Document\Resource::class, ['doctrine/doctrine-bundle'])) {
-            $availableDrivers[] = SyliusGridBundle::DRIVER_DOCTRINE_PHPCR_ODM;
-        }
-
-        return $availableDrivers;
-    }
-
-    /**
-     * @param string[] $configuredDrivers
-     * @param string[] $availableDrivers
-     * @param array<string, string> $gridDrivers
-     */
-    private function assertDriversValid(array $configuredDrivers, array $availableDrivers, array $gridDrivers): void
-    {
-        foreach ($configuredDrivers as $driver) {
-            if (!\str_starts_with($driver, 'doctrine/')) {
-                continue;
-            }
-
-            if (!in_array($driver, $availableDrivers, true)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Driver "%s" is configured, but this driver is not available. Try running "composer require %s"',
-                    $driver,
-                    $driver,
-                ));
-            }
-        }
-
-        foreach ($gridDrivers as $grid => $driver) {
-            if (!\str_starts_with($driver, 'doctrine/')) {
-                continue;
-            }
-
-            if (!in_array($driver, $availableDrivers, true)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Grid "%s" uses drivers "%s", but this driver is not available. Try running "composer require %s"',
-                    $grid,
-                    $driver,
-                    $driver,
-                ));
-            }
-
-            if (!in_array($driver, $configuredDrivers, true)) {
-                throw new InvalidArgumentException(sprintf(
-                    'Grid "%s" uses drivers "%s", but this driver is not enabled. Try adding "%s" in sylius_grid.drivers option',
-                    $grid,
-                    $driver,
-                    $driver,
-                ));
-            }
-        }
     }
 }

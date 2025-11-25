@@ -25,10 +25,13 @@ final class Filter implements FilterInterface
 
     private ?string $template = null;
 
+    /** @var array<string, mixed> */
     private array $options = [];
 
+    /** @var array<string, mixed> */
     private array $formOptions = [];
 
+    /** @var array<string, mixed> */
     private array $criteria = [];
 
     private mixed $defaultValue = null;
@@ -143,6 +146,9 @@ final class Filter implements FilterInterface
         return $this;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getCriteria(): array
     {
         return $this->criteria;

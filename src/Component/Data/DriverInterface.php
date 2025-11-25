@@ -17,5 +17,8 @@ use Sylius\Component\Grid\Parameters;
 
 interface DriverInterface
 {
+    /**
+     * @param array<string, mixed> $configuration
+     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface;
 }

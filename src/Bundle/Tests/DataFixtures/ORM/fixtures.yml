@@ -46,3 +46,14 @@ App\Entity\Price:
     price_2:
         amount: 1000
         currencyCode: "GBP"
+
+App\Entity\AdminUser:
+    user_1:
+        username: "<firstName()><lastName()>"
+        status: "active"
+    user_2:
+        username: "<firstName()><lastName()>"
+        status: "inactive"
+    user_3:
+        username: "<firstName()><lastName()>"
+        status: "banned"

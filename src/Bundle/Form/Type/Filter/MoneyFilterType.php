@@ -22,6 +22,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 \trigger_deprecation('sylius/grid-bundle', '1.8', '%s is deprecated, replace it with your own implementation.', MoneyFilterType::class);
 
+/**
+ * @extends AbstractType<mixed>
+ */
 final class MoneyFilterType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void

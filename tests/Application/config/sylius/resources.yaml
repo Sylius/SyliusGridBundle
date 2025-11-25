@@ -21,3 +21,7 @@ sylius_resource:
         app.nationality:
             classes:
                 model: App\Entity\Nationality
+
+        app.admin_user:
+            classes:
+                model: App\Entity\AdminUser

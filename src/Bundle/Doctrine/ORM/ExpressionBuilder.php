@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
+use Doctrine\ORM\Query\Expr\Andx;
 use Doctrine\ORM\Query\Expr\Comparison;
 use Doctrine\ORM\Query\Expr\From;
+use Doctrine\ORM\Query\Expr\Func;
 use Doctrine\ORM\Query\Expr\Join;
+use Doctrine\ORM\Query\Expr\Orx;
 use Doctrine\ORM\QueryBuilder;
 use Sylius\Component\Grid\Data\MemberOfAwareExpressionBuilderInterface;
 
@@ -28,11 +31,17 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
         $this->queryBuilder = $queryBuilder;
     }
 
+    /**
+     * @param Comparison|Func|Andx|Orx|string ...$expressions
+     */
     public function andX(...$expressions)
     {
         return $this->queryBuilder->expr()->andX(...$expressions);
     }
 
+    /**
+     * @param Comparison|Func|Andx|Orx|string ...$expressions
+     */
     public function orX(...$expressions)
     {
         return $this->queryBuilder->expr()->orX(...$expressions);
@@ -97,6 +106,9 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
         return $this->queryBuilder->expr()->gte($this->resolveFieldByAddingJoins($field), ':' . $parameterName);
     }
 
+    /**
+     * @param string $value
+     */
     public function memberOf($value, string $field)
     {
         $field = $this->adjustField($field);
@@ -210,8 +222,9 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
             );
             $rootAndAssociationField = sprintf('%s.%s', $rootField, $associationField);
 
-            /** @var Join[] $joins */
-            $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
+            /** @var array<Join[]> $joinDQLPart */
+            $joinDQLPart = $this->queryBuilder->getDQLPart('join');
+            $joins = array_merge([], ...array_values($joinDQLPart));
             foreach ($joins as $join) {
                 if ($join->getJoin() === $rootAndAssociationField) {
                     $field = sprintf('%s.%s', (string) $join->getAlias(), $remainder);
@@ -248,6 +261,11 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
      * title => [book.title, App\Book]
      * au => [book.author, App\Book]
      * au.name => [book.author.name, App\Book]
+     *
+     * @return array{
+     *     string,
+     *     string
+     * }
      */
     private function getFieldDetails(string $field): array
     {
@@ -256,8 +274,9 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
             $field = sprintf('%s.%s', $this->queryBuilder->getRootAliases()[0], $field);
         }
 
-        /** @var Join[] $joins */
-        $joins = array_merge([], ...array_values($this->queryBuilder->getDQLPart('join')));
+        /** @var array<Join[]> $joinDQLPart */
+        $joinDQLPart = $this->queryBuilder->getDQLPart('join');
+        $joins = array_merge([], ...array_values($joinDQLPart));
         while ($explodedField = explode('.', $field, 2)) {
             $rootField = $explodedField[0];
             $remainder = $explodedField[1] ?? '';

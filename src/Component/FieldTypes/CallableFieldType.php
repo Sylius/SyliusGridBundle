@@ -27,7 +27,7 @@ final class CallableFieldType implements FieldTypeInterface
     ) {
     }
 
-    public function render(Field $field, $data, array $options): string
+    public function render(Field $field, mixed $data, array $options): string
     {
         if (isset($options['callable']) === isset($options['service'])) {
             throw new \RuntimeException('Exactly one of the "callable" or "service" options must be defined.');

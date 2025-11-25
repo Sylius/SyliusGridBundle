@@ -15,8 +15,14 @@ namespace Sylius\Bundle\GridBundle\Storage;
 
 interface FilterStorageInterface
 {
+    /**
+     * @param array<string, mixed> $filters
+     */
     public function set(array $filters): void;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function all(): array;
 
     public function hasFilters(): bool;

@@ -30,6 +30,7 @@ final class Field implements FieldInterface
 
     private ?int $position = null;
 
+    /** @var array<string, mixed> */
     private array $options = [];
 
     private function __construct(string $name, string $type)

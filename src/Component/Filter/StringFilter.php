@@ -44,12 +44,20 @@ final class StringFilter implements FilterInterface
 
     public const TYPE_NOT_IN = 'not_in';
 
+    /**
+     * @param array{
+     *     type?: string,
+     *     value?: string,
+     * }|string|null $data
+     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
         $value = is_array($data) ? $data['value'] ?? null : $data;
+        /** @var string $type */
         $type = $data['type'] ?? ($options['type'] ?? self::TYPE_CONTAINS);
+        /** @var string[] $fields */
         $fields = $options['fields'] ?? [$name];
 
         if (!in_array($type, [self::TYPE_NOT_EMPTY, self::TYPE_EMPTY], true) && '' === trim((string) $value)) {
@@ -77,7 +85,7 @@ final class StringFilter implements FilterInterface
     }
 
     /**
-     * @param mixed $value
+     * @param string|null $value
      *
      * @return mixed
      *
@@ -107,9 +115,9 @@ final class StringFilter implements FilterInterface
             case self::TYPE_ENDS_WITH:
                 return $expressionBuilder->like($field, '%' . $value);
             case self::TYPE_IN:
-                return $expressionBuilder->in($field, array_map('trim', explode(',', $value)));
+                return $expressionBuilder->in($field, array_map('trim', explode(',', (string) $value)));
             case self::TYPE_NOT_IN:
-                return $expressionBuilder->notIn($field, array_map('trim', explode(',', $value)));
+                return $expressionBuilder->notIn($field, array_map('trim', explode(',', (string) $value)));
             case self::TYPE_MEMBER_OF:
                 if (method_exists($expressionBuilder, 'memberOf')) {
                     return $expressionBuilder->memberOf($value, $field);

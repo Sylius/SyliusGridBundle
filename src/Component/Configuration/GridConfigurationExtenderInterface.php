@@ -15,5 +15,11 @@ namespace Sylius\Component\Grid\Configuration;
 
 interface GridConfigurationExtenderInterface
 {
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @param array<string, mixed> $parentGridConfiguration
+     *
+     * @return array<string, mixed>
+     */
     public function extends(array $gridConfiguration, array $parentGridConfiguration): array;
 }

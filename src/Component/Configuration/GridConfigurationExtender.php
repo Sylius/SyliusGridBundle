@@ -19,6 +19,7 @@ final class GridConfigurationExtender implements GridConfigurationExtenderInterf
     {
         unset($parentGridConfiguration['sorting']); // Do not inherit sorting.
 
+        /** @var array<string, mixed> $configuration */
         $configuration = array_replace_recursive($parentGridConfiguration, $gridConfiguration) ?: [];
 
         unset($configuration['extends']);

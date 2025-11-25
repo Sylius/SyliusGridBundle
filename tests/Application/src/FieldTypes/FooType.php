@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class FooType implements FieldTypeInterface
 {
-    public function render(Field $field, $data, array $options): string
+    public function render(Field $field, mixed $data, array $options): string
     {
         return '';
     }

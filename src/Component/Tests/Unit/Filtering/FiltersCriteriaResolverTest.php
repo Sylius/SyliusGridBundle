@@ -141,7 +141,7 @@ final class FiltersCriteriaResolverTest extends TestCase
         ], $result);
     }
 
-    public function criteriaDataProvider(): iterable
+    public static function criteriaDataProvider(): iterable
     {
         $emptyParameters = new Parameters();
         $criteriaParameters = new Parameters(['criteria' => ['czapla']]);
