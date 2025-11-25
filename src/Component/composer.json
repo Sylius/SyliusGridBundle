@@ -50,10 +50,5 @@
         "psr-4": {
             "Sylius\\Component\\Grid\\": ""
         }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Sylius\\Component\\Grid\\spec\\": "spec/"
-        }
     }
 }
