@@ -47,4 +47,3 @@ if (Kernel::MAJOR_VERSION < 8) {
 }
 
 return App::config(['sylius_grid' => (new GridConfig())->addGrid($gridBuilder)->toArray()]);
-
