@@ -34,18 +34,6 @@
         },
         {
             "type": "vcs",
-            "url": "https://github.com/loic425/phpcr-utils"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/loic425/jackalope-doctrine-dbal.git"
-        },
-        {
-            "type": "vcs",
-            "url": "https://github.com/loic425/phpcr-odm.git"
-        },
-        {
-            "type": "vcs",
             "url": "https://github.com/loic425/phpcr-utils.git"
         }
     ],
@@ -79,9 +67,9 @@
         "babdev/pagerfanta-bundle": "4.x-dev",
         "doctrine/doctrine-bundle": "^2.0 || ^3.0 || ^4.0",
         "doctrine/orm": "^2.8 || ^3.0",
-        "doctrine/persistence": "^1.3 || ^2.0 || ^3.1 || ^4.0 || dev-4.1.x as 4.1.1.1",
-        "doctrine/phpcr-odm": "^1.5 || ^2.0 || dev-sf8 as 2.1.0.1",
-        "jackalope/jackalope-doctrine-dbal": "^2.0 || dev-sf8 as 2.0.2.1",
+        "doctrine/persistence": "^1.3 || ^2.0 || ^3.1 || ^4.0",
+        "doctrine/phpcr-odm": "^1.5 || ^2.0",
+        "jackalope/jackalope-doctrine-dbal": "^2.0",
         "matthiasnoback/symfony-config-test": "^6.1",
         "matthiasnoback/symfony-dependency-injection-test": "dev-ci-updates as 6.1.0.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
@@ -116,7 +104,7 @@
             "dev-master": "1.11-dev"
         },
         "symfony": {
-            "require": "6.4.*"
+            "require": "7.4.*"
         }
     },
     "autoload": {
