@@ -76,6 +76,14 @@ jobs:
                     (cd src/Component && composer config extra.symfony.require "${{ matrix.symfony }}")
 
             -
+                name: Restrict Symfony version
+                if: matrix.symfony == '8.0.*'
+                run: |
+                    composer remove --dev doctrine/phpcr-odm
+                    composer remove --dev jackalope/jackalope-doctrine-dbal
+                    composer remove --dev phpcr/phpcr-utils
+
+            -
                 name: Require sylius/currency-bundle
                 if: matrix.currency-bundle != ''
                 run: |
