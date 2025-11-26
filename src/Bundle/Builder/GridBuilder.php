@@ -27,25 +27,36 @@ final class GridBuilder implements GridBuilderInterface
 
     private string $driver;
 
+    /** @var array<string, mixed> */
     private array $driverConfiguration = [];
 
     /** @var string|callable|null */
     private $provider;
 
-    /** @var FieldInterface[] */
+    /** @var array<string, FieldInterface> */
     private array $fields = [];
 
+    /** @var array<string, string> */
     private array $sorting = [];
 
+    /** @var array<string, FilterInterface> */
     private array $filters = [];
 
-    /** @var ActionGroupInterface[] */
+    /** @var array<string, ActionGroupInterface> */
     private array $actionGroups = [];
 
+    /** @var int[] */
     private array $limits = [];
 
     private ?string $extends = null;
 
+    /**
+     * @var array{
+     *     fields?: string[],
+     *     filters?: string[],
+     *     actions?: mixed,
+     * }
+     */
     private array $removals = [];
 
     private function __construct(string $name, ?string $resourceClass = null)
@@ -184,6 +195,18 @@ final class GridBuilder implements GridBuilderInterface
             $actionGroup->removeAction($name);
         }
 
+        if (!isset($this->removals['actions'])) {
+            $this->removals['actions'] = [];
+        }
+
+        if (!is_array($this->removals['actions'])) {
+            $this->removals['actions'] = [];
+        }
+
+        if (!isset($this->removals['actions'][$group])) {
+            $this->removals['actions'][$group] = [];
+        }
+
         $this->removals['actions'][$group][] = $name;
 
         return $this;
@@ -203,9 +226,6 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
-    /**
-     * @inheritdoc
-     */
     public function toArray(): array
     {
         $output = [
@@ -231,12 +251,12 @@ final class GridBuilder implements GridBuilderInterface
             $output['sorting'] = $this->sorting;
         }
 
-        if (count($this->filters) > 0) {
-            $output['filters'] = array_map(function (FilterInterface $filter): array { return $filter->toArray(); }, $this->filters);
+        foreach ($this->filters as $name => $filter) {
+            $output['filters'][$name] = $filter->toArray();
         }
 
-        if (count($this->actionGroups) > 0) {
-            $output['actions'] = array_map(function (ActionGroupInterface $actionGroup): array { return $actionGroup->toArray(); }, $this->actionGroups);
+        foreach ($this->actionGroups as $name => $actionGroup) {
+            $output['actions'][$name] = $actionGroup->toArray();
         }
 
         if (count($this->limits) > 0) {

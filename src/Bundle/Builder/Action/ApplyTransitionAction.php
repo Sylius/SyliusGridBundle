@@ -15,6 +15,10 @@ namespace Sylius\Bundle\GridBundle\Builder\Action;
 
 final class ApplyTransitionAction
 {
+    /**
+     * @param array<string, mixed> $routeParameters
+     * @param array<string, mixed> $options
+     */
     public static function create(string $name, string $route, array $routeParameters = [], array $options = []): ActionInterface
     {
         $action = Action::create($name, 'apply_transition');

@@ -29,9 +29,15 @@ interface ActionInterface
 
     public function setIcon(string $icon): self;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): self;
 
     public function setPosition(int $position): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

@@ -19,6 +19,9 @@ interface GridInterface
 {
     public static function getName(): string;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 
     public function buildGrid(GridBuilderInterface $gridBuilder): void;

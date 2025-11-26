@@ -3,6 +3,8 @@
 /composer.phar
 /composer.lock
 
+/phpstan.neon
+
 /.phpunit.result.cache
 tests/Application/tmp
 
@@ -10,3 +12,4 @@ src/Bundle/test/vendor/
 src/Bundle/test/composer.lock
 
 tests/Application/config/db.sql
+tests/Application/config/reference.php

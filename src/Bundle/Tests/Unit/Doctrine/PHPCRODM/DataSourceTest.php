@@ -123,7 +123,13 @@ final class DataSourceTest extends TestCase
         $queryBuilder->expects($this->once())->method('orderBy')->willReturn($orderBy);
         $orderBy->expects($this->once())->method('asc')->willReturn($ordering);
         $orderBy->expects($this->once())->method('desc')->willReturn($ordering);
-        $ordering->expects($this->exactly(2))->method('field')->withConsecutive(['o.foo'], ['o.bar']);
+        $ordering->expects($this->exactly(2))->method('field')->willReturnCallback(function ($field) use ($ordering) {
+            static $callCount = 0;
+            $expectedFields = ['o.foo', 'o.bar'];
+            $this->assertEquals($expectedFields[$callCount++], $field);
+
+            return $ordering;
+        });
 
         $dataSource = new DataSource($queryBuilder, $expressionBuilder);
         $data = $dataSource->getData(new Parameters(['page' => '1']));
@@ -145,7 +151,13 @@ final class DataSourceTest extends TestCase
         ]);
         $queryBuilder->expects($this->once())->method('orderBy')->willReturn($orderBy);
         $orderBy->expects($this->exactly(2))->method('asc')->willReturn($ordering);
-        $ordering->expects($this->exactly(2))->method('field')->withConsecutive(['o.foo'], ['o.bar']);
+        $ordering->expects($this->exactly(2))->method('field')->willReturnCallback(function ($field) use ($ordering) {
+            static $callCount = 0;
+            $expectedFields = ['o.foo', 'o.bar'];
+            $this->assertEquals($expectedFields[$callCount++], $field);
+
+            return $ordering;
+        });
 
         $dataSource = new DataSource($queryBuilder, $expressionBuilder);
         $data = $dataSource->getData(new Parameters(['page' => '1']));

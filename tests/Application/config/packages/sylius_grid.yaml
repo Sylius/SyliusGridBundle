@@ -13,3 +13,4 @@ sylius_grid:
             select: 'grid/filter/select.html.twig'
             string: 'grid/filter/string.html.twig'
             nationality: 'grid/filter/entity.html.twig'
+            enum: 'grid/filter/enum.html.twig'

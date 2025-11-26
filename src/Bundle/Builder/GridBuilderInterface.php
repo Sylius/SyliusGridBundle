@@ -39,7 +39,8 @@ interface GridBuilderInterface
     public function setDriverOption(string $option, $value): self;
 
     /**
-     * @param string|array $method
+     * @param string|callable|mixed[] $method
+     * @param mixed[] $arguments
      */
     public function setRepositoryMethod($method, array $arguments = []): self;
 
@@ -51,6 +52,9 @@ interface GridBuilderInterface
 
     public function addOrderBy(string $name, string $direction = 'asc'): self;
 
+    /**
+     * @param int[] $limits
+     */
     public function setLimits(array $limits): self;
 
     public function addFilter(FilterInterface $filter): self;
@@ -67,5 +71,8 @@ interface GridBuilderInterface
 
     public function extends(string $gridName): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

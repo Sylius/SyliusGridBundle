@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Builder\Filter;
 /**
  * @method mixed getDefaultValue()
  * @method self setDefaultValue(mixed $defaultValue)
+ * @method array<string, mixed> getCriteria()
  */
 interface FilterInterface
 {
@@ -35,8 +36,14 @@ interface FilterInterface
 
     public function setTemplate(?string $template): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array;
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): self;
 
     /**
@@ -46,8 +53,14 @@ interface FilterInterface
 
     public function removeOption(string $option): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getFormOptions(): array;
 
+    /**
+     * @param array<string, mixed> $formOptions
+     */
     public function setFormOptions(array $formOptions): self;
 
     /**
@@ -57,7 +70,13 @@ interface FilterInterface
 
     public function removeFormOption(string $option): self;
 
+    /**
+     * @param array<string, mixed> $criteria
+     */
     public function setCriteria(array $criteria): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

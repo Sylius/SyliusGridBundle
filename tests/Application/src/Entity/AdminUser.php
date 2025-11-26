@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Enum\AdminUserStatusEnum;
 use Doctrine\ORM\Mapping as ORM;
 use Sylius\Component\Resource\Model\ResourceInterface;
 
@@ -28,6 +29,9 @@ class AdminUser implements ResourceInterface
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $username = null;
 
+    #[ORM\Column(enumType: AdminUserStatusEnum::class)]
+    private AdminUserStatusEnum $status = AdminUserStatusEnum::Active;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,5 +40,20 @@ class AdminUser implements ResourceInterface
     public function getUsername(): ?string
     {
         return $this->username;
+    }
+
+    public function setUsername(?string $username): void
+    {
+        $this->username = $username;
+    }
+
+    public function getStatus(): AdminUserStatusEnum
+    {
+        return $this->status;
+    }
+
+    public function setStatus(AdminUserStatusEnum $status): void
+    {
+        $this->status = $status;
     }
 }

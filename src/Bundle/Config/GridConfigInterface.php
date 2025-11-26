@@ -32,6 +32,8 @@ if (interface_exists(ConfigBuilderInterface::class)) {
 
         /**
          * Gets all configuration represented as an array.
+         *
+         * @return array<string, mixed>
          */
         public function toArray(): array;
 

@@ -82,11 +82,17 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         return $this->queryBuilder->expr()->gte($field, ':' . $field);
     }
 
+    /**
+     * @param string[] $values
+     */
     public function in(string $field, array $values)
     {
         return $this->queryBuilder->expr()->in($field, $values);
     }
 
+    /**
+     * @param string[] $values
+     */
     public function notIn(string $field, array $values)
     {
         return $this->queryBuilder->expr()->notIn($field, $values);
