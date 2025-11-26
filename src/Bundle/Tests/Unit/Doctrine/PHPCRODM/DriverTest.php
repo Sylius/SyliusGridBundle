@@ -16,7 +16,6 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 use Doctrine\ODM\PHPCR\DocumentManagerInterface;
 use Doctrine\ODM\PHPCR\DocumentRepository;
 use Doctrine\ODM\PHPCR\Query\Builder\QueryBuilder;
-use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\DataSource;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\Driver;
@@ -69,10 +68,10 @@ final class DriverTest extends TestCase
 
     private function skipIfNecessary(): void
     {
-        if (!(new \ReflectionMethod(ObjectManager::class, 'getClassMetadata'))->hasReturnType()) {
+        if (class_exists(DocumentManagerInterface::class)) {
             return;
         }
 
-        $this->markTestSkipped(message: 'doctrine/phpcr-odm does not support doctrine persistence 4 yet');
+        $this->markTestSkipped(message: sprintf('%s is not available', DocumentManagerInterface::class));
     }
 }

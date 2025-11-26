@@ -305,4 +305,13 @@ final class DataSourceTest extends TestCase
             'o.bar' => 'desc',
         ], $expressionBuilder->getOrderBys());
     }
+
+    private function skipIfNecessary(): void
+    {
+        if (class_exists(QueryBuilder::class)) {
+            return;
+        }
+
+        $this->markTestSkipped(message: sprintf('%s is not available', QueryBuilder::class));
+    }
 }
