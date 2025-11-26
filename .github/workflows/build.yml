@@ -76,7 +76,7 @@ jobs:
                     (cd src/Component && composer config extra.symfony.require "${{ matrix.symfony }}")
 
             -
-                name: Restrict Symfony version
+                name: Remove PHPCRODM on Symfony 8
                 if: matrix.symfony == '8.0.*'
                 run: |
                     composer remove --dev doctrine/phpcr-odm
