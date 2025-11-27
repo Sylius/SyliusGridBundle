@@ -21,12 +21,18 @@ final class GridConfigurationRemovalsHandler implements GridConfigurationRemoval
             return $gridConfiguration;
         }
 
-        $this->handleRemovals($gridConfiguration, $gridConfiguration['removals']);
+        /** @var array<string, mixed> $removals */
+        $removals = $gridConfiguration['removals'];
+        $this->handleRemovals($gridConfiguration, $removals);
         unset($gridConfiguration['removals']);
 
         return $gridConfiguration;
     }
 
+    /**
+     * @param array<string, mixed> $gridConfiguration
+     * @param array<string, mixed> $removals
+     */
     private function handleRemovals(array &$gridConfiguration, array $removals): void
     {
         foreach ($removals as $type => $name) {
@@ -37,7 +43,11 @@ final class GridConfigurationRemovalsHandler implements GridConfigurationRemoval
             }
 
             if (isset($gridConfiguration[$type])) {
-                $this->handleRemovals($gridConfiguration[$type], $name);
+                /** @var array<string, mixed> $subConfiguration */
+                $subConfiguration = $gridConfiguration[$type];
+                /** @var array<string, mixed> $name */
+                $this->handleRemovals($subConfiguration, $name);
+                $gridConfiguration[$type] = $subConfiguration;
             }
         }
     }

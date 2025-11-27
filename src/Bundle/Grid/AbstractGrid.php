@@ -22,14 +22,14 @@ abstract class AbstractGrid implements GridInterface
 {
     public static function getName(): string
     {
-        return self::getAsGridAttribute()?->name ?? static::class;
+        return self::getAsGridAttribute()->name ?? static::class;
     }
 
     public function toArray(): array
     {
         $gridBuilder = $this->createGridBuilder();
 
-        $provider = self::getAsGridAttribute()?->provider ?? null;
+        $provider = self::getAsGridAttribute()?->provider;
 
         if (null !== $provider) {
             $gridBuilder->setProvider($provider);
@@ -58,7 +58,7 @@ abstract class AbstractGrid implements GridInterface
 
     private function createGridBuilder(): GridBuilderInterface
     {
-        $resourceClass = self::getAsGridAttribute()?->resourceClass ?? null;
+        $resourceClass = self::getAsGridAttribute()?->resourceClass;
 
         if (null === $resourceClass && $this instanceof ResourceAwareGridInterface) {
             $resourceClass = $this->getResourceClass();

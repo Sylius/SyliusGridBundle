@@ -22,6 +22,18 @@ final class MoneyFilter implements FilterInterface
 {
     public const DEFAULT_SCALE = 2;
 
+    /**
+     * @param array{
+     *     field?: string,
+     *     scale?: int,
+     *     currency_field: string,
+     * } $options
+     * @param array{
+     *     greaterThan?: string|float,
+     *     lessThan?: string|float,
+     *     currency?: string,
+     * }|empty $data
+     */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         if (empty($data)) {
@@ -31,13 +43,14 @@ final class MoneyFilter implements FilterInterface
         $field = $options['field'] ?? $name;
         $scale = (int) ($options['scale'] ?? self::DEFAULT_SCALE);
 
-        $greaterThan = $this->getDataValue($data, 'greaterThan');
-        $lessThan = $this->getDataValue($data, 'lessThan');
+        $greaterThan = $data['greaterThan'] ?? '';
+        $lessThan = $data['lessThan'] ?? '';
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
         if (!empty($data['currency'])) {
-            $dataSource->restrict($expressionBuilder->equals($options['currency_field'], $data['currency']));
+            $currencyField = $options['currency_field'];
+            $dataSource->restrict($expressionBuilder->equals($currencyField, $data['currency']));
         }
         if ('' !== $greaterThan) {
             $dataSource->restrict($expressionBuilder->greaterThan($field, $this->normalizeAmount((float) $greaterThan, $scale)));
@@ -50,13 +63,5 @@ final class MoneyFilter implements FilterInterface
     private function normalizeAmount(float $amount, int $scale): int
     {
         return (int) round($amount * (10 ** $scale));
-    }
-
-    /**
-     * @param string[] $data
-     */
-    private function getDataValue(array $data, string $key): string
-    {
-        return $data[$key] ?? '';
     }
 }

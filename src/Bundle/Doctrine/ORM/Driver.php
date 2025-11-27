@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
@@ -31,37 +32,65 @@ final class Driver implements DriverInterface
         $this->managerRegistry = $managerRegistry;
     }
 
+    /**
+     * @param array{
+     *     class: class-string,
+     *     repository?: array{
+     *         method: string|array{object, string},
+     *         arguments?: array<int|string, mixed>,
+     *     },
+     *     pagination?: array{
+     *         fetch_join_collection?: bool,
+     *         use_output_walkers?: bool,
+     *     },
+     * } $configuration
+     */
     public function getDataSource(array $configuration, Parameters $parameters): DataSourceInterface
     {
         if (!array_key_exists('class', $configuration)) {
             throw new \InvalidArgumentException('Missing configuration: when using the ORM driver for a grid, you must define the "class" option.');
         }
 
-        $manager = $this->managerRegistry->getManagerForClass($configuration['class']);
+        /** @var class-string $class */
+        $class = $configuration['class'];
+
+        $manager = $this->managerRegistry->getManagerForClass($class);
 
         if (null === $manager) {
-            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $configuration['class']));
+            throw new RuntimeException(sprintf('Doctrine ORM manager for class "%s" not found.', $class));
         }
 
-        /** @var EntityRepository $repository */
-        $repository = $manager->getRepository($configuration['class']);
+        /** @var EntityRepository<object> $repository */
+        $repository = $manager->getRepository($class);
 
+        /** @var bool $fetchJoinCollection */
         $fetchJoinCollection = $configuration['pagination']['fetch_join_collection'] ?? true;
+        /** @var bool $useOutputWalkers */
         $useOutputWalkers = $configuration['pagination']['use_output_walkers'] ?? true;
 
         if (!isset($configuration['repository']['method'])) {
             return new DataSource($repository->createQueryBuilder('o'), $fetchJoinCollection, $useOutputWalkers);
         }
 
-        $arguments = isset($configuration['repository']['arguments']) ? array_values($configuration['repository']['arguments']) : [];
+        /** @var array<int|string, mixed> $repositoryArguments */
+        $repositoryArguments = $configuration['repository']['arguments'] ?? [];
+        $arguments = array_values($repositoryArguments);
         $method = $configuration['repository']['method'];
         if (is_array($method) && 2 === count($method)) {
+            /** @var QueryBuilder $queryBuilder */
             $queryBuilder = $method[0];
+            /** @var string $method */
             $method = $method[1];
 
-            return new DataSource($queryBuilder->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
+            /** @var QueryBuilder $resultQueryBuilder */
+            $resultQueryBuilder = $queryBuilder->$method(...$arguments);
+
+            return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
         }
 
-        return new DataSource($repository->$method(...$arguments), $fetchJoinCollection, $useOutputWalkers);
+        /** @var QueryBuilder $resultQueryBuilder */
+        $resultQueryBuilder = $repository->$method(...$arguments);
+
+        return new DataSource($resultQueryBuilder, $fetchJoinCollection, $useOutputWalkers);
     }
 }

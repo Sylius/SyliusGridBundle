@@ -36,15 +36,14 @@ final class CallableFieldType implements FieldTypeInterface
         $value = $this->dataExtractor->get($field, $data);
         $value = call_user_func($this->getCallable($options), $value);
 
-        try {
-            $value = (string) $value;
-        } catch (\Throwable $e) {
+        if (!is_scalar($value) && null !== $value && !(is_object($value) && method_exists($value, '__toString'))) {
             throw new UnexpectedValueException(\sprintf(
-                'Callable field (name "%s") returned value could not be converted to string: "%s".',
+                'Callable field (name "%s") returned value could not be converted to string.',
                 $field->getName(),
-                $e->getMessage(),
             ));
         }
+
+        $value = (string) $value;
 
         if ($options['htmlspecialchars']) {
             $value = htmlspecialchars($value);
@@ -53,29 +52,37 @@ final class CallableFieldType implements FieldTypeInterface
         return $value;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     private function getCallable(array $options): callable
     {
         if (isset($options['callable'])) {
             return $options['callable'];
         }
 
-        if (!$this->locator->has($options['service'])) {
-            throw new \RuntimeException(sprintf('Service "%s" not found, make sure it is tagged with "sylius.grid_field_callable_service".', $options['service']));
+        /** @var string $serviceId */
+        $serviceId = $options['service'];
+
+        if (!$this->locator->has($serviceId)) {
+            throw new \RuntimeException(sprintf('Service "%s" not found, make sure it is tagged with "sylius.grid_field_callable_service".', $serviceId));
         }
 
-        $service = $this->locator->get($options['service']);
+        $service = $this->locator->get($serviceId);
         if (isset($options['method'])) {
-            $callable = [$service, $options['method']];
+            /** @var string $method */
+            $method = $options['method'];
+            $callable = [$service, $method];
 
             if (!is_callable($callable)) {
-                throw new \RuntimeException(sprintf('The method "%s" is not callable on service "%s".', $options['method'], $options['service']));
+                throw new \RuntimeException(sprintf('The method "%s" is not callable on service "%s".', $method, $serviceId));
             }
 
             return $callable;
         }
 
         if (!is_callable($service)) {
-            throw new \RuntimeException(sprintf('The service "%s" is not callable.', $options['service']));
+            throw new \RuntimeException(sprintf('The service "%s" is not callable.', $serviceId));
         }
 
         return $service;

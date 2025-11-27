@@ -24,6 +24,7 @@ final class SelectFilter implements FilterInterface
             return;
         }
 
+        /** @var string $field */
         $field = $options['field'] ?? $name;
 
         if (is_array($data)) {

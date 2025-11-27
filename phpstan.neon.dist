@@ -15,17 +15,10 @@ parameters:
         - src/Bundle/Resources/*
         - src/Bundle/spec/*
         - src/Bundle/Tests/*
-        - src/Component/spec/*
         - src/Component/Tests/*
         - src/Component/vendor/*
-        # deprecated
-        - src/Component/Filter/MoneyFilter.php
 
     ignoreErrors:
-        - '/Cannot cast mixed to int./'
-        - '/Cannot cast mixed to string./'
-        - '/Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\./'
-        - '/Unable to resolve the template type T in call to method Doctrine\\Persistence\\ObjectManager::getRepository\(\)/'
         # Symfony <7.4
         - message: '#^PHPDoc tag .+ is not generic\.$#'
           identifier: generics.notGeneric

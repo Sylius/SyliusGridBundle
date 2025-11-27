@@ -27,6 +27,7 @@ final class Action implements ActionInterface
 
     private ?string $icon = null;
 
+    /** @var array<string, mixed> */
     private array $options = [];
 
     private ?int $position = null;

@@ -16,6 +16,41 @@ namespace Sylius\Component\Grid\Definition;
 use Sylius\Component\Grid\Event\GridDefinitionConverterEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
+/**
+ * @template TDriver of array{
+ *     name: string,
+ *     options?: array<string, mixed>,
+ * }
+ * @template TField of array{
+ *         type: string,
+ *         label?: string,
+ *         path?: string,
+ *         enabled?: bool,
+ *         sortable?: bool|string,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *  }
+ * @template TFilter of array{
+ *         type: string,
+ *         label?: string,
+ *         template?: string,
+ *         enabled?: bool,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *         form_options?: array<string, mixed>,
+ *         default_value?: mixed,
+ *  }
+ * @template TActionGroup of array<string, TAction>
+ * @template TAction of array{
+ *         type: string,
+ *         label?: string,
+ *         template?: string,
+ *         icon?: string,
+ *         enabled?: bool,
+ *         position?: int,
+ *         options?: array<string, mixed>,
+ *  }
+ */
 final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInterface
 {
     public const EVENT_NAME = 'sylius.grid.%s';
@@ -27,37 +62,46 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * @param array{
+     *        driver: TDriver,
+     *        provider?: string|callable,
+     *        sorting?: array<string, string>,
+     *        limits?: int[],
+     *        fields?: array<string, TField>,
+     *        filters?: array<string, TFilter>,
+     *        actions?: array<string, TActionGroup>,
+     * } $configuration
+     */
     public function convert(string $code, array $configuration): Grid
     {
-        /** @var array<string, mixed> $driverConfiguration */
-        $driverConfiguration = $configuration['driver']['options'] ?? [];
-
         $grid = Grid::fromCodeAndDriverConfiguration(
             $code,
             $configuration['driver']['name'],
-            $driverConfiguration,
+            $configuration['driver']['options'] ?? [],
         );
 
         $grid->setProvider($configuration['provider'] ?? null);
 
         if (array_key_exists('sorting', $configuration)) {
-            /** @var array<string, string> $sorting */
-            $sorting = $configuration['sorting'];
-            $grid->setSorting($sorting);
+            $grid->setSorting($configuration['sorting']);
         }
 
         if (array_key_exists('limits', $configuration)) {
             $grid->setLimits($configuration['limits']);
         }
 
+        /** @var TField $fieldConfiguration */
         foreach ($configuration['fields'] ?? [] as $name => $fieldConfiguration) {
             $grid->addField($this->convertField($name, $fieldConfiguration));
         }
 
+        /** @var TFilter $filterConfiguration */
         foreach ($configuration['filters'] ?? [] as $name => $filterConfiguration) {
             $grid->addFilter($this->convertFilter($name, $filterConfiguration));
         }
 
+        /** @var TActionGroup $actionGroupConfiguration */
         foreach ($configuration['actions'] ?? [] as $name => $actionGroupConfiguration) {
             $grid->addActionGroup($this->convertActionGroup($name, $actionGroupConfiguration));
         }
@@ -67,6 +111,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $grid;
     }
 
+    /**
+     * @param TField $configuration
+     */
     private function convertField(string $name, array $configuration): Field
     {
         $field = Field::fromNameAndType($name, $configuration['type']);
@@ -97,14 +144,15 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $field->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            /** @var array<string, mixed> $options */
-            $options = $configuration['options'];
-            $field->setOptions($options);
+            $field->setOptions($configuration['options']);
         }
 
         return $field;
     }
 
+    /**
+     * @param TFilter $configuration
+     */
     private function convertFilter(string $name, array $configuration): Filter
     {
         $filter = Filter::fromNameAndType($name, $configuration['type']);
@@ -122,14 +170,10 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
             $filter->setPosition($configuration['position']);
         }
         if (array_key_exists('options', $configuration)) {
-            /** @var array<string, mixed> $options */
-            $options = $configuration['options'];
-            $filter->setOptions($options);
+            $filter->setOptions($configuration['options']);
         }
         if (array_key_exists('form_options', $configuration)) {
-            /** @var array<string, mixed> $formOptions */
-            $formOptions = $configuration['form_options'];
-            $filter->setFormOptions($formOptions);
+            $filter->setFormOptions($configuration['form_options']);
         }
         if (array_key_exists('default_value', $configuration)) {
             $filter->setCriteria($configuration['default_value']);
@@ -138,6 +182,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $filter;
     }
 
+    /**
+     * @param TActionGroup $configuration
+     */
     private function convertActionGroup(string $name, array $configuration): ActionGroup
     {
         $actionGroup = ActionGroup::named($name);
@@ -149,6 +196,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         return $actionGroup;
     }
 
+    /**
+     * @param TAction $configuration
+     */
     private function convertAction(string $name, array $configuration): Action
     {
         $action = Action::fromNameAndType($name, $configuration['type']);

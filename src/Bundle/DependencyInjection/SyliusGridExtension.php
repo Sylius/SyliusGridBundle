@@ -38,10 +38,21 @@ final class SyliusGridExtension extends Extension
 
         $loader->load('services.php');
 
-        $container->setParameter('sylius.grid.templates.action', $config['templates']['action']);
-        $container->setParameter('sylius.grid.templates.bulk_action', $config['templates']['bulk_action']);
-        $container->setParameter('sylius.grid.templates.filter', $config['templates']['filter']);
-        $container->setParameter('sylius.grids_definitions', $config['grids']);
+        /**
+         * @var array{
+         *     'filter': array<string, string>,
+         *     'action': array<string, string>,
+         *     'bulk_action': array<string, string>,
+         * } $templates
+         */
+        $templates = $config['templates'];
+        /** @var array<string, mixed> $gridsDefinitions */
+        $gridsDefinitions = $config['grids'];
+
+        $container->setParameter('sylius.grid.templates.action', $templates['action']);
+        $container->setParameter('sylius.grid.templates.bulk_action', $templates['bulk_action']);
+        $container->setParameter('sylius.grid.templates.filter', $templates['filter']);
+        $container->setParameter('sylius.grids_definitions', $gridsDefinitions);
 
         $container->setAlias('sylius.grid.renderer', 'sylius.grid.renderer.twig');
         $container->setAlias('sylius.grid.bulk_action_renderer', 'sylius.grid.bulk_action_renderer.twig');
@@ -103,6 +114,9 @@ final class SyliusGridExtension extends Extension
         );
     }
 
+    /**
+     * @param array<int, mixed> $config
+     */
     public function getConfiguration(array $config, ContainerBuilder $container): Configuration
     {
         $configuration = new Configuration();

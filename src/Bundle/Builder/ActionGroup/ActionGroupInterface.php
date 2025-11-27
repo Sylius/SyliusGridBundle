@@ -33,5 +33,8 @@ interface ActionGroupInterface
 
     public function removeAction(string $name): self;
 
+    /**
+     * @return array<string, mixed>
+     */
     public function toArray(): array;
 }

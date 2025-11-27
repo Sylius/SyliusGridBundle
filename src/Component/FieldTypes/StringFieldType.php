@@ -28,6 +28,7 @@ final class StringFieldType implements FieldTypeInterface
 
     public function render(Field $field, mixed $data, array $options): string
     {
+        /** @var string|null $value */
         $value = $this->dataExtractor->get($field, $data);
 
         return htmlspecialchars((string) $value);

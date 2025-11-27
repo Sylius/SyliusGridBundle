@@ -28,6 +28,7 @@ final class ExistsFilter implements FilterInterface
             return;
         }
 
+        /** @var string $field */
         $field = $options['field'] ?? $name;
 
         if (self::TRUE === (bool) $data) {

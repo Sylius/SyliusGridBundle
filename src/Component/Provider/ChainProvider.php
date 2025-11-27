@@ -18,8 +18,12 @@ use Sylius\Component\Grid\Exception\UndefinedGridException;
 
 final class ChainProvider implements GridProviderInterface
 {
+    /** @var iterable<GridProviderInterface> */
     private iterable $providers;
 
+    /**
+     * @param iterable<GridProviderInterface> $providers
+     */
     public function __construct(iterable $providers)
     {
         $this->providers = $providers;

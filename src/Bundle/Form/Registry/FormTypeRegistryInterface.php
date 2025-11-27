@@ -15,6 +15,9 @@ namespace Sylius\Bundle\GridBundle\Form\Registry;
 
 interface FormTypeRegistryInterface
 {
+    /**
+     * @param string|class-string $formType
+     */
     public function add(string $identifier, string $typeIdentifier, string $formType): void;
 
     public function get(string $identifier, string $typeIdentifier): ?string;

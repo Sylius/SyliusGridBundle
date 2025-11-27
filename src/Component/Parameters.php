@@ -26,11 +26,17 @@ final class Parameters
         $this->parameters = $parameters;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function all(): array
     {
         return $this->parameters;
     }
 
+    /**
+     * @return string[]
+     */
     public function keys(): array
     {
         return array_keys($this->parameters);

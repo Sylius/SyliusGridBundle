@@ -27,7 +27,7 @@ class Action
 
     private ?string $icon = null;
 
-    /** @var array */
+    /** @var array<string, mixed> */
     private $options = [];
 
     /**
@@ -97,11 +97,17 @@ class Action
         $this->icon = $icon;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getOptions(): array
     {
         return $this->options;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function setOptions(array $options): void
     {
         $this->options = $options;

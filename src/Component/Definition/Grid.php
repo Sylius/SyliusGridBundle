@@ -30,7 +30,7 @@ class Grid
     /** @var array<string, string> */
     private $sorting = [];
 
-    /** @var array */
+    /** @var array<int> */
     private $limits = [];
 
     /** @var array<string, Field> */
@@ -39,7 +39,7 @@ class Grid
     /** @var array<string, Filter> */
     private $filters = [];
 
-    /** @var array */
+    /** @var array<string, ActionGroup> */
     private $actionGroups = [];
 
     /**
@@ -112,11 +112,17 @@ class Grid
         $this->sorting = $sorting;
     }
 
+    /**
+     * @return array<int>
+     */
     public function getLimits(): array
     {
         return $this->limits;
     }
 
+    /**
+     * @param int[] $limits
+     */
     public function setLimits(array $limits): void
     {
         $this->limits = $limits;
@@ -182,7 +188,7 @@ class Grid
     }
 
     /**
-     * @return array|ActionGroup[]
+     * @return array<string, ActionGroup>
      */
     public function getActionGroups(): array
     {
@@ -190,7 +196,7 @@ class Grid
     }
 
     /**
-     * @return array|ActionGroup[]
+     * @return array<string, ActionGroup>
      */
     public function getEnabledActionGroups(): array
     {
@@ -234,7 +240,7 @@ class Grid
     }
 
     /**
-     * @return array|Action[]
+     * @return Action[]
      */
     public function getActions(string $groupName): array
     {
@@ -244,7 +250,7 @@ class Grid
     /**
      * @param string $groupName
      *
-     * @return array|Action[]
+     * @return Action[]
      */
     public function getEnabledActions($groupName): array
     {
