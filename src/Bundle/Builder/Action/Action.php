@@ -81,9 +81,6 @@ final class Action implements ActionInterface
         return $this;
     }
 
-    /**
-     * @param array<string, mixed> $options
-     */
     public function setOptions(array $options): ActionInterface
     {
         $this->options = $options;
