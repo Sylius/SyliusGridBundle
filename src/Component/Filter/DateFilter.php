@@ -35,20 +35,21 @@ final class DateFilter implements FilterInterface
      *        time?: string,
      *     },
      * } $data
-     * @param array<string, mixed> $options
+     * @param array{
+     *     field?: string,
+     *     inclusive_from?: bool|string|int,
+     *     inclusive_to?: bool|string|int,
+     * } $options
      */
     public function apply(DataSourceInterface $dataSource, string $name, $data, array $options): void
     {
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
-        /** @var string $field */
         $field = $options['field'] ?? $name;
 
         $from = isset($data['from']) ? $this->getDateTime($data['from'], '00:00') : null;
         if (null !== $from) {
-            /** @var bool|string|int $inclusive */
             $inclusive = $options['inclusive_from'] ?? self::DEFAULT_INCLUSIVE_FROM;
-            $inclusive = (bool) $inclusive;
             if (true === $inclusive) {
                 $dataSource->restrict($expressionBuilder->greaterThanOrEqual($field, $from));
             } else {
@@ -58,9 +59,7 @@ final class DateFilter implements FilterInterface
 
         $to = isset($data['to']) ? $this->getDateTime($data['to'], '23:59') : null;
         if (null !== $to) {
-            /** @var bool|string|int $inclusive */
             $inclusive = $options['inclusive_to'] ?? self::DEFAULT_INCLUSIVE_TO;
-            $inclusive = (bool) $inclusive;
             if (true === $inclusive) {
                 $dataSource->restrict($expressionBuilder->lessThanOrEqual($field, $to));
             } else {
