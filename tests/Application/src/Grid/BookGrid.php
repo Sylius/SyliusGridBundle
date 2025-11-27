@@ -27,69 +27,48 @@ use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(resourceClass: Book::class, name: 'app_book')]
+final class BookGrid extends AbstractGrid
 {
-    public static function getName(): string
-    {
-        return 'app_book';
-    }
-
-    public function getResourceClass(): string
-    {
-        return Book::class;
-    }
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->addFilter(Filter::create('title', 'string'))
-            ->addFilter(
-                Filter::create('author', 'entity')
-                ->setFormOptions([
-                    'class' => Author::class,
-                    'multiple' => true,
-                ]),
-            )
-            ->addFilter(
-                NationalityFilter::create('nationality', null, ['author.nationality']),
-            )
-            ->addFilter(
-                Filter::create('currencyCode', 'string')
-                ->setOptions([
-                    'fields' => ['price.currencyCode'],
-                ]),
-            )
-            ->addFilter(
-                Filter::create('state', 'select')
-                ->setFormOptions([
-                    'multiple' => true,
-                    'choices' => [
-                        'initial' => 'initial',
-                        'published' => 'published',
-                        'unpublished' => 'unpublished',
-                    ],
-                ]),
-            )
             ->orderBy('title', 'asc')
-            ->addField(
+            ->withFilters(
+                Filter::create('title', 'string'),
+                Filter::create('author', 'entity')
+                    ->setFormOptions([
+                        'class' => Author::class,
+                        'multiple' => true,
+                    ]),
+                NationalityFilter::create('nationality', null, ['author.nationality']),
+                Filter::create('currencyCode', 'string')
+                    ->setOptions([
+                        'fields' => ['price.currencyCode'],
+                    ]),
+                Filter::create('state', 'select')
+                    ->setFormOptions([
+                        'multiple' => true,
+                        'choices' => [
+                            'initial' => 'initial',
+                            'published' => 'published',
+                            'unpublished' => 'unpublished',
+                        ],
+                    ]),
+            )
+            ->withFields(
                 CallableField::create('title', 'strtoupper')
                     ->setLabel('Title'),
-            )
-            ->addField(
                 StringField::create('author')
                     ->setLabel('Author')
                     ->setPath('author.name')
                     ->setSortable(true, 'author.name'),
-            )
-            ->addField(
                 StringField::create('nationality')
                     ->setLabel('Nationality')
                     ->setPath('author.nationality.name')
                     ->setSortable(true, 'author.nationality.name'),
-            )
-            ->addField(
                 StringField::create('currency')
                     ->setLabel('Currency')
                     ->setPath('price.currencyCode')
