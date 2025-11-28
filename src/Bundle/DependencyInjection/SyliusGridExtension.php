@@ -16,10 +16,12 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterAttributeGridsPass;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
 use Sylius\Component\Grid\Attribute\AsFilter;
+use Sylius\Component\Grid\Attribute\AsGrid;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
 use Symfony\Component\Config\FileLocator;
@@ -81,6 +83,8 @@ final class SyliusGridExtension extends Extension
         $container->registerForAutoconfiguration(GridInterface::class)
             ->addTag('sylius.grid')
         ;
+
+        $container->registerAttributeForAutoconfiguration(AsGrid::class, RegisterAttributeGridsPass::autoconfigureFromGridAttribute(...));
 
         $container->registerAttributeForAutoconfiguration(
             AsFilter::class,
