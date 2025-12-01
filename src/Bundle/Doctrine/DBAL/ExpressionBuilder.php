@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
 
+use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
 
@@ -25,16 +26,25 @@ final class ExpressionBuilder implements ExpressionBuilderInterface
         $this->queryBuilder = $queryBuilder;
     }
 
+    /**
+     * @param CompositeExpression|string ...$expressions
+     */
     public function andX(...$expressions)
     {
-        return $this->queryBuilder->expr()->andX(...$expressions);
+        return $this->queryBuilder->expr()->and(...$expressions);
     }
 
+    /**
+     * @param CompositeExpression|string ...$expressions
+     */
     public function orX(...$expressions)
     {
-        return $this->queryBuilder->expr()->orX(...$expressions);
+        return $this->queryBuilder->expr()->or(...$expressions);
     }
 
+    /**
+     * @param string $value
+     */
     public function comparison(string $field, string $operator, $value)
     {
         return $this->queryBuilder->expr()->comparison($field, $operator, $value);

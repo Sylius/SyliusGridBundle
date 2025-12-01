@@ -29,6 +29,8 @@ final class DriverTest extends TestCase
 {
     public function testImplementsGridDriver(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $driver = new Driver($documentManager);
 
@@ -37,6 +39,8 @@ final class DriverTest extends TestCase
 
     public function testThrowsExceptionIfClassIsUndefined(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $driver = new Driver($documentManager);
 
@@ -47,6 +51,8 @@ final class DriverTest extends TestCase
 
     public function testCreatesDataSourceViaDoctrinePhpcrodmQueryBuilder(): void
     {
+        $this->skipIfNecessary();
+
         $documentManager = $this->createMock(DocumentManagerInterface::class);
         $documentRepository = $this->createMock(DocumentRepository::class);
         $queryBuilder = $this->createMock(QueryBuilder::class);
@@ -58,5 +64,14 @@ final class DriverTest extends TestCase
         $dataSource = $driver->getDataSource(['class' => 'App:Book'], new Parameters());
 
         $this->assertInstanceOf(DataSource::class, $dataSource);
+    }
+
+    private function skipIfNecessary(): void
+    {
+        if (class_exists(DocumentManagerInterface::class)) {
+            return;
+        }
+
+        $this->markTestSkipped(message: sprintf('Skipped since: %s is not available', DocumentManagerInterface::class));
     }
 }

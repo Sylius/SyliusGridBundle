@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Doctrine\DBAL;
 
+use Doctrine\DBAL\Query\Expression\CompositeExpression;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Doctrine\DBAL\QueryAdapter;
 use Pagerfanta\Pagerfanta;
@@ -32,6 +33,9 @@ final class DataSource implements DataSourceInterface
         $this->expressionBuilder = new ExpressionBuilder($queryBuilder);
     }
 
+    /**
+     * @param CompositeExpression|string $expression
+     */
     public function restrict($expression, string $condition = DataSourceInterface::CONDITION_AND): void
     {
         switch ($condition) {

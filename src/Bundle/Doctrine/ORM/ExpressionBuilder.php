@@ -217,8 +217,11 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
                 break;
             }
 
+            /** @var class-string $targetEntity */
+            $targetEntity = $metadata->getAssociationMapping($associationField)['targetEntity'];
+
             $metadata = $this->queryBuilder->getEntityManager()->getClassMetadata(
-                $metadata->getAssociationMapping($associationField)['targetEntity'],
+                $targetEntity,
             );
             $rootAndAssociationField = sprintf('%s.%s', $rootField, $associationField);
 

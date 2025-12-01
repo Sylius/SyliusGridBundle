@@ -33,3 +33,8 @@ parameters:
           identifier: method.nonObject
           count: 166
           path: src/Bundle/DependencyInjection/Configuration.php
+        # Symfony 8 without Doctrine PHPCR-ODM
+        - message: '#^Method Sylius\\Bundle\\GridBundle\\Doctrine\\DataSourceInterface\:\:getQueryBuilder\(\) has invalid return type Doctrine\\ODM\\PHPCR\\Query\\Builder\\QueryBuilder\.$#'
+          identifier: class.notFound
+          count: 1
+          path: src/Bundle/Doctrine/DataSourceInterface.php

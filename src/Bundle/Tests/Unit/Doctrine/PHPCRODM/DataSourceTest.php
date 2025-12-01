@@ -37,6 +37,8 @@ final class DataSourceTest extends TestCase
 {
     public function testImplementsDataSource(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $dataSource = new DataSource($queryBuilder, $expressionBuilder);
@@ -46,6 +48,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldRestrictWithOrCondition(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $comparison = $this->createMock(Comparison::class);
@@ -69,6 +73,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldThrowAnExceptionIfAnUnknownConditionIsPassed(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $comparison = $this->createMock(Comparison::class);
@@ -83,6 +89,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldReturnTheExpressionBuilder(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $dataSource = new DataSource($queryBuilder, $expressionBuilder);
@@ -92,6 +100,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldGetTheData(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $query = $this->createMock(Query::class);
@@ -110,6 +120,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldSetTheOrderOnTheQueryBuilder(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $query = $this->createMock(Query::class);
@@ -139,6 +151,8 @@ final class DataSourceTest extends TestCase
 
     public function testShouldSetTheOrderOnTheQueryBuilderAsFieldsOnly(): void
     {
+        $this->skipIfNecessary();
+
         $queryBuilder = $this->createMock(QueryBuilder::class);
         $expressionBuilder = $this->createMock(ExpressionBuilderInterface::class);
         $query = $this->createMock(Query::class);
@@ -167,6 +181,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsAndx(): void
     {
+        $this->skipIfNecessary();
+
         $expression = $this->createMock(Expression::class);
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('andX')->with($expression);
@@ -177,6 +193,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsOrx(): void
     {
+        $this->skipIfNecessary();
+
         $expression = $this->createMock(Expression::class);
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('orX')->with($expression);
@@ -187,6 +205,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsEquals(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('eq')->with('o.foo', 'value');
 
@@ -196,6 +216,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsNotEquals(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('neq')->with('o.foo', 'value');
 
@@ -205,6 +227,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsLessThanOrEqual(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('lte')->with('o.foo', 'value');
 
@@ -214,6 +238,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsGreaterThan(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('gt')->with('o.foo', 'value');
 
@@ -223,6 +249,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsGreaterThanOrEqual(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('gte')->with('o.foo', 'value');
 
@@ -232,6 +260,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsIn(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('in')->with('o.foo', ['value']);
 
@@ -241,6 +271,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsNotIn(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('notIn')->with('o.foo', ['value']);
 
@@ -250,6 +282,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsIsNull(): void
     {
+        $this->skipIfNecessary();
+
         $expressionBuilder = new ExpressionBuilder();
         $expr = $expressionBuilder->isNull('o.foo');
 
@@ -259,6 +293,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsIsNotNull(): void
     {
+        $this->skipIfNecessary();
+
         $expressionBuilder = new ExpressionBuilder();
         $expr = $expressionBuilder->isNotNull('o.foo');
 
@@ -268,6 +304,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsLike(): void
     {
+        $this->skipIfNecessary();
+
         $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
         $collectionsExpressionBuilder->expects($this->once())->method('contains')->with('o.foo', 'value');
 
@@ -277,6 +315,8 @@ final class DataSourceTest extends TestCase
 
     public function testBuildsNotLike(): void
     {
+        $this->skipIfNecessary();
+
         $expressionBuilder = new ExpressionBuilder();
         $expr = $expressionBuilder->notLike('o.foo', 'value');
 
@@ -286,6 +326,8 @@ final class DataSourceTest extends TestCase
 
     public function testOrdersBy(): void
     {
+        $this->skipIfNecessary();
+
         $expressionBuilder = new ExpressionBuilder();
         $expressionBuilder->orderBy('o.foo', 'asc');
 
@@ -296,6 +338,8 @@ final class DataSourceTest extends TestCase
 
     public function testAddsOrderBy(): void
     {
+        $this->skipIfNecessary();
+
         $expressionBuilder = new ExpressionBuilder();
         $expressionBuilder->orderBy('o.foo', 'asc');
         $expressionBuilder->addOrderBy('o.bar', 'desc');
@@ -304,5 +348,14 @@ final class DataSourceTest extends TestCase
             'o.foo' => 'asc',
             'o.bar' => 'desc',
         ], $expressionBuilder->getOrderBys());
+    }
+
+    private function skipIfNecessary(): void
+    {
+        if (class_exists(QueryBuilder::class)) {
+            return;
+        }
+
+        $this->markTestSkipped(message: sprintf('Skipped since: %s is not available', QueryBuilder::class));
     }
 }

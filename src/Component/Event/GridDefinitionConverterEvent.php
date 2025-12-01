@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Event;
 
 use Sylius\Component\Grid\Definition\Grid;
-use SyliusLabs\Polyfill\Symfony\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 final class GridDefinitionConverterEvent extends Event
 {
