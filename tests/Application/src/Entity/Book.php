@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Repository\BookRepository;
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
-use Sylius\Component\Resource\Model\ResourceInterface;
-use Sylius\Resource\Model\TimestampableInterface;
 
-/**
- * @Serializer\ExclusionPolicy("all")
- */
 #[ORM\MappedSuperclass]
 #[ORM\Table(name: 'app_book')]
-class Book implements ResourceInterface, TimestampableInterface
+#[ORM\Entity(repositoryClass: BookRepository::class)]
+class Book
 {
     public const STATE_INITIAL = 'initial';
 
@@ -31,30 +27,18 @@ class Book implements ResourceInterface, TimestampableInterface
 
     public const STATE_UNPUBLISHED = 'unpublished';
 
-    /**
-     * @Serializer\Expose
-     *
-     * @Serializer\Type("integer")
-     */
     #[ORM\Id]
     #[ORM\Column(type: 'integer')]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private ?int $id = null;
 
-    /**
-     * @Serializer\Expose
-     *
-     * @Serializer\Type("string")
-     */
     #[ORM\Column(type: 'string', length: 255)]
     private ?string $title = null;
 
-    /** @Serializer\Expose */
     #[ORM\ManyToOne(targetEntity: Author::class, inversedBy: 'books')]
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id')]
     private ?Author $author = null;
 
-    /** @Serializer\Expose */
     #[ORM\Embedded(class: Price::class)]
     private ?Price $price = null;
 

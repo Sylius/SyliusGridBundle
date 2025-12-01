@@ -19,7 +19,7 @@ return static function (GridConfig $grid) {
     $grid->addGrid(
         GridBuilder::create('app_author_with_books_with_use_output_walkers_enabled')
             ->extends('app_author')
-            ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
+            ->setRepositoryMethod('createWithBooksQueryBuilder')
             ->addField(
                 StringField::create('book')
                     ->setPath('books[0].title')

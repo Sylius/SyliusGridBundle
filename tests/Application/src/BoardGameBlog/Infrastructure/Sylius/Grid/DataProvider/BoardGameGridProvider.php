@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\BoardGameBlog\Infrastructure\Sylius\Grid\DataProvider;
 
-use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
+use App\BoardGameBlog\Domain\Model\BoardGame;
 use Pagerfanta\Adapter\ArrayAdapter;
 use Pagerfanta\Pagerfanta;
 use Sylius\Component\Grid\Data\DataProviderInterface;
@@ -38,7 +38,7 @@ final class BoardGameGridProvider implements DataProviderInterface
             Assert::notNull($name);
             Assert::notNull($shortDescription);
 
-            $data[] = new BoardGameResource(
+            $data[] = new BoardGame(
                 id: $id,
                 name: $name,
                 shortDescription: $shortDescription,

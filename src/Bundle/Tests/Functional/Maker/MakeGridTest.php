@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
-use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
+use App\BoardGameBlog\Domain\Model\BoardGame;
 use App\Entity\AdminUser;
 use App\Entity\Book;
 use App\Entity\Price;
@@ -31,7 +31,7 @@ final class MakeGridTest extends MakerTestCase
 
     private const INVALID_GRID_PATH = 'Grid/InvalidGrid.php';
 
-    private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameResourceGrid.php';
+    private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameGrid.php';
 
     /** @test */
     public function it_can_create_grids_with_a_doctrine_entity(): void
@@ -53,7 +53,7 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOARD_GAME_GRID_PATH));
 
-        $tester->execute(['entity' => BoardGameResource::class, '--namespace' => 'Tests\Tmp\Grid']);
+        $tester->execute(['entity' => BoardGame::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::BOARD_GAME_GRID_PATH));
         $this->assertSame(self::getBoardGameGridExpectedContent(), \file_get_contents(self::tempFile(self::BOARD_GAME_GRID_PATH)));
@@ -353,7 +353,7 @@ EOF
 
 namespace App\Tests\Tmp\Grid;
 
-use App\BoardGameBlog\Infrastructure\Sylius\Resource\BoardGameResource;
+use App\BoardGameBlog\Domain\Model\BoardGame;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
@@ -367,10 +367,10 @@ use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
-    resourceClass: BoardGameResource::class,
-    name: 'app_board_game_resource',
+    resourceClass: BoardGame::class,
+    name: 'app_board_game',
 )]
-final class BoardGameResourceGrid extends AbstractGrid
+final class BoardGameGrid extends AbstractGrid
 {
     public function __construct()
     {

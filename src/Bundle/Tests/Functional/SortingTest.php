@@ -58,7 +58,7 @@ final class SortingTest extends WebTestCase
     /** @test */
     public function it_allows_for_sorting_by_disabled_field(): void
     {
-        $this->client->request('GET', '/authors/?sorting[id]=asc');
+        $this->client->request('GET', '/authors?sorting[id]=asc');
 
         self::assertCount(10, $this->getAuthorNamesFromResponse());
     }

@@ -35,7 +35,7 @@ final class AuthorWithBooksWithUseOutputWalkersEnabled extends AbstractGrid impl
     {
         $gridBuilder
             ->extends('app_author')
-            ->setRepositoryMethod(["expr:service('app.authors_with_books_query_builder')", 'create'])
+            ->setRepositoryMethod('createWithBooksQueryBuilder')
             ->addField(
                 StringField::create('book')
                     ->setPath('books[0].title')
