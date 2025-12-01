@@ -123,6 +123,15 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function withFields(FieldInterface ...$fields): GridBuilderInterface
+    {
+        foreach ($fields as $field) {
+            $this->addField($field);
+        }
+
+        return $this;
+    }
+
     public function removeField(string $name): GridBuilderInterface
     {
         unset($this->fields[$name]);
@@ -148,6 +157,15 @@ final class GridBuilder implements GridBuilderInterface
     public function addFilter(FilterInterface $filter): self
     {
         $this->filters[$filter->getName()] = $filter;
+
+        return $this;
+    }
+
+    public function withFilters(FilterInterface ...$filters): GridBuilderInterface
+    {
+        foreach ($filters as $filter) {
+            $this->addFilter($filter);
+        }
 
         return $this;
     }

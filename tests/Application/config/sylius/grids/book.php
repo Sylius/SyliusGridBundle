@@ -13,70 +13,83 @@ declare(strict_types=1);
 
 use App\Entity\Author;
 use App\Entity\Book;
-use App\Grid\Builder\AttributeNationalityFilter;
 use App\Grid\Builder\NationalityFilter;
+use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
+use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
+use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
+use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
-use Sylius\Bundle\GridBundle\Builder\Filter\SelectFilter;
-use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(
         GridBuilder::create('app_book', Book::class)
-        ->addFilter(StringFilter::create('title'))
-        ->addFilter(EntityFilter::create('author', Author::class, true))
-        ->addFilter(NationalityFilter::create(
-            'nationality',
-            null,
-            ['author.nationality'],
-        ))
-        ->addFilter(AttributeNationalityFilter::create(
-            'attribute_nationality',
-            null,
-            ['author.nationality'],
-        ))
-        ->addFilter(StringFilter::create(
-            'currencyCode',
-            ['price.currencyCode'],
-        ))
-        ->addFilter(
-            SelectFilter::create(
-                'state',
-                [
-                    'initial' => 'initial',
-                    'published' => 'published',
-                    'unpublished' => 'unpublished',
-                ],
+            ->orderBy('title', 'asc')
+            ->withFilters(
+                Filter::create('title', 'string'),
+                Filter::create('author', 'entity')
+                    ->setFormOptions([
+                        'class' => Author::class,
+                        'multiple' => true,
+                    ]),
+                NationalityFilter::create('nationality', null, ['author.nationality']),
+                Filter::create('currencyCode', 'string')
+                    ->setOptions([
+                        'fields' => ['price.currencyCode'],
+                    ]),
+                Filter::create('state', 'select')
+                    ->setFormOptions([
+                        'multiple' => true,
+                        'choices' => [
+                            'initial' => 'initial',
+                            'published' => 'published',
+                            'unpublished' => 'unpublished',
+                        ],
+                    ]),
             )
-            ->addFormOption('multiple', true),
-        )
-        ->orderBy('title', 'asc')
-        ->addField(
-            CallableField::create('title', 'strtoupper')
-                ->setLabel('Title'),
-        )
-        ->addField(
-            StringField::create('author')
-                ->setLabel('Author')
-                ->setPath('author.name')
-                ->setSortable(true, 'author.name'),
-        )
-        ->addField(
-            StringField::create('nationality')
-                ->setLabel('Nationality')
-                ->setPath('author.nationality.name')
-                ->setSortable(true, 'author.nationality.name'),
-        )
-        ->addField(
-            StringField::create('currency')
-                ->setLabel('Currency')
-                ->setPath('price.currencyCode')
-                ->setSortable(true, 'price.currencyCode')
-                ->setOption('vars', ['th_class' => 'text-end']),
-        )
-        ->setLimits([10, 5, 15]),
+            ->withFields(
+                CallableField::create('title', 'strtoupper')
+                    ->setLabel('Title'),
+                StringField::create('author')
+                    ->setLabel('Author')
+                    ->setPath('author.name')
+                    ->setSortable(true, 'author.name'),
+                StringField::create('nationality')
+                    ->setLabel('Nationality')
+                    ->setPath('author.nationality.name')
+                    ->setSortable(true, 'author.nationality.name'),
+                StringField::create('currency')
+                    ->setLabel('Currency')
+                    ->setPath('price.currencyCode')
+                    ->setSortable(true, 'price.currencyCode')
+                    ->setOption('vars', ['th_class' => 'text-end']),
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    ShowAction::create([
+                        'link' => [
+                            'route' => 'app_book_show',
+                        ],
+                    ]),
+                ),
+            )
+            ->addActionGroup(
+                MainActionGroup::create(
+                    CreateAction::create(),
+                ),
+            )
+            ->addActionGroup(
+                ItemActionGroup::create(
+                    ShowAction::create(),
+                    UpdateAction::create(),
+                    DeleteAction::create(),
+                ),
+            )
+            ->setLimits([10, 5, 15]),
     );
 };

@@ -21,6 +21,8 @@ use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 /**
  * @method string|callable|null getProvider()
  * @method GridBuilderInterface setProvider(string|callable|null $provider)
+ * @method GridBuilderInterface withFields(FieldInterface ...$fields)
+ * @method GridBuilderInterface withFilters(FilterInterface ...$filters)
  *
  * @psalm-method string|callable|null getProvider()
  * @psalm-method GridBuilderInterface setProvider(string|callable|null $provider)
