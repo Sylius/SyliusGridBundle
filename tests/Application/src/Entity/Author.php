@@ -17,11 +17,10 @@ use App\Repository\AuthorRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\Entity;
 
 #[ORM\MappedSuperclass]
 #[ORM\Table(name: 'app_author')]
-#[Entity(repositoryClass: AuthorRepository::class)]
+#[ORM\Entity(repositoryClass: AuthorRepository::class)]
 class Author
 {
     #[ORM\Id]
