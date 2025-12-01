@@ -13,19 +13,28 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
-use ApiTestCase\ApiTestCase;
+use App\Story\AppStory;
 use Coduo\PHPMatcher\Backtrace\VoidBacktrace;
 use Coduo\PHPMatcher\Matcher;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\HttpFoundation\Response;
+use Zenstruck\Foundry\Test\Factories;
+use Zenstruck\Foundry\Test\ResetDatabase;
 
-final class SortingTest extends ApiTestCase
+final class SortingTest extends WebTestCase
 {
+    use Factories;
+    use ResetDatabase;
+
+    private KernelBrowser $client;
+
     protected function setUp(): void
     {
-        parent::setUp();
+        $this->client = $this->createClient();
 
-        $this->loadFixturesFromFile('fixtures.yml');
+        AppStory::load();
     }
 
     /** @test */

@@ -28,6 +28,9 @@ services:
     App\Filter\AttributeNationalityFilter: null
     App\Filter\NationalityFilter: null
 
+    App\Story\:
+        resource: '../src/Story'
+
     App\BoardGameBlog\:
         resource: '../src/BoardGameBlog'
 
