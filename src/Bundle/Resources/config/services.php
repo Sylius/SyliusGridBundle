@@ -32,6 +32,7 @@ use Sylius\Component\Grid\Data\DataSourceProvider;
 use Sylius\Component\Grid\Data\DataSourceProviderInterface;
 use Sylius\Component\Grid\Data\DriverInterface;
 use Sylius\Component\Grid\Data\Provider;
+use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\DataExtractor\PropertyAccessDataExtractor;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
@@ -43,6 +44,7 @@ use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
 use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\ChainProvider;
+use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Sylius\Component\Grid\Sorting\Sorter;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 use Sylius\Component\Grid\Validation\FieldValidator;
@@ -65,6 +67,7 @@ return static function (ContainerConfigurator $container) {
         ->args([service('property_accessor')]);
 
     $services->alias(PropertyAccessDataExtractor::class, 'sylius.grid.data_extractor.property_access');
+    $services->alias(DataExtractorInterface::class, 'sylius.grid.data_extractor.property_access');
 
     $services->set('sylius.grid.array_to_definition_converter', ArrayToDefinitionConverter::class)
         ->args([service('event_dispatcher')]);
@@ -87,6 +90,9 @@ return static function (ContainerConfigurator $container) {
     $services->set('sylius.grid.configuration_sorting_handler', GridConfigurationSortingHandler::class);
 
     $services->alias(GridConfigurationSortingHandlerInterface::class, 'sylius.grid.configuration_sorting_handler');
+
+    $services->alias('sylius.grid.provider', 'sylius.grid.chain_provider');
+    $services->alias(GridProviderInterface::class, 'sylius.grid.provider');
 
     $services->set('sylius.grid.array_grid_provider', ArrayGridProvider::class)
         ->args([
@@ -116,8 +122,6 @@ return static function (ContainerConfigurator $container) {
         ->args([tagged_iterator('sylius.grid_provider')]);
 
     $services->alias(ChainProvider::class, 'sylius.grid.chain_provider');
-
-    $services->alias('sylius.grid.provider', 'sylius.grid.chain_provider');
 
     $services->set('sylius.grid.view_factory', GridViewFactory::class)
         ->args([service('sylius.grid.data_provider')]);
