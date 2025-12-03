@@ -17,10 +17,13 @@ use App\BoardGameBlog\Domain\Model\BoardGame;
 use App\Entity\AdminUser;
 use App\Entity\Book;
 use App\Entity\Price;
+use PHPUnit\Framework\Attributes\CoversClass;
+use Sylius\Bundle\GridBundle\Maker\MakeGrid;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
 use Symfony\Component\Console\Tester\CommandTester;
 
+#[CoversClass(MakeGrid::class)]
 final class MakeGridTest extends MakerTestCase
 {
     private const ADMIN_USER_GRID_PATH = 'Grid/AdminUserGrid.php';
@@ -40,7 +43,11 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileDoesNotExist(self::tempFile(self::PRICE_GRID_PATH));
 
-        $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
+        try {
+            $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
+        } finally {
+            restore_exception_handler();
+        }
 
         $this->assertFileExists(self::tempFile(self::PRICE_GRID_PATH));
         $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile(self::PRICE_GRID_PATH)));
@@ -53,7 +60,11 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOARD_GAME_GRID_PATH));
 
-        $tester->execute(['entity' => BoardGame::class, '--namespace' => 'Tests\Tmp\Grid']);
+        try {
+            $tester->execute(['entity' => BoardGame::class, '--namespace' => 'Tests\Tmp\Grid']);
+        } finally {
+            restore_exception_handler();
+        }
 
         $this->assertFileExists(self::tempFile(self::BOARD_GAME_GRID_PATH));
         $this->assertSame(self::getBoardGameGridExpectedContent(), \file_get_contents(self::tempFile(self::BOARD_GAME_GRID_PATH)));
@@ -66,7 +77,11 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOOK_GRID_PATH));
 
-        $tester->execute(['entity' => Book::class, '--namespace' => 'Tests\Tmp\Grid']);
+        try {
+            $tester->execute(['entity' => Book::class, '--namespace' => 'Tests\Tmp\Grid']);
+        } finally {
+            restore_exception_handler();
+        }
 
         $this->assertFileExists(self::tempFile(self::BOOK_GRID_PATH));
         $this->assertSame(self::getBookGridExpectedContent(), \file_get_contents(self::tempFile(self::BOOK_GRID_PATH)));
@@ -79,7 +94,11 @@ final class MakeGridTest extends MakerTestCase
 
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
-        $tester->execute(['entity' => AdminUser::class, '--namespace' => 'Tests\Tmp\Grid']);
+        try {
+            $tester->execute(['entity' => AdminUser::class, '--namespace' => 'Tests\Tmp\Grid']);
+        } finally {
+            restore_exception_handler();
+        }
 
         $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
         $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
@@ -93,7 +112,12 @@ final class MakeGridTest extends MakerTestCase
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
         $tester->setInputs([AdminUser::class]);
-        $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
+
+        try {
+            $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
+        } finally {
+            restore_exception_handler();
+        }
 
         $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
         $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
@@ -113,6 +137,8 @@ final class MakeGridTest extends MakerTestCase
             $this->assertFileDoesNotExist(self::tempFile(self::INVALID_GRID_PATH));
 
             return;
+        } finally {
+            restore_exception_handler();
         }
 
         $this->fail('Exception not thrown.');
@@ -120,7 +146,7 @@ final class MakeGridTest extends MakerTestCase
 
     private static function getBookGridExpectedContent(): string
     {
-        return <<<EOF
+        return <<<'EOF'
 <?php
 
 namespace App\Tests\Tmp\Grid;
@@ -151,40 +177,30 @@ final class BookGrid extends AbstractGrid
         // TODO inject services if required
     }
 
-    public function __invoke(GridBuilderInterface \$gridBuilder): void
+    public function __invoke(GridBuilderInterface $gridBuilder): void
     {
-        \$gridBuilder
-            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
-            ->addField(
+        $gridBuilder
+            // see https://stack.sylius.com/grid/index/filters
+            // ->addFilters()
+            // see https://stack.sylius.com/grid/index/field_types
+            ->addFields(
                 StringField::create('title')
                     ->setLabel('Title')
-                    ->setSortable(true)
-            )
-            ->addField(
+                    ->setSortable(true),
                 StringField::create('state')
                     ->setLabel('State')
-                    ->setSortable(true)
-            )
-            // ->addField(
-            //    TwigField::create('enabled', 'path/to/field/template.html.twig')
-            //        ->setLabel('Enabled')
-            // )
-            ->addField(
+                    ->setSortable(true),
+                //    TwigField::create('enabled', 'path/to/field/template.html.twig')
+                //        ->setLabel('Enabled'),
                 DateTimeField::create('createdAt')
-                    ->setLabel('CreatedAt')
-            )
-            ->addField(
+                    ->setLabel('CreatedAt'),
                 DateTimeField::create('updatedAt')
-                    ->setLabel('UpdatedAt')
-            )
-            ->addField(
+                    ->setLabel('UpdatedAt'),
                 DateTimeField::create('publishedAt')
-                    ->setLabel('PublishedAt')
-            )
-            ->addField(
+                    ->setLabel('PublishedAt'),
                 StringField::create('price.currencyCode')
                     ->setLabel('Price.currencyCode')
-                    ->setSortable(true)
+                    ->setSortable(true),
             )
             ->addActionGroup(
                 MainActionGroup::create(
@@ -245,11 +261,13 @@ final class PriceGrid extends AbstractGrid
     public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
-            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
-            ->addField(
+            // see https://stack.sylius.com/grid/index/filters
+            // ->addFilters()
+            // see https://stack.sylius.com/grid/index/field_types
+            ->addFields(
                 StringField::create('currencyCode')
                     ->setLabel('CurrencyCode')
-                    ->setSortable(true)
+                    ->setSortable(true),
             )
             ->addActionGroup(
                 MainActionGroup::create(
@@ -310,16 +328,16 @@ final class AdminUserGrid extends AbstractGrid
     public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
-            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
-            ->addField(
+            // see https://stack.sylius.com/grid/index/filters
+            // ->addFilters()
+            // see https://stack.sylius.com/grid/index/field_types
+            ->addFields(
                 StringField::create('username')
                     ->setLabel('Username')
-                    ->setSortable(true)
-            )
-            ->addField(
+                    ->setSortable(true),
                 StringField::create('status')
                     ->setLabel('Status')
-                    ->setSortable(true)
+                    ->setSortable(true),
             )
             ->addActionGroup(
                 MainActionGroup::create(
@@ -380,16 +398,16 @@ final class BoardGameGrid extends AbstractGrid
     public function __invoke(GridBuilderInterface \$gridBuilder): void
     {
         \$gridBuilder
-            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
-            ->addField(
+            // see https://stack.sylius.com/grid/index/filters
+            // ->addFilters()
+            // see https://stack.sylius.com/grid/index/field_types
+            ->addFields(
                 StringField::create('name')
                     ->setLabel('Name')
-                    ->setSortable(true)
-            )
-            ->addField(
+                    ->setSortable(true),
                 StringField::create('shortDescription')
                     ->setLabel('ShortDescription')
-                    ->setSortable(true)
+                    ->setSortable(true),
             )
             ->addActionGroup(
                 MainActionGroup::create(

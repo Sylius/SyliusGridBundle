@@ -36,32 +36,30 @@ final class <?= $class_name ?> extends AbstractGrid
     public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            // see https://github.com/Sylius/SyliusGridBundle/blob/master/docs/field_types.md
+            // see https://stack.sylius.com/grid/index/filters
+            // ->addFilters()
+            // see https://stack.sylius.com/grid/index/field_types
+            ->addFields(
 <?php
-foreach ($defaultFields as $fieldname => $type) {
-    if (in_array($type, ['STRING', 'TEXT'], true)) {
-        echo "            ->addField(\n";
-        echo "                StringField::create('" . $fieldname . "')\n";
-        echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";
-        echo "                    ->setSortable(true)\n";
-        echo "            )\n";
-    }
+                foreach ($defaultFields as $fieldname => $type) {
+                    if (in_array($type, ['STRING', 'TEXT'], true)) {
+                        echo "                StringField::create('" . $fieldname . "')\n";
+                        echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";
+                        echo "                    ->setSortable(true),\n";
+                    }
 
-    if (str_starts_with($type, 'DATE')) {
-        echo "            ->addField(\n";
-        echo "                DateTimeField::create('" . $fieldname . "')\n";
-        echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";
-        echo "            )\n";
-    }
+                    if (str_starts_with($type, 'DATE')) {
+                        echo "                DateTimeField::create('" . $fieldname . "')\n";
+                        echo "                    ->setLabel('" . ucfirst($fieldname) . "'),\n";
+                    }
 
-    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
-        echo "            //->addField(\n";
-        echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
-        echo "            //        ->setLabel('" . ucfirst($fieldname) . "')\n";
-        echo "            //)\n";
-    }
-}
+                    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
+                        echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
+                        echo "            //        ->setLabel('" . ucfirst($fieldname) . "'),\n";
+                    }
+                }
 ?>
+            )
             ->addActionGroup(
                 MainActionGroup::create(
                     CreateAction::create(),
