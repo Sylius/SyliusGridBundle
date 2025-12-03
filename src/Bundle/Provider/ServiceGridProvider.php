@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
@@ -23,6 +24,8 @@ use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\InvokableGridCollection;
+use Sylius\Component\Grid\InvokableGridCollectionInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Webmozart\Assert\Assert;
 
@@ -38,18 +41,22 @@ final class ServiceGridProvider implements GridProviderInterface
 
     private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
 
+    private InvokableGridCollectionInterface $invokableGridCollection;
+
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationExtenderInterface $gridConfigurationExtender,
         ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
         ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
+        ?InvokableGridCollectionInterface $invokableGridCollection = null,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
         $this->gridConfigurationExtender = $gridConfigurationExtender;
         $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
         $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
+        $this->invokableGridCollection = $invokableGridCollection ?? new InvokableGridCollection();
     }
 
     public function get(string $code): Grid
@@ -85,12 +92,23 @@ final class ServiceGridProvider implements GridProviderInterface
      */
     private function extend(array $gridConfiguration, string $parentGridCode): array
     {
-        $parentGrid = $this->gridRegistry->getGrid($parentGridCode);
+        /** @var GridInterface|callable $parentGrid */
+        $parentGrid = $this->gridRegistry->getGrid($parentGridCode) ?? $this->invokableGridCollection->get($parentGridCode);
 
         Assert::notNull($parentGrid, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
 
-        $parentGridConfiguration = $parentGrid->toArray();
+        return $this->gridConfigurationExtender->extends($gridConfiguration, $this->getParentGridConfiguration($parentGridCode, $parentGrid));
+    }
 
-        return $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
+    private function getParentGridConfiguration(string $parentGridCode, GridInterface|callable $parentGrid): array
+    {
+        if ($parentGrid instanceof GridInterface) {
+            return $parentGrid->toArray();
+        }
+
+        $gridBuilder = GridBuilder::create($parentGridCode);
+        $parentGrid($gridBuilder);
+
+        return $gridBuilder->toArray();
     }
 }

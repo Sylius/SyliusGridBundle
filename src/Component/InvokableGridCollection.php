@@ -11,24 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Metadata\Grid;
+namespace Sylius\Component\Grid;
 
+use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 
 /**
  * @internal
  */
-final class GridCollection implements GridCollectionInterface
+final class InvokableGridCollection implements InvokableGridCollectionInterface
 {
-    /** @var array<string, Grid> */
+    /** @var array<string, callable> */
     private array $grids = [];
 
-    public function add(Grid $grid): void
+    public function add(callable $grid): void
     {
+        if (!$grid instanceof InvokableGrid) {
+            $grid = new InvokableGrid($grid);
+        }
+
         $this->grids[$grid->getName()] = $grid;
     }
 
-    public function get(string $name): Grid
+    public function get(string $name): callable
     {
         if (!$this->has($name)) {
             throw new UndefinedGridException($name);

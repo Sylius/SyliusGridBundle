@@ -11,37 +11,31 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Provider;
+namespace Sylius\Bundle\GridBundle\Provider;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
-use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Definition\Grid as GridDefinition;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
-use Sylius\Component\Grid\Metadata\Grid\GridCollectionInterface;
-use Sylius\Component\Grid\Metadata\Grid\InvokableGrid;
+use Sylius\Component\Grid\InvokableGridCollectionInterface;
+use Sylius\Component\Grid\Provider\GridProviderInterface;
 
 final readonly class InvokableGridProvider implements GridProviderInterface
 {
     public function __construct(
-        private GridCollectionInterface $grids,
+        private InvokableGridCollectionInterface $grids,
         private ArrayToDefinitionConverterInterface $converter,
     ) {
     }
 
-    public function get(string $code): Grid
+    public function get(string $code): GridDefinition
     {
         if (!$this->grids->has($code)) {
             throw new UndefinedGridException($code);
         }
 
         $grid = $this->grids->get($code);
-
-        if (!$grid instanceof InvokableGrid) {
-            // TODO: it should throw another exception
-            throw new UndefinedGridException($code);
-        }
-
-        $gridBuilder = GridBuilder::create($code, $grid->getResourceClass());
+        $gridBuilder = GridBuilder::create($code);
         $grid($gridBuilder);
 
         return $this->converter->convert($code, $gridBuilder->toArray());

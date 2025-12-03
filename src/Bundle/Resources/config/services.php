@@ -17,6 +17,7 @@ use Sylius\Bundle\GridBundle\Command\DebugGridCommand;
 use Sylius\Bundle\GridBundle\Maker\MakeGrid;
 use Sylius\Bundle\GridBundle\Parser\OptionsParser;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
+use Sylius\Bundle\GridBundle\Provider\InvokableGridProvider;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
@@ -42,6 +43,8 @@ use Sylius\Component\Grid\Filtering\FiltersApplicator;
 use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
+use Sylius\Component\Grid\InvokableGridCollection;
+use Sylius\Component\Grid\InvokableGridCollectionInterface;
 use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\ChainProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
@@ -79,6 +82,9 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias(GridRegistryInterface::class, 'sylius.grid.grid_registry');
 
+    $services->set('sylius.grid.invokable_grid_collection', InvokableGridCollection::class);
+    $services->alias(InvokableGridCollectionInterface::class, 'sylius.grid.invokable_grid_collection');
+
     $services->set('sylius.grid.configuration_extender', GridConfigurationExtender::class);
 
     $services->alias(GridConfigurationExtenderInterface::class, 'sylius.grid.configuration_extender');
@@ -106,6 +112,13 @@ return static function (ContainerConfigurator $container) {
 
     $services->alias(ArrayGridProvider::class, 'sylius.grid.array_grid_provider');
 
+    $services->set('sylius.grid.invokable_grid_provider', InvokableGridProvider::class)
+        ->args([
+            service('sylius.grid.invokable_grid_collection'),
+            service('sylius.grid.array_to_definition_converter'),
+        ])
+        ->tag('sylius.grid_provider', ['key' => 'service', 'priority' => -100]);
+
     $services->set('sylius.grid.service_grid_provider', ServiceGridProvider::class)
         ->args([
             service('sylius.grid.array_to_definition_converter'),
@@ -113,6 +126,7 @@ return static function (ContainerConfigurator $container) {
             service('sylius.grid.configuration_extender'),
             service('sylius.grid.configuration_removals_handler'),
             service('sylius.grid.configuration_sorting_handler'),
+            service('sylius.grid.invokable_grid_collection'),
         ])
         ->tag('sylius.grid_provider', ['key' => 'service', 'priority' => -100]);
 

@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Metadata\Grid;
+namespace Sylius\Component\Grid;
 
-/** @experimental  */
-interface GridCollectionInterface
+/** @experimental */
+interface InvokableGridCollectionInterface
 {
-    public function add(Grid $grid): void;
+    public function add(callable $grid): void;
 
-    public function get(string $name): Grid;
+    public function get(string $name): callable;
 
     public function has(string $name): bool;
 }

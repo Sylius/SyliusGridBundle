@@ -21,11 +21,11 @@ final class RegisterGridCollectionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('sylius.grid.grid_collection')) {
+        if (!$container->hasDefinition('sylius.grid.invokable_grid_collection')) {
             return;
         }
 
-        $definition = $container->findDefinition('sylius.grid.grid_collection');
+        $definition = $container->findDefinition('sylius.grid.invokable_grid_collection');
 
         $grids = $container->findTaggedServiceIds('sylius.invokable_grid');
 

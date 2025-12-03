@@ -22,11 +22,10 @@ use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(resourceClass: Book::class, name: 'app_book')]
-final class BookGrid extends AbstractGrid
+final class BookGrid
 {
     public function __invoke(GridBuilderInterface $gridBuilder): void
     {
