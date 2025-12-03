@@ -71,11 +71,8 @@ return static function (GridConfig $grid) {
             )
             ->addActionGroup(
                 ItemActionGroup::create(
-                    ShowAction::create([
-                        'link' => [
-                            'route' => 'app_book_show',
-                        ],
-                    ]),
+                    ShowAction::create()
+                        ->setTemplate('book/grid/action/show.html.twig'),
                 ),
             )
             ->addActionGroup(
