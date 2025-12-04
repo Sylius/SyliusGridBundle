@@ -14,79 +14,70 @@ declare(strict_types=1);
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Grid\Builder\NationalityFilter;
-use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
-use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
+use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
-use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (GridConfig $grid) {
-    $grid->addGrid(
-        GridBuilder::create('app_book', Book::class)
-            ->orderBy('title', 'asc')
-            ->withFilters(
-                Filter::create('title', 'string'),
-                Filter::create('author', 'entity')
-                    ->setFormOptions([
-                        'class' => Author::class,
-                        'multiple' => true,
-                    ]),
-                NationalityFilter::create('nationality', null, ['author.nationality']),
-                Filter::create('currencyCode', 'string')
-                    ->setOptions([
-                        'fields' => ['price.currencyCode'],
-                    ]),
-                Filter::create('state', 'select')
-                    ->setFormOptions([
-                        'multiple' => true,
-                        'choices' => [
-                            'initial' => 'initial',
-                            'published' => 'published',
-                            'unpublished' => 'unpublished',
-                        ],
-                    ]),
-            )
-            ->withFields(
-                CallableField::create('title', 'strtoupper')
-                    ->setLabel('Title'),
-                StringField::create('author')
-                    ->setLabel('Author')
-                    ->setPath('author.name')
-                    ->setSortable(true, 'author.name'),
-                StringField::create('nationality')
-                    ->setLabel('Nationality')
-                    ->setPath('author.nationality.name')
-                    ->setSortable(true, 'author.nationality.name'),
-                StringField::create('currency')
-                    ->setLabel('Currency')
-                    ->setPath('price.currencyCode')
-                    ->setSortable(true, 'price.currencyCode')
-                    ->setOption('vars', ['th_class' => 'text-end']),
-            )
-            ->addActionGroup(
-                ItemActionGroup::create(
-                    ShowAction::create()
-                        ->setTemplate('book/grid/action/show.html.twig'),
-                ),
-            )
-            ->addActionGroup(
-                MainActionGroup::create(
-                    CreateAction::create(),
-                ),
-            )
-            ->addActionGroup(
-                ItemActionGroup::create(
-                    ShowAction::create(),
-                    UpdateAction::create(),
-                    DeleteAction::create(),
-                ),
-            )
-            ->setLimits([10, 5, 15]),
-    );
-};
+$gridBuilder = GridBuilder::create('app_book', Book::class)
+    ->orderBy('title', 'asc')
+    ->withFilters(
+        Filter::create('title', 'string'),
+        Filter::create('author', 'entity')
+            ->setFormOptions([
+                'class' => Author::class,
+                'multiple' => true,
+            ]),
+        NationalityFilter::create('nationality', null, ['author.nationality']),
+        Filter::create('currencyCode', 'string')
+            ->setOptions([
+                'fields' => ['price.currencyCode'],
+            ]),
+        Filter::create('state', 'select')
+            ->setFormOptions([
+                'multiple' => true,
+                'choices' => [
+                    'initial' => 'initial',
+                    'published' => 'published',
+                    'unpublished' => 'unpublished',
+                ],
+            ]),
+    )
+    ->withFields(
+        CallableField::create('title', 'strtoupper')
+            ->setLabel('Title'),
+        StringField::create('author')
+            ->setLabel('Author')
+            ->setPath('author.name')
+            ->setSortable(true, 'author.name'),
+        StringField::create('nationality')
+            ->setLabel('Nationality')
+            ->setPath('author.nationality.name')
+            ->setSortable(true, 'author.nationality.name'),
+        StringField::create('currency')
+            ->setLabel('Currency')
+            ->setPath('price.currencyCode')
+            ->setSortable(true, 'price.currencyCode')
+            ->setOption('vars', ['th_class' => 'text-end']),
+    )
+    ->addActionGroup(
+        ItemActionGroup::create(
+            ShowAction::create()
+                ->setTemplate('book/grid/action/show.html.twig'),
+        ),
+    )
+    ->setLimits([10, 5, 15])
+;
+
+if (Kernel::MAJOR_VERSION < 8) {
+    return static function (GridConfig $grid) use ($gridBuilder) {
+        $grid->addGrid($gridBuilder);
+    };
+}
+
+return App::config(['sylius_grid' => (new GridConfig())->addGrid($gridBuilder)->toArray()]);

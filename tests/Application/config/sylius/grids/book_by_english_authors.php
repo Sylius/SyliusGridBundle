@@ -14,41 +14,48 @@ declare(strict_types=1);
 use App\Entity\Author;
 use App\Entity\Book;
 use App\Grid\Builder\NationalityFilter;
+use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (GridConfig $grid) {
-    $grid->addGrid(
-        GridBuilder::create('app_book_by_english_authors', Book::class)
-        ->setRepositoryMethod('createEnglishBooksQueryBuilder')
-        ->addFilter(StringFilter::create('title'))
-        ->addFilter(EntityFilter::create('author', Author::class))
-        ->addFilter(NationalityFilter::create(
-            'nationality',
-            null,
-            ['author.nationality'],
-        ))
-        ->orderBy('title', 'asc')
-        ->addField(
-            StringField::create('title')
+$gridBuilder = GridBuilder::create('app_book_by_english_authors', Book::class)
+    ->setRepositoryMethod('createEnglishBooksQueryBuilder')
+    ->addFilter(StringFilter::create('title'))
+    ->addFilter(EntityFilter::create('author', Author::class))
+    ->addFilter(NationalityFilter::create(
+        'nationality',
+        null,
+        ['author.nationality'],
+    ))
+    ->orderBy('title', 'asc')
+    ->addField(
+        StringField::create('title')
             ->setLabel('Title')
             ->setSortable(true),
-        )
-        ->addField(
-            StringField::create('author')
+    )
+    ->addField(
+        StringField::create('author')
             ->setLabel('Author')
             ->setPath('author.name')
             ->setSortable(true, 'author.name'),
-        )
-        ->addField(
-            StringField::create('nationality')
+    )
+    ->addField(
+        StringField::create('nationality')
             ->setLabel('Nationality')
             ->setPath('author.nationality.name')
             ->setSortable(true, 'na.name'),
-        )
-        ->setLimits([10, 5, 15]),
-    );
-};
+    )
+    ->setLimits([10, 5, 15])
+;
+
+if (Kernel::MAJOR_VERSION < 8) {
+    return static function (GridConfig $grid) use ($gridBuilder): void {
+        $grid->addGrid($gridBuilder);
+    };
+}
+
+return App::config(['sylius_grid' => (new GridConfig())->addGrid($gridBuilder)->toArray()]);

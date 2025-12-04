@@ -176,9 +176,14 @@ final class MakeGrid extends AbstractMaker
                 continue;
             }
 
-            $type = \mb_strtoupper($property['type']);
+            $fieldName = $property['fieldName'];
+            $type = $property['type'];
 
-            yield $property['fieldName'] => $type;
+            if (!\is_string($type) || !\is_string($fieldName)) {
+                continue;
+            }
+
+            yield $fieldName => \mb_strtoupper($type);
         }
     }
 }

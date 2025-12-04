@@ -13,27 +13,34 @@ declare(strict_types=1);
 
 use App\Entity\AdminUser;
 use App\Enum\AdminUserStatusEnum;
+use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Field\EnumField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EnumFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
-return static function (GridConfig $grid) {
-    $grid->addGrid(
-        GridBuilder::create('app_admin_user', AdminUser::class)
-        ->addFilter(StringFilter::create('username'))
-        ->addFilter(EnumFilter::create('status', AdminUserStatusEnum::class, true))
-        ->addField(
-            StringField::create('username')
-                ->setLabel('Username')
-                ->setSortable(true),
-        )
-        ->addField(
-            EnumField::create('status')
-                ->setLabel('Status'),
-        )
-        ->setLimits([10, 5, 15, 100]),
-    );
-};
+$gridBuilder = GridBuilder::create('app_admin_user', AdminUser::class)
+    ->addFilter(StringFilter::create('username'))
+    ->addFilter(EnumFilter::create('status', AdminUserStatusEnum::class, true))
+    ->addField(
+        StringField::create('username')
+            ->setLabel('Username')
+            ->setSortable(true),
+    )
+    ->addField(
+        EnumField::create('status')
+            ->setLabel('Status'),
+    )
+    ->setLimits([10, 5, 15, 100])
+;
+
+if (Kernel::MAJOR_VERSION < 8) {
+    return static function (GridConfig $grid) use ($gridBuilder) {
+        $grid->addGrid($gridBuilder);
+    };
+}
+
+return App::config(['sylius_grid' => (new GridConfig())->addGrid($gridBuilder)->toArray()]);
