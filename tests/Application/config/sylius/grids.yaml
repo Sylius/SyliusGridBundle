@@ -58,7 +58,9 @@ sylius_grid:
             actions:
                 item:
                     show:
-                        type: show
+                        type: custom_show
+                        options:
+                            template: 'grid/action/show.html.twig'
             limits: [10, 5, 15]
 
         app_author:
