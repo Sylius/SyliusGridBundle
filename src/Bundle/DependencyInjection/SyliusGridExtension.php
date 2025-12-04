@@ -19,6 +19,7 @@ use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
+use Sylius\Component\Grid\Attribute\AsField;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
@@ -84,16 +85,20 @@ final class SyliusGridExtension extends Extension
 
         $container->registerAttributeForAutoconfiguration(
             AsFilter::class,
-            static function (ChildDefinition $definition, AsFilter $attribute, \Reflector $reflector): void {
-                // Helps to avoid issues with psalm
-                if (!$reflector instanceof \ReflectionClass) {
-                    return;
-                }
-
+            static function (ChildDefinition $definition, AsFilter $attribute, \ReflectionClass $reflector): void {
                 $definition->addTag(AsFilter::SERVICE_TAG, [
                     'type' => $attribute->type ?? $reflector->getName(),
                     'form_type' => $attribute->formType,
                     'template' => $attribute->template,
+                ]);
+            },
+        );
+
+        $container->registerAttributeForAutoconfiguration(
+            AsField::class,
+            static function (ChildDefinition $definition, AsField $attribute, \ReflectionClass $reflector): void {
+                $definition->addTag(AsField::SERVICE_TAG, [
+                    'type' => $attribute->type ?? $reflector->getName(),
                 ]);
             },
         );
