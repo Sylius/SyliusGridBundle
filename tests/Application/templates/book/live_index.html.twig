@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% set page = app.request.query.get('page') %}
+{% set limit = app.request.query.get('limit') %}
+{% set criteria = app.request.query.all('criteria') %}
+{% set sorting = app.request.query.all('sorting') %}
+
+{% block body %}
+    <h1>Books</h1>
+    {{ component('book_grid', {
+        page,
+        limit,
+        criteria,
+        sorting,
+    }) }}
+{% endblock %}
