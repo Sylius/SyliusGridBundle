@@ -13,6 +13,12 @@ parameters:
 			path: src/Bundle/Form/Type/Filter/MoneyFilterType.php
 
 		-
+			message: '#^Parameter \#2 \$type of method Symfony\\Component\\Form\\FormBuilderInterface\<mixed\>\:\:add\(\) expects class\-string\<Symfony\\Component\\Form\\FormTypeInterface\>\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Bundle/Form/Type/Filter/MoneyFilterType.php
+
+		-
 			message: '#^Possibly invalid array key type mixed\.$#'
 			identifier: offsetAccess.invalidOffset
 			count: 1
