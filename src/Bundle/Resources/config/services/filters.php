@@ -31,6 +31,7 @@ use Sylius\Component\Grid\Filter\ExistsFilter;
 use Sylius\Component\Grid\Filter\NumericRangeFilter;
 use Sylius\Component\Grid\Filter\SelectFilter;
 use Sylius\Component\Grid\Filter\StringFilter;
+use Sylius\Component\Grid\Symfony\Form\Type\FormTypeRegistryInterface;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
@@ -48,6 +49,8 @@ return static function (ContainerConfigurator $container) {
 
     $services->set('sylius.form_registry.grid_filter', FormTypeRegistry::class)
         ->private();
+
+    $services->alias(FormTypeRegistryInterface::class, 'sylius.form_registry.grid_filter');
 
     $services->set('sylius.grid_filter.string', StringFilter::class)
         ->tag('sylius.grid_filter', ['type' => 'string', 'form_type' => StringFilterType::class]);

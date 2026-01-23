@@ -38,7 +38,11 @@
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
-        "symfony/property-access": "^6.4 || ^7.2 || ^8.0"
+        "symfony/property-access": "^6.4 || ^7.2 || ^8.0",
+        "symfony/ux-live-component": "^2.32"
+    },
+    "conflict": {
+        "symfony/ux-live-component": "<2.32"
     },
     "extra": {
         "branch-alias": {

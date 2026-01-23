@@ -1,0 +1,30 @@
+{% import 'shared/helper/grid.html.twig' as grid_helper %}
+{% import _self as self %}
+
+<div {{ attributes }}>
+    {% if withFilters %}
+        {% for filter in filters %}
+            {{ sylius_grid_render_filter(grid, filter) }}
+        {% endfor %}
+        <button data-action="live#action"
+                data-live-action-param="resetFilters"
+        >Reset</button>
+
+        <br />
+    {% endif %}
+
+    <strong>Page limit: </strong>
+
+    {{ self.change_limit_button(10) }}
+    {{ self.change_limit_button(25) }}
+    {{ self.change_limit_button(50) }}
+
+    {{ grid_helper.render(grid, true) }}
+</div>
+
+{% macro change_limit_button(limit) %}
+    <button data-action="live#action"
+            data-live-action-param="changeLimit"
+            data-live-limit-param="{{ limit }}"
+    >{{ limit }}</button>
+{% endmacro %}
