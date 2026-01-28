@@ -11,10 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Bundle\GridBundle\Form\Registry;
+namespace Sylius\Component\Grid\Twig\Component;
 
-use Sylius\Component\Grid\Symfony\Form\Type\FormTypeRegistryInterface as ComponentFormTypeRegistryInterface;
-
-interface FormTypeRegistryInterface extends ComponentFormTypeRegistryInterface
+/**
+ * @experimental
+ */
+trait ComponentWithEntityFilterTrait
 {
+    use ComponentWithSelectFilterTrait;
 }

@@ -25,5 +25,8 @@ return [
     SyliusGridBundle::class => ['all' => true],
     BabDevPagerfantaBundle::class => ['all' => true],
     MakerBundle::class => ['all' => true, 'test_without_maker' => false],
+    Symfony\UX\LiveComponent\LiveComponentBundle::class => ['all' => true],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
     Zenstruck\Foundry\ZenstruckFoundryBundle::class => ['all' => true],
 ];

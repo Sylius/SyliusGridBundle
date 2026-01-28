@@ -43,3 +43,24 @@ parameters:
           identifier: class.notFound
           count: 1
           path: src/Bundle/Doctrine/DataSourceInterface.php
+        # The traits are not used on the codebase
+        - message: '#^Trait Sylius\\Component\\Grid\\Twig\\Component\\ComponentWithEntityFilterTrait is used zero times and is not analysed\.$#'
+          identifier: trait.unused
+          count: 1
+          path: src/Component/Twig/Component/ComponentWithEntityFilterTrait.php
+        - message: '#^Trait Sylius\\Component\\Grid\\Twig\\Component\\ComponentWithFilterTrait is used zero times and is not analysed\.$#'
+          identifier: trait.unused
+          count: 1
+          path: src/Component/Twig/Component/ComponentWithFilterTrait.php
+        - message: '#^Trait Sylius\\Component\\Grid\\Twig\\Component\\ComponentWithGridTrait is used zero times and is not analysed\.$#'
+          identifier: trait.unused
+          count: 1
+          path: src/Component/Twig/Component/ComponentWithGridTrait.php
+        - message: '#^Trait Sylius\\Component\\Grid\\Twig\\Component\\ComponentWithStringFilterTrait is used zero times and is not analysed\.$#'
+          identifier: trait.unused
+          count: 1
+          path: src/Component/Twig/Component/ComponentWithStringFilterTrait.php
+        - message: '#^Trait Sylius\\Component\\Grid\\Twig\\Component\\ComponentWithSelectFilterTrait is used zero times and is not analysed\.$#'
+          identifier: trait.unused
+          count: 1
+          path: src/Component/Twig/Component/ComponentWithSelectFilterTrait.php
