@@ -37,9 +37,9 @@ final class <?= $class_name ?> extends AbstractGrid
     {
         $gridBuilder
             // see https://stack.sylius.com/grid/index/filters
-            // ->addFilters()
+            // ->withFilters()
             // see https://stack.sylius.com/grid/index/field_types
-            ->addFields(
+            ->withFields(
 <?php
                 foreach ($defaultFields as $fieldname => $type) {
                     if (in_array($type, ['STRING', 'TEXT'], true)) {
