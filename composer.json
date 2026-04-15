@@ -40,7 +40,7 @@
         "symfony/options-resolver": "^6.4 || ^7.2 || ^8.0",
         "symfony/property-access": "^6.4 || ^7.2 || ^8.0",
         "symfony/validator": "^6.4 || ^7.2 || ^8.0",
-        "webmozart/assert": "^1.9"
+        "webmozart/assert": "^1.9 || ^2.3"
     },
     "replace": {
         "sylius/grid": "self.version"
