@@ -181,9 +181,9 @@ final class BookGrid extends AbstractGrid
     {
         $gridBuilder
             // see https://stack.sylius.com/grid/index/filters
-            // ->addFilters()
+            // ->withFilters()
             // see https://stack.sylius.com/grid/index/field_types
-            ->addFields(
+            ->withFields(
                 StringField::create('title')
                     ->setLabel('Title')
                     ->setSortable(true),
@@ -262,9 +262,9 @@ final class PriceGrid extends AbstractGrid
     {
         \$gridBuilder
             // see https://stack.sylius.com/grid/index/filters
-            // ->addFilters()
+            // ->withFilters()
             // see https://stack.sylius.com/grid/index/field_types
-            ->addFields(
+            ->withFields(
                 StringField::create('currencyCode')
                     ->setLabel('CurrencyCode')
                     ->setSortable(true),
@@ -329,9 +329,9 @@ final class AdminUserGrid extends AbstractGrid
     {
         \$gridBuilder
             // see https://stack.sylius.com/grid/index/filters
-            // ->addFilters()
+            // ->withFilters()
             // see https://stack.sylius.com/grid/index/field_types
-            ->addFields(
+            ->withFields(
                 StringField::create('username')
                     ->setLabel('Username')
                     ->setSortable(true),
@@ -399,9 +399,9 @@ final class BoardGameGrid extends AbstractGrid
     {
         \$gridBuilder
             // see https://stack.sylius.com/grid/index/filters
-            // ->addFilters()
+            // ->withFilters()
             // see https://stack.sylius.com/grid/index/field_types
-            ->addFields(
+            ->withFields(
                 StringField::create('name')
                     ->setLabel('Name')
                     ->setSortable(true),
