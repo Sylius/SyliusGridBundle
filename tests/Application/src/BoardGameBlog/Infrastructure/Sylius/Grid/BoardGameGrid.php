@@ -16,19 +16,14 @@ namespace App\BoardGameBlog\Infrastructure\Sylius\Grid;
 use App\BoardGameBlog\Infrastructure\Sylius\Grid\DataProvider\BoardGameGridProvider;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class BoardGameGrid extends AbstractGrid
+#[AsGrid(name: 'app_board_game', provider: BoardGameGridProvider::class)]
+final class BoardGameGrid
 {
-    public static function getName(): string
-    {
-        return 'app_board_game';
-    }
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->setProvider(BoardGameGridProvider::class)
             ->addField(
                 StringField::create('name')
                     ->setLabel('Name'),

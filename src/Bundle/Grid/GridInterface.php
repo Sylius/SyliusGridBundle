@@ -15,6 +15,9 @@ namespace Sylius\Bundle\GridBundle\Grid;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 
+/**
+ * @deprecated since Sylius Grid 1.16, will be removed in 2.0, use Sylius\Component\Grid\GridInterface instead
+ */
 interface GridInterface
 {
     public static function getName(): string;

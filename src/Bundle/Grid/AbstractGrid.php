@@ -18,6 +18,9 @@ use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
 use Sylius\Component\Grid\Exception\LogicException;
 
+/**
+ * @deprecated since Sylius Grid 1.16, will be removed in 2.0, use the Sylius\Component\Grid\Attribute\AsGrid attribute only.
+ */
 abstract class AbstractGrid implements GridInterface
 {
     public static function getName(): string

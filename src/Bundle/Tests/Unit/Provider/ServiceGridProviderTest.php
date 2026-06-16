@@ -15,7 +15,9 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Provider;
 
 use App\Grid\BookGrid;
 use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
@@ -91,7 +93,6 @@ final class ServiceGridProviderTest extends TestCase
     {
         $fooGrid = $this->createMock(GridInterface::class);
         $fooFightersGrid = $this->createMock(GridInterface::class);
-        $fooGridDefinition = $this->createMock(Grid::class);
         $fooFightersGridDefinition = $this->createMock(Grid::class);
 
         $this->gridRegistry
@@ -111,6 +112,18 @@ final class ServiceGridProviderTest extends TestCase
         $this->converter->method('convert')->with('app_foo_fighters', $config)->willReturn($fooFightersGridDefinition);
 
         $this->assertSame($fooFightersGridDefinition, $this->provider->get('app_foo_fighters'));
+    }
+
+    public function testSupportsInvokableGrid(): void
+    {
+        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn(new InvokableGrid(
+            function (GridBuilderInterface $gridBuilder): void {},
+            'app_book',
+        ));
+
+        $gridDefinition = $this->provider->get('app_book');
+
+        $this->assertInstanceOf(Grid::class, $gridDefinition);
     }
 
     public function testThrowsUndefinedGridExceptionWhenGridIsNotFound(): void

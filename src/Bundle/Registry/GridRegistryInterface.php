@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Registry;
 
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
+use Sylius\Component\Grid\GridInterface;
 
 interface GridRegistryInterface
 {
-    public function getGrid(string $code): ?GridInterface;
+    public function getGrid(string $code): LegacyGridInterface|GridInterface|null;
 }
