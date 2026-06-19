@@ -14,15 +14,14 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\AttributeGridPass;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\InvokableGridPass;
 use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
 
-final class AttributeGridPassTest extends TestCase
+final class InvokableGridPassTest extends TestCase
 {
     public function test_it_adds_attribute_grid_tag_when_autoconfiguring(): void
     {
@@ -37,7 +36,7 @@ final class AttributeGridPassTest extends TestCase
 
         $reflector = new \ReflectionClass(DummyGrid::class);
 
-        AttributeGridPass::autoconfigureFromAttribute(
+        InvokableGridPass::autoconfigureFromAttribute(
             $definition,
             $attribute,
             $reflector,
@@ -45,13 +44,12 @@ final class AttributeGridPassTest extends TestCase
 
         $this->assertSame([
             [
-                'class' => DummyGrid::class,
                 'name' => 'admin_product',
                 'resourceClass' => 'App\Entity\Product',
                 'buildMethod' => 'buildGrid',
                 'provider' => 'app.provider',
             ],
-        ], $definition->getTag('sylius.attribute_grid'));
+        ], $definition->getTag('sylius.invokable_grid'));
     }
 
     public function test_it_registers_invokable_grid_services(): void
@@ -59,16 +57,15 @@ final class AttributeGridPassTest extends TestCase
         $container = new ContainerBuilder();
 
         $container
-            ->register('app.grid')
-            ->addTag('sylius.attribute_grid', [
-                'class' => DummyGrid::class,
+            ->register('app.grid', DummyGrid::class)
+            ->addTag('sylius.invokable_grid', [
                 'name' => 'admin_product',
                 'resourceClass' => 'App\Entity\Product',
                 'buildMethod' => 'buildGrid',
                 'provider' => 'app.provider',
             ]);
 
-        $pass = new AttributeGridPass();
+        $pass = new InvokableGridPass();
 
         $pass->process($container);
 
@@ -92,20 +89,6 @@ final class AttributeGridPassTest extends TestCase
             ['name' => 'admin_product'],
             ['name' => DummyGrid::class],
         ], $definition->getTag('sylius.grid'));
-    }
-
-    public function test_it_throws_when_class_attribute_is_missing(): void
-    {
-        $container = new ContainerBuilder();
-
-        $container
-            ->register('app.grid')
-            ->addTag('sylius.attribute_grid', []);
-
-        $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('"class" attribute not found on "sylius.grid" tag for "app.grid" service.');
-
-        (new AttributeGridPass())->process($container);
     }
 }
 

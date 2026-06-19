@@ -19,18 +19,17 @@ use Sylius\Component\Grid\Attribute\AsGrid;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Exception\LogicException;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
- * Register an instance of AttributeGrid for each service using the
- * PHP attributes to declare Grids.
+ * Register an instance of InvokableGrid for each service using the
+ * PHP attributes to declare Grids, or using the "sylius.invokable_grid" tag.
  *
  * @internal
  */
-final class AttributeGridPass implements CompilerPassInterface
+final class InvokableGridPass implements CompilerPassInterface
 {
-    private const TAG = 'sylius.attribute_grid';
+    private const TAG = 'sylius.invokable_grid';
 
     /**
      * @param \ReflectionClass<AsGrid> $reflector
@@ -43,7 +42,6 @@ final class AttributeGridPass implements CompilerPassInterface
         }
 
         $definition->addTag(self::TAG, [
-            'class' => $class,
             'name' => $attribute->name ?? $class,
             'resourceClass' => $attribute->resourceClass,
             'buildMethod' => $attribute->buildMethod,
@@ -54,11 +52,10 @@ final class AttributeGridPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         foreach ($container->findTaggedServiceIds(self::TAG, true) as $id => $tags) {
+            $class = $container->findDefinition($id)->getClass();
+
             /** @var array<string, string|null> $attribute */
             foreach ($tags as $attribute) {
-                /** @var string $class */
-                $class = $attribute['class'] ?? throw new LogicException(sprintf('"class" attribute not found on "sylius.grid" tag for "%s" service.', $id));
-
                 $name = $attribute['name'] ?? $class;
                 $resourceClass = $attribute['resourceClass'] ?? null;
                 $buildMethod = $attribute['buildMethod'] ?? null;
