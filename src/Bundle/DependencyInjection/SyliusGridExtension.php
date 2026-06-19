@@ -16,11 +16,14 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\AttributeGridPass;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
 use Sylius\Component\Grid\Attribute\AsField;
 use Sylius\Component\Grid\Attribute\AsFilter;
+use Sylius\Component\Grid\Attribute\AsGrid;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
 use Symfony\Component\Config\FileLocator;
@@ -93,6 +96,21 @@ final class SyliusGridExtension extends Extension
                 ]);
             },
         );
+
+        $container->registerAttributeForAutoconfiguration(AsGrid::class, static function (ChildDefinition $definition, AsGrid $attribute, \ReflectionClass $reflector) use ($container): void {
+            if (is_a($reflector->name, GridInterface::class, true)) {
+                return;
+            }
+
+            $container->register('sylius.grid', InvokableGrid::class)
+                ->setArguments([
+                    $attribute->name,
+                ])
+                ->addTag('sylius.grid')
+            ;
+        });
+
+        $container->registerAttributeForAutoconfiguration(AsGrid::class, AttributeGridPass::autoconfigureFromAttribute(...));
 
         $container->registerAttributeForAutoconfiguration(
             AsField::class,

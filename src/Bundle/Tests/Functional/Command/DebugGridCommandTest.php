@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Functional\Command;
+namespace Sylius\Bundle\GridBundle\Tests\Functional\Command;
 
 use App\BoardGameBlog\Infrastructure\Sylius\Grid\BoardGameGrid;
 use Symfony\Bundle\FrameworkBundle\Console\Application;

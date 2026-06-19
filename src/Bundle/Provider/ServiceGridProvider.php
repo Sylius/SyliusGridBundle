@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
+use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
@@ -22,7 +24,9 @@ use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
 use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Exception\LogicException;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\GridInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Webmozart\Assert\Assert;
 
@@ -54,7 +58,7 @@ final class ServiceGridProvider implements GridProviderInterface
 
     public function get(string $code): Grid
     {
-        if (is_a($code, GridInterface::class, true)) {
+        if (is_a($code, LegacyGridInterface::class, true)) {
             $code = $code::getName();
         }
 
@@ -64,7 +68,7 @@ final class ServiceGridProvider implements GridProviderInterface
             throw new UndefinedGridException($code);
         }
 
-        $gridConfiguration = $grid->toArray();
+        $gridConfiguration = $this->getGridConfiguration($grid);
 
         if (isset($gridConfiguration['extends'])) {
             /** @var string $parentGridCode */
@@ -89,8 +93,32 @@ final class ServiceGridProvider implements GridProviderInterface
 
         Assert::notNull($parentGrid, sprintf('Parent grid with code "%s" does not exists.', $parentGridCode));
 
-        $parentGridConfiguration = $parentGrid->toArray();
+        $parentGridConfiguration = $this->getGridConfiguration($parentGrid);
 
         return $this->gridConfigurationExtender->extends($gridConfiguration, $parentGridConfiguration);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getGridConfiguration(LegacyGridInterface|GridInterface $grid): array
+    {
+        if ($grid instanceof LegacyGridInterface) {
+            return $grid->toArray();
+        }
+
+        if (!$grid instanceof InvokableGrid) {
+            throw new LogicException(sprintf('"%s" should be an instance of "%s"', $grid::class, InvokableGrid::class));
+        }
+
+        $gridBuilder = GridBuilder::create($grid->getName(), $grid->getResourceClass());
+
+        if (null !== $grid->getProvider()) {
+            $gridBuilder->setProvider($grid->getProvider());
+        }
+
+        $grid($gridBuilder);
+
+        return $gridBuilder->toArray();
     }
 }

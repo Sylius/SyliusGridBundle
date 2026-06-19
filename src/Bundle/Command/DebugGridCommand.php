@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Command;
 
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
+use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
+use Sylius\Component\Grid\GridInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -121,8 +123,27 @@ EOF
      */
     private function getGridChoices(): array
     {
+        $taggedGrids = [];
+
+        foreach ($this->taggedGrids->getProvidedServices() as $id => $class) {
+            $grid = $this->taggedGrids->get($id);
+
+            if ($grid instanceof LegacyGridInterface) {
+                $taggedGrids[] = $grid::getName();
+            }
+
+            if ($grid instanceof GridInterface) {
+                $taggedGrids[] = $grid->getName();
+            }
+
+            if ($grid instanceof InvokableGrid and null !== $grid->getClass()) {
+                // It allows to reference the grid by its FQCN
+                $taggedGrids[] = $grid->getClass();
+            }
+        }
+
         $grids = array_merge(
-            $this->taggedGrids->getProvidedServices(),
+            $taggedGrids,
             array_keys($this->gridConfigurations),
         );
 

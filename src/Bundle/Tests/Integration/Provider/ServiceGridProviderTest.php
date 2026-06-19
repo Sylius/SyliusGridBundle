@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Integration\Provider;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
+use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+#[CoversClass(ServiceGridProvider::class)]
 final class ServiceGridProviderTest extends KernelTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function test_grids_inheritance(): void
     {
         self::bootKernel(['environment' => 'test_grids_as_service']);

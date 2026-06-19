@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Registry;
 
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
+use Sylius\Component\Grid\GridInterface;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 final class GridRegistry implements GridRegistryInterface
@@ -24,7 +25,7 @@ final class GridRegistry implements GridRegistryInterface
     ) {
     }
 
-    public function getGrid(string $code): ?GridInterface
+    public function getGrid(string $code): LegacyGridInterface|GridInterface|null
     {
         return $this->gridLocator->has($code) ? $this->gridLocator->get($code) : null;
     }

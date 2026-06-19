@@ -1,3 +1,48 @@
+## UPGRADE FOR `1.16.x`
+
+### FROM `1.15.x` TO `1.16.x`
+
+#### PHP Grids
+
+The `Sylius\Bundle\GridBundle\Grid\AbstractGrid` and the `Sylius\Bundle\GridBundle\Grid\GridInterface` are deprecated.
+You should use the `Sylius\Component\Grid\Attribute\AsGrid` attribute only.
+
+```diff
+<?php
+
+declare(strict_types=1);
+
+namespace App\Grid;
+
+use App\Entity\Book;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
+use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
+
++#[AsGrid(resourceClass: Book::class, name: 'app_book')]
+-final class BookGrid extends AbstractGrid implements ResourceAwareGridInterface
++final class BookGrid
+{
+-    public function buildGrid(GridBuilderInterface $gridBuilder): void
++    public function __invoke(GridBuilderInterface $gridBuilder): void
+    {
+        // ...
+    }
+-    
+-    public function getResourceClass(): string
+-    {
+-        return Book::class;
+-    }
+-
+-    public static function getName(): string
+-    {
+-        return 'app_book'
+-    }
+}
+
+```
+
 ## UPGRADE FOR `1.15.x`
 
 ### FROM `1.14.x` TO `1.15.x`

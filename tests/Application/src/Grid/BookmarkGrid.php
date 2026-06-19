@@ -16,22 +16,12 @@ namespace App\Grid;
 use App\Entity\Book;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
-use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Attribute\AsGrid;
 
-final class BookmarkGrid extends AbstractGrid implements ResourceAwareGridInterface
+#[AsGrid(resourceClass: Book::class, name: 'app_bookmark')]
+final class BookmarkGrid
 {
-    public static function getName(): string
-    {
-        return 'app_bookmark';
-    }
-
-    public function getResourceClass(): string
-    {
-        return Book::class;
-    }
-
-    public function buildGrid(GridBuilderInterface $gridBuilder): void
+    public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
             ->extends('app_book')
