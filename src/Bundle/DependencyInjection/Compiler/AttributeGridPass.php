@@ -59,16 +59,9 @@ final class AttributeGridPass implements CompilerPassInterface
                 /** @var string $class */
                 $class = $attribute['class'] ?? throw new LogicException(sprintf('"class" attribute not found on "sylius.grid" tag for "%s" service.', $id));
 
-                /** @var string $name */
                 $name = $attribute['name'] ?? $class;
-
-                /** @var string|null $resourceClass */
                 $resourceClass = $attribute['resourceClass'] ?? null;
-
-                /** @var string|null $buildMethod */
                 $buildMethod = $attribute['buildMethod'] ?? null;
-
-                /** @var string|null $provider */
                 $provider = $attribute['provider'] ?? null;
 
                 $container->register('.sylius.grid.' . $id, InvokableGrid::class)
