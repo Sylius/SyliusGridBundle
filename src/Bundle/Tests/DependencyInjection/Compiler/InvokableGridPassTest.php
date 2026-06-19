@@ -90,8 +90,71 @@ final class InvokableGridPassTest extends TestCase
             ['name' => DummyGrid::class],
         ], $definition->getTag('sylius.grid'));
     }
+
+    public function test_it_reads_metadata_from_as_grid_attribute_when_tag_has_no_name(): void
+    {
+        $container = new ContainerBuilder();
+
+        $container
+            ->register('app.grid', AttributedDummyGrid::class)
+            ->addTag('sylius.invokable_grid');
+
+        $pass = new InvokableGridPass();
+
+        $pass->process($container);
+
+        $definition = $container->getDefinition('.sylius.grid.app.grid');
+
+        $this->assertEquals([
+            new Reference('app.grid'),
+            'app_book',
+            AttributedDummyGrid::class,
+            'App\Entity\Book',
+            'build',
+            'app.book_provider',
+        ], $definition->getArguments());
+
+        $this->assertSame([
+            ['name' => 'app_book'],
+            ['name' => AttributedDummyGrid::class],
+        ], $definition->getTag('sylius.grid'));
+    }
+
+    public function test_tag_attributes_override_the_as_grid_attribute(): void
+    {
+        $container = new ContainerBuilder();
+
+        $container
+            ->register('app.grid', AttributedDummyGrid::class)
+            ->addTag('sylius.invokable_grid', ['name' => 'overridden']);
+
+        $pass = new InvokableGridPass();
+
+        $pass->process($container);
+
+        $definition = $container->getDefinition('.sylius.grid.app.grid');
+
+        $this->assertEquals([
+            new Reference('app.grid'),
+            'overridden',
+            AttributedDummyGrid::class,
+            'App\Entity\Book',
+            'build',
+            'app.book_provider',
+        ], $definition->getArguments());
+
+        $this->assertSame([
+            ['name' => 'overridden'],
+            ['name' => AttributedDummyGrid::class],
+        ], $definition->getTag('sylius.grid'));
+    }
 }
 
 final class DummyGrid
+{
+}
+
+#[AsGrid(resourceClass: 'App\Entity\Book', name: 'app_book', buildMethod: 'build', provider: 'app.book_provider')]
+final class AttributedDummyGrid
 {
 }
