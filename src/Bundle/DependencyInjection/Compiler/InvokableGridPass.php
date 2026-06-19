@@ -53,13 +53,14 @@ final class InvokableGridPass implements CompilerPassInterface
     {
         foreach ($container->findTaggedServiceIds(self::TAG, true) as $id => $tags) {
             $class = $container->findDefinition($id)->getClass();
+            $asGrid = $this->resolveAsGrid($class);
 
             /** @var array<string, string|null> $attribute */
             foreach ($tags as $attribute) {
-                $name = $attribute['name'] ?? $class;
-                $resourceClass = $attribute['resourceClass'] ?? null;
-                $buildMethod = $attribute['buildMethod'] ?? null;
-                $provider = $attribute['provider'] ?? null;
+                $name = $attribute['name'] ?? $asGrid->name ?? $class;
+                $resourceClass = $attribute['resourceClass'] ?? $asGrid->resourceClass;
+                $buildMethod = $attribute['buildMethod'] ?? $asGrid->buildMethod;
+                $provider = $attribute['provider'] ?? $asGrid->provider;
 
                 $container->register('.sylius.grid.' . $id, InvokableGrid::class)
                     ->setArguments([new Reference($id), $name, $class, $resourceClass, $buildMethod, $provider])
@@ -68,5 +69,17 @@ final class InvokableGridPass implements CompilerPassInterface
                 ;
             }
         }
+    }
+
+    private function resolveAsGrid(?string $class): AsGrid
+    {
+        // getClass() may be null or a "%parameter%" placeholder; only reflect real classes.
+        if (null === $class || !class_exists($class)) {
+            return new AsGrid();
+        }
+
+        $attributes = (new \ReflectionClass($class))->getAttributes(AsGrid::class);
+
+        return ($attributes[0] ?? null)?->newInstance() ?? new AsGrid();
     }
 }
