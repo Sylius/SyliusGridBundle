@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\DependencyInjection;
 use Doctrine\Bundle\DoctrineBundle\DoctrineBundle;
 use Doctrine\Bundle\PHPCRBundle\DoctrinePHPCRBundle;
 use Sylius\Bundle\CurrencyBundle\SyliusCurrencyBundle;
-use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\AttributeGridPass;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\InvokableGridPass;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
@@ -96,7 +96,7 @@ final class SyliusGridExtension extends Extension
             },
         );
 
-        $container->registerAttributeForAutoconfiguration(AsGrid::class, AttributeGridPass::autoconfigureFromAttribute(...));
+        $container->registerAttributeForAutoconfiguration(AsGrid::class, InvokableGridPass::autoconfigureFromAttribute(...));
 
         $container->registerAttributeForAutoconfiguration(
             AsField::class,
