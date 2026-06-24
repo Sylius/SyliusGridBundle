@@ -23,6 +23,11 @@ use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
  * @method GridBuilderInterface setProvider(string|callable|null $provider)
  * @method GridBuilderInterface withFields(FieldInterface ...$fields)
  * @method GridBuilderInterface withFilters(FilterInterface ...$filters)
+ * @method GridBuilderInterface withActions(string $group, ActionInterface ...$actions)
+ * @method GridBuilderInterface withMainActions(ActionInterface ...$actions)
+ * @method GridBuilderInterface withItemActions(ActionInterface ...$actions)
+ * @method GridBuilderInterface withSubItemActions(ActionInterface ...$actions)
+ * @method GridBuilderInterface withBulkActions(ActionInterface ...$actions)
  *
  * @psalm-method string|callable|null getProvider()
  * @psalm-method GridBuilderInterface setProvider(string|callable|null $provider)

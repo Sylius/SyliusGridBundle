@@ -206,6 +206,35 @@ final class GridBuilder implements GridBuilderInterface
         return $this;
     }
 
+    public function withActions(string $group, ActionInterface ...$actions): self
+    {
+        foreach ($actions as $action) {
+            $this->addAction($action, $group);
+        }
+
+        return $this;
+    }
+
+    public function withMainActions(ActionInterface ...$actions): self
+    {
+        return $this->withActions(ActionGroupInterface::MAIN_GROUP, ...$actions);
+    }
+
+    public function withItemActions(ActionInterface ...$actions): self
+    {
+        return $this->withActions(ActionGroupInterface::ITEM_GROUP, ...$actions);
+    }
+
+    public function withSubItemActions(ActionInterface ...$actions): self
+    {
+        return $this->withActions(ActionGroupInterface::SUB_ITEM_GROUP, ...$actions);
+    }
+
+    public function withBulkActions(ActionInterface ...$actions): self
+    {
+        return $this->withActions(ActionGroupInterface::BULK_GROUP, ...$actions);
+    }
+
     public function removeAction(string $name, string $group): self
     {
         $actionGroup = $this->actionGroups[$group] ?? null;
