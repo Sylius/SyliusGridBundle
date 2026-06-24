@@ -17,7 +17,6 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Grid\Builder\NationalityFilter;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
@@ -71,11 +70,9 @@ final class BookGrid extends AbstractGrid
                     ->setSortable(true, 'price.currencyCode')
                     ->setOption('vars', ['th_class' => 'text-end']),
             )
-            ->addActionGroup(
-                ItemActionGroup::create(
-                    ShowAction::create()
-                        ->setTemplate('book/grid/action/show.html.twig'),
-                ),
+            ->withItemActions(
+                ShowAction::create()
+                    ->setTemplate('book/grid/action/show.html.twig'),
             )
             ->setLimits([10, 5, 15])
         ;

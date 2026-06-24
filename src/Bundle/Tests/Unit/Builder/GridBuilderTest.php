@@ -219,6 +219,51 @@ final class GridBuilderTest extends TestCase
         $this->assertSame('sylius.ui.edit', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]['update']['label']);
     }
 
+    public function testWithActions(): void
+    {
+        $this->gridBuilder->withActions(ActionGroupInterface::MAIN_GROUP, CreateAction::create());
+        $this->gridBuilder->withActions(ActionGroupInterface::ITEM_GROUP, UpdateAction::create());
+
+        $this->assertArrayHasKey(ActionGroupInterface::MAIN_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey(ActionGroupInterface::ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('create', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]);
+        $this->assertArrayHasKey('update', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+    }
+
+    public function testWithMainActions(): void
+    {
+        $this->gridBuilder->withMainActions(CreateAction::create());
+
+        $this->assertArrayHasKey(ActionGroupInterface::MAIN_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('create', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::MAIN_GROUP]);
+    }
+
+    public function testWithItemActions(): void
+    {
+        $this->gridBuilder->withItemActions(UpdateAction::create(), DeleteAction::create());
+
+        $this->assertArrayHasKey(ActionGroupInterface::ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('update', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+        $this->assertArrayHasKey('delete', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::ITEM_GROUP]);
+    }
+
+    public function testWithSubItemActions(): void
+    {
+        $this->gridBuilder->withSubItemActions(UpdateAction::create(), DeleteAction::create());
+
+        $this->assertArrayHasKey(ActionGroupInterface::SUB_ITEM_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('update', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::SUB_ITEM_GROUP]);
+        $this->assertArrayHasKey('delete', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::SUB_ITEM_GROUP]);
+    }
+
+    public function testWithBulkActions(): void
+    {
+        $this->gridBuilder->withBulkActions(DeleteAction::create());
+
+        $this->assertArrayHasKey(ActionGroupInterface::BULK_GROUP, $this->gridBuilder->toArray()['actions']);
+        $this->assertArrayHasKey('delete', $this->gridBuilder->toArray()['actions'][ActionGroupInterface::BULK_GROUP]);
+    }
+
     public function testAddsUpdateActionsOnASpecificGroup(): void
     {
         $this->gridBuilder->addAction(UpdateAction::create(), 'custom');
