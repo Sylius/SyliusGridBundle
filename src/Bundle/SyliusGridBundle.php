@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle;
 
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\GridMutatorPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\InvokableGridPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterDriversPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFieldTypesPass;
@@ -40,6 +41,7 @@ final class SyliusGridBundle extends Bundle
         $container->addCompilerPass(new RegisterTimezoneParameterPass());
         $container->addCompilerPass(new ValidateConfiguredGridDriversPass());
         $container->addCompilerPass(new InvokableGridPass());
+        $container->addCompilerPass(new GridMutatorPass());
     }
 
     /**

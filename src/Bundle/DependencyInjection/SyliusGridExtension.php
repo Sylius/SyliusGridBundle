@@ -23,11 +23,14 @@ use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
 use Sylius\Component\Grid\Attribute\AsField;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Attribute\AsGridMutator;
 use Sylius\Component\Grid\Data\DataProviderInterface;
 use Sylius\Component\Grid\Filtering\ConfigurableFilterInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Exception\RuntimeException;
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Twig\Environment;
@@ -103,6 +106,20 @@ final class SyliusGridExtension extends Extension
             static function (ChildDefinition $definition, AsField $attribute, \ReflectionClass $reflector): void {
                 $definition->addTag(AsField::SERVICE_TAG, [
                     'type' => $attribute->type ?? $reflector->getName(),
+                ]);
+            },
+        );
+
+        $container->registerAttributeForAutoconfiguration(
+            AsGridMutator::class,
+            static function (ChildDefinition $definition, AsGridMutator $attribute, \ReflectionClass $reflector): void {
+                if (!is_a($reflector->name, GridMutatorInterface::class, true)) {
+                    throw new RuntimeException(\sprintf('Grid mutator "%s" should implement %s', $reflector->name, GridMutatorInterface::class));
+                }
+
+                $definition->addTag('sylius.grid_mutator', [
+                    'grid' => $attribute->grid,
+                    'priority' => $attribute->priority,
                 ]);
             },
         );

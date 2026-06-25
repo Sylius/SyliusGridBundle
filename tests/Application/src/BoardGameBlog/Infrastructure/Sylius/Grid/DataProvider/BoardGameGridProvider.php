@@ -31,6 +31,9 @@ final class BoardGameGridProvider implements DataProviderInterface
     {
         $data = [];
 
+        /** @var array<string, string> $sorting */
+        $sorting = $parameters->get('sorting', $grid->getSorting());
+
         foreach ($this->getFileData() as $row) {
             [$id, $name, $shortDescription] = str_getcsv($row);
 
@@ -43,6 +46,14 @@ final class BoardGameGridProvider implements DataProviderInterface
                 name: $name,
                 shortDescription: $shortDescription,
             );
+        }
+
+        if ('asc' === ($sorting['name'] ?? null)) {
+            usort($data, fn (BoardGame $a, BoardGame $b) => $a->name <=> $b->name);
+        }
+
+        if ('desc' === ($sorting['name'] ?? null)) {
+            usort($data, fn (BoardGame $a, BoardGame $b) => $b->name <=> $a->name);
         }
 
         return new Pagerfanta(new ArrayAdapter($data));

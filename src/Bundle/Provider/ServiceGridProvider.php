@@ -27,6 +27,8 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\LogicException;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
 use Sylius\Component\Grid\GridInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorCollection;
+use Sylius\Component\Grid\Mutator\GridMutatorCollectionInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Webmozart\Assert\Assert;
 
@@ -42,18 +44,22 @@ final class ServiceGridProvider implements GridProviderInterface
 
     private GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler;
 
+    private GridMutatorCollectionInterface $gridMutatorCollection;
+
     public function __construct(
         ArrayToDefinitionConverterInterface $converter,
         GridRegistryInterface $gridRegistry,
         GridConfigurationExtenderInterface $gridConfigurationExtender,
         ?GridConfigurationRemovalsHandlerInterface $gridConfigurationRemovalsHandler = null,
         ?GridConfigurationSortingHandlerInterface $gridConfigurationSortingHandler = null,
+        ?GridMutatorCollectionInterface $gridMutatorCollection = null,
     ) {
         $this->converter = $converter;
         $this->gridRegistry = $gridRegistry;
         $this->gridConfigurationExtender = $gridConfigurationExtender;
         $this->gridConfigurationRemovalsHandler = $gridConfigurationRemovalsHandler ?? new GridConfigurationRemovalsHandler();
         $this->gridConfigurationSortingHandler = $gridConfigurationSortingHandler ?? new GridConfigurationSortingHandler();
+        $this->gridMutatorCollection = $gridMutatorCollection ?? new GridMutatorCollection();
     }
 
     public function get(string $code): Grid
@@ -118,6 +124,10 @@ final class ServiceGridProvider implements GridProviderInterface
         }
 
         $grid($gridBuilder);
+
+        foreach ($this->gridMutatorCollection->get($grid->getName()) as $mutator) {
+            ($mutator)($gridBuilder);
+        }
 
         return $gridBuilder->toArray();
     }
