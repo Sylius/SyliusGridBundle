@@ -15,6 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
 use App\Factory\AuthorFactory;
 use App\Story\AppStory;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -74,7 +75,7 @@ final class GridUiTest extends WebTestCase
         $this->assertContains('', $nationalities);
     }
 
-    /** @test */
+    #[Test]
     public function it_sorts_authors_by_name_ascending_by_default(): void
     {
         $this->client->request('GET', '/authors?limit=100');
@@ -87,7 +88,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($sortedNames, $names);
     }
 
-    /** @test */
+    #[Test]
     public function it_sorts_authors_by_name_descending(): void
     {
         $this->client->request('GET', '/authors?sorting[name]=desc&limit=100');
@@ -315,6 +316,19 @@ final class GridUiTest extends WebTestCase
         $this->assertContains('enum.status.banned', $statuses);
     }
 
+    #[Test]
+    public function it_sorts_board_games_by_name_ascending_by_default(): void
+    {
+        $this->client->request('GET', '/board-games?limit=100');
+
+        $names = $this->getBoardGameNamesFromResponse();
+
+        $sortedNames = $names;
+        sort($names);
+
+        $this->assertSame($sortedNames, $names);
+    }
+
     /** @return string[] */
     private function getBookTitlesFromResponse(): array
     {
@@ -380,6 +394,16 @@ final class GridUiTest extends WebTestCase
     {
         return $this->getCrawler()
             ->filter('[data-test-status]')
+            ->each(
+                fn (Crawler $node): string => $node->text(),
+            );
+    }
+
+    /** @return string[] */
+    private function getBoardGameNamesFromResponse(): array
+    {
+        return $this->getCrawler()
+            ->filter('[data-test-name]')
             ->each(
                 fn (Crawler $node): string => $node->text(),
             );

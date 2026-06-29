@@ -42,6 +42,7 @@ use Sylius\Component\Grid\Filtering\FiltersApplicator;
 use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorCollection;
 use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\ChainProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
@@ -113,6 +114,7 @@ return static function (ContainerConfigurator $container) {
             service('sylius.grid.configuration_extender'),
             service('sylius.grid.configuration_removals_handler'),
             service('sylius.grid.configuration_sorting_handler'),
+            service('sylius.grid.mutator_collection'),
         ])
         ->tag('sylius.grid_provider', ['key' => 'service', 'priority' => -100]);
 
@@ -213,5 +215,8 @@ return static function (ContainerConfigurator $container) {
         ->private();
 
     $services->alias(OptionsParserInterface::class, 'sylius.grid.options_parser')
+        ->private();
+
+    $services->set('sylius.grid.mutator_collection', GridMutatorCollection::class)
         ->private();
 };
