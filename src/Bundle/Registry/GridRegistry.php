@@ -20,8 +20,8 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 final class GridRegistry implements GridRegistryInterface
 {
     public function __construct(
-        /** @var ServiceLocator<GridInterface> */
-        private ServiceLocator $gridLocator,
+        /** @var ServiceLocator<LegacyGridInterface|GridInterface> */
+        private readonly ServiceLocator $gridLocator,
     ) {
     }
 

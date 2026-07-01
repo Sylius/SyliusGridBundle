@@ -13,122 +13,48 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Unit\Provider;
 
+use App\Entity\Book;
+use App\Grid\Mutator\AddAuthorFieldBookGridMutator;
+use App\Grid\Mutator\SortByTitleBookGridMutator;
 use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
-use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
-use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
-use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
+use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\Mutator\GridMutatorCollection;
+use Sylius\Component\Grid\Mutator\GridMutatorCollectionInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorInterface;
 use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class ArrayGridProviderTest extends TestCase
 {
-    private ArrayGridProvider $provider;
-
-    private ArrayToDefinitionConverterInterface $converter;
-
-    private GridConfigurationRemovalsHandlerInterface $removalsHandler;
-
-    private GridConfigurationSortingHandlerInterface $sortingHandler;
-
-    private Grid $firstGrid;
-
-    private Grid $secondGrid;
-
-    private Grid $thirdGrid;
-
-    private Grid $fourthGrid;
-
-    private Grid $fifthGrid;
-
-    private Grid $sixthGrid;
-
-    private Grid $seventhGrid;
-
-    protected function setUp(): void
-    {
-        $this->converter = $this->createMock(ArrayToDefinitionConverterInterface::class);
-        $this->removalsHandler = $this->createMock(GridConfigurationRemovalsHandlerInterface::class);
-        $this->sortingHandler = $this->createMock(GridConfigurationSortingHandlerInterface::class);
-
-        $this->firstGrid = $this->createMock(Grid::class);
-        $this->secondGrid = $this->createMock(Grid::class);
-        $this->thirdGrid = $this->createMock(Grid::class);
-        $this->fourthGrid = $this->createMock(Grid::class);
-        $this->fifthGrid = $this->createMock(Grid::class);
-        $this->sixthGrid = $this->createMock(Grid::class);
-        $this->seventhGrid = $this->createMock(Grid::class);
-
-        $this->converter
-            ->method('convert')
-            ->willReturnCallback(function (string $name): Grid {
-                return match ($name) {
-                    'sylius_admin_tax_category' => $this->firstGrid,
-                    'sylius_admin_product' => $this->secondGrid,
-                    'sylius_admin_order' => $this->thirdGrid,
-                    'sylius_admin_product_from_taxon' => $this->fourthGrid,
-                    'sylius_admin_book' => $this->fifthGrid,
-                    'sylius_admin_customer' => $this->sixthGrid,
-                    'sylius_admin_book_per_author' => $this->seventhGrid,
-                    default => throw new UndefinedGridException($name),
-                };
-            });
-
-        $this->removalsHandler
-            ->method('handle')
-            ->willReturnCallback(static fn (array $config): array => $config);
-
-        $this->sortingHandler
-            ->method('handle')
-            ->willReturnCallback(static fn (array $config): array => $config);
-
-        $this->provider = new ArrayGridProvider(
-            $this->converter,
-            [
-                'sylius_admin_tax_category' => ['configuration1'],
-                'sylius_admin_product' => ['configuration2' => 'foo'],
-                'sylius_admin_order' => ['configuration3'],
-                'sylius_admin_product_from_taxon' => [
-                    'extends' => 'sylius_admin_product',
-                    'configuration4' => 'bar',
-                ],
-                'sylius_admin_book' => ['extends' => '404'],
-                'sylius_admin_customer' => [
-                    'fields' => ['customer' => []],
-                    'removals' => ['fields' => ['customer']],
-                ],
-                'sylius_admin_book_per_author' => [
-                    'fields' => [
-                        'title' => [],
-                    ],
-                    'sorting' => [
-                        'title' => 'asc',
-                    ],
-                ],
-            ],
-            new GridConfigurationExtender(),
-            $this->removalsHandler,
-            $this->sortingHandler,
-        );
-    }
-
     public function testImplementsGridProviderInterface(): void
     {
-        self::assertInstanceOf(GridProviderInterface::class, $this->provider);
+        $this->assertInstanceOf(GridProviderInterface::class, self::createProvider());
     }
 
-    public function testReturnsClonedGridDefinitionByName(): void
+    public function testProvidesAGridDefinition(): void
     {
-        self::assertSame($this->firstGrid, $this->provider->get('sylius_admin_tax_category'));
-        self::assertSame($this->secondGrid, $this->provider->get('sylius_admin_product'));
-        self::assertSame($this->thirdGrid, $this->provider->get('sylius_admin_order'));
+        $provider = $this->createProvider([
+            'app_book' => ['driver' => ['name' => 'doctrine/orm']],
+        ]);
+
+        $this->assertEquals(Grid::fromCodeAndDriverConfiguration('app_book', 'doctrine/orm', []), $provider->get('app_book'));
     }
 
     public function testSupportsGridInheritance(): void
     {
-        self::assertSame($this->fourthGrid, $this->provider->get('sylius_admin_product_from_taxon'));
+        $provider = $this->createProvider([
+            'app_book' => ['driver' => ['name' => 'doctrine/orm'], 'extends' => 'app_parent_grid'],
+            'app_parent_grid' => ['driver' => ['name' => 'doctrine/orm'], 'fields' => ['title' => ['type' => 'string']]],
+        ]);
+
+        $this->assertTrue($provider->get('app_book')->hasField('title'));
     }
 
     public function testThrowsAnExceptionIfGridDoesNotExist(): void
@@ -136,23 +62,132 @@ final class ArrayGridProviderTest extends TestCase
         $this->expectException(UndefinedGridException::class);
         $this->expectExceptionMessage('sylius_admin_order_item');
 
-        $this->provider->get('sylius_admin_order_item');
+        $provider = $this->createProvider();
+
+        $provider->get('sylius_admin_order_item');
     }
 
     public function testThrowsAnInvalidArgumentExceptionWhenParentGridIsNotFound(): void
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Grid with code "app_parent_grid" does not exists.');
 
-        $this->provider->get('sylius_admin_book');
+        $provider = $this->createProvider([
+            'app_book' => ['extends' => 'app_parent_grid'],
+        ]);
+
+        $provider->get('app_book');
     }
 
     public function testSupportsGridRemovals(): void
     {
-        self::assertSame($this->sixthGrid, $this->provider->get('sylius_admin_customer'));
+        $provider = $this->createProvider([
+            'app_book' => [
+                'driver' => ['name' => 'doctrine/orm'],
+                'fields' => ['title' => ['type' => 'string']],
+                'removals' => ['fields' => ['title']],
+            ],
+        ]);
+
+        $this->assertFalse($provider->get('app_book')->hasField('title'));
     }
 
     public function testMakesFieldsSortableIfSortingIsEnabledForIt(): void
     {
-        self::assertSame($this->seventhGrid, $this->provider->get('sylius_admin_book_per_author'));
+        $provider = $this->createProvider([
+            'app_book' => [
+                'driver' => ['name' => 'doctrine/orm'],
+                'fields' => ['title' => ['type' => 'string']],
+                'sorting' => ['title' => 'asc'],
+            ],
+        ]);
+
+        self::assertTrue($provider->get('app_book')->getField('title')->isSortable());
+    }
+
+    public function testSupportsGridMutators(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new SortByTitleBookGridMutator());
+        $gridMutatorCollection->add('app_book', new AddAuthorFieldBookGridMutator());
+
+        $provider = $this->createProvider([
+            'app_book' => [
+                'driver' => [
+                    'name' => 'doctrine/orm',
+                    'options' => [
+                        'class' => Book::class,
+                    ],
+                ],
+                'fields' => ['title' => ['type' => 'string']],
+            ],
+        ], $gridMutatorCollection);
+
+        $grid = $provider->get('app_book');
+
+        $this->assertTrue($grid->hasField('title'));
+        $this->assertTrue($grid->hasField('author'));
+        $this->assertSame(['title' => 'asc'], $grid->getSorting());
+    }
+
+    public function testMutatorRemovalsDoNotOverwriteGridRemovals(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new class() implements GridMutatorInterface {
+            public function __invoke(GridBuilderInterface $gridBuilder): void
+            {
+                $gridBuilder->removeField('author');
+            }
+        });
+
+        $provider = $this->createProvider([
+            'app_book' => [
+                'driver' => ['name' => 'doctrine/orm'],
+                'fields' => [
+                    'title' => ['type' => 'string'],
+                    'price' => ['type' => 'string'],
+                    'author' => ['type' => 'string'],
+                ],
+                'removals' => ['fields' => ['price']],
+            ],
+        ], $gridMutatorCollection);
+
+        $grid = $provider->get('app_book');
+
+        $this->assertFalse($grid->hasField('author')); // OK — mutator removal works
+        $this->assertFalse($grid->hasField('price'));  // FAILS — 'price' is back on the grid
+    }
+
+    public function testMutatorSortingReplacesExistingSorting(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new SortByTitleBookGridMutator());
+
+        $provider = $this->createProvider([
+            'app_book' => [
+                'driver' => ['name' => 'doctrine/orm'],
+                'fields' => ['title' => ['type' => 'string']],
+                'sorting' => ['createdAt' => 'desc'],
+            ],
+        ], $gridMutatorCollection);
+
+        $this->assertSame(['title' => 'asc'], $provider->get('app_book')->getSorting());
+    }
+
+    /**
+     * @param array<string, array<string, mixed>> $gridConfigurations
+     */
+    private function createProvider(
+        array $gridConfigurations = [],
+        ?GridMutatorCollectionInterface $gridMutatorCollection = null,
+    ): ArrayGridProvider {
+        return new ArrayGridProvider(
+            new ArrayToDefinitionConverter(new EventDispatcher()),
+            $gridConfigurations,
+            new GridConfigurationExtender(),
+            new GridConfigurationRemovalsHandler(),
+            new GridConfigurationSortingHandler(),
+            $gridMutatorCollection,
+        );
     }
 }

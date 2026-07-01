@@ -14,3 +14,6 @@ services:
         resource: '../src'
         # we do not use grids as service here
         exclude: '../src/Grid'
+
+    App\Grid\Mutator\:
+        resource: '../src/Grid/Mutator'

@@ -25,7 +25,6 @@ use Sylius\Bundle\GridBundle\Config\GridConfig;
 use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 $gridBuilder = GridBuilder::create('app_book', Book::class)
-    ->orderBy('title', 'asc')
     ->withFilters(
         Filter::create('title', 'string'),
         Filter::create('author', 'entity')
@@ -51,10 +50,6 @@ $gridBuilder = GridBuilder::create('app_book', Book::class)
     ->withFields(
         CallableField::create('title', 'strtoupper')
             ->setLabel('Title'),
-        StringField::create('author')
-            ->setLabel('Author')
-            ->setPath('author.name')
-            ->setSortable(true, 'author.name'),
         StringField::create('nationality')
             ->setLabel('Nationality')
             ->setPath('author.nationality.name')

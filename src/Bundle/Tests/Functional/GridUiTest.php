@@ -212,6 +212,19 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
+    #[Test]
+    public function it_sorts_books_by_title_ascending_by_default(): void
+    {
+        $this->client->request('GET', '/books?limit=100');
+
+        $titles = $this->getBookTitlesFromResponse();
+
+        $sortedTitles = $titles;
+        sort($titles);
+
+        $this->assertSame($sortedTitles, $titles);
+    }
+
     /** @test */
     public function it_sorts_books_ascending_by_author(): void
     {

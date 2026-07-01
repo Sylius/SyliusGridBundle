@@ -14,184 +14,273 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Provider;
 
 use App\Grid\BookGrid;
+use App\Grid\Mutator\AddAuthorFieldBookGridMutator;
+use App\Grid\Mutator\SortByTitleBookGridMutator;
 use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\GridInterface;
+use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
 use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
-use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
+use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
-use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;
-use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandlerInterface;
-use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
+use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
+use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;
+use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Exception\UndefinedGridException;
+use Sylius\Component\Grid\GridInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorCollection;
+use Sylius\Component\Grid\Mutator\GridMutatorCollectionInterface;
+use Sylius\Component\Grid\Mutator\GridMutatorInterface;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class ServiceGridProviderTest extends TestCase
 {
-    private ArrayToDefinitionConverterInterface $converter;
-
-    private GridRegistryInterface $gridRegistry;
-
-    private GridConfigurationRemovalsHandlerInterface $removalsHandler;
-
-    private GridConfigurationSortingHandlerInterface $sortingHandler;
-
-    private ServiceGridProvider $provider;
-
-    protected function setUp(): void
-    {
-        $this->converter = $this->createMock(ArrayToDefinitionConverterInterface::class);
-        $this->gridRegistry = $this->createMock(GridRegistryInterface::class);
-        $this->removalsHandler = $this->createMock(GridConfigurationRemovalsHandlerInterface::class);
-        $this->sortingHandler = $this->createMock(GridConfigurationSortingHandlerInterface::class);
-
-        $this->provider = new ServiceGridProvider(
-            $this->converter,
-            $this->gridRegistry,
-            new GridConfigurationExtender(),
-            $this->removalsHandler,
-            $this->sortingHandler,
-        );
-    }
-
     public function testIsAGridProvider(): void
     {
-        $this->assertInstanceOf(GridProviderInterface::class, $this->provider);
+        $this->assertInstanceOf(GridProviderInterface::class, $this->createProvider());
     }
 
     public function testGetsGridDefinitionByCode(): void
     {
-        $grid = $this->createMock(GridInterface::class);
-        $gridDefinition = $this->createMock(Grid::class);
+        $provider = $this->createProvider([
+            new BookGrid(),
+        ]);
 
-        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn($grid);
-        $grid->method('toArray')->willReturn([]);
+        $grid = $provider->get('app_book');
 
-        $this->removalsHandler->method('handle')->willReturn([]);
-        $this->sortingHandler->method('handle')->willReturn([]);
-        $this->converter->method('convert')->with('app_book', [])->willReturn($gridDefinition);
-
-        $this->assertSame($gridDefinition, $this->provider->get('app_book'));
+        $this->assertSame('app_book', $grid->getCode());
     }
 
     public function testGetsGridDefinitionByClassName(): void
     {
-        $bookGrid = new BookGrid();
-        $gridDefinition = $this->createMock(Grid::class);
+        $provider = $this->createProvider([
+            new BookGrid(),
+        ]);
 
-        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn($bookGrid);
-        $this->removalsHandler->method('handle')->willReturn([]);
-        $this->sortingHandler->method('handle')->willReturn([]);
-        $this->converter->method('convert')->with('app_book', [])->willReturn($gridDefinition);
+        $grid = $provider->get(BookGrid::class);
 
-        $this->assertSame($gridDefinition, $this->provider->get(BookGrid::class));
+        $this->assertSame('app_book', $grid->getCode());
     }
 
     public function testSupportsGridInheritance(): void
     {
-        $fooGrid = $this->createMock(GridInterface::class);
-        $fooFightersGrid = $this->createMock(GridInterface::class);
-        $fooFightersGridDefinition = $this->createMock(Grid::class);
+        $provider = $this->createProvider([
+            new InvokableGrid(
+                function (GridBuilderInterface $gridBuilder): void {
+                    $gridBuilder->extends('app_parent_grid');
+                },
+                'app_book',
+            ),
+            new InvokableGrid(
+                function (GridBuilderInterface $gridBuilder): void {
+                    $gridBuilder->addField(StringField::create('title'));
+                },
+                'app_parent_grid',
+            ),
+        ]);
 
-        $this->gridRegistry
-            ->method('getGrid')
-            ->willReturnMap([
-                ['app_foo', $fooGrid],
-                ['app_foo_fighters', $fooFightersGrid],
-            ]);
-
-        $fooGrid->method('toArray')->willReturn(['configuration_foo' => 'foo']);
-        $fooFightersGrid->method('toArray')->willReturn(['extends' => 'app_foo', 'configuration_foo_fighters' => 'foo_fighters']);
-
-        $config = ['configuration_foo' => 'foo', 'configuration_foo_fighters' => 'foo_fighters'];
-
-        $this->removalsHandler->method('handle')->willReturn($config);
-        $this->sortingHandler->method('handle')->willReturn($config);
-        $this->converter->method('convert')->with('app_foo_fighters', $config)->willReturn($fooFightersGridDefinition);
-
-        $this->assertSame($fooFightersGridDefinition, $this->provider->get('app_foo_fighters'));
+        $this->assertTrue($provider->get('app_book')->hasField('title'));
     }
 
     public function testSupportsInvokableGrid(): void
     {
-        $this->gridRegistry->method('getGrid')->with('app_book')->willReturn(new InvokableGrid(
-            function (GridBuilderInterface $gridBuilder): void {},
-            'app_book',
-        ));
+        $provider = $this->createProvider([
+            new InvokableGrid(
+                function (GridBuilderInterface $gridBuilder): void {},
+                'app_book',
+            ),
+        ]);
 
-        $gridDefinition = $this->provider->get('app_book');
+        $gridDefinition = $provider->get('app_book');
 
         $this->assertInstanceOf(Grid::class, $gridDefinition);
     }
 
     public function testThrowsUndefinedGridExceptionWhenGridIsNotFound(): void
     {
-        $this->gridRegistry->method('getGrid')->willReturn(null);
+        $provider = $this->createProvider();
 
         $this->expectException(UndefinedGridException::class);
 
-        $this->provider->get('app_book');
+        $provider->get('app_book');
     }
 
     public function testThrowsInvalidArgumentExceptionWhenParentGridIsNotFound(): void
     {
-        $grid = $this->createMock(GridInterface::class);
-
-        $this->gridRegistry->method('getGrid')->willReturnMap([
-            ['app_foo_fighters', $grid],
-            ['app_foo', null],
+        $provider = $this->createProvider([
+            new InvokableGrid(function (GridBuilderInterface $gridBuilder): void {
+                $gridBuilder
+                    ->extends('app_parent_grid')
+                ;
+            }, 'app_book'),
         ]);
 
-        $grid->method('toArray')->willReturn(['extends' => 'app_foo']);
-
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Parent grid with code "app_parent_grid" does not exists.');
 
-        $this->provider->get('app_foo_fighters');
+        $provider->get('app_book');
     }
 
     public function testSupportsGridRemovals(): void
     {
-        $grid = $this->createMock(GridInterface::class);
-        $gridDefinition = $this->createMock(Grid::class);
-
-        $this->gridRegistry->method('getGrid')->with('app_foo')->willReturn($grid);
-
-        $grid->method('toArray')->willReturn([
-            'fields' => ['customer' => []],
-            'removals' => ['fields' => ['customer']],
+        $provider = $this->createProvider([
+            new InvokableGrid(function (GridBuilderInterface $gridBuilder): void {
+                $gridBuilder
+                    ->addField(StringField::create('title'))
+                    ->removeField('title')
+                ;
+            }, 'app_book'),
         ]);
 
-        $this->removalsHandler->method('handle')->willReturn(['fields' => []]);
-        $this->sortingHandler->method('handle')->willReturn(['fields' => []]);
-        $this->converter->method('convert')->with('app_foo', ['fields' => []])->willReturn($gridDefinition);
-
-        $this->assertSame($gridDefinition, $this->provider->get('app_foo'));
+        $this->assertFalse($provider->get('app_book')->hasField('title'));
     }
 
     public function testMakesFieldsSortableIfSortingIsEnabled(): void
     {
-        $grid = $this->createMock(GridInterface::class);
-        $gridDefinition = $this->createMock(Grid::class);
+        $provider = $this->createProvider([
+            new InvokableGrid(function (GridBuilderInterface $gridBuilder): void {
+                $gridBuilder
+                    ->addField(StringField::create('title'))
+                    ->orderBy('title', 'asc')
+                ;
+            }, 'app_book'),
+        ]);
 
-        $this->gridRegistry->method('getGrid')->with('app_foo')->willReturn($grid);
+        self::assertTrue($provider->get('app_book')->getField('title')->isSortable());
+    }
 
-        $config = [
-            'fields' => ['title' => []],
-            'sorting' => ['title' => 'asc'],
-        ];
+    public function testSupportsGridMutatorsWithInvokableGrids(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new SortByTitleBookGridMutator());
+        $gridMutatorCollection->add('app_book', new AddAuthorFieldBookGridMutator());
 
-        $sortableConfig = [
-            'fields' => ['title' => ['sortable' => true]],
-            'sorting' => ['title' => 'asc'],
-        ];
+        $provider = $this->createProvider([
+            new InvokableGrid(function (GridBuilderInterface $gridBuilder): void {
+                $gridBuilder
+                    ->addField(StringField::create('title'))
+                ;
+            }, 'app_book'),
+        ], $gridMutatorCollection);
 
-        $grid->method('toArray')->willReturn($config);
-        $this->removalsHandler->method('handle')->willReturn($config);
-        $this->sortingHandler->method('handle')->willReturn($sortableConfig);
-        $this->converter->method('convert')->with('app_foo', $sortableConfig)->willReturn($gridDefinition);
+        $this->assertTrue($provider->get('app_book')->hasField('title'));
+        $this->assertTrue($provider->get('app_book')->hasField('author'));
+        $this->assertSame(['title' => 'asc'], $provider->get('app_book')->getSorting());
+    }
 
-        $this->assertSame($gridDefinition, $this->provider->get('app_foo'));
+    public function testSupportsGridMutatorsWithLegacyGrids(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new SortByTitleBookGridMutator());
+        $gridMutatorCollection->add('app_book', new AddAuthorFieldBookGridMutator());
+
+        $provider = $this->createProvider([
+            new BookGrid(),
+        ], $gridMutatorCollection);
+
+        $grid = $provider->get('app_book');
+
+        $this->assertTrue($grid->hasField('title'));
+        $this->assertTrue($grid->hasField('author'));
+        $this->assertSame(['title' => 'asc'], $grid->getSorting());
+    }
+
+    public function testMutatorRemovalsDoNotOverwriteGridRemovals(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new class() implements GridMutatorInterface {
+            public function __invoke(GridBuilderInterface $gridBuilder): void
+            {
+                $gridBuilder->removeField('author');
+            }
+        });
+
+        $legacyGrid = new class() implements LegacyGridInterface {
+            public static function getName(): string
+            {
+                return 'app_book';
+            }
+
+            public function toArray(): array
+            {
+                return [
+                    'driver' => ['name' => 'doctrine/orm'],
+                    'fields' => [
+                        'title' => ['type' => 'string'],
+                        'price' => ['type' => 'string'],
+                        'author' => ['type' => 'string'],
+                    ],
+                    'removals' => ['fields' => ['price']],
+                ];
+            }
+
+            public function buildGrid(GridBuilderInterface $gridBuilder): void
+            {
+            }
+        };
+
+        $provider = $this->createProvider([$legacyGrid], $gridMutatorCollection);
+
+        $grid = $provider->get('app_book');
+
+        $this->assertFalse($grid->hasField('author'));
+        $this->assertFalse($grid->hasField('price'));
+    }
+
+    public function testMutatorSortingReplacesExistingSorting(): void
+    {
+        $gridMutatorCollection = new GridMutatorCollection();
+        $gridMutatorCollection->add('app_book', new SortByTitleBookGridMutator());
+
+        $legacyGrid = new class() implements LegacyGridInterface {
+            public static function getName(): string
+            {
+                return 'app_book';
+            }
+
+            public function toArray(): array
+            {
+                return [
+                    'driver' => ['name' => 'doctrine/orm'],
+                    'fields' => ['title' => ['type' => 'string']],
+                    'sorting' => ['createdAt' => 'desc'],
+                ];
+            }
+
+            public function buildGrid(GridBuilderInterface $gridBuilder): void
+            {
+            }
+        };
+
+        $provider = $this->createProvider([$legacyGrid], $gridMutatorCollection);
+
+        $this->assertSame(['title' => 'asc'], $provider->get('app_book')->getSorting());
+    }
+
+    /**
+     * @param list<LegacyGridInterface|GridInterface> $grids
+     */
+    private function createProvider(
+        array $grids = [],
+        ?GridMutatorCollectionInterface $gridMutatorCollection = null,
+    ): ServiceGridProvider {
+        /** @var array<string, callable> $locatedGrids */
+        $locatedGrids = [];
+        foreach ($grids as $grid) {
+            $locatedGrids[$grid->getName()] = fn () => $grid;
+        }
+
+        return new ServiceGridProvider(
+            new ArrayToDefinitionConverter(new EventDispatcher()),
+            new GridRegistry(new ServiceLocator($locatedGrids)),
+            new GridConfigurationExtender(),
+            new GridConfigurationRemovalsHandler(),
+            new GridConfigurationSortingHandler(),
+            $gridMutatorCollection,
+        );
     }
 }

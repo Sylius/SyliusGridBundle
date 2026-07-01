@@ -29,19 +29,12 @@ sylius_grid:
                             initial: initial
                             published: published
                             unpublished: unpublished
-            sorting:
-                title: asc
             fields:
                 title:
                     type: callable
                     options:
                         callable: "callable:strtoupper"
                     label: Title
-                author:
-                    type: string
-                    label: Author
-                    path: author.name
-                    sortable: author.name
                 nationality:
                     type: string
                     label: Nationality
