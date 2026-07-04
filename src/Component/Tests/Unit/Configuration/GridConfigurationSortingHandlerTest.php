@@ -50,4 +50,19 @@ final class GridConfigurationSortingHandlerTest extends TestCase
             ],
         ], (new GridConfigurationSortingHandler())->handle($gridConfiguration));
     }
+
+    public function testSortingByAnUndefinedField(): void
+    {
+        $gridConfiguration = [
+            'fields' => [
+            ],
+            'sorting' => [
+                'title' => 'asc',
+            ],
+        ];
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Missing configuration for field "title". You can not sort by fields that are not configured.');
+        (new GridConfigurationSortingHandler())->handle($gridConfiguration);
+    }
 }
