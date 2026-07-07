@@ -110,7 +110,53 @@ final class ServiceGridProvider implements GridProviderInterface
     private function getGridConfiguration(LegacyGridInterface|GridInterface $grid): array
     {
         if ($grid instanceof LegacyGridInterface) {
-            return $grid->toArray();
+            /** @var array{
+             *      driver: array{
+             *          name: string,
+             *          options: array<string, mixed>
+             *      },
+             *  } $gridConfiguration */
+            $gridConfiguration = $grid->toArray();
+
+            $driver = $gridConfiguration['driver']['name'] ?? null;
+            $driverOptions = $gridConfiguration['driver']['options'] ?? [];
+
+            $gridBuilder = GridBuilder::create($grid->getName());
+
+            if (null !== $driver) {
+                $gridBuilder->setDriver($driver);
+            }
+
+            foreach ($driverOptions as $option => $value) {
+                $gridBuilder->setDriverOption($option, $value);
+            }
+
+            foreach ($this->gridMutatorCollection->get($grid->getName()) as $mutator) {
+                ($mutator)($gridBuilder);
+            }
+
+            /** @var array<string, mixed> $builderConfiguration */
+            $builderConfiguration = $gridBuilder->toArray();
+
+            /** @var array<string, mixed> $builderRemovals */
+            $builderRemovals = $builderConfiguration['removals'] ?? [];
+
+            if ([] !== $builderRemovals) {
+                $builderConfiguration['removals'] = $this->mergeRemovals(
+                    $gridConfiguration['removals'] ?? [],
+                    $builderRemovals,
+                );
+            }
+
+            if (isset($builderConfiguration['sorting'])) {
+                /** @phpstan-ignore unset.offset */
+                unset($gridConfiguration['sorting']);
+            }
+
+            /** @var array<string, mixed> $newGridConfiguration */
+            $newGridConfiguration = array_replace_recursive($gridConfiguration, $builderConfiguration);
+
+            return $newGridConfiguration;
         }
 
         if (!$grid instanceof InvokableGrid) {
@@ -130,5 +176,35 @@ final class ServiceGridProvider implements GridProviderInterface
         }
 
         return $gridBuilder->toArray();
+    }
+
+    /**
+     * Removals contain numeric lists (flat for fields/filters, nested per group for actions) —
+     * array_replace_recursive would collide their indexes, so union them instead.
+     *
+     * @param array<array-key, mixed> $existing
+     * @param array<array-key, mixed> $new
+     *
+     * @return array<array-key, mixed>
+     */
+    private function mergeRemovals(array $existing, array $new): array
+    {
+        foreach ($new as $key => $value) {
+            if (is_int($key)) {
+                if (!in_array($value, $existing, true)) {
+                    $existing[] = $value;
+                }
+            } elseif (is_array($value)) {
+                /** @var array<array-key, mixed> $subExisting */
+                $subExisting = $existing[$key] ?? [];
+                /** @var array<array-key, mixed> $subValue */
+                $subValue = $value;
+                $existing[$key] = $this->mergeRemovals($subExisting, $subValue);
+            } else {
+                $existing[$key] = $value;
+            }
+        }
+
+        return $existing;
     }
 }

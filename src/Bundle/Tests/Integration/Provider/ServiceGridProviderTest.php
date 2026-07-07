@@ -36,8 +36,8 @@ final class ServiceGridProviderTest extends KernelTestCase
 
         $this->assertEquals([
             'title',
-            'author',
             'currency',
+            'author',
             'id',
         ], array_keys($gridDefinition->getFields()));
 

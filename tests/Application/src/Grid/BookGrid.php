@@ -30,7 +30,6 @@ final class BookGrid extends AbstractGrid
     public function __invoke(GridBuilderInterface $gridBuilder): void
     {
         $gridBuilder
-            ->orderBy('title', 'asc')
             ->withFilters(
                 Filter::create('title', 'string'),
                 Filter::create('author', 'entity')
@@ -56,10 +55,6 @@ final class BookGrid extends AbstractGrid
             ->withFields(
                 CallableField::create('title', 'strtoupper')
                     ->setLabel('Title'),
-                StringField::create('author')
-                    ->setLabel('Author')
-                    ->setPath('author.name')
-                    ->setSortable(true, 'author.name'),
                 StringField::create('nationality')
                     ->setLabel('Nationality')
                     ->setPath('author.nationality.name')

@@ -102,6 +102,7 @@ return static function (ContainerConfigurator $container) {
             service('sylius.grid.configuration_extender'),
             service('sylius.grid.configuration_removals_handler'),
             service('sylius.grid.configuration_sorting_handler'),
+            service('sylius.grid.mutator_collection'),
         ])
         ->tag('sylius.grid_provider', ['key' => 'array', 'priority' => -200]);
 
