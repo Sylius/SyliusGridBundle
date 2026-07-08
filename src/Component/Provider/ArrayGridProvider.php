@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Component\Grid\Provider;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
+use Sylius\Component\Grid\Attribute\AsGrid;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
@@ -27,6 +28,9 @@ use Sylius\Component\Grid\Mutator\GridMutatorCollection;
 use Sylius\Component\Grid\Mutator\GridMutatorCollectionInterface;
 use Webmozart\Assert\Assert;
 
+/**
+ * @deprecated
+ */
 final class ArrayGridProvider implements GridProviderInterface
 {
     private ArrayToDefinitionConverterInterface $converter;
@@ -66,6 +70,8 @@ final class ArrayGridProvider implements GridProviderInterface
         if (!array_key_exists($code, $this->gridConfigurations)) {
             throw new UndefinedGridException($code);
         }
+
+        \trigger_deprecation('sylius/grid-bundle', '1.16', 'The "%s" grid uses the legacy grid config system, use the "%s" attribute instead.', $code, AsGrid::class);
 
         $gridConfiguration = $this->getGridConfiguration($code);
 
