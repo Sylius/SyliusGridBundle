@@ -12,9 +12,6 @@ use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\BulkActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ItemActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\MainActionGroup;
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
@@ -60,22 +57,16 @@ final class <?= $class_name ?> extends AbstractGrid
                 }
 ?>
             )
-            ->addActionGroup(
-                MainActionGroup::create(
-                    CreateAction::create(),
-                )
+            ->withMainActions(
+                CreateAction::create(),
             )
-            ->addActionGroup(
-                ItemActionGroup::create(
-                    // ShowAction::create(),
-                    UpdateAction::create(),
-                    DeleteAction::create()
-                )
+            ->withItemActions(
+                // ShowAction::create(),
+                UpdateAction::create(),
+                DeleteAction::create(),
             )
-            ->addActionGroup(
-                BulkActionGroup::create(
-                    DeleteAction::create()
-                )
+            ->withBulkActions(
+                DeleteAction::create(),
             )
         ;
     }
