@@ -19,8 +19,8 @@ use Sylius\Bundle\GridBundle\Builder\Field\EnumField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EnumFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 #[AsGrid(resourceClass: AdminUser::class, name: 'app_admin_user')]
 final class AdminUserGrid

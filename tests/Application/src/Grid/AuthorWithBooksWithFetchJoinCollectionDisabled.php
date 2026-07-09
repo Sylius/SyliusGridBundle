@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace App\Grid;
 
 use App\Entity\Author;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class AuthorWithBooksWithFetchJoinCollectionDisabled extends AbstractGrid implements ResourceAwareGridInterface
 {

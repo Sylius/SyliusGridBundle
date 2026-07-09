@@ -16,7 +16,7 @@ namespace App\Grid\Builder;
 use App\Entity\Nationality;
 use App\Filter\AttributeNationalityFilter as GridNationalityFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 
 final class AttributeNationalityFilter
 {

@@ -13,28 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\ActionGroup;
 
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
+interface_exists(\Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface::class);
 
-interface ActionGroupInterface
-{
-    public const MAIN_GROUP = 'main';
-
-    public const ITEM_GROUP = 'item';
-
-    public const SUB_ITEM_GROUP = 'subitem';
-
-    public const BULK_GROUP = 'bulk';
-
-    public static function create(string $name, ActionInterface ...$actions): self;
-
-    public function getName(): string;
-
-    public function addAction(ActionInterface $action): self;
-
-    public function removeAction(string $name): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toArray(): array;
+if (false) {
+    interface ActionGroupInterface extends \Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface
+    {
+    }
 }

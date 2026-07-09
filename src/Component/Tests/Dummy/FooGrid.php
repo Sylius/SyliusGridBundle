@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Dummy;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class FooGrid extends AbstractGrid implements ResourceAwareGridInterface
 {

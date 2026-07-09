@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\MoneyFilter;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 
 final class MoneyFilterTest extends TestCase
 {

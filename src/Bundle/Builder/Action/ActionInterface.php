@@ -13,31 +13,14 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Action;
 
-/**
- * @method string getTemplate()
- * @method self setTemplate(string $template)
- */
-interface ActionInterface
-{
-    public static function create(string $name, string $type): self;
+interface_exists(\Sylius\Component\Grid\Builder\Action\ActionInterface::class);
 
-    public function getName(): string;
-
-    public function setLabel(string $label): self;
-
-    public function setEnabled(bool $enabled): self;
-
-    public function setIcon(string $icon): self;
-
+if (false) {
     /**
-     * @param array<string, mixed> $options
+     * @method string getTemplate()
+     * @method self setTemplate(string $template)
      */
-    public function setOptions(array $options): self;
-
-    public function setPosition(int $position): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toArray(): array;
+    interface ActionInterface extends \Sylius\Component\Grid\Builder\Action\ActionInterface
+    {
+    }
 }

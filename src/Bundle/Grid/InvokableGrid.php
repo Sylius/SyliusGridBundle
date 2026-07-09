@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Grid;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Exception\LogicException;
 use Sylius\Component\Grid\GridInterface;
 

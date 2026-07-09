@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Grid;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 /**
  * @deprecated since Sylius Grid 1.16, will be removed in 2.0, use Sylius\Component\Grid\GridInterface instead

@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\ExistsFilter;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 
 final class ExistsFilterTest extends TestCase
 {

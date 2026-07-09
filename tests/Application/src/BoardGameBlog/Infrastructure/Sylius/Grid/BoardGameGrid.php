@@ -15,8 +15,8 @@ namespace App\BoardGameBlog\Infrastructure\Sylius\Grid;
 
 use App\BoardGameBlog\Infrastructure\Sylius\Grid\DataProvider\BoardGameGridProvider;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 #[AsGrid(name: 'app_board_game', provider: BoardGameGridProvider::class)]
 final class BoardGameGrid

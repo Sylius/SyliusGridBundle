@@ -16,7 +16,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 use App\Entity\Author;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 
 final class FilterTest extends TestCase
 {

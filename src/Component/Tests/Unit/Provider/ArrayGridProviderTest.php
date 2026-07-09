@@ -17,7 +17,7 @@ use App\Entity\Book;
 use App\Grid\Mutator\AddAuthorFieldBookGridMutator;
 use App\Grid\Mutator\SortByTitleBookGridMutator;
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationSortingHandler;

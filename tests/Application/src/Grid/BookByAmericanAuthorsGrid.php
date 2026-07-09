@@ -18,9 +18,9 @@ use App\Entity\Nationality;
 use App\Grid\Builder\NationalityFilter;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class BookByAmericanAuthorsGrid extends AbstractGrid implements ResourceAwareGridInterface
 {

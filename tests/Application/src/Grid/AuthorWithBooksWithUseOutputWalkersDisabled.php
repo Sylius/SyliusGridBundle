@@ -15,9 +15,9 @@ namespace App\Grid;
 
 use App\Entity\Author;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Bundle\GridBundle\Grid\ResourceAwareGridInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class AuthorWithBooksWithUseOutputWalkersDisabled extends AbstractGrid implements ResourceAwareGridInterface
 {

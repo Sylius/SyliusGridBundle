@@ -13,65 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Field;
 
-interface FieldInterface
-{
-    public static function create(string $name, string $type): self;
+interface_exists(\Sylius\Component\Grid\Builder\Field\FieldInterface::class);
 
-    public function getName(): string;
-
-    public function getPath(): ?string;
-
-    public function setPath(?string $path): self;
-
-    public function getLabel(): ?string;
-
-    public function setLabel(?string $label): self;
-
-    public function isEnabled(): bool;
-
-    public function setEnabled(bool $enabled): self;
-
-    public function isSortable(): bool;
-
-    public function setSortable(bool $sortable, ?string $path = null): self;
-
-    public function getPosition(): ?int;
-
-    public function setPosition(?int $position): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function getOptions(): array;
-
-    /**
-     * @param array<string, mixed> $options
-     *
-     * @deprecated use self::withOptions instead
-     */
-    public function setOptions(array $options): self;
-
-    /**
-     * @param array<string, mixed> $options
-     *
-     * @deprecated use self::withOptions instead
-     */
-    public function addOptions(array $options): self;
-
-    /**
-     * @param array<string, mixed> $options
-     */
-    public function withOptions(array $options): self;
-
-    /**
-     * @param mixed $value
-     */
-    public function setOption(string $option, $value): self;
-
-    public function removeOption(string $option): self;
-
-    /**
-     * @return array<string, mixed>
-     */
-    public function toArray(): array;
+if (false) {
+    interface FieldInterface extends \Sylius\Component\Grid\Builder\Field\FieldInterface
+    {
+    }
 }

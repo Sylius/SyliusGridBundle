@@ -15,8 +15,8 @@ namespace App\Grid;
 
 use App\Entity\Book;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 #[AsGrid(resourceClass: Book::class, name: 'app_bookmark')]
 final class BookmarkGrid

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Field;
 
+use Sylius\Component\Grid\Builder\Field\FieldInterface;
+
 final class StringField
 {
     public static function create(string $name): FieldInterface

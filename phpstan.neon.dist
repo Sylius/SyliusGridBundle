@@ -18,6 +18,14 @@ parameters:
         - src/Component/Tests/*
         - src/Component/vendor/*
 
+        # Legacy code maintained for backward compatibility
+        # Contains deprecated interfaces and implementations that will be removed in 2.0
+        - 'src/Bundle/Builder/Action/ActionInterface.php'
+        - 'src/Bundle/Builder/ActionGroup/ActionGroupInterface.php'
+        - 'src/Bundle/Builder/Field/FieldInterface.php'
+        - 'src/Bundle/Builder/Filter/FilterInterface.php'
+        - 'src/Bundle/Builder/GridBuilderInterface.php'
+
     ignoreErrors:
         # Symfony <7.4
         - message: '#^PHPDoc tag .+ is not generic\.$#'
