@@ -45,7 +45,7 @@ use Sylius\Component\Grid\Attribute\AsGrid;
 
 #### YAML Grids
 
-Using YAML to configure Grids is deprecated, please convert your Grids into PHP ones using the [Grid converter](`https://github.com/mamazu/grid-config-converter`).
+Using YAML to configure Grids is deprecated, please convert your Grids into PHP ones using the [Grid converter](https://github.com/mamazu/grid-config-converter).
 
 **Before**
 ```yaml
