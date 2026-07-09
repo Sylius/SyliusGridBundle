@@ -32,7 +32,11 @@ final class GridConfigurationSortingHandler implements GridConfigurationSortingH
         foreach ($gridConfiguration['sorting'] as $sorting => $order) {
             /** @var array<string, mixed> $fields */
             $fields = $gridConfiguration['fields'] ?? [];
-            Assert::keyExists($fields, $sorting);
+            Assert::keyExists(
+                $fields,
+                $sorting,
+                sprintf('Missing configuration for field "%s". You can not sort by fields that are not configured.', $sorting),
+            );
 
             if (isset($gridConfiguration['fields'][$sorting]['sortable'])) {
                 continue;
