@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Action;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Builder\Action\ActionInterface;
 
 final class ActionTest extends TestCase
 {

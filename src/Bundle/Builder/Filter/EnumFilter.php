@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
+
 final class EnumFilter
 {
     public static function create(string $name, string $enumClass, ?bool $multiple = null, ?string $field = null): FilterInterface

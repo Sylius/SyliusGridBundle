@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Config;
 
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
 use Sylius\Bundle\GridBundle\Config\GridConfigInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class GridConfigTest extends TestCase
 {

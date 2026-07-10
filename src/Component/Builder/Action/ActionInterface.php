@@ -1,0 +1,47 @@
+<?php
+
+/*
+ * This file is part of the Sylius package.
+ *
+ * (c) Sylius Sp. z o.o.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Sylius\Component\Grid\Builder\Action;
+
+/**
+ * @method string getTemplate()
+ * @method self setTemplate(string $template)
+ */
+interface ActionInterface
+{
+    public static function create(string $name, string $type): self;
+
+    public function getName(): string;
+
+    public function setLabel(string $label): self;
+
+    public function setEnabled(bool $enabled): self;
+
+    public function setIcon(string $icon): self;
+
+    /**
+     * @param array<string, mixed> $options
+     */
+    public function setOptions(array $options): self;
+
+    public function setPosition(int $position): self;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array;
+}
+
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Action\ActionInterface::class)) {
+    class_alias(ActionInterface::class, \Sylius\Bundle\GridBundle\Builder\Action\ActionInterface::class);
+}

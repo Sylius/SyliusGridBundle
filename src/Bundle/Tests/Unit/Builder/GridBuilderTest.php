@@ -21,11 +21,11 @@ use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
 use Sylius\Bundle\GridBundle\Builder\Field\Field;
 use Sylius\Bundle\GridBundle\Builder\Filter\Filter;
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
+use Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class GridBuilderTest extends TestCase
 {

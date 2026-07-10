@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Field;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
-use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
+use Sylius\Component\Grid\Builder\Field\FieldInterface;
 
 final class DateTimeFieldTest extends TestCase
 {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Filter;
 
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 use Sylius\Component\Grid\Filter\StringFilter as GridStringFilter;
 
 final class StringFilter

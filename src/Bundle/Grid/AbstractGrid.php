@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Grid;
 
 use Sylius\Bundle\GridBundle\Builder\GridBuilder;
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Exception\LogicException;
 
 /**

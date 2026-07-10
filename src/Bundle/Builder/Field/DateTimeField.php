@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\Field;
 
+use Sylius\Component\Grid\Builder\Field\FieldInterface;
+
 final class DateTimeField
 {
     public static function create(string $name, string $format = 'Y-m-d H:i:s', ?string $timezone = null): FieldInterface

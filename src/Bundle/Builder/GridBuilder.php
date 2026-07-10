@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder;
 
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
-use Sylius\Bundle\GridBundle\Builder\Field\FieldInterface;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
+use Sylius\Component\Grid\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface;
+use Sylius\Component\Grid\Builder\Field\FieldInterface;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 final class GridBuilder implements GridBuilderInterface
 {

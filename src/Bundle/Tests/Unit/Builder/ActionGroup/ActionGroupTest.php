@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\ActionGroup;
 
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\Builder\Action\ActionInterface;
 use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup;
-use Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface;
+use Sylius\Component\Grid\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface;
 
 final class ActionGroupTest extends TestCase
 {

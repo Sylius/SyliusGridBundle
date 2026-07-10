@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Builder\Filter;
 
 use PHPUnit\Framework\TestCase;
-use Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
+use Sylius\Component\Grid\Builder\Filter\FilterInterface;
 
 final class StringFilterTest extends TestCase
 {

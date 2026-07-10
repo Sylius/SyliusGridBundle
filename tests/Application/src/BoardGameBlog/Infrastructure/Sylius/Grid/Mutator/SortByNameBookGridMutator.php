@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\BoardGameBlog\Infrastructure\Sylius\Grid\Mutator;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Attribute\AsGridMutator;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 use Sylius\Component\Grid\Mutator\GridMutatorInterface;
 
 #[AsGridMutator(grid: 'app_board_game')]
