@@ -2,6 +2,20 @@
 
 ### FROM `1.15.x` TO `1.16.x`
 
+### Grid builder interfaces
+
+A few interfaces have been moved:
+
+| Before                                                              | After                                                            |
+|---------------------------------------------------------------------|------------------------------------------------------------------|
+| `Sylius\Bundle\GridBundle\Builder\Action\ActionInterface`           | `Sylius\Component\Grid\Builder\Action\ActionInterface`           |
+| `Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface` | `Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface` |
+| `Sylius\Bundle\GridBundle\Builder\Field\FieldInterface`             | `Sylius\Component\Grid\Builder\Field\FieldInterface`             |
+| `Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface`           | `Sylius\Component\Grid\Builder\Filter\FilterInterface`           |
+| `Sylius\Bundle\GridBundle\Builder\GridBuilderInterface`             | `Sylius\Component\Grid\Builder\GridBuilderInterface`             |
+
+The previous interfaces still be there for bc-layer purpose, but they are deprecated, please use the new ones instead.
+
 #### PHP Grids
 
 The `Sylius\Bundle\GridBundle\Grid\AbstractGrid` and the `Sylius\Bundle\GridBundle\Grid\GridInterface` are deprecated.

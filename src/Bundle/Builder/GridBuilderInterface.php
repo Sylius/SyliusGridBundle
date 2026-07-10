@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder;
 
+\trigger_deprecation('sylius/grid-bundle', '1.16', '"%s" is deprecated, use "%s" instead.', GridBuilderInterface::class, \Sylius\Component\Grid\Builder\GridBuilderInterface::class);
+
 interface_exists(\Sylius\Component\Grid\Builder\GridBuilderInterface::class);
 
 if (false) {
