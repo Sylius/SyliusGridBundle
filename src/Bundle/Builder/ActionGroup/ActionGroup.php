@@ -13,63 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Builder\ActionGroup;
 
-use Sylius\Component\Grid\Builder\Action\ActionInterface;
-use Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface;
+\trigger_deprecation('sylius/grid-bundle', '1.16', '"%s" is deprecated, use "%s" instead.', ActionGroup::class, \Sylius\Component\Grid\Builder\ActionGroup\ActionGroup::class);
 
-final class ActionGroup implements ActionGroupInterface
-{
-    private string $name;
+class_exists(\Sylius\Component\Grid\Builder\ActionGroup\ActionGroup::class);
 
-    /** @var array<string, ActionInterface> */
-    private array $actions = [];
-
-    private function __construct(string $name)
+if (false) {
+    final class ActionGroup extends \Sylius\Component\Grid\Builder\ActionGroup\ActionGroup
     {
-        $this->name = $name;
-    }
-
-    public static function create(string $name, ActionInterface ...$actions): ActionGroupInterface
-    {
-        $actionGroup = new self($name);
-
-        foreach ($actions as $action) {
-            $actionGroup->addAction($action);
-        }
-
-        return $actionGroup;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function addAction(ActionInterface $action): ActionGroupInterface
-    {
-        $this->actions[$action->getName()] = $action;
-
-        return $this;
-    }
-
-    public function removeAction(string $name): ActionGroupInterface
-    {
-        unset($this->actions[$name]);
-
-        return $this;
-    }
-
-    public function toArray(): array
-    {
-        if (count($this->actions) <= 0) {
-            return [];
-        }
-
-        $output = [];
-
-        foreach ($this->actions as $name => $action) {
-            $output[$name] = $action->toArray();
-        }
-
-        return $output;
     }
 }

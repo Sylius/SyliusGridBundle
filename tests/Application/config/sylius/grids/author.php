@@ -16,8 +16,8 @@ use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Field\CallableField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Sylius\Component\Grid\Builder\GridBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 $gridBuilder = GridBuilder::create('app_author', Author::class)

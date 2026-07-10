@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Provider;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilder;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;

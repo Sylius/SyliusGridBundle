@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Builder\ActionGroup;
 
 use Sylius\Component\Grid\Builder\Action\ActionInterface;
+use Sylius\Component\Grid\Builder\ActionGroup\ActionGroup;
 use Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface;
 
 final class BulkActionGroup

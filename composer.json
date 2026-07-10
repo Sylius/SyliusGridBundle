@@ -71,6 +71,7 @@
         "matthiasnoback/symfony-config-test": "^6.1",
         "matthiasnoback/symfony-dependency-injection-test": "^6.1",
         "pagerfanta/pagerfanta": "^3.7 || ^4.0",
+        "phparkitect/phparkitect": "^1.2",
         "phpstan/extension-installer": "^1.4",
         "phpstan/phpstan": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
@@ -128,7 +129,8 @@
         "analyse": [
             "@composer validate --strict",
             "vendor/bin/ecs check",
-            "vendor/bin/phpstan analyse --ansi"
+            "vendor/bin/phpstan analyse --ansi",
+            "vendor/bin/phparkitect check"
         ],
         "fix": [
             "vendor/bin/ecs check --fix"
