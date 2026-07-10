@@ -16,14 +16,13 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
     resourceClass: <?= $entity->getShortName() ?>::class,
     name: 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>',
 )]
-final class <?= $class_name ?> extends AbstractGrid
+final class <?= $class_name ?>
 {
     public function __construct()
     {

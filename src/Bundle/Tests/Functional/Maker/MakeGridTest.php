@@ -160,14 +160,13 @@ use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
     resourceClass: Book::class,
     name: 'app_book',
 )]
-final class BookGrid extends AbstractGrid
+final class BookGrid
 {
     public function __construct()
     {
@@ -232,14 +231,13 @@ use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
     resourceClass: Price::class,
     name: 'app_price',
 )]
-final class PriceGrid extends AbstractGrid
+final class PriceGrid
 {
     public function __construct()
     {
@@ -290,14 +288,13 @@ use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
     resourceClass: AdminUser::class,
     name: 'app_admin_user',
 )]
-final class AdminUserGrid extends AbstractGrid
+final class AdminUserGrid
 {
     public function __construct()
     {
@@ -351,14 +348,13 @@ use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\GridBuilderInterface;
-use Sylius\Bundle\GridBundle\Grid\AbstractGrid;
 use Sylius\Component\Grid\Attribute\AsGrid;
 
 #[AsGrid(
     resourceClass: BoardGame::class,
     name: 'app_board_game',
 )]
-final class BoardGameGrid extends AbstractGrid
+final class BoardGameGrid
 {
     public function __construct()
     {
