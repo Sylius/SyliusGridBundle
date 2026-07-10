@@ -18,8 +18,8 @@ use App\Kernel;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Builder\Filter\EntityFilter;
 use Sylius\Bundle\GridBundle\Builder\Filter\StringFilter;
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Sylius\Component\Grid\Builder\GridBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\App;
 
 $gridBuilder = GridBuilder::create('app_book_by_american_authors', Book::class)

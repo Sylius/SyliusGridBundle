@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Provider;
 
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Grid\GridInterface as LegacyGridInterface;
 use Sylius\Bundle\GridBundle\Grid\InvokableGrid;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
+use Sylius\Component\Grid\Builder\GridBuilder;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandlerInterface;

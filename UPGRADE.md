@@ -2,19 +2,21 @@
 
 ### FROM `1.15.x` TO `1.16.x`
 
-### Grid builder interfaces
+### Grid builder
 
-A few interfaces have been moved:
+A few classes & interfaces have been moved:
 
 | Before                                                              | After                                                            |
 |---------------------------------------------------------------------|------------------------------------------------------------------|
 | `Sylius\Bundle\GridBundle\Builder\Action\ActionInterface`           | `Sylius\Component\Grid\Builder\Action\ActionInterface`           |
+| `Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup`          | `Sylius\Component\Grid\Builder\ActionGroup\ActionGroup`          |
 | `Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface` | `Sylius\Component\Grid\Builder\ActionGroup\ActionGroupInterface` |
 | `Sylius\Bundle\GridBundle\Builder\Field\FieldInterface`             | `Sylius\Component\Grid\Builder\Field\FieldInterface`             |
 | `Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface`           | `Sylius\Component\Grid\Builder\Filter\FilterInterface`           |
+| `Sylius\Bundle\GridBundle\Builder\GridBuilder`                      | `Sylius\Component\Grid\Builder\GridBuilder`                      |
 | `Sylius\Bundle\GridBundle\Builder\GridBuilderInterface`             | `Sylius\Component\Grid\Builder\GridBuilderInterface`             |
 
-The previous interfaces still be there for bc-layer purpose, but they are deprecated, please use the new ones instead.
+The previous classes & interfaces still be there for bc-layer purpose, but they are deprecated, please use the new ones instead.
 
 #### PHP Grids
 
@@ -59,21 +61,23 @@ use Sylius\Component\Grid\Attribute\AsGrid;
 
 #### YAML Grids
 
-Using YAML to configure Grids is deprecated, please convert your Grids into PHP ones using the [Grid converter](https://github.com/mamazu/grid-config-converter).
+Using YAML to configure Grids is deprecated, please convert your Grids into PHP ones using
+the [Grid converter](https://github.com/mamazu/grid-config-converter).
 
 **Before**
+
 ```yaml
 sylius_grid:
-    grids:
-        app_admin_book:
-            driver:
-                name: doctrine/orm
-                options:
-                    class: App\Entity\Book
-            fields: 
-                title: 
-                    type: string
-                    label: app.ui.title
+  grids:
+    app_admin_book:
+      driver:
+        name: doctrine/orm
+        options:
+          class: App\Entity\Book
+      fields:
+        title:
+          type: string
+          label: app.ui.title
 ```
 
 **After**
@@ -106,20 +110,23 @@ final class AdminBookGrid
 }
 ```
 
-The `Sylius\Component\Grid\Provider\ArrayGridProvider` is deprecated. This provider is responsible to convert a YAML grid into a Grid definition.
+The `Sylius\Component\Grid\Provider\ArrayGridProvider` is deprecated. This provider is responsible to convert a YAML
+grid into a Grid definition.
 
 #### PHP Grids within configuration files
 
-Configuring Grids in Symfony configuration files is deprecated, please move your configuration files into PHP objects using the `AsGrid` attribute.
+Configuring Grids in Symfony configuration files is deprecated, please move your configuration files into PHP objects
+using the `AsGrid` attribute.
 
 **Before**
+
 ```php
 <?php 
 
 use App\Entity\Book;
-use Sylius\Bundle\GridBundle\Builder\GridBuilder;
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
 use Sylius\Bundle\GridBundle\Config\GridConfig;
+use Sylius\Component\Grid\Builder\GridBuilder;
 
 return static function (GridConfig $grid) {
     $grid->addGrid(GridBuilder::create('app_admin_book', Book::class)
@@ -166,6 +173,7 @@ final class AdminBookGrid
 Grid events are deprecated, please use Grid mutators instead.
 
 **Before**
+
 ```php
 namespace App\Grid;
 
@@ -226,11 +234,12 @@ class RemoveImageFromProductGridMutator implements GridMutatorInterface
 The parent grid now should exist when using grid inheritance.
 
 Example
+
 ```yaml
 sylius_grid:
-    grids:
-        book:
-            extends: product
+  grids:
+    book:
+      extends: product
 ```
 
 Then the `product` grid should exist.

@@ -4,7 +4,7 @@ parameters:
 			message: '#^Cannot access an offset on mixed\.$#'
 			identifier: offsetAccess.nonOffsetAccessible
 			count: 2
-			path: src/Bundle/Builder/GridBuilder.php
+			path: src/Component/Builder/GridBuilder.php
 
 		-
 			message: '#^Class Sylius\\Bundle\\CurrencyBundle\\Form\\Type\\CurrencyChoiceType not found\.$#'
