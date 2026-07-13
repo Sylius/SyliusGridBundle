@@ -39,6 +39,6 @@ interface ActionGroupInterface
     public function toArray(): array;
 }
 
-if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface::class)) {
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface::class, false)) {
     class_alias(ActionGroupInterface::class, \Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroupInterface::class);
 }

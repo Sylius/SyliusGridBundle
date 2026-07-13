@@ -73,6 +73,6 @@ final class ActionGroup implements ActionGroupInterface
     }
 }
 
-if (!class_exists(\Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup::class)) {
+if (!class_exists(\Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup::class, false)) {
     class_alias(ActionGroup::class, \Sylius\Bundle\GridBundle\Builder\ActionGroup\ActionGroup::class);
 }
