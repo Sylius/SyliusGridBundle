@@ -81,6 +81,6 @@ interface FilterInterface
     public function toArray(): array;
 }
 
-if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface::class)) {
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface::class, false)) {
     class_alias(FilterInterface::class, \Sylius\Bundle\GridBundle\Builder\Filter\FilterInterface::class);
 }

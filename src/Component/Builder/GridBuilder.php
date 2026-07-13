@@ -318,6 +318,6 @@ final class GridBuilder implements GridBuilderInterface
     }
 }
 
-if (!class_exists(\Sylius\Bundle\GridBundle\Builder\GridBuilder::class)) {
+if (!class_exists(\Sylius\Bundle\GridBundle\Builder\GridBuilder::class, false)) {
     class_alias(GridBuilder::class, \Sylius\Bundle\GridBundle\Builder\GridBuilder::class);
 }

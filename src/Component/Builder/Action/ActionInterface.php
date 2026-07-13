@@ -42,6 +42,6 @@ interface ActionInterface
     public function toArray(): array;
 }
 
-if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Action\ActionInterface::class)) {
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Action\ActionInterface::class, false)) {
     class_alias(ActionInterface::class, \Sylius\Bundle\GridBundle\Builder\Action\ActionInterface::class);
 }

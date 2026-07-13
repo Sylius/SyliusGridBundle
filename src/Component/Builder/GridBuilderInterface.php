@@ -84,6 +84,6 @@ interface GridBuilderInterface
     public function toArray(): array;
 }
 
-if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\GridBuilderInterface::class)) {
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\GridBuilderInterface::class, false)) {
     class_alias(GridBuilderInterface::class, \Sylius\Bundle\GridBundle\Builder\GridBuilderInterface::class);
 }

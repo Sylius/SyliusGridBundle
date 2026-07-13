@@ -76,6 +76,6 @@ interface FieldInterface
     public function toArray(): array;
 }
 
-if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Field\FieldInterface::class)) {
+if (!interface_exists(\Sylius\Bundle\GridBundle\Builder\Field\FieldInterface::class, false)) {
     class_alias(FieldInterface::class, \Sylius\Bundle\GridBundle\Builder\Field\FieldInterface::class);
 }
