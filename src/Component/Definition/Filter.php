@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Definition;
 
+use Webmozart\Assert\Assert;
+
 class Filter
 {
+    private const DEFAULT_POSITION = 100;
+
     private string $name;
 
     private string $type;
@@ -36,10 +40,10 @@ class Filter
     private $criteria;
 
     /**
-     * Position equals to 100 to ensure that wile sorting filters by position ASC
+     * Position equals to 100 to ensure that while sorting filters by position ASC
      * the filters positioned by default will be last
      */
-    private int $position = 100;
+    private int $position = self::DEFAULT_POSITION;
 
     private function __construct(string $name, string $type)
     {
@@ -52,6 +56,38 @@ class Filter
     public static function fromNameAndType(string $name, string $type): self
     {
         return new self($name, $type);
+    }
+
+    /**
+     * @param array{
+     *     name: string,
+     *     type: string,
+     *     label: string|bool|null,
+     *     enabled: ?bool,
+     *     options: ?array<string, mixed>,
+     *     formOptions: ?array<string, mixed>,
+     *     position: ?int,
+     *     criteria: ?array<string, mixed>
+     * } $data
+     */
+    public static function fromArray(array $data): self
+    {
+        Assert::notNull($data['name']);
+        Assert::notNull($data['type']);
+
+        $filter = self::fromNameAndType(
+            $data['name'],
+            $data['type'],
+        );
+
+        $filter->setLabel($data['label'] ?? null);
+        $filter->setEnabled($data['enabled'] ?? true);
+        $filter->setOptions($data['options'] ?? []);
+        $filter->setFormOptions($data['formOptions'] ?? []);
+        $filter->setPosition($data['position'] ?? self::DEFAULT_POSITION);
+        $filter->setCriteria($data['criteria'] ?? []);
+
+        return $filter;
     }
 
     public function getName(): string
@@ -156,5 +192,22 @@ class Filter
     public function setCriteria($criteria)
     {
         $this->criteria = $criteria;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->getName(),
+            'type' => $this->getType(),
+            'label' => $this->getLabel(),
+            'enabled' => $this->isEnabled(),
+            'options' => $this->getOptions(),
+            'formOptions' => $this->getFormOptions(),
+            'position' => $this->getPosition(),
+            'criteria' => $this->getCriteria(),
+        ];
     }
 }
