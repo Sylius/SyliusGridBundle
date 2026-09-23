@@ -27,5 +27,11 @@ class Kernel extends BaseKernel
         $container->prependExtensionConfig('zenstruck_foundry', [
             'enable_auto_refresh_with_lazy_objects' => \PHP_VERSION_ID >= 80400,
         ]);
+
+        $container->prependExtensionConfig('doctrine', [
+            'orm' => [
+                'enable_native_lazy_objects' => \PHP_VERSION_ID >= 80400,
+            ],
+        ]);
     }
 }
