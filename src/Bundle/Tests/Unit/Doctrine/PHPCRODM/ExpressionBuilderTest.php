@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Doctrine\PHPCRODM;
 
-use Doctrine\Common\Collections\Expr\Expression;
+use Doctrine\Common\Collections\Expr\Comparison;
+use Doctrine\Common\Collections\Expr\CompositeExpression;
 use Doctrine\Common\Collections\ExpressionBuilder as CollectionsExpressionBuilder;
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Doctrine\PHPCRODM\ExpressionBuilder;
@@ -26,85 +27,116 @@ final class ExpressionBuilderTest extends TestCase
 {
     public function testBuildsAndx(): void
     {
-        $expression = $this->createMock(Expression::class);
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('andX')->with($expression);
-
+        $collectionsExpressionBuilder = new CollectionsExpressionBuilder();
         $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->andX($expression);
+
+        $result = $expressionBuilder->andX(
+            $collectionsExpressionBuilder->eq('o.foo', 'value'),
+            $collectionsExpressionBuilder->eq('o.bar', 'other'),
+        );
+
+        $this->assertInstanceOf(CompositeExpression::class, $result);
+        $this->assertSame(CompositeExpression::TYPE_AND, $result->getType());
+        $this->assertCount(2, $result->getExpressionList());
     }
 
     public function testBuildsOrx(): void
     {
-        $expression = $this->createMock(Expression::class);
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('orX')->with($expression);
-
+        $collectionsExpressionBuilder = new CollectionsExpressionBuilder();
         $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->orX($expression);
+
+        $result = $expressionBuilder->orX(
+            $collectionsExpressionBuilder->eq('o.foo', 'value'),
+            $collectionsExpressionBuilder->eq('o.bar', 'other'),
+        );
+
+        $this->assertInstanceOf(CompositeExpression::class, $result);
+        $this->assertSame(CompositeExpression::TYPE_OR, $result->getType());
+        $this->assertCount(2, $result->getExpressionList());
     }
 
     public function testBuildsEquals(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('eq')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->equals('o.foo', 'value');
+        $result = $expressionBuilder->equals('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::EQ, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsNotEquals(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('neq')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->notEquals('o.foo', 'value');
+        $result = $expressionBuilder->notEquals('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::NEQ, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsLessThanOrEqual(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('lte')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->lessThanOrEqual('o.foo', 'value');
+        $result = $expressionBuilder->lessThanOrEqual('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::LTE, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsGreaterThan(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('gt')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->greaterThan('o.foo', 'value');
+        $result = $expressionBuilder->greaterThan('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::GT, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsGreaterThanOrEqual(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('gte')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->greaterThanOrEqual('o.foo', 'value');
+        $result = $expressionBuilder->greaterThanOrEqual('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::GTE, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsIn(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('in')->with('o.foo', ['value']);
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->in('o.foo', ['value']);
+        $result = $expressionBuilder->in('o.foo', ['value']);
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::IN, $result->getOperator());
+        $this->assertSame(['value'], $result->getValue()->getValue());
     }
 
     public function testBuildsNotIn(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('notIn')->with('o.foo', ['value']);
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->notIn('o.foo', ['value']);
+        $result = $expressionBuilder->notIn('o.foo', ['value']);
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::NIN, $result->getOperator());
+        $this->assertSame(['value'], $result->getValue()->getValue());
     }
 
     public function testBuildsIsNull(): void
@@ -127,11 +159,14 @@ final class ExpressionBuilderTest extends TestCase
 
     public function testBuildsLike(): void
     {
-        $collectionsExpressionBuilder = $this->createMock(CollectionsExpressionBuilder::class);
-        $collectionsExpressionBuilder->expects($this->once())->method('contains')->with('o.foo', 'value');
+        $expressionBuilder = new ExpressionBuilder(new CollectionsExpressionBuilder());
 
-        $expressionBuilder = new ExpressionBuilder($collectionsExpressionBuilder);
-        $expressionBuilder->like('o.foo', 'value');
+        $result = $expressionBuilder->like('o.foo', 'value');
+
+        $this->assertInstanceOf(Comparison::class, $result);
+        $this->assertSame('o.foo', $result->getField());
+        $this->assertSame(Comparison::CONTAINS, $result->getOperator());
+        $this->assertSame('value', $result->getValue()->getValue());
     }
 
     public function testBuildsNotLike(): void

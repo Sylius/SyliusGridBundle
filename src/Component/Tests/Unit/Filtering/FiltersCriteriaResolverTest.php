@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Unit\Filtering;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Definition\Grid;
@@ -34,9 +35,7 @@ final class FiltersCriteriaResolverTest extends TestCase
         $this->assertInstanceOf(FiltersCriteriaResolverInterface::class, $this->filtersCriteriaResolver);
     }
 
-    /**
-     * @dataProvider criteriaDataProvider
-     */
+    #[DataProvider('criteriaDataProvider')]
     public function testChecksWhetherAnyCriteriaAreAvailable(array $filtersCriteria, Parameters $parameters, bool $expected): void
     {
         $grid = $this->createMock(Grid::class);

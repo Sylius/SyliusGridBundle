@@ -15,6 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
 use App\FieldTypes\FooType;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFieldTypesPass;
 use Sylius\Component\Registry\ServiceRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,9 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterFieldTypesPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_registers_a_grid_field_for_every_field_service_tag(): void
     {
         $tags = [

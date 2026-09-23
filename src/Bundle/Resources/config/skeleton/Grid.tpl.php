@@ -2,6 +2,22 @@
 
 use Symfony\Bundle\MakerBundle\Str;
 
+$defaultFields = is_array($defaultFields) ? $defaultFields : iterator_to_array($defaultFields);
+$hasDateTimeFields = false;
+$hasBooleanFields = false;
+
+foreach ($defaultFields as $type) {
+    $type = strtoupper((string) $type);
+
+    if (str_starts_with($type, 'DATE')) {
+        $hasDateTimeFields = true;
+    }
+
+    if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
+        $hasBooleanFields = true;
+    }
+}
+
 ?>
 <?= "<?php\n" ?>
 
@@ -12,18 +28,21 @@ use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
 use Sylius\Bundle\GridBundle\Builder\Action\ShowAction;
 use Sylius\Bundle\GridBundle\Builder\Action\UpdateAction;
+<?php if ($hasDateTimeFields): ?>
 use Sylius\Bundle\GridBundle\Builder\Field\DateTimeField;
+<?php endif; ?>
 use Sylius\Bundle\GridBundle\Builder\Field\StringField;
+<?php if ($hasBooleanFields): ?>
 use Sylius\Bundle\GridBundle\Builder\Field\TwigField;
-use Sylius\Component\Grid\Builder\GridBuilderInterface;
+<?php endif; ?>
 use Sylius\Component\Grid\Attribute\AsGrid;
+use Sylius\Component\Grid\Builder\GridBuilderInterface;
 
 #[AsGrid(
     resourceClass: <?= $entity->getShortName() ?>::class,
     name: 'app_<?= Str::asSnakeCase(($entity->getShortName())) ?>',
 )]
-final class <?= $class_name ?>
-{
+final class <?= $class_name ?><?= "\n" ?>{
     public function __construct()
     {
         // TODO inject services if required
@@ -38,6 +57,7 @@ final class <?= $class_name ?>
             ->withFields(
 <?php
                 foreach ($defaultFields as $fieldname => $type) {
+                    $type = strtoupper((string) $type);
                     if (in_array($type, ['STRING', 'TEXT'], true)) {
                         echo "                StringField::create('" . $fieldname . "')\n";
                         echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";
@@ -50,8 +70,8 @@ final class <?= $class_name ?>
                     }
 
                     if (in_array($type, ['BOOLEAN', 'BOOL'], true)) {
-                        echo "            //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
-                        echo "            //        ->setLabel('" . ucfirst($fieldname) . "'),\n";
+                        echo "                //    TwigField::create('" . $fieldname . "', 'path/to/field/template.html.twig')\n";
+                        echo "                //        ->setLabel('" . ucfirst($fieldname) . "'),\n";
                     }
                 }
 ?>

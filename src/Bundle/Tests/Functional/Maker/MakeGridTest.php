@@ -18,6 +18,7 @@ use App\Entity\AdminUser;
 use App\Entity\Book;
 use App\Entity\Price;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\Maker\MakeGrid;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\MakerBundle\Exception\RuntimeCommandException;
@@ -36,75 +37,59 @@ final class MakeGridTest extends MakerTestCase
 
     private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameGrid.php';
 
-    /** @test */
+    #[Test]
     public function it_can_create_grids_with_a_doctrine_entity(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::PRICE_GRID_PATH));
 
-        try {
-            $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
-        } finally {
-            restore_exception_handler();
-        }
+        $tester->execute(['entity' => Price::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::PRICE_GRID_PATH));
         $this->assertSame(self::getPriceGridExpectedContent(), \file_get_contents(self::tempFile(self::PRICE_GRID_PATH)));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_create_grids_without_doctrine(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOARD_GAME_GRID_PATH));
 
-        try {
-            $tester->execute(['entity' => BoardGame::class, '--namespace' => 'Tests\Tmp\Grid']);
-        } finally {
-            restore_exception_handler();
-        }
+        $tester->execute(['entity' => BoardGame::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::BOARD_GAME_GRID_PATH));
         $this->assertSame(self::getBoardGameGridExpectedContent(), \file_get_contents(self::tempFile(self::BOARD_GAME_GRID_PATH)));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_create_grids_with_boolean_fields(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOOK_GRID_PATH));
 
-        try {
-            $tester->execute(['entity' => Book::class, '--namespace' => 'Tests\Tmp\Grid']);
-        } finally {
-            restore_exception_handler();
-        }
+        $tester->execute(['entity' => Book::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::BOOK_GRID_PATH));
         $this->assertSame(self::getBookGridExpectedContent(), \file_get_contents(self::tempFile(self::BOOK_GRID_PATH)));
     }
 
-    /** @test */
+    #[Test]
     public function it_uses_snake_case_names_for_grids(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
-        try {
-            $tester->execute(['entity' => AdminUser::class, '--namespace' => 'Tests\Tmp\Grid']);
-        } finally {
-            restore_exception_handler();
-        }
+        $tester->execute(['entity' => AdminUser::class, '--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
         $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
     }
 
-    /** @test */
+    #[Test]
     public function it_can_create_grids_interactively(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
@@ -112,18 +97,13 @@ final class MakeGridTest extends MakerTestCase
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
         $tester->setInputs([AdminUser::class]);
-
-        try {
-            $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
-        } finally {
-            restore_exception_handler();
-        }
+        $tester->execute(['--namespace' => 'Tests\Tmp\Grid']);
 
         $this->assertFileExists(self::tempFile(self::ADMIN_USER_GRID_PATH));
         $this->assertSame(self::getAdminUserGridExpectedContent(), \file_get_contents(self::tempFile(self::ADMIN_USER_GRID_PATH)));
     }
 
-    /** @test */
+    #[Test]
     public function invalid_entity_throws_exception(): void
     {
         $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
@@ -137,8 +117,6 @@ final class MakeGridTest extends MakerTestCase
             $this->assertFileDoesNotExist(self::tempFile(self::INVALID_GRID_PATH));
 
             return;
-        } finally {
-            restore_exception_handler();
         }
 
         $this->fail('Exception not thrown.');

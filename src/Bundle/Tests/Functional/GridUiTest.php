@@ -37,7 +37,7 @@ final class GridUiTest extends WebTestCase
         AppStory::load();
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_authors_grid(): void
     {
         $this->client->request('GET', '/authors');
@@ -48,7 +48,7 @@ final class GridUiTest extends WebTestCase
         $this->assertCount(10, $this->getAuthorNamesFromResponse());
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_authors_ids(): void
     {
         $this->client->request('GET', '/authors?limit=100');
@@ -62,7 +62,7 @@ final class GridUiTest extends WebTestCase
         );
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_authors_nationalities(): void
     {
         $this->client->request('GET', '/authors?limit=100');
@@ -101,7 +101,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($sortedNames, $names);
     }
 
-    /** @test */
+    #[Test]
     public function it_paginates_authors_by_10_by_default(): void
     {
         $this->client->request('GET', '/authors');
@@ -109,7 +109,7 @@ final class GridUiTest extends WebTestCase
         $this->assertCount(10, $this->getAuthorNamesFromResponse());
     }
 
-    /** @test */
+    #[Test]
     public function it_paginates_authors_by_5_or_15(): void
     {
         $this->client->request('GET', '/authors?limit=5');
@@ -121,7 +121,7 @@ final class GridUiTest extends WebTestCase
         $this->assertCount(15, $this->getAuthorNamesFromResponse());
     }
 
-    /** @test */
+    #[Test]
     public function it_list_books(): void
     {
         $this->client->request('GET', '/books');
@@ -131,7 +131,7 @@ final class GridUiTest extends WebTestCase
         $this->assertCount(10, $titles);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_title(): void
     {
         $this->client->request('GET', sprintf(
@@ -145,7 +145,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('BOOK 5', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_title_with_contains(): void
     {
         $this->client->request('GET', sprintf(
@@ -159,7 +159,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_author(): void
     {
         $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
@@ -172,7 +172,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_authors(): void
     {
         $firstAuthorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
@@ -186,7 +186,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('A STUDY IN SCARLET', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_authors_nationality(): void
     {
         $authorNationalityId = AuthorFactory::find(['name' => 'Michael Crichton'])->getNationality()->getId();
@@ -199,7 +199,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('JURASSIC PARK', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_author_and_currency(): void
     {
         $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
@@ -225,7 +225,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($sortedTitles, $titles);
     }
 
-    /** @test */
+    #[Test]
     public function it_sorts_books_ascending_by_author(): void
     {
         $this->client->request('GET', '/books?sorting[author]=asc&limit=100');
@@ -238,7 +238,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($sortedNames, $names);
     }
 
-    /** @test */
+    #[Test]
     public function it_sorts_books_descending_by_authors_nationality(): void
     {
         $this->client->request('GET', '/books?sorting[nationality]=desc&limit=100');
@@ -251,7 +251,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($sortedNames, $names);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_author_when_an_author_association_is_used_in_join_in_query_builder(): void
     {
         $authorId = AuthorFactory::find(['name' => 'Michael Crichton'])->getId();
@@ -264,7 +264,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('Jurassic Park', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_sorts_authors_using_table_alias_defined_in_query_builder(): void
     {
         $this->client->request('GET', '/by-american-authors/books?sorting[author]=asc');
@@ -275,7 +275,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('Jurassic Park', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_filters_books_by_author_when_an_author_is_used_in_join_in_query_builder_without_association_in_the_mapping(): void
     {
         $authorId = AuthorFactory::find(['name' => 'John Watson'])->getId();
@@ -288,7 +288,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('A Study in Scarlet', $titles[0]);
     }
 
-    /** @test */
+    #[Test]
     public function it_renders_option_vars(): void
     {
         $this->client->request('GET', '/books');
@@ -303,7 +303,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame('Currency', $data[0] ?? null);
     }
 
-    /** @test */
+    #[Test]
     public function it_includes_all_rows_even_when_sorting_by_a_nullable_path(): void
     {
         $this->client->request('GET', '/authors/');
@@ -316,7 +316,7 @@ final class GridUiTest extends WebTestCase
         $this->assertSame($totalItemsCountBeforeSorting, $totalItemsCountAfterSorting);
     }
 
-    /** @test */
+    #[Test]
     public function it_shows_admin_user_status_enums(): void
     {
         $this->client->request('GET', '/admin-users');

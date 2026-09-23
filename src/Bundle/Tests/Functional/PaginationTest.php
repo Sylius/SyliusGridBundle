@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Functional;
 
 use App\Story\AppStory;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -34,7 +35,7 @@ final class PaginationTest extends WebTestCase
         AppStory::load();
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_incorrect_amount_of_items_per_page_with_fetch_join_collection_disabled(): void
     {
         $this->client->request('GET', '/authors/with-books/with-fetch-join-collection-disabled');
@@ -42,7 +43,7 @@ final class PaginationTest extends WebTestCase
         self::assertNotCount(10, $this->getAuthorNamesFromResponse());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_correct_amount_of_items_per_page_with_fetch_join_collection_enabled_by_default(): void
     {
         $this->client->request('GET', '/authors/with-books/with-fetch-join-collection-enabled');

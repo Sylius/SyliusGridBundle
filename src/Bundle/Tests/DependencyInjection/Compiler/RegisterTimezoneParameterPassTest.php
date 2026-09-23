@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterTimezoneParameterPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class RegisterTimezoneParameterPassTest extends AbstractCompilerPassTestCase
 {
-    /** @test */
+    #[Test]
     public function it_registers_null_timezone_parameter_if_it_does_not_exist(): void
     {
         $this->compile();
@@ -27,7 +28,7 @@ final class RegisterTimezoneParameterPassTest extends AbstractCompilerPassTestCa
         $this->assertContainerBuilderHasParameter('sylius_grid.timezone', null);
     }
 
-    /** @test */
+    #[Test]
     public function it_does_nothing_if_timezone_parameter_already_exists(): void
     {
         $this->container->setParameter('sylius_grid.timezone', 'UTC');

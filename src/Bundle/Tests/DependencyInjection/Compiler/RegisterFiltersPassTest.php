@@ -17,6 +17,7 @@ use App\Filter\Foo;
 use App\Filter\NationalityFilter;
 use App\Grid\Type\NationalityFilterType;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFiltersPass;
 use Sylius\Component\Registry\ServiceRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,9 +25,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_registers_a_grid_filter_and_form_type_for_every_service_filter_tag(): void
     {
         $tags = [
@@ -70,7 +69,7 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
         }
     }
 
-    /** @test */
+    #[Test]
     public function it_registers_filter_templates(): void
     {
         $tags = [
@@ -98,9 +97,7 @@ final class RegisterFiltersPassTest extends AbstractCompilerPassTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_autoconfigures_a_grid_filter(): void
     {
         $this->registerService(NationalityFilter::class, NationalityFilter::class)
