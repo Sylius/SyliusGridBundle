@@ -34,8 +34,8 @@ jobs:
                         php: 8.3
                         symfony: "7.4.*"
                     -
-                        php: 8.4
-                        symfony: "8.0.*"
+                        php: 8.5
+                        symfony: "8.1.*"
         steps:
             -
                 uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
 
             -
                 name: Remove Doctrine PHPCR ODM on Symfony 8
-                if: matrix.symfony == '8.0.*'
+                if: startsWith(matrix.symfony, '8.')
                 run: |
                     composer remove --dev doctrine/phpcr-odm --no-update --no-scripts
 
