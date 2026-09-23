@@ -57,6 +57,7 @@ final class <?= $class_name ?><?= "\n" ?>{
             ->withFields(
 <?php
                 foreach ($defaultFields as $fieldname => $type) {
+                    $type = strtoupper((string) $type);
                     if (in_array($type, ['STRING', 'TEXT'], true)) {
                         echo "                StringField::create('" . $fieldname . "')\n";
                         echo "                    ->setLabel('" . ucfirst($fieldname) . "')\n";

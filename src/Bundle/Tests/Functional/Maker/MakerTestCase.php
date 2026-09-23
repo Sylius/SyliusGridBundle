@@ -20,7 +20,7 @@ use Symfony\Component\Filesystem\Filesystem;
 abstract class MakerTestCase extends KernelTestCase
 {
     #[Before]
-    public static function cleanupTmpDir(): void
+    protected function cleanupTmpDir(): void
     {
         (new Filesystem())->remove(self::tempDir());
     }
