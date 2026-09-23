@@ -15,14 +15,13 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
 use App\Driver\Foo;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\ValidateConfiguredGridDriversPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_does_nothing_when_no_grids_definitions_parameter_exists(): void
     {
         $this->compile();
@@ -30,9 +29,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_validates_grid_drivers_successfully_when_all_drivers_are_registered(): void
     {
         $this->registerService('app.grid_driver.foo', Foo::class)
@@ -61,9 +58,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_throws_exception_when_grid_uses_non_existent_driver(): void
     {
         $this->registerService('app.grid_driver.foo', Foo::class)
@@ -84,9 +79,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->compile();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_provides_helpful_error_message_with_multiple_available_drivers(): void
     {
         $this->registerService('app.grid_driver.foo', Foo::class)
@@ -113,9 +106,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->compile();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_provides_helpful_error_message_when_no_drivers_are_available(): void
     {
         $this->container->setParameter('sylius.grids_definitions', [
@@ -133,9 +124,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->compile();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_skips_grids_with_null_driver_name(): void
     {
         $this->container->setParameter('sylius.grids_definitions', [
@@ -151,9 +140,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_skips_grids_with_false_driver_name(): void
     {
         $this->container->setParameter('sylius.grids_definitions', [
@@ -170,9 +157,7 @@ final class ValidateConfiguredGridDriversPassTest extends AbstractCompilerPassTe
         $this->expectNotToPerformAssertions();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_validates_multiple_grids_and_reports_first_invalid_one(): void
     {
         $this->registerService('app.grid_driver.foo', Foo::class)

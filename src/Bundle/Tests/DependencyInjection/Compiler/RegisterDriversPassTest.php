@@ -15,6 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection\Compiler;
 
 use App\Driver\Foo;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterDriversPass;
 use Sylius\Component\Registry\ServiceRegistry;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -22,9 +23,7 @@ use Symfony\Component\DependencyInjection\Reference;
 
 final class RegisterDriversPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_registers_a_grid_driver_for_every_driver_service_tag(): void
     {
         $tags = [

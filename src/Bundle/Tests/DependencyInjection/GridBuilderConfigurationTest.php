@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Tests\DependencyInjection;
 use App\Entity\Author;
 use App\Entity\Book;
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPUnit\Framework\Attributes\Test;
 use Sylius\Bundle\GridBundle\Builder\Action\Action;
 use Sylius\Bundle\GridBundle\Builder\Action\CreateAction;
 use Sylius\Bundle\GridBundle\Builder\Action\DeleteAction;
@@ -53,9 +54,7 @@ use Sylius\Component\Grid\Tests\Dummy\NoResourceGrid;
 
 final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_only_a_name(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', 'DummyResource');
@@ -84,9 +83,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_resource_class(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class);
@@ -115,9 +112,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_resource_class_as_parameter(): void
     {
         $this->setParameter('app.model.book.class', Book::class);
@@ -150,9 +145,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_filters(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -235,9 +228,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_filters(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -339,9 +330,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_select_filter_with_multiple_option(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -389,9 +378,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_entity_filter_with_multiple_option(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -433,9 +420,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_fields(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -482,9 +467,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_fields(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -541,9 +524,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_actions(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -618,9 +599,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_actions(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -697,9 +676,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_predefined_action_groups(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
@@ -778,9 +755,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_a_grid_as_service(): void
     {
         $grid = new NoResourceGrid();
@@ -808,9 +783,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_a_resource_aware_grid_as_service(): void
     {
         $grid = new FooGrid();
@@ -839,9 +812,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function it_builds_grid_with_resource_class_as_parameter_and_grid_as_service(): void
     {
         $grid = new ClassAsParameterGrid(Author::class);
@@ -870,7 +841,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_builds_extended_grids_with_grids_as_service(): void
     {
         $grid = new FooFightersGrid();
@@ -907,7 +878,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_builds_grid_with_a_grid_attribute_with_defined_resource_class(): void
     {
         $grid = new AttributeWithResourceClassGrid();
@@ -936,7 +907,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_builds_grid_with_a_grid_attribute_with_custom_build_method(): void
     {
         $grid = new AttributeGridWithCustomBuildMethod();
@@ -972,7 +943,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_throw_an_exception_when_the_custom_build_method_does_not_exist(): void
     {
         $grid = new AttributeGridWithCustomBuildMethodThatDoesNotExist();
@@ -987,7 +958,7 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
         ]);
     }
 
-    /** @test */
+    #[Test]
     public function it_builds_grid_with_a_grid_attribute_with_defined_provider(): void
     {
         $grid = new AttributeGridWithProvider();

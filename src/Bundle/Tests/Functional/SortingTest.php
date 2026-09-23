@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Functional;
 use App\Story\AppStory;
 use Coduo\PHPMatcher\Backtrace\VoidBacktrace;
 use Coduo\PHPMatcher\Matcher;
+use PHPUnit\Framework\Attributes\Test;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -37,7 +38,7 @@ final class SortingTest extends WebTestCase
         AppStory::load();
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_error_instead_of_sorted_authors_by_book_title_with_use_output_walkers_disabled(): void
     {
         $this->client->request('GET', '/authors/with-books/with-use-output-walkers-disabled?sorting[book]=asc');
@@ -47,7 +48,7 @@ final class SortingTest extends WebTestCase
         $this->assertEquals(Response::HTTP_INTERNAL_SERVER_ERROR, $response->getStatusCode());
     }
 
-    /** @test */
+    #[Test]
     public function it_returns_correct_amount_of_sorted_authors_by_book_title_with_use_output_walkers_enabled_by_default(): void
     {
         $this->client->request('GET', '/authors/with-books/with-use-output-walkers-enabled?sorting[book]=asc');
@@ -55,7 +56,7 @@ final class SortingTest extends WebTestCase
         self::assertCount(10, $this->getAuthorNamesFromResponse());
     }
 
-    /** @test */
+    #[Test]
     public function it_allows_for_sorting_by_disabled_field(): void
     {
         $this->client->request('GET', '/authors?sorting[id]=asc');

@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Maker;
 
+use PHPUnit\Framework\Attributes\Before;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
 abstract class MakerTestCase extends KernelTestCase
 {
-    /**
-     * @before
-     */
+    #[Before]
     public static function cleanupTmpDir(): void
     {
         (new Filesystem())->remove(self::tempDir());
