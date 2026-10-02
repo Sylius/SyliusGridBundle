@@ -1,3 +1,8 @@
 twig:
     debug: "%kernel.debug%"
     strict_variables: "%kernel.debug%"
+
+twig_component:
+    anonymous_template_directory: 'components/'
+    defaults:
+        App\Twig\Component\: 'components/'
