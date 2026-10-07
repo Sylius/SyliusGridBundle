@@ -99,6 +99,7 @@ final class TwigGridRenderer implements GridRendererInterface
             'allow_extra_fields' => true,
             'csrf_protection' => false,
             'required' => false,
+            'validation_groups' => false,
         ]);
         $form->add(
             $filter->getName(),
