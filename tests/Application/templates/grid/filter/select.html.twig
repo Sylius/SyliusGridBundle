@@ -1,1 +1,5 @@
-{{ form_row(form, {'label': filter.label}) }}
+{{ component('select_filter', {
+    form,
+    filter,
+    criteria: grid.parameters.get('criteria', []),
+}) }}

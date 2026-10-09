@@ -62,30 +62,39 @@ class Filter
      * @param array{
      *     name: string,
      *     type: string,
-     *     label: string|bool|null,
-     *     enabled: ?bool,
-     *     options: ?array<string, mixed>,
-     *     formOptions: ?array<string, mixed>,
-     *     position: ?int,
-     *     criteria: ?array<string, mixed>
+     *     label?: string|bool|null,
+     *     enabled?: bool|null,
+     *     template?: string|null,
+     *     options?: array<string, mixed>|null,
+     *     formOptions?: array<string, mixed>|null,
+     *     position?: int|null,
+     *     criteria?: mixed
      * } $data
      */
     public static function fromArray(array $data): self
     {
-        Assert::notNull($data['name']);
-        Assert::notNull($data['type']);
+        Assert::keyExists($data, 'name');
+        Assert::keyExists($data, 'type');
+        Assert::string($data['name']);
+        Assert::string($data['type']);
 
-        $filter = self::fromNameAndType(
-            $data['name'],
-            $data['type'],
-        );
+        $filter = self::fromNameAndType($data['name'], $data['type']);
 
-        $filter->setLabel($data['label'] ?? null);
+        // The label defaults to the name, only override it when explicitly given
+        if (array_key_exists('label', $data)) {
+            $filter->setLabel($data['label']);
+        }
+
         $filter->setEnabled($data['enabled'] ?? true);
+
+        if (null !== ($data['template'] ?? null)) {
+            $filter->setTemplate($data['template']);
+        }
+
         $filter->setOptions($data['options'] ?? []);
         $filter->setFormOptions($data['formOptions'] ?? []);
         $filter->setPosition($data['position'] ?? self::DEFAULT_POSITION);
-        $filter->setCriteria($data['criteria'] ?? []);
+        $filter->setCriteria($data['criteria'] ?? null);
 
         return $filter;
     }
@@ -195,7 +204,17 @@ class Filter
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     name: string,
+     *     type: string,
+     *     label: string|bool|null,
+     *     enabled: bool,
+     *     template: string|null,
+     *     options: array<string, mixed>,
+     *     formOptions: array<string, mixed>,
+     *     position: int,
+     *     criteria: mixed
+     * }
      */
     public function toArray(): array
     {
@@ -204,6 +223,7 @@ class Filter
             'type' => $this->getType(),
             'label' => $this->getLabel(),
             'enabled' => $this->isEnabled(),
+            'template' => $this->getTemplate(),
             'options' => $this->getOptions(),
             'formOptions' => $this->getFormOptions(),
             'position' => $this->getPosition(),

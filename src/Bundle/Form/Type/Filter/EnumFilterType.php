@@ -26,6 +26,7 @@ final class EnumFilterType extends AbstractType
     {
         $resolver
             ->setDefault('placeholder', 'sylius.ui.all')
+            ->setDefault('placeholder_attr', [])
         ;
     }
 
