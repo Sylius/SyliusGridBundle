@@ -16,6 +16,7 @@ namespace Sylius\Component\Grid\Filtering;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
 {
@@ -33,9 +34,12 @@ final class FiltersCriteriaResolver implements FiltersCriteriaResolverInterface
             $this->getFiltersDefaultCriteria($grid->getFilters()),
         );
 
-        /** @var array<string, mixed> $criteria */
         $criteria = $parameters->get('criteria', $defaultCriteria);
+        if (!is_array($criteria)) {
+            throw new BadRequestHttpException('The "criteria" parameter must be an array.');
+        }
 
+        /** @var array<string, mixed> $criteria */
         return $criteria;
     }
 

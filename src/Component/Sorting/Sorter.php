@@ -20,6 +20,7 @@ use Sylius\Component\Grid\Validation\FieldValidator;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
 use Sylius\Component\Grid\Validation\SortingParametersValidator;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class Sorter implements SorterInterface
 {
@@ -39,8 +40,12 @@ final class Sorter implements SorterInterface
 
         $expressionBuilder = $dataSource->getExpressionBuilder();
 
-        /** @var array<string, string> $sorting */
         $sorting = $parameters->get('sorting', $grid->getSorting());
+        if (!is_array($sorting)) {
+            throw new BadRequestHttpException('The "sorting" parameter must be an array.');
+        }
+
+        /** @var array<string, string> $sorting */
         $this->sortingValidator->validateSortingParameters($sorting, $enabledFields);
 
         foreach ($sorting as $field => $order) {
