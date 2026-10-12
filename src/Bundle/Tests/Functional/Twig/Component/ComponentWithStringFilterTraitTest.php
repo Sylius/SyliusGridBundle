@@ -107,4 +107,56 @@ final class ComponentWithStringFilterTraitTest extends KernelTestCase
             ->withData(['newCriteria' => ['search' => ['value' => 'Jurassic', 'type' => 'equal']]])
         ;
     }
+
+    public function testSynchronizeValueWhenCriteriaAreChangedByTheGrid(): void
+    {
+        $component = $this->createLiveComponent(
+            name: StringFilterComponent::class,
+            data: [
+                'filter' => Filter::fromNameAndType('search', 'string'),
+                'criteria' => ['search' => ['value' => 'Jurassic', 'type' => 'equal']],
+            ],
+        );
+
+        $component->emit('criteriaChanged', ['criteria' => ['search' => ['value' => 'Lord']]]);
+        $component->call('onChange');
+
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['search' => ['value' => 'Lord']]])
+        ;
+    }
+
+    public function testInitializeValueFromScalarCriteria(): void
+    {
+        $component = $this->createLiveComponent(
+            name: StringFilterComponent::class,
+            data: [
+                'filter' => Filter::fromNameAndType('search', 'string'),
+                'criteria' => ['search' => 'Jurassic'],
+            ],
+        );
+
+        $component->call('onChange');
+
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['search' => ['value' => 'Jurassic']]])
+        ;
+    }
+
+    public function testIgnoreMalformedCriteria(): void
+    {
+        $component = $this->createLiveComponent(
+            name: StringFilterComponent::class,
+            data: [
+                'filter' => Filter::fromNameAndType('search', 'string'),
+                'criteria' => ['search' => ['value' => ['Jurassic'], 'type' => ['equal']]],
+            ],
+        );
+
+        $component->call('onChange');
+
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['search' => ['value' => '']]])
+        ;
+    }
 }

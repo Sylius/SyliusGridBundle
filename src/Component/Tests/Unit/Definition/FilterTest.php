@@ -122,4 +122,21 @@ final class FilterTest extends TestCase
         /** @phpstan-ignore argument.type */
         Filter::fromArray(['name' => 'title']);
     }
+
+    public function testCanBeConvertedToAnArrayAndBackWithScalarCriteria(): void
+    {
+        $filter = Filter::fromNameAndType('enabled', 'boolean');
+        $filter->setCriteria(true);
+
+        $this->assertEquals($filter, Filter::fromArray($filter->toArray()));
+    }
+
+    public function testCannotBeCreatedFromAnArrayWithNonSerializableCriteria(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The criteria of the "author" filter must be null, a scalar or an array, "stdClass" given.');
+
+        /** @phpstan-ignore argument.type */
+        Filter::fromArray(['name' => 'author', 'type' => 'entity', 'criteria' => new \stdClass()]);
+    }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Twig\Component;
 
 use App\Entity\Author;
+use App\Factory\AuthorFactory;
 use App\Twig\EntityFilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Sylius\Component\Grid\Definition\Filter;
@@ -79,5 +80,41 @@ final class ComponentWithEntityFilterTraitTest extends KernelTestCase
         $component->call('onChange');
 
         $this->assertComponentEmitEvent($component, 'filterChanged');
+    }
+
+    public function testHydrateFormDataWithTheEntityFromCriteria(): void
+    {
+        $author = AuthorFactory::new()->withName('Arthur Conan Doyle')->create();
+
+        $filter = Filter::fromNameAndType('author', 'entity');
+        $filter->setFormOptions(['class' => Author::class]);
+
+        $component = $this->createLiveComponent(
+            name: EntityFilterComponent::class,
+            data: [
+                'filter' => $filter,
+                'criteria' => ['author' => (string) $author->getId()],
+            ],
+        );
+
+        $this->assertFormDataIsAuthor($component->component(), $author->getId());
+
+        // Re-hydrating the component on a live action must still produce the entity as form data
+        $component->call('onChange');
+
+        $this->assertFormDataIsAuthor($component->component(), $author->getId());
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['author' => (string) $author->getId()]])
+        ;
+    }
+
+    private function assertFormDataIsAuthor(object $component, mixed $authorId): void
+    {
+        $this->assertInstanceOf(EntityFilterComponent::class, $component);
+
+        $data = $component->getFormView()->vars['data'];
+
+        $this->assertInstanceOf(Author::class, $data);
+        $this->assertSame($authorId, $data->getId());
     }
 }

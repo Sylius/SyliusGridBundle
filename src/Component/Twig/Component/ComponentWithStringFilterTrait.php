@@ -38,11 +38,31 @@ trait ComponentWithStringFilterTrait
     #[PostMount(priority: 10)]
     public function initializeFilterValue(): void
     {
-        /** @var array{value?: string|null, type?: string|null} $criteria */
-        $criteria = $this->criteria[$this->filter->getName()] ?? [];
+        $criteria = $this->normalizeStringFilterCriteria($this->getFilterCriteria());
 
-        $this->value = (string) ($criteria['value'] ?? '');
-        $this->type = $criteria['type'] ?? null;
+        $this->value = $criteria['value'];
+        $this->type = $criteria['type'];
+    }
+
+    /**
+     * Accepts the same criteria shapes as the StringFilter (a scalar value or an array with "value" and "type" keys)
+     * and ignores anything malformed.
+     *
+     * @return array{value: string, type: string|null}
+     */
+    private function normalizeStringFilterCriteria(mixed $criteria): array
+    {
+        if (!is_array($criteria)) {
+            $criteria = ['value' => $criteria];
+        }
+
+        $value = $criteria['value'] ?? null;
+        $type = $criteria['type'] ?? null;
+
+        return [
+            'value' => is_scalar($value) ? (string) $value : '',
+            'type' => is_string($type) && '' !== $type ? $type : null,
+        ];
     }
 
     protected function reset(): void

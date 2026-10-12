@@ -32,7 +32,7 @@ trait ComponentWithSelectFilterTrait
     #[PostMount(priority: 10)]
     public function initializeFilterValue(): void
     {
-        $this->value = $this->criteria[$this->filter->getName()] ?? null;
+        $this->value = $this->getFilterCriteria();
     }
 
     protected function reset(): void

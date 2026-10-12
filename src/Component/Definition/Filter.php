@@ -68,7 +68,7 @@ class Filter
      *     options?: array<string, mixed>|null,
      *     formOptions?: array<string, mixed>|null,
      *     position?: int|null,
-     *     criteria?: mixed
+     *     criteria?: array<array-key, mixed>|scalar|null
      * } $data
      */
     public static function fromArray(array $data): self
@@ -94,7 +94,15 @@ class Filter
         $filter->setOptions($data['options'] ?? []);
         $filter->setFormOptions($data['formOptions'] ?? []);
         $filter->setPosition($data['position'] ?? self::DEFAULT_POSITION);
-        $filter->setCriteria($data['criteria'] ?? null);
+
+        // The criteria (i.e. the filter default value) can be a scalar or an array, but must remain serializable
+        $criteria = $data['criteria'] ?? null;
+        Assert::true(null === $criteria || is_scalar($criteria) || is_array($criteria), sprintf(
+            'The criteria of the "%s" filter must be null, a scalar or an array, "%s" given.',
+            $data['name'],
+            get_debug_type($criteria),
+        ));
+        $filter->setCriteria($criteria);
 
         return $filter;
     }

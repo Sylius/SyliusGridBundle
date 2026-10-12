@@ -108,4 +108,22 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
             ->withData(['newCriteria' => ['state' => null]])
         ;
     }
+
+    public function testSynchronizeValueWhenCriteriaAreChangedByTheGrid(): void
+    {
+        $component = $this->createLiveComponent(
+            name: SelectFilterComponent::class,
+            data: [
+                'filter' => Filter::fromNameAndType('state', 'select'),
+                'criteria' => ['state' => 'published'],
+            ],
+        );
+
+        $component->emit('criteriaChanged', ['criteria' => ['state' => 'draft']]);
+        $component->call('onChange');
+
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['state' => 'draft']])
+        ;
+    }
 }

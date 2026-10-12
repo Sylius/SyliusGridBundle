@@ -20,6 +20,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
+use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
@@ -102,6 +103,18 @@ trait ComponentWithFilterTrait
         $this->reset();
     }
 
+    /**
+     * Keeps the filter value in sync when the criteria are changed by the grid (e.g. when removing an active filter).
+     *
+     * @param array<string, mixed>|null $criteria
+     */
+    #[LiveListener('criteriaChanged')]
+    public function onCriteriaChanged(#[LiveArg] ?array $criteria = null): void
+    {
+        $this->criteria = $criteria;
+        $this->initializeFilterValue();
+    }
+
     protected function instantiateForm(): FormInterface
     {
         $formType = $this->filterFormTypeRegistry->get($this->filter->getType(), 'default');
@@ -117,11 +130,16 @@ trait ComponentWithFilterTrait
             'required' => false,
         ];
 
-        $form = $this->formFactory->createNamed('criteria', FormType::class, [], $options);
+        // No initial data: it would lock the form data and make the setData() call below a no-op.
+        $form = $this->formFactory->createNamed('criteria', FormType::class, null, $options);
         $form->add($this->filter->getName(), $formType, $this->filter->getFormOptions());
 
-        // Submit a clone to convert the view data (e.g. an entity identifier) into model data,
-        // as submitting is not idempotent and the live component may submit the returned form later.
+        // The filter value is stored as view data (e.g. an entity identifier), but the form expects model data
+        // (e.g. the entity itself). Submitting the form runs its view transformers to convert one into the other.
+        // A clone is submitted because a form can only be submitted once and ComponentWithFormTrait may submit
+        // the returned form later (e.g. on re-render). The original form is then initialized with the model data,
+        // which is what selects the right choice when rendering an entity filter.
+        // See ComponentWithEntityFilterTraitTest::testHydrateFormDataWithTheEntityFromCriteria().
         $clone = clone $form;
         $clone->submit($this->toArray());
 
@@ -129,6 +147,19 @@ trait ComponentWithFilterTrait
 
         return $form->get($this->filter->getName());
     }
+
+    /**
+     * Returns the grid criteria of this filter, or null when there are none.
+     */
+    protected function getFilterCriteria(): mixed
+    {
+        return $this->criteria[$this->filter->getName()] ?? null;
+    }
+
+    /**
+     * Initializes the filter value from the grid criteria.
+     */
+    abstract public function initializeFilterValue(): void;
 
     abstract protected function reset(): void;
 
