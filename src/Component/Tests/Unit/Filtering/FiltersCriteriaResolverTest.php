@@ -20,6 +20,7 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
 use Sylius\Component\Grid\Parameters;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class FiltersCriteriaResolverTest extends TestCase
 {
@@ -138,6 +139,24 @@ final class FiltersCriteriaResolverTest extends TestCase
             'favourite' => 'Pug',
             'date' => ['now' => $parametersDate],
         ], $result);
+    }
+
+    #[DataProvider('nonArrayCriteriaDataProvider')]
+    public function testThrowsBadRequestWhenCriteriaParameterIsNotAnArray(mixed $criteria): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $grid->method('getFilters')->willReturn([]);
+
+        $this->expectException(BadRequestHttpException::class);
+
+        $this->filtersCriteriaResolver->getCriteria($grid, new Parameters(['criteria' => $criteria]));
+    }
+
+    public static function nonArrayCriteriaDataProvider(): iterable
+    {
+        yield 'string' => ['x'];
+        yield 'empty string' => [''];
+        yield 'null' => [null];
     }
 
     public static function criteriaDataProvider(): iterable

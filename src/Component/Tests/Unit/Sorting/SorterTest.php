@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Tests\Unit\Sorting;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sylius\Component\Grid\Data\DataSourceInterface;
 use Sylius\Component\Grid\Data\ExpressionBuilderInterface;
@@ -23,6 +24,7 @@ use Sylius\Component\Grid\Sorting\Sorter;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 use Sylius\Component\Grid\Validation\FieldValidatorInterface;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 final class SorterTest extends TestCase
 {
@@ -118,5 +120,28 @@ final class SorterTest extends TestCase
             ->with('translation.name', 'asc');
 
         $this->sorter->sort($dataSource, $grid, $parameters);
+    }
+
+    #[DataProvider('nonArraySortingDataProvider')]
+    public function testThrowsBadRequestWhenSortingParameterIsNotAnArray(mixed $sorting): void
+    {
+        $grid = $this->createMock(Grid::class);
+        $dataSource = $this->createMock(DataSourceInterface::class);
+
+        $grid->method('getSorting')->willReturn(['name' => 'asc']);
+        $grid->method('getFields')->willReturn([]);
+
+        $this->sortingValidator->expects($this->never())->method('validateSortingParameters');
+
+        $this->expectException(BadRequestHttpException::class);
+
+        $this->sorter->sort($dataSource, $grid, new Parameters(['sorting' => $sorting]));
+    }
+
+    public static function nonArraySortingDataProvider(): iterable
+    {
+        yield 'string' => ['x'];
+        yield 'empty string' => [''];
+        yield 'null' => [null];
     }
 }
