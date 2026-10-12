@@ -514,7 +514,6 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
                         'position' => 100,
                         'options' => [
                             'format' => 'Y-m-d H:i:s',
-                            'timezone' => null,
                         ],
                     ],
                 ],

@@ -35,4 +35,18 @@ final class DateTimeFieldTest extends TestCase
         $this->assertInstanceOf(FieldInterface::class, $field);
         $this->assertEquals(['foo' => 'bar'], $field->getOptions()['vars']);
     }
+
+    public function testLeavesTheTimezoneUnsetByDefault(): void
+    {
+        $field = DateTimeField::create('createdAt');
+
+        $this->assertSame(['format' => 'Y-m-d H:i:s'], $field->getOptions());
+    }
+
+    public function testSetsTheGivenTimezone(): void
+    {
+        $field = DateTimeField::create('createdAt', 'd/m/Y H:i', 'Europe/Paris');
+
+        $this->assertSame(['format' => 'd/m/Y H:i', 'timezone' => 'Europe/Paris'], $field->getOptions());
+    }
 }
