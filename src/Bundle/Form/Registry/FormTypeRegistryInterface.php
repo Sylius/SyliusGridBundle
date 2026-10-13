@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Form\Registry;
 
-interface FormTypeRegistryInterface
+use Sylius\Component\Grid\Symfony\Form\Type\FormTypeRegistryInterface as ComponentFormTypeRegistryInterface;
+
+interface FormTypeRegistryInterface extends ComponentFormTypeRegistryInterface
 {
-    /**
-     * @param string|class-string $formType
-     */
-    public function add(string $identifier, string $typeIdentifier, string $formType): void;
-
-    public function get(string $identifier, string $typeIdentifier): ?string;
-
-    public function has(string $identifier, string $typeIdentifier): bool;
 }

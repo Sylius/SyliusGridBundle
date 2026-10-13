@@ -1,0 +1,16 @@
+<div {{ attributes }}>
+    {% if form.type is defined %}
+        {{ form_row(form.type, {'label': filter.label, 'attr': {
+            'data-action': 'live#action',
+            'data-model': 'type',
+            'data-live-action-param': 'onChange',
+        }}) }}
+    {% endif %}
+    {{ form_row(form.value, {attr: {
+        'placeholder': form.value.vars.label,
+        'data-action': 'keyup->live#action',
+        'data-live-action-param': 'onChange',
+        'data-model': 'value',
+        'data-model-debounce': 300,
+    }, 'label': form.type is defined ? form.value.vars.label : filter.label}) }}
+</div>

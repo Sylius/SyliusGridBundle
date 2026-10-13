@@ -1,5 +1,4 @@
-{% macro render(grid) %}
-
+{% macro render(grid, live = false) %}
     {% set definition = grid.definition %}
 
     <table>
@@ -38,6 +37,18 @@
     {% set paginator = grid.data %}
 
     {% if paginator.haveToPaginate() %}
-        {{ pagerfanta(paginator, 'twig', options|default({'template': '@BabDevPagerfanta/default.html.twig'})) }}
+        {{ pagerfanta(paginator, 'twig', options|default({'template': live ? 'shared/helper/live_pagination.html.twig' : '@BabDevPagerfanta/default.html.twig'})) }}
     {% endif %}
 {% endmacro %}
+
+{% macro render_filters(grid) %}
+    {% set definition = grid.definition %}
+
+    <form method="get">
+        {% for filter in definition.enabledFilters %}
+            {{ sylius_grid_render_filter(grid, filter) }}
+        {% endfor %}
+        <input type="submit" value="Filter" />
+    </form>
+{% endmacro %}
+

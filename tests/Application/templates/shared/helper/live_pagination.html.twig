@@ -1,0 +1,32 @@
+{%- extends '@BabDevPagerfanta/default.html.twig' -%}
+
+{%- block page_link -%}
+    <a class="pagination__item"
+       href="#"
+       data-live-action-param="changePage"
+       data-action="live#action"
+       data-live-page-param="{{ page }}"
+    >{{- page -}}</a>
+{%- endblock page_link -%}
+
+{%- block current_page_link -%}
+    <span class="pagination__item pagination__item--current-page" aria-current="page">{{- page -}}</span>
+{%- endblock current_page_link -%}
+
+{%- block previous_page_link -%}
+    <a class="pagination__item pagination__item--previous-page"
+       href="#"
+       rel="prev"
+       data-action="live#action"
+       data-live-action-param="previousPage"
+    >{{- block('previous_page_message') -}}</a>
+{%- endblock previous_page_link -%}
+
+{%- block next_page_link -%}
+    <a class="pagination__item pagination__item--next-page"
+       href="#"
+       rel="next"
+       data-action="live#action"
+       data-live-action-param="nextPage"
+    >{{- block('next_page_message') -}}</a>
+{%- endblock next_page_link -%}

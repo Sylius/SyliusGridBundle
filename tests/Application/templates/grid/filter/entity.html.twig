@@ -1,1 +1,9 @@
-{{ form_row(form, {'label': filter.label}) }}
+{#{{ form_row(form, {'label': filter.label}) }}#}
+
+{% set criteria = app.request.query.all('criteria') %}
+
+{{ component('entity_filter', {
+    form,
+    criteria,
+    filter,
+}) }}
