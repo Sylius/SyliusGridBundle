@@ -83,6 +83,27 @@ class GridView implements GridViewInterface
         return $fieldName === array_shift($sortedFields);
     }
 
+    public function isFieldVisible(string $fieldName): bool
+    {
+        $this->assertFieldExists($fieldName);
+
+        $field = $this->definition->getField($fieldName);
+        if (!$field->isEnabled()) {
+            return false;
+        }
+
+        $visibility = $this->parameters->get('visibility', []);
+        if (!is_array($visibility)) {
+            return $field->isVisible();
+        }
+
+        return match ($visibility[$fieldName] ?? null) {
+            'visible' => true,
+            'hidden' => false,
+            default => $field->isVisible(),
+        };
+    }
+
     /**
      * @return array<string, string>
      */
@@ -104,10 +125,18 @@ class GridView implements GridViewInterface
      */
     private function assertFieldIsSortable(string $fieldName): void
     {
-        Assert::true($this->definition->hasField($fieldName), sprintf('Field "%s" does not exist.', $fieldName));
+        $this->assertFieldExists($fieldName);
         Assert::true(
             $this->definition->getField($fieldName)->isSortable(),
             sprintf('Field "%s" is not sortable.', $fieldName),
         );
+    }
+
+    /**
+     * @throws \InvalidArgumentException
+     */
+    private function assertFieldExists(string $fieldName): void
+    {
+        Assert::true($this->definition->hasField($fieldName), sprintf('Field "%s" does not exist.', $fieldName));
     }
 }

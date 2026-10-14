@@ -27,6 +27,8 @@ final class Field implements FieldInterface
 
     private ?bool $enabled = null;
 
+    private ?bool $visible = null;
+
     /** @var bool|string|null */
     private $sortable;
 
@@ -83,6 +85,18 @@ final class Field implements FieldInterface
     public function setEnabled(bool $enabled): FieldInterface
     {
         $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible ?? true;
+    }
+
+    public function setVisible(bool $visible): FieldInterface
+    {
+        $this->visible = $visible;
 
         return $this;
     }
@@ -172,6 +186,10 @@ final class Field implements FieldInterface
 
         if (null !== $this->enabled) {
             $output['enabled'] = $this->enabled;
+        }
+
+        if (null !== $this->visible) {
+            $output['visible'] = $this->visible;
         }
 
         if (null !== $this->sortable) {

@@ -25,6 +25,8 @@ class Field
 
     private bool $enabled = true;
 
+    private bool $visible = true;
+
     private ?string $sortable = null;
 
     /** @var array<string, mixed> */
@@ -88,6 +90,16 @@ class Field
     public function setEnabled(bool $enabled): void
     {
         $this->enabled = $enabled;
+    }
+
+    public function isVisible(): bool
+    {
+        return $this->visible;
+    }
+
+    public function setVisible(bool $visible): void
+    {
+        $this->visible = $visible;
     }
 
     public function setSortable(?string $sortable): void

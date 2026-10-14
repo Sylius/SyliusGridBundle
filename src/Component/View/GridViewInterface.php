@@ -16,6 +16,9 @@ namespace Sylius\Component\Grid\View;
 use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 
+/**
+ * @method bool isFieldVisible(string $fieldName)
+ */
 interface GridViewInterface
 {
     /**

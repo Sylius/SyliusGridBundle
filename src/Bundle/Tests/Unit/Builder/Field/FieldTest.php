@@ -69,6 +69,28 @@ final class FieldTest extends TestCase
         $this->assertFalse($this->field->isEnabled());
     }
 
+    public function testIsVisibleByDefault(): void
+    {
+        $this->assertTrue($this->field->isVisible());
+        $this->assertArrayNotHasKey('visible', $this->field->toArray());
+    }
+
+    public function testShowsFields(): void
+    {
+        $this->field->setVisible(true);
+
+        $this->assertTrue($this->field->isVisible());
+        $this->assertTrue($this->field->toArray()['visible']);
+    }
+
+    public function testHidesFields(): void
+    {
+        $this->field->setVisible(false);
+
+        $this->assertFalse($this->field->isVisible());
+        $this->assertFalse($this->field->toArray()['visible']);
+    }
+
     public function testMakesFieldsSortable(): void
     {
         $this->field->setSortable(true);

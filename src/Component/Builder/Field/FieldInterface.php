@@ -31,6 +31,10 @@ interface FieldInterface
 
     public function setEnabled(bool $enabled): self;
 
+    public function isVisible(): bool;
+
+    public function setVisible(bool $visible): self;
+
     public function isSortable(): bool;
 
     public function setSortable(bool $sortable, ?string $path = null): self;

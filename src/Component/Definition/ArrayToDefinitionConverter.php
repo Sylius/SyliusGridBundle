@@ -26,6 +26,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  *         label?: string,
  *         path?: string,
  *         enabled?: bool,
+ *         visible?: bool,
  *         sortable?: bool|string,
  *         position?: int,
  *         options?: array<string, mixed>,
@@ -126,6 +127,9 @@ final class ArrayToDefinitionConverter implements ArrayToDefinitionConverterInte
         }
         if (array_key_exists('enabled', $configuration)) {
             $field->setEnabled($configuration['enabled']);
+        }
+        if (array_key_exists('visible', $configuration)) {
+            $field->setVisible($configuration['visible']);
         }
         if (array_key_exists('sortable', $configuration)) {
             $sortable = $configuration['sortable'];

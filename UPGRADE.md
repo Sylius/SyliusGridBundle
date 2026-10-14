@@ -1,3 +1,38 @@
+## UPGRADE FOR `1.17.x`
+
+### FROM `1.16.x` TO `1.17.x`
+
+### Field visibility
+
+Fields can now be hidden by default with the new `visible` option (`true` when omitted):
+
+```yaml
+sylius_grid:
+    grids:
+        app_admin_book:
+            fields:
+                isbn:
+                    type: string
+                    visible: false
+```
+
+```php
+Field::create('isbn', 'string')->setVisible(false);
+```
+
+The visibility can be overridden per request with the `visibility` parameter, e.g. `?visibility[isbn]=visible&visibility[title]=hidden`.
+Invalid values are ignored and fall back to the configuration.
+Use `GridView::isFieldVisible(string $fieldName)` to know whether a field should be rendered.
+
+Note that `visible: false` only sets the default visibility: users can still display the field through the `visibility` parameter.
+To remove a field from the grid, use `enabled: false` instead. Disabled fields are never visible.
+
+1. The `isVisible()` and `setVisible()` methods have been added to `Sylius\Component\Grid\Builder\Field\FieldInterface`.
+   Custom implementations of this interface must implement them.
+2. The `isFieldVisible()` method has been added to `Sylius\Component\Grid\View\GridView`.
+   It is only declared with a `@method` annotation on `Sylius\Component\Grid\View\GridViewInterface` and is intended to be added to the interface in `2.0`.
+   Custom implementations of `GridViewInterface` not extending `GridView` should implement it.
+
 ## UPGRADE FOR `1.16.x`
 
 ### FROM `1.15.x` TO `1.16.x`
