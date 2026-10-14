@@ -80,12 +80,7 @@ final class GridUiTest extends WebTestCase
     {
         $this->client->request('GET', '/authors?limit=100');
 
-        $names = $this->getAuthorNamesFromResponse();
-
-        $sortedNames = $names;
-        sort($names);
-
-        $this->assertSame($sortedNames, $names);
+        $this->assertSame($this->getAuthorNamesSortedByDatabase('ASC'), $this->getAuthorNamesFromResponse());
     }
 
     #[Test]
@@ -93,12 +88,7 @@ final class GridUiTest extends WebTestCase
     {
         $this->client->request('GET', '/authors?sorting[name]=desc&limit=100');
 
-        $names = $this->getAuthorNamesFromResponse();
-
-        $sortedNames = $names;
-        rsort($names);
-
-        $this->assertSame($sortedNames, $names);
+        $this->assertSame($this->getAuthorNamesSortedByDatabase('DESC'), $this->getAuthorNamesFromResponse());
     }
 
     #[Test]
@@ -400,6 +390,20 @@ final class GridUiTest extends WebTestCase
             ->each(
                 fn (Crawler $node): string => $node->text(),
             );
+    }
+
+    /**
+     * The expected order is computed by the database, as its collation (e.g. PostgreSQL's en_US.UTF-8)
+     * can differ from PHP's byte-wise sort ("Johnathan Buckridge" < "John Watson" when spaces are ignored).
+     *
+     * @return string[]
+     */
+    private function getAuthorNamesSortedByDatabase(string $direction): array
+    {
+        return array_map(
+            static fn (object $author): string => $author->getName(),
+            AuthorFactory::repository()->findBy([], ['name' => $direction]),
+        );
     }
 
     /** @return string[] */
