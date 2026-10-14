@@ -29,6 +29,7 @@ final class EntityFilterType extends AbstractType
                 'class' => null,
                 'label' => false,
                 'placeholder' => 'sylius.ui.all',
+                'placeholder_attr' => [],
             ])
         ;
     }

@@ -1,4 +1,5 @@
-{% if form.type is defined %}
-    {{ form_row(form.type, {'label': filter.label}) }}
-{% endif %}
-    {{ form_row(form.value, {attr: {placeholder: form.value.vars.label}, 'label': form.type is defined ? form.value.vars.label : filter.label}) }}
+{{ component('string_filter', {
+    form,
+    filter,
+    criteria: grid.parameters.get('criteria', []),
+}) }}

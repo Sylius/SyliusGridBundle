@@ -148,17 +148,26 @@ trait ComponentWithGridTrait
         ++$this->page;
     }
 
+    /**
+     * Changes the criteria from the grid itself (e.g. when removing an active filter),
+     * the filter components are notified so they can update their value.
+     */
     #[LiveAction]
     public function changeCriteria(#[LiveArg] ?array $criteria): void
     {
-        $this->page = 1; // Cause the number of results will change
-        $this->criteria = $criteria;
+        $this->applyCriteria($criteria);
+
+        $this->emit('criteriaChanged', ['criteria' => $this->criteria]);
     }
 
+    /**
+     * Changes the criteria from a filter component. The filter components are not notified,
+     * as the filter that emitted the change is already up-to-date (and may still be edited).
+     */
     #[LiveListener('filterChanged')]
     public function filterChanged(#[LiveArg] array $newCriteria): void
     {
-        $this->changeCriteria(array_merge($this->criteria ?? [], $newCriteria));
+        $this->applyCriteria(array_merge($this->criteria ?? [], $newCriteria));
     }
 
     #[LiveAction]
@@ -193,6 +202,15 @@ trait ComponentWithGridTrait
     }
 
     abstract protected function getGridName(): string;
+
+    /**
+     * @param array<string, mixed>|null $criteria
+     */
+    private function applyCriteria(?array $criteria): void
+    {
+        $this->page = 1; // Cause the number of results will change
+        $this->criteria = $criteria;
+    }
 
     private function getGridDefinition(): Grid
     {

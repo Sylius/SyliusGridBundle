@@ -13,11 +13,19 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Twig\Component;
 
+use App\Entity\Author;
+use App\Factory\AuthorFactory;
 use App\Story\AppStory;
 use App\Twig\BookGridComponent;
+use App\Twig\EntityFilterComponent;
+use App\Twig\StringFilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
+use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Twig\Component\ComponentWithGridTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
 use Symfony\UX\LiveComponent\Test\TestLiveComponent;
 use Zenstruck\Foundry\Test\Factories;
@@ -80,6 +88,20 @@ final class ComponentWithGridTraitTest extends KernelTestCase
 
         $this->assertStringContainsString('JURASSIC PARK', $html);
         $this->assertStringNotContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testChangeCriteriaNotifiesFilters(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['criteria' => ['title' => ['value' => 'Jurassic']]],
+        );
+
+        $component->call('changeCriteria', ['criteria' => ['title' => ['value' => 'Lord']]]);
+
+        $this->assertComponentEmitEvent($component, 'criteriaChanged')
+            ->withData(['criteria' => ['title' => ['value' => 'Lord']]])
+        ;
     }
 
     public function testLoadWithSorting(): void
@@ -230,6 +252,96 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $component->call('filterChanged', ['newCriteria' => ['title' => ['value' => 'Jurassic']]]);
 
         $this->assertCurrentPage($component, 1);
+    }
+
+    public function testFilterChangedDoesNotNotifyFilters(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+        );
+
+        $component->call('filterChanged', ['newCriteria' => ['title' => ['value' => 'Jurassic']]]);
+
+        $this->assertComponentNotEmitEvent($component, 'criteriaChanged');
+    }
+
+    public function testSeveralFilterComponentsOnTheSameGrid(): void
+    {
+        $this->emulateSession();
+
+        /** @var Author $michaelCrichton */
+        $michaelCrichton = AuthorFactory::repository()->findOneBy(['name' => 'Michael Crichton']);
+        $michaelCrichtonId = (string) $michaelCrichton->getId();
+
+        $authorFilter = Filter::fromNameAndType('author', 'entity');
+        $authorFilter->setFormOptions(['class' => Author::class]);
+
+        $grid = $this->createLiveComponent(name: BookGridComponent::class);
+        $titleFilterComponent = $this->createLiveComponent(
+            name: StringFilterComponent::class,
+            data: ['filter' => Filter::fromNameAndType('title', 'string')],
+        );
+        $authorFilterComponent = $this->createLiveComponent(
+            name: EntityFilterComponent::class,
+            data: ['filter' => $authorFilter],
+        );
+
+        // The title filter is changed: the grid applies it without echoing it back to the filters
+        $titleFilterComponent->set('value', 'Jurassic');
+        $titleFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['title' => ['value' => 'Jurassic']]])
+        ;
+
+        $grid->call('filterChanged', ['newCriteria' => ['title' => ['value' => 'Jurassic']]]);
+        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
+
+        // The author filter is changed: the criteria of the title filter are kept
+        $authorFilterComponent->set('value', $michaelCrichtonId);
+        $authorFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($authorFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['author' => $michaelCrichtonId]])
+        ;
+
+        $grid->call('filterChanged', ['newCriteria' => ['author' => $michaelCrichtonId]]);
+        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
+
+        $html = $grid->render()->toString();
+        $this->assertStringContainsString('JURASSIC PARK', $html);
+        $this->assertStringNotContainsString('THE LOST WORLD', $html);
+        $this->assertStringNotContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+
+        // The title filter is removed from the grid: every filter is notified and only the title filter is cleared
+        $criteria = ['author' => $michaelCrichtonId];
+        $grid->call('changeCriteria', ['criteria' => $criteria]);
+        $this->assertComponentEmitEvent($grid, 'criteriaChanged')->withData(['criteria' => $criteria]);
+
+        $titleFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
+        $titleFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['title' => ['value' => '']]])
+        ;
+
+        $authorFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
+        $authorFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($authorFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['author' => $michaelCrichtonId]])
+        ;
+
+        $html = $grid->render()->toString();
+        $this->assertStringContainsString('JURASSIC PARK', $html);
+        $this->assertStringContainsString('THE LOST WORLD', $html);
+    }
+
+    private function emulateSession(): void
+    {
+        $session = new Session(new MockArraySessionStorage());
+        $session->start();
+
+        $request = Request::create('/');
+        $request->setSession($session);
+
+        self::getContainer()->get('request_stack')->push($request);
     }
 
     private function assertCurrentPage(TestLiveComponent $component, int $expectedPage): void

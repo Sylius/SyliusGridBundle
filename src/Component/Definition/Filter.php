@@ -62,30 +62,47 @@ class Filter
      * @param array{
      *     name: string,
      *     type: string,
-     *     label: string|bool|null,
-     *     enabled: ?bool,
-     *     options: ?array<string, mixed>,
-     *     formOptions: ?array<string, mixed>,
-     *     position: ?int,
-     *     criteria: ?array<string, mixed>
+     *     label?: string|bool|null,
+     *     enabled?: bool|null,
+     *     template?: string|null,
+     *     options?: array<string, mixed>|null,
+     *     formOptions?: array<string, mixed>|null,
+     *     position?: int|null,
+     *     criteria?: array<array-key, mixed>|scalar|null
      * } $data
      */
     public static function fromArray(array $data): self
     {
-        Assert::notNull($data['name']);
-        Assert::notNull($data['type']);
+        Assert::keyExists($data, 'name');
+        Assert::keyExists($data, 'type');
+        Assert::string($data['name']);
+        Assert::string($data['type']);
 
-        $filter = self::fromNameAndType(
-            $data['name'],
-            $data['type'],
-        );
+        $filter = self::fromNameAndType($data['name'], $data['type']);
 
-        $filter->setLabel($data['label'] ?? null);
+        // The label defaults to the name, only override it when explicitly given
+        if (array_key_exists('label', $data)) {
+            $filter->setLabel($data['label']);
+        }
+
         $filter->setEnabled($data['enabled'] ?? true);
+
+        if (null !== ($data['template'] ?? null)) {
+            $filter->setTemplate($data['template']);
+        }
+
         $filter->setOptions($data['options'] ?? []);
         $filter->setFormOptions($data['formOptions'] ?? []);
         $filter->setPosition($data['position'] ?? self::DEFAULT_POSITION);
-        $filter->setCriteria($data['criteria'] ?? []);
+
+        // The criteria (i.e. the filter default value) can be a scalar or an array, but must remain serializable
+        $criteria = $data['criteria'] ?? null;
+        Assert::true(null === $criteria || is_scalar($criteria) || is_array($criteria), sprintf(
+            'The criteria of the "%s" filter must be null, a scalar or an array, "%s" given.',
+            $data['name'],
+            get_debug_type($criteria),
+        ));
+        $filter->setCriteria($criteria);
 
         return $filter;
     }
@@ -195,7 +212,17 @@ class Filter
     }
 
     /**
-     * @return array<string, mixed>
+     * @return array{
+     *     name: string,
+     *     type: string,
+     *     label: string|bool|null,
+     *     enabled: bool,
+     *     template: string|null,
+     *     options: array<string, mixed>,
+     *     formOptions: array<string, mixed>,
+     *     position: int,
+     *     criteria: mixed
+     * }
      */
     public function toArray(): array
     {
@@ -204,6 +231,7 @@ class Filter
             'type' => $this->getType(),
             'label' => $this->getLabel(),
             'enabled' => $this->isEnabled(),
+            'template' => $this->getTemplate(),
             'options' => $this->getOptions(),
             'formOptions' => $this->getFormOptions(),
             'position' => $this->getPosition(),

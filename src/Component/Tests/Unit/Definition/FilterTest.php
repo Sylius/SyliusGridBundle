@@ -89,4 +89,54 @@ final class FilterTest extends TestCase
         $this->filter->setCriteria(['type' => 'contains']);
         $this->assertSame(['type' => 'contains'], $this->filter->getCriteria());
     }
+
+    public function testCanBeConvertedToAnArrayAndBack(): void
+    {
+        $filter = Filter::fromNameAndType('author', 'entity');
+        $filter->setLabel('app.ui.author');
+        $filter->setEnabled(false);
+        $filter->setTemplate('filter/author.html.twig');
+        $filter->setOptions(['fields' => ['author.id']]);
+        $filter->setFormOptions(['class' => 'App\\Entity\\Author']);
+        $filter->setPosition(3);
+        $filter->setCriteria(['author' => '42']);
+
+        $this->assertEquals($filter, Filter::fromArray($filter->toArray()));
+    }
+
+    public function testLabelDefaultsToNameWhenCreatedFromAnArrayWithoutLabel(): void
+    {
+        $filter = Filter::fromArray(['name' => 'title', 'type' => 'string']);
+
+        $this->assertSame('title', $filter->getLabel());
+        $this->assertTrue($filter->isEnabled());
+        $this->assertNull($filter->getTemplate());
+        $this->assertSame([], $filter->getFormOptions());
+        $this->assertSame(100, $filter->getPosition());
+    }
+
+    public function testCannotBeCreatedFromAnArrayWithoutType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+
+        /** @phpstan-ignore argument.type */
+        Filter::fromArray(['name' => 'title']);
+    }
+
+    public function testCanBeConvertedToAnArrayAndBackWithScalarCriteria(): void
+    {
+        $filter = Filter::fromNameAndType('enabled', 'boolean');
+        $filter->setCriteria(true);
+
+        $this->assertEquals($filter, Filter::fromArray($filter->toArray()));
+    }
+
+    public function testCannotBeCreatedFromAnArrayWithNonSerializableCriteria(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The criteria of the "author" filter must be null, a scalar or an array, "stdClass" given.');
+
+        /** @phpstan-ignore argument.type */
+        Filter::fromArray(['name' => 'author', 'type' => 'entity', 'criteria' => new \stdClass()]);
+    }
 }
