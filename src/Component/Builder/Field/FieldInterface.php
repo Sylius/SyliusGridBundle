@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Builder\Field;
 
+/**
+ * @method bool isVisible()
+ * @method FieldInterface setVisible(bool $visible)
+ */
 interface FieldInterface
 {
     public static function create(string $name, string $type): self;
@@ -30,10 +34,6 @@ interface FieldInterface
     public function isEnabled(): bool;
 
     public function setEnabled(bool $enabled): self;
-
-    public function isVisible(): bool;
-
-    public function setVisible(bool $visible): self;
 
     public function isSortable(): bool;
 

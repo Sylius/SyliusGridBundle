@@ -27,8 +27,9 @@ Use `GridView::isFieldVisible(string $fieldName)` to know whether a field should
 Note that `visible: false` only sets the default visibility: users can still display the field through the `visibility` parameter.
 To remove a field from the grid, use `enabled: false` instead. Disabled fields are never visible.
 
-1. The `isVisible()` and `setVisible()` methods have been added to `Sylius\Component\Grid\Builder\Field\FieldInterface`.
-   Custom implementations of this interface must implement them.
+1. The `isVisible()` and `setVisible()` methods have been added to `Sylius\Bundle\GridBundle\Builder\Field\Field`.
+   They are only declared with `@method` annotations on `Sylius\Component\Grid\Builder\Field\FieldInterface` and are intended to be added to the interface in `2.0`.
+   Custom implementations of `FieldInterface` should implement them.
 2. The `isFieldVisible()` method has been added to `Sylius\Component\Grid\View\GridView`.
    It is only declared with a `@method` annotation on `Sylius\Component\Grid\View\GridViewInterface` and is intended to be added to the interface in `2.0`.
    Custom implementations of `GridViewInterface` not extending `GridView` should implement it.
