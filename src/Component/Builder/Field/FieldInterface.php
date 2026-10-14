@@ -13,6 +13,10 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\Builder\Field;
 
+/**
+ * @method bool isVisible()
+ * @method FieldInterface setVisible(bool $visible)
+ */
 interface FieldInterface
 {
     public static function create(string $name, string $type): self;

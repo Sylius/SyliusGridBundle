@@ -75,6 +75,7 @@ final class DebugGridCommandTest extends KernelTestCase
                                         -path: "id"                                              
                                         -label: "id"                                             
                                         -enabled: true                                           
+                                        -visible: true                                           
                                         -sortable: "id"                                          
                                         -options: [                                              
                                           "callable" => [                                        
@@ -91,6 +92,7 @@ final class DebugGridCommandTest extends KernelTestCase
                                         -path: "name"                                            
                                         -label: "Name"                                           
                                         -enabled: true                                           
+                                        -visible: true                                           
                                         -sortable: "name"                                        
                                         -options: []                                             
                                         -position: 100                                           
@@ -101,6 +103,7 @@ final class DebugGridCommandTest extends KernelTestCase
                                         -path: "nationality"                                     
                                         -label: "Nationality"                                    
                                         -enabled: true                                           
+                                        -visible: true                                           
                                         -sortable: "nationality.name"                            
                                         -options: [                                              
                                           "service" => "App\Helper\GridHelper",                  

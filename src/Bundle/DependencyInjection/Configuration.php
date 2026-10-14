@@ -125,6 +125,7 @@ final class Configuration implements ConfigurationInterface
                                         ->scalarNode('path')->cannotBeEmpty()->end()
                                         ->scalarNode('sortable')->end()
                                         ->scalarNode('enabled')->defaultTrue()->end()
+                                        ->booleanNode('visible')->end()
                                         ->scalarNode('position')->defaultValue(100)->end()
                                         ->arrayNode('options')
                                             ->performNoDeepMerging()

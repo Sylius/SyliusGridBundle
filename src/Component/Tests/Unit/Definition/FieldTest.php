@@ -61,6 +61,14 @@ final class FieldTest extends TestCase
         $this->assertTrue($this->field->isEnabled());
     }
 
+    public function testVisibilityIsToggleable(): void
+    {
+        $this->assertTrue($this->field->isVisible());
+
+        $this->field->setVisible(false);
+        $this->assertFalse($this->field->isVisible());
+    }
+
     public function testKnowsByWhichPropertyItCanBeSorted(): void
     {
         $this->assertNull($this->field->getSortable());

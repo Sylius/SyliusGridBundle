@@ -468,6 +468,52 @@ final class GridBuilderConfigurationTest extends AbstractExtensionTestCase
     }
 
     #[Test]
+    public function it_builds_grid_with_hidden_fields(): void
+    {
+        $gridBuilder = GridBuilder::create('app_admin_book', Book::class)
+            ->addField(Field::create('name', 'string'))
+            ->addField(Field::create('isbn', 'string')->setVisible(false))
+        ;
+
+        $this->load([
+            'grids' => [
+                'app_admin_book' => $gridBuilder->toArray(),
+            ],
+        ]);
+
+        $this->assertContainerBuilderHasParameter('sylius.grids_definitions', [
+            'app_admin_book' => [
+                'driver' => [
+                    'name' => Driver::NAME,
+                    'options' => [
+                        'class' => Book::class,
+                    ],
+                ],
+                'removals' => [],
+                'sorting' => [],
+                'limits' => [10, 25, 50],
+                'fields' => [
+                    'name' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'position' => 100,
+                        'options' => [],
+                    ],
+                    'isbn' => [
+                        'type' => 'string',
+                        'enabled' => true,
+                        'visible' => false,
+                        'position' => 100,
+                        'options' => [],
+                    ],
+                ],
+                'filters' => [],
+                'actions' => [],
+            ],
+        ]);
+    }
+
+    #[Test]
     public function it_builds_grid_with_predefined_fields(): void
     {
         $gridBuilder = GridBuilder::create('app_admin_book', Book::class)

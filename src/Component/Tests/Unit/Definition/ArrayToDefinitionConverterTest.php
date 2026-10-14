@@ -85,6 +85,7 @@ final class ArrayToDefinitionConverterTest extends TestCase
 
         $titleField = Field::fromNameAndType('title', 'string');
         $titleField->setLabel('Title');
+        $titleField->setVisible(false);
 
         $grid->addField($titleField);
 
@@ -147,6 +148,7 @@ final class ArrayToDefinitionConverterTest extends TestCase
                     'type' => 'string',
                     'label' => 'Title',
                     'sortable' => false,
+                    'visible' => false,
                 ],
             ],
             'filters' => [

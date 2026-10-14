@@ -126,6 +126,130 @@ final class ConfigurationTest extends TestCase
     }
 
     #[Test]
+    public function its_fields_can_be_hidden(): void
+    {
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'sylius_admin_tax_category' => [
+                        'fields' => [
+                            'code' => [
+                                'type' => 'string',
+                                'visible' => false,
+                            ],
+                        ],
+                    ],
+                ],
+            ]],
+            [
+                'grids' => [
+                    'sylius_admin_tax_category' => [
+                        'fields' => [
+                            'code' => [
+                                'type' => 'string',
+                                'enabled' => true,
+                                'visible' => false,
+                                'position' => 100,
+                                'options' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'grids.*.fields',
+        );
+    }
+
+    #[Test]
+    public function its_field_visibility_is_not_set_by_default(): void
+    {
+        $this->assertProcessedConfigurationEquals(
+            [[
+                'grids' => [
+                    'sylius_admin_tax_category' => [
+                        'fields' => [
+                            'code' => [
+                                'type' => 'string',
+                            ],
+                        ],
+                    ],
+                ],
+            ]],
+            [
+                'grids' => [
+                    'sylius_admin_tax_category' => [
+                        'fields' => [
+                            'code' => [
+                                'type' => 'string',
+                                'enabled' => true,
+                                'position' => 100,
+                                'options' => [],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'grids.*.fields',
+        );
+    }
+
+    #[Test]
+    public function its_field_visibility_can_only_be_a_boolean(): void
+    {
+        $this->assertConfigurationIsValid([[
+            'grids' => [
+                'sylius_admin_tax_category' => [
+                    'fields' => [
+                        'code' => [
+                            'type' => 'string',
+                            'visible' => true,
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+
+        $this->assertConfigurationIsValid([[
+            'grids' => [
+                'sylius_admin_tax_category' => [
+                    'fields' => [
+                        'code' => [
+                            'type' => 'string',
+                            'visible' => false,
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+
+        $this->assertConfigurationIsInvalid([[
+            'grids' => [
+                'sylius_admin_tax_category' => [
+                    'fields' => [
+                        'code' => [
+                            'type' => 'string',
+                            'visible' => 'no',
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+
+        $this->assertConfigurationIsInvalid([[
+            'grids' => [
+                'sylius_admin_tax_category' => [
+                    'fields' => [
+                        'code' => [
+                            'type' => 'string',
+                            'visible' => 'false',
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+    }
+
+    #[Test]
     public function its_base_sorting_can_be_overwritten(): void
     {
         $this->assertProcessedConfigurationEquals(
