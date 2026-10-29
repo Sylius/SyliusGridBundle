@@ -43,9 +43,13 @@ use Sylius\Component\Grid\Filtering\FiltersApplicatorInterface;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolver;
 use Sylius\Component\Grid\Filtering\FiltersCriteriaResolverInterface;
 use Sylius\Component\Grid\Mutator\GridMutatorCollection;
+use Sylius\Component\Grid\Pagination\MaxPerPageResolver;
+use Sylius\Component\Grid\Pagination\MaxPerPageResolverInterface;
 use Sylius\Component\Grid\Provider\ArrayGridProvider;
 use Sylius\Component\Grid\Provider\ChainProvider;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Sylius\Component\Grid\Sanitizing\ParametersSanitizer;
+use Sylius\Component\Grid\Sanitizing\ParametersSanitizerInterface;
 use Sylius\Component\Grid\Sorting\Sorter;
 use Sylius\Component\Grid\Sorting\SorterInterface;
 use Sylius\Component\Grid\Validation\FieldValidator;
@@ -174,6 +178,17 @@ return static function (ContainerConfigurator $container) {
         ]);
 
     $services->alias(SorterInterface::class, 'sylius.grid.sorter');
+
+    $services->set('sylius.grid.max_per_page_resolver', MaxPerPageResolver::class);
+
+    $services->alias(MaxPerPageResolverInterface::class, 'sylius.grid.max_per_page_resolver');
+
+    $services->set('sylius.grid.parameters_sanitizer', ParametersSanitizer::class)
+        ->args([
+            service('sylius.grid.max_per_page_resolver'),
+        ]);
+
+    $services->alias(ParametersSanitizerInterface::class, 'sylius.grid.parameters_sanitizer');
 
     $services->set(DataSourceProviderInterface::class, DataSourceProvider::class)
         ->args([service('sylius.registry.grid_driver')]);

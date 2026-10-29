@@ -154,6 +154,89 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $this->assertStringNotContainsString(self::ANOTHER_BOOK_TITLE_ON_FIRST_PAGE, $html);
     }
 
+    public function testLoadWithAPageLimitGreaterThanTheGridLimits(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['limit' => 1000],
+        );
+
+        $html = $component->render()->toString();
+
+        // The limit is clamped to the greatest grid limit (15)
+        $this->assertStringContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+        $this->assertStringContainsString(self::SECOND_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::THIRD_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::LAST_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testLoadWithAnInvalidPageLimit(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['limit' => -1],
+        );
+
+        $html = $component->render()->toString();
+
+        // The first grid limit (10) is used
+        $this->assertStringContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::SECOND_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testLoadWithInvalidSorting(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['sorting' => ['unknown' => 'desc', 'title' => 'sideways']],
+        );
+
+        $html = $component->render()->toString();
+
+        // The default sorting is applied
+        $this->assertStringContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::LAST_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testChangeSortingWithAnInvalidField(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+        );
+
+        $component->call('changeSorting', ['sorting' => ['unknown' => 'desc', 'title' => 'DESC']]);
+
+        $html = $component->render()->toString();
+
+        $this->assertStringContainsString(self::LAST_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testLoadWithAnInvalidPage(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['page' => -2],
+        );
+
+        $html = $component->render()->toString();
+
+        $this->assertStringContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
+        $this->assertStringNotContainsString(self::SECOND_PAGE_BOOK_TITLE, $html);
+    }
+
+    public function testCallNextPageWhenCurrentPageIsInvalid(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['page' => -2],
+        );
+
+        $component->call('nextPage');
+        $this->assertCurrentPage($component, 2);
+        $this->assertStringContainsString(self::SECOND_PAGE_BOOK_TITLE, $component->render()->toString());
+    }
+
     public function testLoadWithASpecificPage(): void
     {
         $component = $this->createLiveComponent(
