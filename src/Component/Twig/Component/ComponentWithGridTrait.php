@@ -57,8 +57,10 @@ trait ComponentWithGridTrait
     public ?int $limit = null;
 
     /**
-     * Values of the "$name" placeholders of the grid configuration (e.g. the route parameters of the page),
-     * as the request they usually come from is not available anymore during live re-renders.
+     * The variables of the page (e.g. its route parameters), to pass when mounting the component, as the request
+     * they come from is not available anymore during the live re-renders. They resolve the "$name" values and are
+     * available as "variables" in the "@=" expressions of the grid configuration, as for the regular grids
+     * (see VariablesAwareGridViewInterface).
      *
      * @var array<string, mixed>
      */
