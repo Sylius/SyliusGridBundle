@@ -20,6 +20,7 @@ use Sylius\Component\Grid\Provider\GridProviderInterface;
 use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
+use Sylius\Component\Grid\View\VariablesAwareGridViewFactoryInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -55,6 +56,15 @@ trait ComponentWithGridTrait
     #[LiveProp(writable: true, url: true)]
     public ?int $limit = null;
 
+    /**
+     * Values of the "$name" placeholders of the grid configuration (e.g. the route parameters of the page),
+     * as the request they usually come from is not available anymore during live re-renders.
+     *
+     * @var array<string, mixed>
+     */
+    #[LiveProp]
+    public array $gridVariables = [];
+
     private GridProviderInterface $gridProvider;
 
     private GridViewFactoryInterface $gridViewFactory;
@@ -70,10 +80,10 @@ trait ComponentWithGridTrait
 
         $config = $this->getGridConfig();
 
-        $gridView = $this->gridViewFactory->create(
-            $gridDefinition,
-            new Parameters($config),
-        );
+        $gridView = [] !== $this->gridVariables && $this->gridViewFactory instanceof VariablesAwareGridViewFactoryInterface
+            ? $this->gridViewFactory->createWithVariables($gridDefinition, new Parameters($config), $this->gridVariables)
+            : $this->gridViewFactory->create($gridDefinition, new Parameters($config))
+        ;
 
         $data = $gridView->getData();
 

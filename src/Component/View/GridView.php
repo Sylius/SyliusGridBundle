@@ -17,7 +17,7 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Webmozart\Assert\Assert;
 
-class GridView implements GridViewInterface
+class GridView implements VariablesAwareGridViewInterface
 {
     /** @var mixed */
     private $data;
@@ -26,14 +26,19 @@ class GridView implements GridViewInterface
 
     private Parameters $parameters;
 
+    /** @var array<string, mixed> */
+    private array $variables;
+
     /**
      * @param mixed $data
+     * @param array<string, mixed> $variables
      */
-    public function __construct($data, Grid $definition, Parameters $parameters)
+    public function __construct($data, Grid $definition, Parameters $parameters, array $variables = [])
     {
         $this->data = $data;
         $this->definition = $definition;
         $this->parameters = $parameters;
+        $this->variables = $variables;
     }
 
     public function getData()
@@ -49,6 +54,11 @@ class GridView implements GridViewInterface
     public function getParameters(): Parameters
     {
         return $this->parameters;
+    }
+
+    public function getVariables(): array
+    {
+        return $this->variables;
     }
 
     public function getSortingOrder(string $fieldName): ?string

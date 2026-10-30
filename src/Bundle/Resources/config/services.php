@@ -15,6 +15,8 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Sylius\Bundle\GridBundle\Command\DebugGridCommand;
 use Sylius\Bundle\GridBundle\Maker\MakeGrid;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParser;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParserInterface;
 use Sylius\Bundle\GridBundle\Parser\OptionsParser;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
@@ -216,6 +218,13 @@ return static function (ContainerConfigurator $container) {
         ->private();
 
     $services->alias(OptionsParserInterface::class, 'sylius.grid.options_parser')
+        ->private();
+
+    $services->set('sylius.grid.action_options_parser', ActionOptionsParser::class)
+        ->private()
+        ->args([service('property_accessor')]);
+
+    $services->alias(ActionOptionsParserInterface::class, 'sylius.grid.action_options_parser')
         ->private();
 
     $services->set('sylius.grid.mutator_collection', GridMutatorCollection::class)

@@ -22,6 +22,7 @@ use App\Twig\StringFilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Twig\Component\ComponentWithGridTrait;
+use Sylius\Component\Grid\View\VariablesAwareGridViewInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -352,5 +353,32 @@ final class ComponentWithGridTraitTest extends KernelTestCase
     private function assertCurrentLimit(TestLiveComponent $component, int $expectedLimit): void
     {
         $this->assertStringContainsString('Current limit: ' . $expectedLimit, $component->render()->toString());
+    }
+
+    public function testGridViewHasTheGridVariables(): void
+    {
+        $component = $this->createLiveComponent(
+            name: BookGridComponent::class,
+            data: ['gridVariables' => ['authorId' => 42]],
+        );
+
+        $component->render();
+
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $component->component();
+        $gridView = $bookGrid->getGridView();
+
+        $this->assertInstanceOf(VariablesAwareGridViewInterface::class, $gridView);
+        $this->assertSame(['authorId' => 42], $gridView->getVariables());
+    }
+
+    public function testGridViewHasNoVariablesByDefault(): void
+    {
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+        $gridView = $bookGrid->getGridView();
+
+        $this->assertInstanceOf(VariablesAwareGridViewInterface::class, $gridView);
+        $this->assertSame([], $gridView->getVariables());
     }
 }

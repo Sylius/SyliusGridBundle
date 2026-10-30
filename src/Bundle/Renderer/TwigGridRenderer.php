@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Renderer;
 
 use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistryInterface;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParserInterface;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
@@ -40,6 +41,7 @@ final class TwigGridRenderer implements GridRendererInterface
         /** @var array<string, string> $filterTemplates */
         private readonly array $filterTemplates = [],
         private readonly ?OptionsParserInterface $optionsParser = null,
+        private readonly ?ActionOptionsParserInterface $actionOptionsParser = null,
     ) {
         if (null === $optionsParser) {
             trigger_deprecation(
@@ -84,11 +86,17 @@ final class TwigGridRenderer implements GridRendererInterface
             throw new \InvalidArgumentException(sprintf('Missing template for action type "%s".', $type));
         }
 
-        return $this->twig->render($template, [
+        $context = [
             'grid' => $gridView,
             'action' => $action,
             'data' => $data,
-        ]);
+        ];
+
+        if (null !== $this->actionOptionsParser) {
+            $context['options'] = $this->actionOptionsParser->parseActionOptions($action->getOptions(), $gridView, $data);
+        }
+
+        return $this->twig->render($template, $context);
     }
 
     public function renderFilter(GridViewInterface $gridView, Filter $filter)

@@ -15,6 +15,7 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Renderer;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistryInterface;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParserInterface;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer;
 use Sylius\Component\Grid\Definition\Action;
@@ -235,5 +236,50 @@ final class TwigGridRendererTest extends TestCase
 
         $result = $renderer->renderField($gridView, $field, 'Value');
         $this->assertEquals('<strong>Value</strong>', $result);
+    }
+
+    public function testPassesTheParsedOptionsToTheActionTemplateWhenAnActionOptionsParserIsGiven(): void
+    {
+        $actionOptionsParser = $this->createMock(ActionOptionsParserInterface::class);
+        $renderer = new TwigGridRenderer(
+            $this->twig,
+            $this->fieldsRegistry,
+            $this->formFactory,
+            $this->formTypeRegistry,
+            '"@SyliusGrid/default"',
+            ['link' => '@SyliusGrid/Action/_link.html.twig'],
+            [],
+            $this->optionsParser,
+            $actionOptionsParser,
+        );
+
+        $gridView = $this->createMock(GridViewInterface::class);
+        $action = $this->createMock(Action::class);
+        $data = new \stdClass();
+
+        $action->method('getType')->willReturn('link');
+        $action->method('getTemplate')->willReturn(null);
+        $action->method('getOptions')->willReturn(['link' => ['parameters' => ['productId' => '$productId']]]);
+
+        $actionOptionsParser
+            ->expects($this->once())
+            ->method('parseActionOptions')
+            ->with(['link' => ['parameters' => ['productId' => '$productId']]], $gridView, $data)
+            ->willReturn(['link' => ['parameters' => ['productId' => 42]]])
+        ;
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('@SyliusGrid/Action/_link.html.twig', [
+                'grid' => $gridView,
+                'action' => $action,
+                'data' => $data,
+                'options' => ['link' => ['parameters' => ['productId' => 42]]],
+            ])
+            ->willReturn('<a href="#">Action!</a>')
+        ;
+
+        $this->assertEquals('<a href="#">Action!</a>', $renderer->renderAction($gridView, $action, $data));
     }
 }
