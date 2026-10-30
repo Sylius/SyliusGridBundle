@@ -22,6 +22,8 @@ use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Bundle\GridBundle\Provider\ServiceGridProvider;
 use Sylius\Bundle\GridBundle\Registry\GridRegistry;
 use Sylius\Bundle\GridBundle\Registry\GridRegistryInterface;
+use Sylius\Component\Grid\Attribute\AsExpressionFunctionProvider;
+use Sylius\Component\Grid\Attribute\AsExpressionVariables;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtender;
 use Sylius\Component\Grid\Configuration\GridConfigurationExtenderInterface;
 use Sylius\Component\Grid\Configuration\GridConfigurationRemovalsHandler;
@@ -38,6 +40,10 @@ use Sylius\Component\Grid\DataExtractor\DataExtractorInterface;
 use Sylius\Component\Grid\DataExtractor\PropertyAccessDataExtractor;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverter;
 use Sylius\Component\Grid\Definition\ArrayToDefinitionConverterInterface;
+use Sylius\Component\Grid\ExpressionLanguage\ExpressionEvaluator;
+use Sylius\Component\Grid\ExpressionLanguage\ExpressionEvaluatorInterface;
+use Sylius\Component\Grid\ExpressionLanguage\ExpressionLanguageFactory;
+use Sylius\Component\Grid\ExpressionLanguage\VariablesCollectionAggregate;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Sylius\Component\Grid\Filtering\FilterInterface;
 use Sylius\Component\Grid\Filtering\FiltersApplicator;
@@ -56,7 +62,10 @@ use Sylius\Component\Grid\Validation\SortingParametersValidator;
 use Sylius\Component\Grid\Validation\SortingParametersValidatorInterface;
 use Sylius\Component\Grid\View\GridViewFactory;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
+use Sylius\Component\Grid\View\VariablesResolver;
+use Sylius\Component\Grid\View\VariablesResolverInterface;
 use Sylius\Component\Registry\ServiceRegistry;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage;
 
 return static function (ContainerConfigurator $container) {
     $services = $container->services();
@@ -129,7 +138,10 @@ return static function (ContainerConfigurator $container) {
     $services->alias(ChainProvider::class, 'sylius.grid.chain_provider');
 
     $services->set('sylius.grid.view_factory', GridViewFactory::class)
-        ->args([service('sylius.grid.data_provider')]);
+        ->args([
+            service('sylius.grid.data_provider'),
+            service('sylius.grid.variables_resolver'),
+        ]);
 
     $services->alias(GridViewFactoryInterface::class, 'sylius.grid.view_factory');
 
@@ -222,11 +234,47 @@ return static function (ContainerConfigurator $container) {
 
     $services->set('sylius.grid.action_options_parser', ActionOptionsParser::class)
         ->private()
-        ->args([service('property_accessor')]);
+        ->args([
+            service('property_accessor'),
+            service('sylius.grid.variables_resolver'),
+        ]);
 
     $services->alias(ActionOptionsParserInterface::class, 'sylius.grid.action_options_parser')
         ->private();
 
     $services->set('sylius.grid.mutator_collection', GridMutatorCollection::class)
+        ->private();
+
+    $services->set('sylius.grid.variables_resolver', VariablesResolver::class)
+        ->private()
+        ->args([service('sylius.grid.expression_evaluator')->nullOnInvalid()]);
+
+    $services->alias(VariablesResolverInterface::class, 'sylius.grid.variables_resolver')
+        ->private();
+
+    if (!class_exists(ExpressionLanguage::class)) {
+        return;
+    }
+
+    $services->set('sylius.grid.expression_language.factory', ExpressionLanguageFactory::class)
+        ->private()
+        ->args([tagged_iterator(AsExpressionFunctionProvider::SERVICE_TAG)]);
+
+    $services->set('sylius.grid.expression_language', ExpressionLanguage::class)
+        ->private()
+        ->factory(service('sylius.grid.expression_language.factory'));
+
+    $services->set('sylius.grid.expression_language.variables', VariablesCollectionAggregate::class)
+        ->private()
+        ->args([tagged_iterator(AsExpressionVariables::SERVICE_TAG)]);
+
+    $services->set('sylius.grid.expression_evaluator', ExpressionEvaluator::class)
+        ->private()
+        ->args([
+            service('sylius.grid.expression_language'),
+            service('sylius.grid.expression_language.variables'),
+        ]);
+
+    $services->alias(ExpressionEvaluatorInterface::class, 'sylius.grid.expression_evaluator')
         ->private();
 };

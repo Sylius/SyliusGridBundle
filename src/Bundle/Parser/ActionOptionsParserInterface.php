@@ -21,8 +21,9 @@ use Sylius\Component\Grid\View\GridViewInterface;
 interface ActionOptionsParserInterface
 {
     /**
-     * Resolves the "$name" options from the grid view variables (see VariablesAwareGridViewInterface)
-     * and the "resource.field" options from the data of the action (e.g. the row resource).
+     * Resolves the "$name" and "@=expression" options with the grid view variables (see VariablesAwareGridViewInterface
+     * and VariablesResolverInterface), and the "resource.field" options from the data of the action (e.g. the row resource),
+     * also available as "resource" in the expressions.
      *
      * @param array<array-key, mixed> $options
      *

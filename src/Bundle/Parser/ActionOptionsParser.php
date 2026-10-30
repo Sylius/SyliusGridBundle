@@ -16,6 +16,7 @@ namespace Sylius\Bundle\GridBundle\Parser;
 use Sylius\Component\Grid\View\GridViewInterface;
 use Sylius\Component\Grid\View\VariablesAwareGridViewInterface;
 use Sylius\Component\Grid\View\VariablesResolver;
+use Sylius\Component\Grid\View\VariablesResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
@@ -23,11 +24,13 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 final class ActionOptionsParser implements ActionOptionsParserInterface
 {
-    private VariablesResolver $variablesResolver;
+    private VariablesResolverInterface $variablesResolver;
 
-    public function __construct(private readonly PropertyAccessorInterface $propertyAccessor)
-    {
-        $this->variablesResolver = new VariablesResolver();
+    public function __construct(
+        private readonly PropertyAccessorInterface $propertyAccessor,
+        ?VariablesResolverInterface $variablesResolver = null,
+    ) {
+        $this->variablesResolver = $variablesResolver ?? new VariablesResolver();
     }
 
     public function parseActionOptions(array $options, GridViewInterface $gridView, mixed $data = null): array
@@ -67,7 +70,7 @@ final class ActionOptionsParser implements ActionOptionsParserInterface
             return $this->getResourceValue($data, substr($option, 8));
         }
 
-        return $this->variablesResolver->resolveValue($option, $variables);
+        return $this->variablesResolver->resolveValue($option, $variables, ['resource' => $data]);
     }
 
     private function getResourceValue(mixed $data, string $propertyPath): mixed

@@ -13,39 +13,54 @@ declare(strict_types=1);
 
 namespace Sylius\Component\Grid\View;
 
+use Sylius\Component\Grid\ExpressionLanguage\ExpressionEvaluatorInterface;
+
 /**
- * Resolves the "$name" values, as the request parameters are resolved by sylius/resource-bundle,
- * but from the given variables: an unknown variable is resolved to null.
- *
  * @experimental
- *
- * @internal
  */
-final class VariablesResolver
+final class VariablesResolver implements VariablesResolverInterface
 {
-    /**
-     * @template TKey of array-key
-     *
-     * @param array<TKey, mixed> $values
-     * @param array<string, mixed> $variables
-     *
-     * @return array<TKey, mixed>
-     */
-    public function resolve(array $values, array $variables): array
+    public function __construct(private readonly ?ExpressionEvaluatorInterface $expressionEvaluator = null)
+    {
+    }
+
+    public function resolve(array $values, array $variables, array $expressionVariables = []): array
     {
         return array_map(
-            fn (mixed $value): mixed => is_array($value) ? $this->resolve($value, $variables) : $this->resolveValue($value, $variables),
+            fn (mixed $value): mixed => is_array($value)
+                ? $this->resolve($value, $variables, $expressionVariables)
+                : $this->resolveValue($value, $variables, $expressionVariables),
             $values,
         );
     }
 
-    /** @param array<string, mixed> $variables */
-    public function resolveValue(mixed $value, array $variables): mixed
+    public function resolveValue(mixed $value, array $variables, array $expressionVariables = []): mixed
     {
-        if (!is_string($value) || !str_starts_with($value, '$')) {
+        if (!is_string($value)) {
             return $value;
         }
 
-        return $variables[substr($value, 1)] ?? null;
+        if (str_starts_with($value, '@=')) {
+            return $this->evaluateExpression(substr($value, 2), $variables, $expressionVariables);
+        }
+
+        if (str_starts_with($value, '$')) {
+            return $variables[substr($value, 1)] ?? null;
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param array<string, mixed> $variables
+     * @param array<string, mixed> $expressionVariables
+     */
+    private function evaluateExpression(string $expression, array $variables, array $expressionVariables): mixed
+    {
+        if (null === $this->expressionEvaluator) {
+            throw new \LogicException(sprintf('The "@=%s" expression cannot be evaluated without the expression language. Try running "composer require symfony/expression-language".', $expression));
+        }
+
+        return $this->expressionEvaluator->evaluateExpression($expression, array_merge($expressionVariables, ['variables' => $variables]));
     }
 }

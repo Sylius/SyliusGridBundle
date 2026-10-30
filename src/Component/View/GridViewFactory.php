@@ -21,12 +21,12 @@ final class GridViewFactory implements VariablesAwareGridViewFactoryInterface
 {
     private DataProviderInterface $dataProvider;
 
-    private VariablesResolver $variablesResolver;
+    private VariablesResolverInterface $variablesResolver;
 
-    public function __construct(DataProviderInterface $dataProvider)
+    public function __construct(DataProviderInterface $dataProvider, ?VariablesResolverInterface $variablesResolver = null)
     {
         $this->dataProvider = $dataProvider;
-        $this->variablesResolver = new VariablesResolver();
+        $this->variablesResolver = $variablesResolver ?? new VariablesResolver();
     }
 
     public function create(Grid $grid, Parameters $parameters): GridViewInterface
