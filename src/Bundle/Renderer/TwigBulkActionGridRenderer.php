@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Renderer;
 
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParserInterface;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
@@ -25,13 +26,16 @@ final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterfac
     /** @var array<string, string> */
     private array $bulkActionTemplates;
 
+    private ?ActionOptionsParserInterface $actionOptionsParser;
+
     /**
      * @param array<string, string> $bulkActionTemplates
      */
-    public function __construct(Environment $twig, array $bulkActionTemplates)
+    public function __construct(Environment $twig, array $bulkActionTemplates, ?ActionOptionsParserInterface $actionOptionsParser = null)
     {
         $this->twig = $twig;
         $this->bulkActionTemplates = $bulkActionTemplates;
+        $this->actionOptionsParser = $actionOptionsParser;
     }
 
     public function renderBulkAction(GridViewInterface $gridView, Action $bulkAction, $data = null): string
@@ -41,10 +45,16 @@ final class TwigBulkActionGridRenderer implements BulkActionGridRendererInterfac
             throw new \InvalidArgumentException(sprintf('Missing template for bulk action type "%s".', $type));
         }
 
-        return $this->twig->render($this->bulkActionTemplates[$type], [
+        $context = [
             'grid' => $gridView,
             'action' => $bulkAction,
             'data' => $data,
-        ]);
+        ];
+
+        if (null !== $this->actionOptionsParser) {
+            $context['options'] = $this->actionOptionsParser->parseActionOptions($bulkAction->getOptions(), $gridView, $data);
+        }
+
+        return $this->twig->render($this->bulkActionTemplates[$type], $context);
     }
 }

@@ -20,6 +20,8 @@ use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\InvokableGridPass;
 use Sylius\Bundle\GridBundle\Grid\GridInterface;
 use Sylius\Bundle\GridBundle\SyliusGridBundle;
 use Sylius\Component\Grid\Annotation\AsGridFieldCallableService;
+use Sylius\Component\Grid\Attribute\AsExpressionFunctionProvider;
+use Sylius\Component\Grid\Attribute\AsExpressionVariables;
 use Sylius\Component\Grid\Attribute\AsField;
 use Sylius\Component\Grid\Attribute\AsFilter;
 use Sylius\Component\Grid\Attribute\AsGrid;
@@ -131,6 +133,20 @@ final class SyliusGridExtension extends Extension
         $container->registerForAutoconfiguration(DataProviderInterface::class)
             ->addTag('sylius.grid_data_provider')
         ;
+
+        $container->registerAttributeForAutoconfiguration(
+            AsExpressionFunctionProvider::class,
+            static function (ChildDefinition $definition, AsExpressionFunctionProvider $attribute, \Reflector $reflector): void {
+                $definition->addTag(AsExpressionFunctionProvider::SERVICE_TAG);
+            },
+        );
+
+        $container->registerAttributeForAutoconfiguration(
+            AsExpressionVariables::class,
+            static function (ChildDefinition $definition, AsExpressionVariables $attribute, \Reflector $reflector): void {
+                $definition->addTag(AsExpressionVariables::SERVICE_TAG);
+            },
+        );
 
         $container->registerAttributeForAutoconfiguration(
             AsGridFieldCallableService::class,

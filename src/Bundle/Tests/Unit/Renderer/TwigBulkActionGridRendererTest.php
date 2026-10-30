@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sylius\Bundle\GridBundle\Tests\Unit\Renderer;
 
 use PHPUnit\Framework\TestCase;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParserInterface;
 use Sylius\Bundle\GridBundle\Renderer\TwigBulkActionGridRenderer;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Renderer\BulkActionGridRendererInterface;
@@ -71,5 +72,38 @@ final class TwigBulkActionGridRendererTest extends TestCase
         $this->expectExceptionMessage('Missing template for bulk action type "foo".');
 
         $this->renderer->renderBulkAction($gridView, $bulkAction);
+    }
+
+    public function testPassesTheParsedOptionsToTheBulkActionTemplateWhenAnActionOptionsParserIsGiven(): void
+    {
+        $actionOptionsParser = $this->createMock(ActionOptionsParserInterface::class);
+        $renderer = new TwigBulkActionGridRenderer($this->twig, ['delete' => '@SyliusGrid/BulkAction/_delete.html.twig'], $actionOptionsParser);
+
+        $gridView = $this->createMock(GridViewInterface::class);
+        $bulkAction = $this->createMock(Action::class);
+
+        $bulkAction->method('getType')->willReturn('delete');
+        $bulkAction->method('getOptions')->willReturn(['link' => ['parameters' => ['productId' => '$productId']]]);
+
+        $actionOptionsParser
+            ->expects($this->once())
+            ->method('parseActionOptions')
+            ->with(['link' => ['parameters' => ['productId' => '$productId']]], $gridView, null)
+            ->willReturn(['link' => ['parameters' => ['productId' => 42]]])
+        ;
+
+        $this->twig
+            ->expects($this->once())
+            ->method('render')
+            ->with('@SyliusGrid/BulkAction/_delete.html.twig', [
+                'grid' => $gridView,
+                'action' => $bulkAction,
+                'data' => null,
+                'options' => ['link' => ['parameters' => ['productId' => 42]]],
+            ])
+            ->willReturn('<a href="#">Delete</a>')
+        ;
+
+        $this->assertEquals('<a href="#">Delete</a>', $renderer->renderBulkAction($gridView, $bulkAction));
     }
 }
