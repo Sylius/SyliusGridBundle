@@ -15,8 +15,12 @@ namespace Sylius\Component\Grid\Twig\Component;
 
 use Pagerfanta\PagerfantaInterface;
 use Sylius\Component\Grid\Definition\Grid;
+use Sylius\Component\Grid\Pagination\MaxPerPageResolver;
+use Sylius\Component\Grid\Pagination\MaxPerPageResolverInterface;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Provider\GridProviderInterface;
+use Sylius\Component\Grid\Sanitizing\ParametersSanitizer;
+use Sylius\Component\Grid\Sanitizing\ParametersSanitizerInterface;
 use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
@@ -59,6 +63,10 @@ trait ComponentWithGridTrait
 
     private GridViewFactoryInterface $gridViewFactory;
 
+    private ?ParametersSanitizerInterface $parametersSanitizer = null;
+
+    private ?MaxPerPageResolverInterface $maxPerPageResolver = null;
+
     public function getFilters(): array
     {
         return $this->getGridDefinition()->getEnabledFilters();
@@ -68,21 +76,21 @@ trait ComponentWithGridTrait
     {
         $gridDefinition = $this->getGridDefinition();
 
-        $config = $this->getGridConfig();
+        // Invalid values coming from the URL (or from the browser) must not break the grid or load all the items at once
+        $parameters = $this->getParametersSanitizer()->sanitize($gridDefinition, new Parameters($this->getGridConfig()));
 
-        $gridView = $this->gridViewFactory->create(
-            $gridDefinition,
-            new Parameters($config),
-        );
+        $gridView = $this->gridViewFactory->create($gridDefinition, $parameters);
 
         $data = $gridView->getData();
 
         if ($data instanceof PagerfantaInterface) {
-            if (null !== $this->limit) {
-                $data->setMaxPerPage($this->limit);
-            }
+            /** @var int|null $limit */
+            $limit = $parameters->get('limit');
+            /** @var int $page */
+            $page = $parameters->get('page', 1);
 
-            $data->setCurrentPage($this->page ?? 1);
+            $data->setMaxPerPage($this->getMaxPerPageResolver()->resolve($limit, $gridDefinition->getLimits()));
+            $data->setCurrentPage($page);
         }
 
         return $gridView;
@@ -131,7 +139,7 @@ trait ComponentWithGridTrait
     public function previousPage(): void
     {
         // Prevent setting zero as page
-        if (null === $this->page || 1 === $this->page) {
+        if (null === $this->page || $this->page <= 1) {
             return;
         }
 
@@ -141,11 +149,7 @@ trait ComponentWithGridTrait
     #[LiveAction]
     public function nextPage(): void
     {
-        if (null === $this->page) {
-            $this->page = 1;
-        }
-
-        ++$this->page;
+        $this->page = max(1, $this->page ?? 1) + 1;
     }
 
     /**
@@ -201,6 +205,24 @@ trait ComponentWithGridTrait
         $this->gridProvider = $gridProvider;
     }
 
+    /**
+     * @internal
+     */
+    #[Required]
+    public function setParametersSanitizer(ParametersSanitizerInterface $parametersSanitizer): void
+    {
+        $this->parametersSanitizer = $parametersSanitizer;
+    }
+
+    /**
+     * @internal
+     */
+    #[Required]
+    public function setMaxPerPageResolver(MaxPerPageResolverInterface $maxPerPageResolver): void
+    {
+        $this->maxPerPageResolver = $maxPerPageResolver;
+    }
+
     abstract protected function getGridName(): string;
 
     /**
@@ -215,5 +237,15 @@ trait ComponentWithGridTrait
     private function getGridDefinition(): Grid
     {
         return $this->gridProvider->get($this->getGridName());
+    }
+
+    private function getParametersSanitizer(): ParametersSanitizerInterface
+    {
+        return $this->parametersSanitizer ??= new ParametersSanitizer($this->getMaxPerPageResolver());
+    }
+
+    private function getMaxPerPageResolver(): MaxPerPageResolverInterface
+    {
+        return $this->maxPerPageResolver ??= new MaxPerPageResolver();
     }
 }
