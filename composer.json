@@ -59,6 +59,7 @@
         "pagerfanta/doctrine-dbal-adapter": "<3.7",
         "pagerfanta/doctrine-orm-adapter": "<3.7",
         "pagerfanta/pagerfanta": "<3.7",
+        "symfony/expression-language": "<6.4 || >=7.0,<7.2",
         "symfony/ux-live-component": "<2.32"
     },
     "require-dev": {
@@ -86,6 +87,7 @@
         "symfony/console": "^6.4 || ^7.2 || ^8.0",
         "symfony/css-selector": "^6.4 || ^7.2 || ^8.0",
         "symfony/dotenv": "^6.4 || ^7.2 || ^8.0",
+        "symfony/expression-language": "^6.4 || ^7.2 || ^8.0",
         "symfony/http-client": "^6.4 || ^7.2 || ^8.0",
         "symfony/maker-bundle": "^1.36",
         "symfony/polyfill-mbstring": "<1.22.0 || >1.22.0",
@@ -98,7 +100,8 @@
         "zenstruck/foundry": "^2.8"
     },
     "suggest": {
-        "sylius/currency-bundle": "^1.7"
+        "sylius/currency-bundle": "^1.7",
+        "symfony/expression-language": "To evaluate the \"@=\" expressions of the grid configuration"
     },
     "extra": {
         "branch-alias": {

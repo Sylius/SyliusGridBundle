@@ -15,19 +15,24 @@ namespace Sylius\Bundle\GridBundle\Tests\Unit\Renderer;
 
 use PHPUnit\Framework\TestCase;
 use Sylius\Bundle\GridBundle\Form\Registry\FormTypeRegistryInterface;
+use Sylius\Bundle\GridBundle\Parser\ActionOptionsParser;
 use Sylius\Bundle\GridBundle\Parser\OptionsParserInterface;
 use Sylius\Bundle\GridBundle\Renderer\TwigGridRenderer;
 use Sylius\Component\Grid\Definition\Action;
 use Sylius\Component\Grid\Definition\Field;
+use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\FieldTypes\FieldTypeInterface;
 use Sylius\Component\Grid\Filter\StringFilter;
+use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\Renderer\GridRendererInterface;
 use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewInterface;
 use Sylius\Component\Registry\ServiceRegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 final class TwigGridRendererTest extends TestCase
 {
@@ -235,5 +240,29 @@ final class TwigGridRendererTest extends TestCase
 
         $result = $renderer->renderField($gridView, $field, 'Value');
         $this->assertEquals('<strong>Value</strong>', $result);
+    }
+
+    public function testPassesTheParsedOptionsToTheActionTemplateWhenAnActionOptionsParserIsGiven(): void
+    {
+        $renderer = new TwigGridRenderer(
+            new Environment(new ArrayLoader(['@SyliusGrid/Action/_link.html.twig' => '{{ options.link.parameters.productId }}-{{ options.link.parameters.id }}'])),
+            $this->fieldsRegistry,
+            $this->formFactory,
+            $this->formTypeRegistry,
+            '"@SyliusGrid/default"',
+            ['link' => '@SyliusGrid/Action/_link.html.twig'],
+            [],
+            $this->optionsParser,
+            new ActionOptionsParser(PropertyAccess::createPropertyAccessor()),
+        );
+
+        $gridView = new GridView([], Grid::fromCodeAndDriverConfiguration('app_variant', 'doctrine/orm', []), new Parameters(), ['productId' => 42]);
+        $action = Action::fromNameAndType('update', 'link');
+        $action->setOptions(['link' => ['parameters' => ['productId' => '$productId', 'id' => 'resource.id']]]);
+        $data = new class() {
+            public int $id = 7;
+        };
+
+        $this->assertSame('42-7', $renderer->renderAction($gridView, $action, $data));
     }
 }

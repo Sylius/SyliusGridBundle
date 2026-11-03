@@ -40,9 +40,11 @@
     "require-dev": {
         "symfony/form": "^6.4 || ^7.2 || ^8.0",
         "symfony/property-access": "^6.4 || ^7.2 || ^8.0",
-        "symfony/ux-live-component": "^2.32 || ^3.0"
+        "symfony/ux-live-component": "^2.32 || ^3.0",
+        "symfony/expression-language": "^6.4 || ^7.2 || ^8.0"
     },
     "conflict": {
+        "symfony/expression-language": "<6.4 || >=7.0,<7.2",
         "symfony/ux-live-component": "<2.32"
     },
     "extra": {
@@ -54,5 +56,8 @@
         "psr-4": {
             "Sylius\\Component\\Grid\\": ""
         }
+    },
+    "suggest": {
+        "symfony/expression-language": "To evaluate the \"@=\" expressions of the grid configuration"
     }
 }

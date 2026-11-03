@@ -19,6 +19,7 @@ use Sylius\Component\Grid\Definition\Grid;
 use Sylius\Component\Grid\Parameters;
 use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewInterface;
+use Sylius\Component\Grid\View\VariablesAwareGridViewInterface;
 
 final class GridViewTest extends TestCase
 {
@@ -142,5 +143,18 @@ final class GridViewTest extends TestCase
 
         $this->expectException(\InvalidArgumentException::class);
         $this->gridView->getSortingOrder('name');
+    }
+
+    public function testHasNoVariablesByDefault(): void
+    {
+        $this->assertInstanceOf(VariablesAwareGridViewInterface::class, $this->gridView);
+        $this->assertSame([], $this->gridView->getVariables());
+    }
+
+    public function testHasVariables(): void
+    {
+        $gridView = new GridView(['foo', 'bar'], $this->gridDefinition, new Parameters(), ['productId' => 42]);
+
+        $this->assertSame(['productId' => 42], $gridView->getVariables());
     }
 }
