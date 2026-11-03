@@ -17,8 +17,7 @@ use App\Entity\Author;
 use App\Factory\AuthorFactory;
 use App\Story\AppStory;
 use App\Twig\BookGridComponent;
-use App\Twig\EntityFilterComponent;
-use App\Twig\StringFilterComponent;
+use App\Twig\FilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Twig\Component\ComponentWithGridTrait;
@@ -361,27 +360,20 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $authorFilter = Filter::fromNameAndType('author', 'entity');
         $authorFilter->setFormOptions(['class' => Author::class]);
 
+        $stateFilter = Filter::fromNameAndType('state', 'select');
+        $stateFilter->setFormOptions(['choices' => ['published' => 'published', 'unpublished' => 'unpublished']]);
+
         $grid = $this->createLiveComponent(name: BookGridComponent::class);
-        $titleFilterComponent = $this->createLiveComponent(
-            name: StringFilterComponent::class,
-            data: ['filter' => Filter::fromNameAndType('title', 'string')],
-        );
         $authorFilterComponent = $this->createLiveComponent(
-            name: EntityFilterComponent::class,
+            name: FilterComponent::class,
             data: ['filter' => $authorFilter],
         );
+        $stateFilterComponent = $this->createLiveComponent(
+            name: FilterComponent::class,
+            data: ['filter' => $stateFilter],
+        );
 
-        // The title filter is changed: the grid applies it without echoing it back to the filters
-        $titleFilterComponent->set('value', 'Jurassic');
-        $titleFilterComponent->call('onChange');
-        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
-            ->withData(['newCriteria' => ['title' => ['value' => 'Jurassic']]])
-        ;
-
-        $grid->call('filterChanged', ['newCriteria' => ['title' => ['value' => 'Jurassic']]]);
-        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
-
-        // The author filter is changed: the criteria of the title filter are kept
+        // The author filter is changed: the grid applies it without echoing it back to the filters
         $authorFilterComponent->set('value', $michaelCrichtonId);
         $authorFilterComponent->call('onChange');
         $this->assertComponentEmitEvent($authorFilterComponent, 'filterChanged')
@@ -391,20 +383,30 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $grid->call('filterChanged', ['newCriteria' => ['author' => $michaelCrichtonId]]);
         $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
 
+        // The state filter is changed: the criteria of the author filter are kept
+        $stateFilterComponent->set('value', 'published');
+        $stateFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($stateFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['state' => 'published']])
+        ;
+
+        $grid->call('filterChanged', ['newCriteria' => ['state' => 'published']]);
+        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
+
         $html = $grid->render()->toString();
         $this->assertStringContainsString('JURASSIC PARK', $html);
         $this->assertStringNotContainsString('THE LOST WORLD', $html);
         $this->assertStringNotContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
 
-        // The title filter is removed from the grid: every filter is notified and only the title filter is cleared
+        // The state filter is removed from the grid: every filter is notified and only the state filter is cleared
         $criteria = ['author' => $michaelCrichtonId];
         $grid->call('changeCriteria', ['criteria' => $criteria]);
         $this->assertComponentEmitEvent($grid, 'criteriaChanged')->withData(['criteria' => $criteria]);
 
-        $titleFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
-        $titleFilterComponent->call('onChange');
-        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
-            ->withData(['newCriteria' => ['title' => ['value' => '']]])
+        $stateFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
+        $stateFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($stateFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['state' => null]])
         ;
 
         $authorFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
