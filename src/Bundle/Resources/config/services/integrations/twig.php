@@ -36,6 +36,7 @@ return static function (ContainerConfigurator $container) {
             '%sylius.grid.templates.action%',
             '%sylius.grid.templates.filter%',
             service('sylius.grid.options_parser'),
+            service('sylius.grid.action_options_parser'),
         ]);
 
     $services->alias(TwigGridRenderer::class, 'sylius.grid.renderer.twig');
@@ -44,6 +45,7 @@ return static function (ContainerConfigurator $container) {
         ->args([
             service('twig'),
             '%sylius.grid.templates.bulk_action%',
+            service('sylius.grid.action_options_parser'),
         ]);
 
     $services->alias(TwigBulkActionGridRenderer::class, 'sylius.grid.bulk_action_renderer.twig');

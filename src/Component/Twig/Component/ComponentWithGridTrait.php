@@ -24,6 +24,7 @@ use Sylius\Component\Grid\Sanitizing\ParametersSanitizerInterface;
 use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
+use Sylius\Component\Grid\View\VariablesAwareGridViewFactoryInterface;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -59,6 +60,17 @@ trait ComponentWithGridTrait
     #[LiveProp(writable: true, url: true)]
     public ?int $limit = null;
 
+    /**
+     * The variables of the page (e.g. its route parameters), to pass when mounting the component, as the request
+     * they come from is not available anymore during the live re-renders. They resolve the "$name" values and are
+     * available as "variables" in the "@=" expressions of the grid configuration, as for the regular grids
+     * (see VariablesAwareGridViewInterface).
+     *
+     * @var array<string, mixed>
+     */
+    #[LiveProp]
+    public array $gridVariables = [];
+
     private GridProviderInterface $gridProvider;
 
     private GridViewFactoryInterface $gridViewFactory;
@@ -79,7 +91,10 @@ trait ComponentWithGridTrait
         // Invalid values coming from the URL (or from the browser) must not break the grid or load all the items at once
         $parameters = $this->getParametersSanitizer()->sanitize($gridDefinition, new Parameters($this->getGridConfig()));
 
-        $gridView = $this->gridViewFactory->create($gridDefinition, $parameters);
+        $gridView = [] !== $this->gridVariables && $this->gridViewFactory instanceof VariablesAwareGridViewFactoryInterface
+            ? $this->gridViewFactory->createWithVariables($gridDefinition, $parameters, $this->gridVariables)
+            : $this->gridViewFactory->create($gridDefinition, $parameters)
+        ;
 
         $data = $gridView->getData();
 
