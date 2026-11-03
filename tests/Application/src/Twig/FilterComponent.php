@@ -11,16 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Sylius\Component\Grid\Twig\Component;
+namespace App\Twig;
 
+use Sylius\Component\Grid\Twig\Component\ComponentWithFilterTrait;
+use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\DefaultActionTrait;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
 
 /**
- * @experimental
+ * A filter rendered as its own live component, whose value is the one of its form (e.g. a select or an entity filter).
  */
-trait ComponentWithSelectFilterTrait
+#[AsLiveComponent(name: 'filter', template: 'shared/component/grid/filter/filter.html.twig')]
+final class FilterComponent
 {
+    use DefaultActionTrait;
     use ComponentWithFilterTrait;
 
     #[LiveProp(writable: true)]

@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Tests\Functional\Twig\Component;
 
-use App\Twig\SelectFilterComponent;
+use App\Entity\Author;
+use App\Factory\AuthorFactory;
+use App\Twig\FilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Sylius\Component\Grid\Definition\Filter;
-use Sylius\Component\Grid\Twig\Component\ComponentWithSelectFilterTrait;
+use Sylius\Component\Grid\Twig\Component\ComponentWithFilterTrait;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -25,8 +27,8 @@ use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
 
-#[CoversClass(ComponentWithSelectFilterTrait::class)]
-final class ComponentWithSelectFilterTraitTest extends KernelTestCase
+#[CoversClass(ComponentWithFilterTrait::class)]
+final class ComponentWithFilterTraitTest extends KernelTestCase
 {
     use InteractsWithLiveComponents;
     use Factories;
@@ -48,24 +50,30 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
 
     public function testRender(): void
     {
+        $filter = Filter::fromNameAndType('author', 'entity');
+        $filter->setFormOptions(['class' => Author::class]);
+
         $component = $this->createLiveComponent(
-            name: SelectFilterComponent::class,
+            name: FilterComponent::class,
             data: [
-                'filter' => Filter::fromNameAndType('state', 'select'),
+                'filter' => $filter,
             ],
         );
 
         $this->assertStringContainsString(<<<'HTML'
-            <label for="criteria_state">state</label><select id="criteria_state" name="criteria[state]" data-model="value" data-action="live#action" data-live-action-param="onChange"><option value="">All</option></select>
+            <label for="criteria_author">author</label><select id="criteria_author" name="criteria[author]" data-model="value" data-action="live#action" data-live-action-param="onChange"><option value="">All</option></select>
             HTML, $component->render()->toString());
     }
 
     public function testEmitFilterChangedEvent(): void
     {
+        $filter = Filter::fromNameAndType('author', 'entity');
+        $filter->setFormOptions(['class' => Author::class]);
+
         $component = $this->createLiveComponent(
-            name: SelectFilterComponent::class,
+            name: FilterComponent::class,
             data: [
-                'filter' => Filter::fromNameAndType('state', 'select'),
+                'filter' => $filter,
             ],
         );
 
@@ -74,10 +82,36 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
         $this->assertComponentEmitEvent($component, 'filterChanged');
     }
 
+    public function testHydrateFormDataWithTheEntityFromCriteria(): void
+    {
+        $author = AuthorFactory::new()->withName('Arthur Conan Doyle')->create();
+
+        $filter = Filter::fromNameAndType('author', 'entity');
+        $filter->setFormOptions(['class' => Author::class]);
+
+        $component = $this->createLiveComponent(
+            name: FilterComponent::class,
+            data: [
+                'filter' => $filter,
+                'criteria' => ['author' => (string) $author->getId()],
+            ],
+        );
+
+        $this->assertFormDataIsAuthor($component->component(), $author->getId());
+
+        // Re-hydrating the component on a live action must still produce the entity as form data
+        $component->call('onChange');
+
+        $this->assertFormDataIsAuthor($component->component(), $author->getId());
+        $this->assertComponentEmitEvent($component, 'filterChanged')
+            ->withData(['newCriteria' => ['author' => (string) $author->getId()]])
+        ;
+    }
+
     public function testInitializeValueFromCriteria(): void
     {
         $component = $this->createLiveComponent(
-            name: SelectFilterComponent::class,
+            name: FilterComponent::class,
             data: [
                 'filter' => Filter::fromNameAndType('state', 'select'),
                 'criteria' => ['state' => 'published'],
@@ -94,7 +128,7 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
     public function testResetValueWhenFiltersAreReset(): void
     {
         $component = $this->createLiveComponent(
-            name: SelectFilterComponent::class,
+            name: FilterComponent::class,
             data: [
                 'filter' => Filter::fromNameAndType('state', 'select'),
                 'criteria' => ['state' => 'published'],
@@ -112,7 +146,7 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
     public function testSynchronizeValueWhenCriteriaAreChangedByTheGrid(): void
     {
         $component = $this->createLiveComponent(
-            name: SelectFilterComponent::class,
+            name: FilterComponent::class,
             data: [
                 'filter' => Filter::fromNameAndType('state', 'select'),
                 'criteria' => ['state' => 'published'],
@@ -125,5 +159,15 @@ final class ComponentWithSelectFilterTraitTest extends KernelTestCase
         $this->assertComponentEmitEvent($component, 'filterChanged')
             ->withData(['newCriteria' => ['state' => 'draft']])
         ;
+    }
+
+    private function assertFormDataIsAuthor(object $component, mixed $authorId): void
+    {
+        $this->assertInstanceOf(FilterComponent::class, $component);
+
+        $data = $component->getFormView()->vars['data'];
+
+        $this->assertInstanceOf(Author::class, $data);
+        $this->assertSame($authorId, $data->getId());
     }
 }

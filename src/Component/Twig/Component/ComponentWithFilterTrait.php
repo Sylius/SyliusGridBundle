@@ -139,7 +139,7 @@ trait ComponentWithFilterTrait
         // A clone is submitted because a form can only be submitted once and ComponentWithFormTrait may submit
         // the returned form later (e.g. on re-render). The original form is then initialized with the model data,
         // which is what selects the right choice when rendering an entity filter.
-        // See ComponentWithEntityFilterTraitTest::testHydrateFormDataWithTheEntityFromCriteria().
+        // See ComponentWithFilterTraitTest::testHydrateFormDataWithTheEntityFromCriteria().
         $clone = clone $form;
         $clone->submit($this->toArray());
 

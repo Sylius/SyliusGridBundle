@@ -17,14 +17,14 @@ use App\Entity\Author;
 use App\Factory\AuthorFactory;
 use App\Story\AppStory;
 use App\Twig\BookGridComponent;
-use App\Twig\EntityFilterComponent;
-use App\Twig\StringFilterComponent;
+use App\Twig\FilterComponent;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Sylius\Component\Grid\Definition\Filter;
 use Sylius\Component\Grid\Twig\Component\ComponentWithGridTrait;
 use Sylius\Component\Grid\View\VariablesAwareGridViewInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
@@ -360,27 +360,20 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $authorFilter = Filter::fromNameAndType('author', 'entity');
         $authorFilter->setFormOptions(['class' => Author::class]);
 
+        $stateFilter = Filter::fromNameAndType('state', 'select');
+        $stateFilter->setFormOptions(['choices' => ['published' => 'published', 'unpublished' => 'unpublished']]);
+
         $grid = $this->createLiveComponent(name: BookGridComponent::class);
-        $titleFilterComponent = $this->createLiveComponent(
-            name: StringFilterComponent::class,
-            data: ['filter' => Filter::fromNameAndType('title', 'string')],
-        );
         $authorFilterComponent = $this->createLiveComponent(
-            name: EntityFilterComponent::class,
+            name: FilterComponent::class,
             data: ['filter' => $authorFilter],
         );
+        $stateFilterComponent = $this->createLiveComponent(
+            name: FilterComponent::class,
+            data: ['filter' => $stateFilter],
+        );
 
-        // The title filter is changed: the grid applies it without echoing it back to the filters
-        $titleFilterComponent->set('value', 'Jurassic');
-        $titleFilterComponent->call('onChange');
-        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
-            ->withData(['newCriteria' => ['title' => ['value' => 'Jurassic']]])
-        ;
-
-        $grid->call('filterChanged', ['newCriteria' => ['title' => ['value' => 'Jurassic']]]);
-        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
-
-        // The author filter is changed: the criteria of the title filter are kept
+        // The author filter is changed: the grid applies it without echoing it back to the filters
         $authorFilterComponent->set('value', $michaelCrichtonId);
         $authorFilterComponent->call('onChange');
         $this->assertComponentEmitEvent($authorFilterComponent, 'filterChanged')
@@ -390,20 +383,30 @@ final class ComponentWithGridTraitTest extends KernelTestCase
         $grid->call('filterChanged', ['newCriteria' => ['author' => $michaelCrichtonId]]);
         $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
 
+        // The state filter is changed: the criteria of the author filter are kept
+        $stateFilterComponent->set('value', 'published');
+        $stateFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($stateFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['state' => 'published']])
+        ;
+
+        $grid->call('filterChanged', ['newCriteria' => ['state' => 'published']]);
+        $this->assertComponentNotEmitEvent($grid, 'criteriaChanged');
+
         $html = $grid->render()->toString();
         $this->assertStringContainsString('JURASSIC PARK', $html);
         $this->assertStringNotContainsString('THE LOST WORLD', $html);
         $this->assertStringNotContainsString(self::FIRST_PAGE_BOOK_TITLE, $html);
 
-        // The title filter is removed from the grid: every filter is notified and only the title filter is cleared
+        // The state filter is removed from the grid: every filter is notified and only the state filter is cleared
         $criteria = ['author' => $michaelCrichtonId];
         $grid->call('changeCriteria', ['criteria' => $criteria]);
         $this->assertComponentEmitEvent($grid, 'criteriaChanged')->withData(['criteria' => $criteria]);
 
-        $titleFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
-        $titleFilterComponent->call('onChange');
-        $this->assertComponentEmitEvent($titleFilterComponent, 'filterChanged')
-            ->withData(['newCriteria' => ['title' => ['value' => '']]])
+        $stateFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
+        $stateFilterComponent->call('onChange');
+        $this->assertComponentEmitEvent($stateFilterComponent, 'filterChanged')
+            ->withData(['newCriteria' => ['state' => null]])
         ;
 
         $authorFilterComponent->emit('criteriaChanged', ['criteria' => $criteria]);
@@ -463,5 +466,69 @@ final class ComponentWithGridTraitTest extends KernelTestCase
 
         $this->assertInstanceOf(VariablesAwareGridViewInterface::class, $gridView);
         $this->assertSame([], $gridView->getVariables());
+    }
+
+    public function testGridVariablesDefaultToTheRouteParameters(): void
+    {
+        $bookGrid = $this->createBookGridOnRoute(['authorId' => '7', '_locale' => 'en']);
+
+        $bookGrid->captureGridVariables();
+
+        $this->assertSame(['authorId' => '7'], $bookGrid->gridVariables);
+        $this->assertSame(['authorId' => '7'], $bookGrid->getGridView()->getVariables());
+    }
+
+    public function testGridVariablesPassedWhenMountingAreNotReplacedByTheRouteParameters(): void
+    {
+        $bookGrid = $this->createBookGridOnRoute(['authorId' => '7']);
+        $bookGrid->gridVariables = ['authorId' => 42];
+
+        $bookGrid->captureGridVariables();
+
+        $this->assertSame(['authorId' => 42], $bookGrid->gridVariables);
+    }
+
+    public function testGridViewIsBuiltOnlyOnceForTheSameParameters(): void
+    {
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+        $gridView = $bookGrid->getGridView();
+
+        $this->assertSame($gridView, $bookGrid->getGridView());
+
+        $bookGrid->nextPage();
+
+        $this->assertNotSame($gridView, $bookGrid->getGridView());
+    }
+
+    public function testHasActiveCriteria(): void
+    {
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+
+        $this->assertFalse($bookGrid->hasActiveCriteria());
+
+        $bookGrid->criteria = ['title' => ['value' => ''], 'author' => null];
+
+        $this->assertFalse($bookGrid->hasActiveCriteria());
+
+        $bookGrid->criteria = ['title' => ['value' => 'Jurassic'], 'author' => null];
+
+        $this->assertTrue($bookGrid->hasActiveCriteria());
+    }
+
+    /**
+     * @param array<string, mixed> $routeParameters
+     */
+    private function createBookGridOnRoute(array $routeParameters): BookGridComponent
+    {
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request(attributes: ['_route_params' => $routeParameters]));
+
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+        $bookGrid->setRequestStack($requestStack);
+
+        return $bookGrid;
     }
 }
