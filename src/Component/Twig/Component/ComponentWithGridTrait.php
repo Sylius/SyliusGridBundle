@@ -25,6 +25,7 @@ use Sylius\Component\Grid\View\GridView;
 use Sylius\Component\Grid\View\GridViewFactoryInterface;
 use Sylius\Component\Grid\View\GridViewInterface;
 use Sylius\Component\Grid\View\VariablesAwareGridViewFactoryInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
@@ -32,6 +33,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
+use Symfony\UX\TwigComponent\Attribute\PostMount;
 
 /**
  * @experimental
@@ -61,9 +63,10 @@ trait ComponentWithGridTrait
     public ?int $limit = null;
 
     /**
-     * The variables of the page (e.g. its route parameters), to pass when mounting the component, as the request
-     * they come from is not available anymore during the live re-renders. They resolve the "$name" values and are
-     * available as "variables" in the "@=" expressions of the grid configuration, as for the regular grids
+     * The variables of the page, as the request they come from is not available anymore during the live re-renders.
+     * They default to the route parameters of the page the component is mounted on (see captureGridVariables()),
+     * and can be passed when mounting the component instead. They resolve the "$name" values and are available as
+     * "variables" in the "@=" expressions of the grid configuration, as for the regular grids
      * (see VariablesAwareGridViewInterface).
      *
      * @var array<string, mixed>
@@ -79,9 +82,35 @@ trait ComponentWithGridTrait
 
     private ?MaxPerPageResolverInterface $maxPerPageResolver = null;
 
+    private ?RequestStack $requestStack = null;
+
+    private ?GridViewInterface $cachedGridView = null;
+
+    private ?string $cachedGridViewKey = null;
+
     public function getFilters(): array
     {
         return $this->getGridDefinition()->getEnabledFilters();
+    }
+
+    /**
+     * Keeps the route parameters of the page as the grid variables, unless they were passed when mounting the component.
+     */
+    #[PostMount]
+    public function captureGridVariables(): void
+    {
+        if ([] !== $this->gridVariables) {
+            return;
+        }
+
+        $routeParameters = $this->requestStack?->getCurrentRequest()?->attributes->all('_route_params') ?? [];
+
+        foreach ($routeParameters as $name => $value) {
+            // The route parameters also contain the route defaults (e.g. "_controller"), which must not be exposed in the props
+            if (is_string($name) && !str_starts_with($name, '_')) {
+                $this->gridVariables[$name] = $value;
+            }
+        }
     }
 
     public function getGridView(): GridViewInterface
@@ -91,10 +120,13 @@ trait ComponentWithGridTrait
         // Invalid values coming from the URL (or from the browser) must not break the grid or load all the items at once
         $parameters = $this->getParametersSanitizer()->sanitize($gridDefinition, new Parameters($this->getGridConfig()));
 
-        $gridView = [] !== $this->gridVariables && $this->gridViewFactory instanceof VariablesAwareGridViewFactoryInterface
-            ? $this->gridViewFactory->createWithVariables($gridDefinition, $parameters, $this->gridVariables)
-            : $this->gridViewFactory->create($gridDefinition, $parameters)
-        ;
+        // The grid view is exposed several times per render (grid, filters, pagination...), it is built again only when its parameters change
+        $cacheKey = serialize([$gridDefinition->getCode(), $parameters->all(), $this->gridVariables]);
+        if (null !== $this->cachedGridView && $cacheKey === $this->cachedGridViewKey) {
+            return $this->cachedGridView;
+        }
+
+        $gridView = $this->createGridView($gridDefinition, $parameters);
 
         $data = $gridView->getData();
 
@@ -106,9 +138,30 @@ trait ComponentWithGridTrait
 
             $data->setMaxPerPage($this->getMaxPerPageResolver()->resolve($limit, $gridDefinition->getLimits()));
             $data->setCurrentPage($page);
+
+            // Loads the results now, rather than from the template
+            $data->getCurrentPageResults();
         }
 
-        return $gridView;
+        $this->cachedGridViewKey = $cacheKey;
+
+        return $this->cachedGridView = $gridView;
+    }
+
+    /**
+     * Whether a filter has a value. The empty values (e.g. an empty search) are not active criteria.
+     */
+    public function hasActiveCriteria(): bool
+    {
+        $hasValue = static function (mixed $value) use (&$hasValue): bool {
+            if (is_array($value)) {
+                return [] !== array_filter($value, $hasValue);
+            }
+
+            return null !== $value && '' !== $value;
+        };
+
+        return $hasValue($this->criteria ?? []);
     }
 
     /**
@@ -238,7 +291,29 @@ trait ComponentWithGridTrait
         $this->maxPerPageResolver = $maxPerPageResolver;
     }
 
+    /**
+     * @internal
+     */
+    #[Required]
+    public function setRequestStack(RequestStack $requestStack): void
+    {
+        $this->requestStack = $requestStack;
+    }
+
     abstract protected function getGridName(): string;
+
+    /**
+     * Builds the grid view from the sanitized parameters. Can be overridden to build it differently
+     * (e.g. with a grid view factory which needs more context than the grid variables).
+     */
+    protected function createGridView(Grid $gridDefinition, Parameters $parameters): GridViewInterface
+    {
+        if ([] !== $this->gridVariables && $this->gridViewFactory instanceof VariablesAwareGridViewFactoryInterface) {
+            return $this->gridViewFactory->createWithVariables($gridDefinition, $parameters, $this->gridVariables);
+        }
+
+        return $this->gridViewFactory->create($gridDefinition, $parameters);
+    }
 
     /**
      * @param array<string, mixed>|null $criteria

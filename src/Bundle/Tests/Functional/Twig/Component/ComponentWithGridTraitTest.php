@@ -25,6 +25,7 @@ use Sylius\Component\Grid\Twig\Component\ComponentWithGridTrait;
 use Sylius\Component\Grid\View\VariablesAwareGridViewInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
 use Symfony\UX\LiveComponent\Test\InteractsWithLiveComponents;
@@ -463,5 +464,69 @@ final class ComponentWithGridTraitTest extends KernelTestCase
 
         $this->assertInstanceOf(VariablesAwareGridViewInterface::class, $gridView);
         $this->assertSame([], $gridView->getVariables());
+    }
+
+    public function testGridVariablesDefaultToTheRouteParameters(): void
+    {
+        $bookGrid = $this->createBookGridOnRoute(['authorId' => '7', '_locale' => 'en']);
+
+        $bookGrid->captureGridVariables();
+
+        $this->assertSame(['authorId' => '7'], $bookGrid->gridVariables);
+        $this->assertSame(['authorId' => '7'], $bookGrid->getGridView()->getVariables());
+    }
+
+    public function testGridVariablesPassedWhenMountingAreNotReplacedByTheRouteParameters(): void
+    {
+        $bookGrid = $this->createBookGridOnRoute(['authorId' => '7']);
+        $bookGrid->gridVariables = ['authorId' => 42];
+
+        $bookGrid->captureGridVariables();
+
+        $this->assertSame(['authorId' => 42], $bookGrid->gridVariables);
+    }
+
+    public function testGridViewIsBuiltOnlyOnceForTheSameParameters(): void
+    {
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+        $gridView = $bookGrid->getGridView();
+
+        $this->assertSame($gridView, $bookGrid->getGridView());
+
+        $bookGrid->nextPage();
+
+        $this->assertNotSame($gridView, $bookGrid->getGridView());
+    }
+
+    public function testHasActiveCriteria(): void
+    {
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+
+        $this->assertFalse($bookGrid->hasActiveCriteria());
+
+        $bookGrid->criteria = ['title' => ['value' => ''], 'author' => null];
+
+        $this->assertFalse($bookGrid->hasActiveCriteria());
+
+        $bookGrid->criteria = ['title' => ['value' => 'Jurassic'], 'author' => null];
+
+        $this->assertTrue($bookGrid->hasActiveCriteria());
+    }
+
+    /**
+     * @param array<string, mixed> $routeParameters
+     */
+    private function createBookGridOnRoute(array $routeParameters): BookGridComponent
+    {
+        $requestStack = new RequestStack();
+        $requestStack->push(new Request(attributes: ['_route_params' => $routeParameters]));
+
+        /** @var BookGridComponent $bookGrid */
+        $bookGrid = $this->createLiveComponent(name: BookGridComponent::class)->component();
+        $bookGrid->setRequestStack($requestStack);
+
+        return $bookGrid;
     }
 }
