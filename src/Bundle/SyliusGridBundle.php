@@ -18,6 +18,7 @@ use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\InvokableGridPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterDriversPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFieldTypesPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterFiltersPass;
+use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterMakerCommandAliasesPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterStubCommandsPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterTimezoneParameterPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\ValidateConfiguredGridDriversPass;
@@ -38,6 +39,7 @@ final class SyliusGridBundle extends Bundle
         $container->addCompilerPass(new RegisterFiltersPass());
         $container->addCompilerPass(new RegisterFieldTypesPass());
         $container->addCompilerPass(new RegisterStubCommandsPass());
+        $container->addCompilerPass(new RegisterMakerCommandAliasesPass());
         $container->addCompilerPass(new RegisterTimezoneParameterPass());
         $container->addCompilerPass(new ValidateConfiguredGridDriversPass());
         $container->addCompilerPass(new InvokableGridPass());

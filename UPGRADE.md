@@ -1,3 +1,15 @@
+## UPGRADE FOR `1.17.x`
+
+### FROM `1.16.x` TO `1.17.x`
+
+### Grid maker command
+
+The grid maker command is now registered as `sylius:make:grid`, consistent with the other Sylius commands.
+`make:grid` remains available as an alias, so no changes are required.
+
+Command aliases of makers are now registered by the `Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterMakerCommandAliasesPass`.
+To add aliases to your own maker, implement the `Sylius\Bundle\GridBundle\Maker\CommandAliasesAwareInterface`.
+
 ## UPGRADE FOR `1.16.x`
 
 ### FROM `1.15.x` TO `1.16.x`

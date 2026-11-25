@@ -15,7 +15,7 @@ namespace Sylius\Bundle\GridBundle\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'make:grid')]
+#[AsCommand(name: 'sylius:make:grid|make:grid')]
 final class StubMakeGrid extends StubCommand
 {
 }
