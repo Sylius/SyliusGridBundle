@@ -33,6 +33,8 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
 
     /**
      * @param Comparison|Func|Andx|Orx|string ...$expressions
+     *
+     * @no-named-arguments
      */
     public function andX(...$expressions)
     {
@@ -41,6 +43,8 @@ final class ExpressionBuilder implements MemberOfAwareExpressionBuilderInterface
 
     /**
      * @param Comparison|Func|Andx|Orx|string ...$expressions
+     *
+     * @no-named-arguments
      */
     public function orX(...$expressions)
     {
