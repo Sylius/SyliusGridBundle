@@ -16,6 +16,8 @@ namespace Sylius\Bundle\GridBundle\Maker;
 /**
  * The method is intentionally not named "getCommandAliases", as MakerBundle registers aliases returned by such a method
  * with a hardcoded 'Deprecated alias of "make:test"' description.
+ *
+ * @internal
  */
 interface CommandAliasesAwareInterface
 {

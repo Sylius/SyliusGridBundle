@@ -22,6 +22,7 @@ use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterMakerCommandAl
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterStubCommandsPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\RegisterTimezoneParameterPass;
 use Sylius\Bundle\GridBundle\DependencyInjection\Compiler\ValidateConfiguredGridDriversPass;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -39,7 +40,8 @@ final class SyliusGridBundle extends Bundle
         $container->addCompilerPass(new RegisterFiltersPass());
         $container->addCompilerPass(new RegisterFieldTypesPass());
         $container->addCompilerPass(new RegisterStubCommandsPass());
-        $container->addCompilerPass(new RegisterMakerCommandAliasesPass());
+        // Must run after MakerBundle's MakeCommandRegistrationPass (TYPE_BEFORE_OPTIMIZATION, priority 10)
+        $container->addCompilerPass(new RegisterMakerCommandAliasesPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 0);
         $container->addCompilerPass(new RegisterTimezoneParameterPass());
         $container->addCompilerPass(new ValidateConfiguredGridDriversPass());
         $container->addCompilerPass(new InvokableGridPass());
