@@ -35,7 +35,7 @@ final class RegisterMakerCommandAliasesPassTest extends AbstractCompilerPassTest
         $this->assertContainerBuilderHasServiceDefinitionWithTag(
             'maker.auto_command.sylius_make_grid',
             'console.command',
-            ['command' => 'make:grid'],
+            ['command' => 'make:grid', 'description' => MakeGrid::getCommandDescription()],
         );
     }
 

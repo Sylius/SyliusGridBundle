@@ -40,13 +40,18 @@ final class RegisterMakerCommandAliasesPass implements CompilerPassInterface
                 continue;
             }
 
+            $tagAttributes = [];
+            if (method_exists($makerClass, 'getCommandDescription')) {
+                $tagAttributes['description'] = $makerClass::getCommandDescription();
+            }
+
             $registeredCommands = array_column($tags, 'command');
-            foreach ($makerClass::getCommandAliases() as $alias) {
+            foreach ($makerClass::aliases() as $alias) {
                 if (in_array($alias, $registeredCommands, true)) {
                     continue;
                 }
 
-                $definition->addTag('console.command', ['command' => $alias]);
+                $definition->addTag('console.command', ['command' => $alias] + $tagAttributes);
                 $registeredCommands[] = $alias;
             }
         }

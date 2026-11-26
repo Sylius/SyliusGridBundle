@@ -39,7 +39,7 @@ final class MakeGrid extends AbstractMaker implements CommandAliasesAwareInterfa
     }
 
     /** @return list<string> */
-    public static function getCommandAliases(): array
+    public static function aliases(): array
     {
         return ['make:grid'];
     }

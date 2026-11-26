@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Sylius\Bundle\GridBundle\Maker;
 
+/**
+ * The method is intentionally not named "getCommandAliases", as MakerBundle registers aliases returned by such a method
+ * with a hardcoded 'Deprecated alias of "make:test"' description.
+ */
 interface CommandAliasesAwareInterface
 {
     /** @return iterable<string> */
-    public static function getCommandAliases(): iterable;
+    public static function aliases(): iterable;
 }
