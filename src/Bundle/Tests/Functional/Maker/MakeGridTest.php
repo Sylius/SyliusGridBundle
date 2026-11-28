@@ -38,9 +38,17 @@ final class MakeGridTest extends MakerTestCase
     private const BOARD_GAME_GRID_PATH = 'Grid/BoardGameGrid.php';
 
     #[Test]
+    public function it_is_available_under_the_make_grid_alias(): void
+    {
+        $application = new Application(self::bootKernel());
+
+        $this->assertSame($application->find('sylius:make:grid'), $application->find('make:grid'));
+    }
+
+    #[Test]
     public function it_can_create_grids_with_a_doctrine_entity(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::PRICE_GRID_PATH));
 
@@ -53,7 +61,7 @@ final class MakeGridTest extends MakerTestCase
     #[Test]
     public function it_can_create_grids_without_doctrine(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOARD_GAME_GRID_PATH));
 
@@ -66,7 +74,7 @@ final class MakeGridTest extends MakerTestCase
     #[Test]
     public function it_can_create_grids_with_boolean_fields(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::BOOK_GRID_PATH));
 
@@ -79,7 +87,7 @@ final class MakeGridTest extends MakerTestCase
     #[Test]
     public function it_uses_snake_case_names_for_grids(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
@@ -92,7 +100,7 @@ final class MakeGridTest extends MakerTestCase
     #[Test]
     public function it_can_create_grids_interactively(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::ADMIN_USER_GRID_PATH));
 
@@ -106,7 +114,7 @@ final class MakeGridTest extends MakerTestCase
     #[Test]
     public function invalid_entity_throws_exception(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel()))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel()))->find('sylius:make:grid'));
 
         $this->assertFileDoesNotExist(self::tempFile(self::INVALID_GRID_PATH));
 

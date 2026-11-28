@@ -23,10 +23,18 @@ final class StubMakeGridTest extends KernelTestCase
     #[Test]
     public function it_informs_maker_bundle_is_not_registered(): void
     {
-        $tester = new CommandTester((new Application(self::bootKernel(['environment' => 'test_without_maker'])))->find('make:grid'));
+        $tester = new CommandTester((new Application(self::bootKernel(['environment' => 'test_without_maker'])))->find('sylius:make:grid'));
 
         $tester->execute([]);
 
         $this->assertStringContainsString('To run command you need the "MakerBundle"', $tester->getDisplay());
+    }
+
+    #[Test]
+    public function it_is_available_under_the_make_grid_alias(): void
+    {
+        $application = new Application(self::bootKernel(['environment' => 'test_without_maker']));
+
+        $this->assertSame($application->find('sylius:make:grid'), $application->find('make:grid'));
     }
 }

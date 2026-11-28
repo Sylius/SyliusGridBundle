@@ -1,3 +1,12 @@
+## UPGRADE FOR `1.17.x`
+
+### FROM `1.16.x` TO `1.17.x`
+
+### Grid maker command
+
+The grid maker command is now registered as `sylius:make:grid`, consistent with the other Sylius commands.
+`make:grid` remains available as an alias, so no changes are required.
+
 ## UPGRADE FOR `1.16.x`
 
 ### FROM `1.15.x` TO `1.16.x`

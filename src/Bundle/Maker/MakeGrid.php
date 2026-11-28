@@ -27,7 +27,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Webmozart\Assert\Assert;
 
-final class MakeGrid extends AbstractMaker
+final class MakeGrid extends AbstractMaker implements CommandAliasesAwareInterface
 {
     public function __construct(private readonly ?ManagerRegistry $managerRegistry = null)
     {
@@ -35,7 +35,13 @@ final class MakeGrid extends AbstractMaker
 
     public static function getCommandName(): string
     {
-        return 'make:grid';
+        return 'sylius:make:grid';
+    }
+
+    /** @return list<string> */
+    public static function aliases(): array
+    {
+        return ['make:grid'];
     }
 
     public static function getCommandDescription(): string
